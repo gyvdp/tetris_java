@@ -28,41 +28,37 @@ import esi.acgt.atlj.client.controller.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+public class Connexion implements Initializable {
 
-public class PlayerTetrisFXML implements Initializable {
+  private Controller controller;
+  private Stage stage;
+  private static final Pattern regex = Pattern.compile("^(?:[0-9]{1,3}.){3}[0-9]{1,3}$");
 
   @FXML
-  public Label scoreLabel;
-  @FXML
-  public Label timeLabel;
-  @FXML
-  public Label linesLabel;
-  @FXML
-  public Label levelLabel;
-  @FXML
-  public Label goalLabel;
-  @FXML
-  public VBox boardVBox;
-  @FXML
-  public ImageView holdTetromino;
-  @FXML
-  public ImageView nextTetrominos;
-  @FXML
-  public AnchorPane anchorPanePlayer;
+  public TextField ip;
 
-  public PlayerTetrisFXML(Stage stage) {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource(
-        "/fxml/TetrisBoard.fxml"));
+  @FXML
+  public TextField username;
+
+  @FXML
+  public TextField port;
+
+  public Connexion(Controller controller, Stage stage) {
+    this.controller = controller;
+    this.stage = stage;
+    FXMLLoader loader = new FXMLLoader(
+        getClass().getResource("/fxml/Connexion.fxml"));
     loader.setController(this);
     try {
       stage.setScene(new Scene(loader.load()));
@@ -71,9 +67,29 @@ public class PlayerTetrisFXML implements Initializable {
     }
   }
 
-  @Override
-  public void initialize(URL url, ResourceBundle resourceBundle) {
-    // A VOIR COMMENT ON VA FAIRE.
+  public void connexionPressed() {
+    try {
+      Matcher m = regex.matcher(this.ip.getText());
+      if (m.matches()) {
+        this.controller.connexion(ip.getText(), Integer.parseInt(port.getText()),
+            username.getText());
+      } else {
+        throw new IllegalArgumentException();
+      }
+    } catch (Exception e) {
+      Alert alert = new Alert(AlertType.ERROR);
+      alert.setContentText("Les informations entrées sont incorrects.");
+      alert.setHeaderText("Information Erroné");
+      alert.show();
+    }
   }
 
+  public void leavePressed() {
+    this.stage.close();
+  }
+
+  @Override
+  public void initialize(URL url, ResourceBundle resourceBundle) {
+
+  }
 }

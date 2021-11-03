@@ -24,7 +24,9 @@
 
 package esi.acgt.atlj.client.view;
 
+import esi.acgt.atlj.client.controller.Controller;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -34,19 +36,18 @@ public class BothPlayerView {
   private PlayerTetrisFXML player1;
   private PlayerTetrisFXML player2;
 
-  public BothPlayerView(Stage stage) {
-    this.player1 = new PlayerTetrisFXML(null, stage);
-    this.player2 = new PlayerTetrisFXML(null, stage);
+  public BothPlayerView(Controller controller, Stage stage) {
+    this.player1 = new PlayerTetrisFXML(stage);
+    this.player2 = new PlayerTetrisFXML(stage);
     this.scene = new HBox();
     this.scene.setSpacing(3);
     this.scene.setStyle("-fx-background-color: black");
     this.scene.getChildren().add(player1.anchorPanePlayer);
     this.scene.getChildren().add(player2.anchorPanePlayer);
     stage.setScene(new Scene(this.scene));
-  }
 
-  public void update(Object o) {
-    this.player1.update(o);
-    this.player2.update(o);
+    stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, (key) -> {
+      controller.keyBoardInput(key.getCode());
+    });
   }
 }

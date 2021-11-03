@@ -1,12 +1,16 @@
 package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
-import esi.acgt.atlj.client.utils.Observer;
-import javafx.stage.Stage;
 
-public interface ViewInterface extends Observer {
+public interface ViewInterface {
 
-  void show();
+  public void show();
 
-  void setAction(Controller controller);
+  public void setController(Controller controller);
+
+  public void displayError(Exception e);
+
+  public void displayConnexion();
+
+  public void displayBoard();
 }

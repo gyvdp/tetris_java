@@ -23,12 +23,45 @@ public class Controller {
   }
 
   public void start() {
-    view.setAction(this);
+    view.setController(this);
+    view.displayConnexion();
     view.show();
   }
 
   public void keyBoardInput(KeyCode input) {
-    System.out.print("Action : " + input.toString() + ", ");
-    //this.model.action(input);
+    switch (input) {
+      case LEFT:
+        this.model.moveLeft();
+        break;
+      case RIGHT:
+        this.model.moveRight();
+        break;
+      case DOWN:
+        this.model.softDrop();
+        break;
+      case UP:
+        this.model.rotateClockwise();
+        break;
+      case SHIFT:
+        this.model.hold();
+        break;
+      case SPACE:
+        this.model.hardDrop();
+        break;
+      case CONTROL:
+        this.model.rotateCounterClockwise();
+        break;
+    }
+  }
+
+  public void connexion(String ip, int port, String username) {
+    System.out.println("Connect to : " + ip + " , port : " + port + ".");
+    System.out.println("Register : " + username);
+    try {
+      // Bla bla bla test connection
+      this.view.displayBoard();
+    } catch (Exception e) {
+      this.view.displayError(e);
+    }
   }
 }

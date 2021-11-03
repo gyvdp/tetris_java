@@ -1,20 +1,31 @@
 package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class View implements ViewInterface {
 
   private final Stage primaryStage;
-  private BothPlayerView scene;
+  private Controller controller;
 
   public View(Stage stage) {
     this.primaryStage = stage;
     this.primaryStage.setTitle("Tetris");
-    this.scene = new BothPlayerView(stage);
   }
 
+  @Override
+  public void displayConnexion() {
+    Connexion connexion = new Connexion(this.controller, this.primaryStage);
+    this.primaryStage.centerOnScreen();
+  }
+
+  @Override
+  public void displayBoard() {
+    BothPlayerView bothPlayerView = new BothPlayerView(this.controller, this.primaryStage);
+    this.primaryStage.centerOnScreen();
+  }
 
   @Override
   public void show() {
@@ -23,14 +34,16 @@ public class View implements ViewInterface {
   }
 
   @Override
-  public void setAction(Controller controller) {
-    this.primaryStage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, (key) -> {
-      controller.keyBoardInput(key.getCode());
-    });
+  public void setController(Controller controller) {
+    this.controller = controller;
   }
 
   @Override
-  public void update(Object o) {
-    this.scene.update(o);
+  public void displayError(Exception e) {
+    Alert alert = new Alert(AlertType.ERROR);
+    alert.setHeaderText("Erreur");
+    alert.setContentText(e.getMessage());
+    alert.show();
   }
+
 }
