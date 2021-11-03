@@ -1,9 +1,8 @@
 package esi.acgt.atlj.client.controller;
 
-import esi.acgt.atlj.client.view.View;
 import esi.acgt.atlj.client.view.ViewInterface;
-import esi.acgt.atlj.model.Model;
 import esi.acgt.atlj.model.ModelInterface;
+import javafx.scene.input.KeyCode;
 
 public class Controller {
 
@@ -24,6 +23,12 @@ public class Controller {
   }
 
   public void start() {
+    view.setAction(this);
     view.show();
+  }
+
+  public void keyBoardInput(KeyCode input) {
+    System.out.print("Action : " + input.toString() + ", ");
+    //this.model.action(input);
   }
 }
