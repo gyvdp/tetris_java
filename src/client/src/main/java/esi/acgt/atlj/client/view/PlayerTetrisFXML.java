@@ -24,9 +24,9 @@
 
 package esi.acgt.atlj.client.view;
 
-import esi.acgt.atlj.client.controller.Controller;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,10 +34,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
@@ -62,7 +62,26 @@ public class PlayerTetrisFXML implements Initializable {
   @FXML
   public AnchorPane anchorPanePlayer;
 
+  private final Image whiteCube;
+  private final Image greenCube;
+  private final Image lightBlueCube;
+  private final Image darkBlueCube;
+  private final Image orangeCube;
+  private final Image purpleCube;
+  private final Image redCube;
+  private final Image yellowCube;
+
+
   public PlayerTetrisFXML(Stage stage) {
+    this.whiteCube = new Image(getClass().getResourceAsStream("/image/WhiteCube.png"));
+    this.greenCube = new Image(getClass().getResourceAsStream("/image/GreenCube.png"));
+    this.lightBlueCube = new Image(getClass().getResourceAsStream("/image/LightBlueCube.png"));
+    this.darkBlueCube = new Image(getClass().getResourceAsStream("/image/DarkBlueCube.png"));
+    this.orangeCube = new Image(getClass().getResourceAsStream("/image/OrangeCube.png"));
+    this.purpleCube = new Image(getClass().getResourceAsStream("/image/PurpleCube.png"));
+    this.redCube = new Image(getClass().getResourceAsStream("/image/RedCube.png"));
+    this.yellowCube = new Image(getClass().getResourceAsStream("/image/YellowCube.png"));
+
     FXMLLoader loader = new FXMLLoader(getClass().getResource(
         "/fxml/TetrisBoard.fxml"));
     loader.setController(this);
@@ -75,16 +94,15 @@ public class PlayerTetrisFXML implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    // A VOIR COMMENT ON VA FAIRE.
     int[][] board = new int[10][20];
     for (int i = 0; i < boardPane.getColumnCount(); i++) {
       for (int j = 0; j < boardPane.getRowCount(); j++) {
         board[i][j] = (int) (Math.random() * 8);
-        //ImageView imageView = new ImageView();
-        //imageView.setFitHeight(50);
-        //imageView.setFitWidth(50);
-        Label label = new Label();
-        this.boardPane.add(label, i, j);
+        ImageView imageView = new ImageView();
+        imageView.setFitHeight(50);
+        imageView.setFitWidth(50);
+        this.boardPane.add(imageView, i, j);
+        imageView.setStyle("-fx-border-color:#424242; -fx-border-width:1px;");
       }
     }
     updateBoard(board);
@@ -94,32 +112,31 @@ public class PlayerTetrisFXML implements Initializable {
     int i = 0;
     var list = this.boardPane.getChildren();
     for (Node node : list) {
-      ((Label) node).setText(
+      ((ImageView) node).setImage(
           cubeColor(board[i / this.boardPane.getRowCount()][i % this.boardPane.getColumnCount()]));
       i++;
     }
-    //imageView.setImage("...");
   }
 
 
-  private String cubeColor(int color) {
+  private Image cubeColor(int color) {
     switch (color) {
       case 0:
-        return "white";
+        return this.whiteCube;
       case 1:
-        return "blue";
+        return this.greenCube;
       case 2:
-        return "green";
+        return this.purpleCube;
       case 3:
-        return "yellow";
+        return this.lightBlueCube;
       case 4:
-        return "red";
+        return this.darkBlueCube;
       case 5:
-        return "darkblue";
+        return this.orangeCube;
       case 6:
-        return "purple";
+        return this.redCube;
       case 7:
-        return "orange";
+        return this.yellowCube;
       default:
         throw new IllegalArgumentException("Color doesn't exists");
     }
