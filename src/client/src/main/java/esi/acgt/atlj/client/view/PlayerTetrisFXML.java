@@ -114,7 +114,7 @@ public class PlayerTetrisFXML implements Initializable {
       if (node instanceof ImageView) {
         ((ImageView) node).setImage(
             cubeColor(
-                board[i / this.boardPane.getRowCount()][i % this.boardPane.getColumnCount()]));
+                board[i / this.boardPane.getRowCount()][i % this.boardPane.getRowCount()]));
         i++;
       }
     }
