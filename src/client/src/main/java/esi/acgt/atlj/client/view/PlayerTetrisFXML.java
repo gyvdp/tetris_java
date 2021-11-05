@@ -99,10 +99,9 @@ public class PlayerTetrisFXML implements Initializable {
       for (int j = 0; j < boardPane.getRowCount(); j++) {
         board[i][j] = (int) (Math.random() * 8);
         ImageView imageView = new ImageView();
-        imageView.setFitHeight(50);
-        imageView.setFitWidth(50);
+        imageView.setFitHeight(46);
+        imageView.setFitWidth(46);
         this.boardPane.add(imageView, i, j);
-        imageView.setStyle("-fx-border-color:#424242; -fx-border-width:1px;");
       }
     }
     updateBoard(board);
@@ -112,9 +111,12 @@ public class PlayerTetrisFXML implements Initializable {
     int i = 0;
     var list = this.boardPane.getChildren();
     for (Node node : list) {
-      ((ImageView) node).setImage(
-          cubeColor(board[i / this.boardPane.getRowCount()][i % this.boardPane.getColumnCount()]));
-      i++;
+      if (node instanceof ImageView) {
+        ((ImageView) node).setImage(
+            cubeColor(
+                board[i / this.boardPane.getRowCount()][i % this.boardPane.getColumnCount()]));
+        i++;
+      }
     }
   }
 

@@ -24,7 +24,8 @@ public class Controller {
 
   public void start() {
     view.setController(this);
-    view.displayConnexion();
+    this.view.displayBoard();
+    //view.displayConnexion();
     view.show();
   }
 
