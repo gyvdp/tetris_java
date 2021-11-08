@@ -26,7 +26,6 @@ package esi.acgt.atlj.client.view;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,7 +35,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -60,7 +58,7 @@ public class PlayerTetrisFXML implements Initializable {
   @FXML
   public ImageView nextTetrominos;
   @FXML
-  public AnchorPane anchorPanePlayer;
+  public GridPane main;
 
   private final Image whiteCube;
   private final Image greenCube;
@@ -70,6 +68,14 @@ public class PlayerTetrisFXML implements Initializable {
   private final Image purpleCube;
   private final Image redCube;
   private final Image yellowCube;
+
+  private final Image tetro_J;
+  private final Image tetro_S;
+  private final Image tetro_O;
+  private final Image tetro_Z;
+  private final Image tetro_L;
+  private final Image tetro_I;
+  private final Image tetro_T;
 
 
   public PlayerTetrisFXML(Stage stage) {
@@ -81,6 +87,14 @@ public class PlayerTetrisFXML implements Initializable {
     this.purpleCube = new Image(getClass().getResourceAsStream("/image/PurpleCube.png"));
     this.redCube = new Image(getClass().getResourceAsStream("/image/RedCube.png"));
     this.yellowCube = new Image(getClass().getResourceAsStream("/image/YellowCube.png"));
+
+    this.tetro_I = new Image(getClass().getResourceAsStream("/image/I.png"));
+    this.tetro_S = new Image(getClass().getResourceAsStream("/image/S.png"));
+    this.tetro_T = new Image(getClass().getResourceAsStream("/image/T.png"));
+    this.tetro_O = new Image(getClass().getResourceAsStream("/image/O.png"));
+    this.tetro_Z = new Image(getClass().getResourceAsStream("/image/Z.png"));
+    this.tetro_J = new Image(getClass().getResourceAsStream("/image/J.png"));
+    this.tetro_L = new Image(getClass().getResourceAsStream("/image/L.png"));
 
     FXMLLoader loader = new FXMLLoader(getClass().getResource(
         "/fxml/TetrisBoard.fxml"));
@@ -105,6 +119,8 @@ public class PlayerTetrisFXML implements Initializable {
       }
     }
     updateBoard(board);
+//    updateHold(Tetromino.T);
+//    updateNextPiece(Tetromino.L);
   }
 
   private void updateBoard(int[][] board) {
@@ -120,6 +136,34 @@ public class PlayerTetrisFXML implements Initializable {
     }
   }
 
+//  public void updateHold(Tetromino hold) {
+//    this.holdTetromino.setImage(getTetrominoImage(hold));
+//  }
+//
+//  public void updateNextPiece(Tetromino tetromino) {
+//    this.nextTetrominos.setImage(this.getTetrominoImage(tetromino));
+//  }
+//
+//  private Image getTetrominoImage(Tetromino tetromino) {
+//    switch (tetromino) {
+//      case I:
+//        return this.tetro_I;
+//      case J:
+//        return this.tetro_J;
+//      case L:
+//        return this.tetro_L;
+//      case O:
+//        return this.tetro_O;
+//      case S:
+//        return this.tetro_S;
+//      case T:
+//        return this.tetro_T;
+//      case Z:
+//        return this.tetro_Z;
+//      default:
+//        throw new IllegalArgumentException("Tetro doesn't exists.");
+//    }
+//  }
 
   private Image cubeColor(int color) {
     switch (color) {

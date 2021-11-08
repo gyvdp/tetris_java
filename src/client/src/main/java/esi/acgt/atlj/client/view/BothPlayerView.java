@@ -42,8 +42,8 @@ public class BothPlayerView {
     this.scene = new HBox();
     this.scene.setSpacing(3);
     this.scene.setStyle("-fx-background-color: black");
-    this.scene.getChildren().add(player1.anchorPanePlayer);
-    this.scene.getChildren().add(player2.anchorPanePlayer);
+    this.scene.getChildren().add(player1.main);
+    this.scene.getChildren().add(player2.main);
     stage.setScene(new Scene(this.scene));
 
     stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, (key) -> {
