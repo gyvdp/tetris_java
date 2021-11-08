@@ -2,17 +2,19 @@ package esi.acgt.atlj.model;
 
 public interface ModelInterface {
 
-  void moveLeft();
+  /**
+   * Get the usernames of the players
+   *
+   * @return array of usernames
+   */
+  String[] getUsernames();
 
-  void moveRight();
+  /**
+   * Get the board of a particular player
+   *
+   * @param username username of the player to get the board from
+   * @return the board of the asked player
+   */
+  BoardInterface getBoard(String username);
 
-  void softDrop();
-
-  void rotateClockwise();
-
-  void hold();
-
-  void hardDrop();
-
-  void rotateCounterClockwise();
 }
