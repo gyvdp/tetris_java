@@ -40,14 +40,34 @@ public class BothPlayerView {
     this.player1 = new PlayerTetrisFXML(stage);
     this.player2 = new PlayerTetrisFXML(stage);
     this.scene = new HBox();
-    this.scene.setSpacing(3);
+
+    this.scene.setSpacing(5);
     this.scene.setStyle("-fx-background-color: black");
-    this.scene.getChildren().add(player1.main);
-    this.scene.getChildren().add(player2.main);
+
+    this.scene.getChildren().add(player1.scene);
+    this.scene.getChildren().add(player2.scene);
+
     stage.setScene(new Scene(this.scene));
+    stage.setMinHeight(700);
+    stage.setMinWidth(1150);
+    stage.setHeight(700);
+    stage.setWidth(1150);
+
+    this.doBindings(stage);
 
     stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, (key) -> {
       controller.keyBoardInput(key.getCode());
     });
+  }
+
+  private void doBindings(Stage stage) {
+    this.player1.scene.prefWidthProperty().bind(this.scene.widthProperty());
+    this.player1.scene.prefHeightProperty().bind(this.scene.heightProperty());
+
+    this.player2.scene.prefWidthProperty().bind(this.scene.widthProperty());
+    this.player2.scene.prefHeightProperty().bind(this.scene.heightProperty());
+
+    this.scene.prefHeightProperty().bind(stage.heightProperty());
+    this.scene.prefWidthProperty().bind(stage.widthProperty());
   }
 }

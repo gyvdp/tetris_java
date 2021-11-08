@@ -24,9 +24,13 @@
 
 package esi.acgt.atlj.client.view;
 
+import static javafx.scene.input.KeyEvent.KEY_PRESSED;
+
 import java.io.IOException;
 import java.net.URL;
+import java.util.EventListener;
 import java.util.ResourceBundle;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -35,12 +39,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 
 public class PlayerTetrisFXML implements Initializable {
 
+  // Texts
   @FXML
   public Label scoreLabel;
   @FXML
@@ -51,14 +60,30 @@ public class PlayerTetrisFXML implements Initializable {
   public Label levelLabel;
   @FXML
   public Label goalLabel;
+
+  // Hold
   @FXML
-  public GridPane boardPane;
+  public Circle circleHold;
   @FXML
   public ImageView holdTetromino;
   @FXML
-  public ImageView nextTetrominos;
+  public StackPane stackPaneHold;
+
+  // Next
   @FXML
-  public GridPane main;
+  public ImageView nextTetromino;
+  @FXML
+  public Circle circleNext;
+  @FXML
+  public StackPane stackPaneNext;
+
+  //Board
+  @FXML
+  public GridPane boardPane;
+
+  // Scene
+  @FXML
+  public GridPane scene;
 
   private final Image whiteCube;
   private final Image greenCube;
@@ -79,6 +104,7 @@ public class PlayerTetrisFXML implements Initializable {
 
 
   public PlayerTetrisFXML(Stage stage) {
+    //Load all Images
     this.whiteCube = new Image(getClass().getResourceAsStream("/image/WhiteCube.png"));
     this.greenCube = new Image(getClass().getResourceAsStream("/image/GreenCube.png"));
     this.lightBlueCube = new Image(getClass().getResourceAsStream("/image/LightBlueCube.png"));
@@ -96,6 +122,7 @@ public class PlayerTetrisFXML implements Initializable {
     this.tetro_J = new Image(getClass().getResourceAsStream("/image/J.png"));
     this.tetro_L = new Image(getClass().getResourceAsStream("/image/L.png"));
 
+    // FXML loading
     FXMLLoader loader = new FXMLLoader(getClass().getResource(
         "/fxml/TetrisBoard.fxml"));
     loader.setController(this);
@@ -108,16 +135,22 @@ public class PlayerTetrisFXML implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
+    doBindings();
     int[][] board = new int[10][20];
     for (int i = 0; i < boardPane.getColumnCount(); i++) {
       for (int j = 0; j < boardPane.getRowCount(); j++) {
         board[i][j] = (int) (Math.random() * 8);
         ImageView imageView = new ImageView();
-        imageView.setFitHeight(46);
-        imageView.setFitWidth(46);
+        imageView.setPreserveRatio(true);
+
+        imageView.fitWidthProperty()
+            .bind(this.boardPane.widthProperty().divide(11.5));
+        imageView.fitHeightProperty()
+            .bind(this.boardPane.heightProperty().divide(21.5));
         this.boardPane.add(imageView, i, j);
       }
     }
+
     updateBoard(board);
 //    updateHold(Tetromino.T);
 //    updateNextPiece(Tetromino.L);
@@ -141,7 +174,7 @@ public class PlayerTetrisFXML implements Initializable {
 //  }
 //
 //  public void updateNextPiece(Tetromino tetromino) {
-//    this.nextTetrominos.setImage(this.getTetrominoImage(tetromino));
+//    this.nextTetromino.setImage(this.getTetrominoImage(tetromino));
 //  }
 //
 //  private Image getTetrominoImage(Tetromino tetromino) {
@@ -188,4 +221,30 @@ public class PlayerTetrisFXML implements Initializable {
     }
   }
 
+  private void doBindings() {
+    // Bindings circles
+    this.circleHold.centerXProperty().bind(this.stackPaneHold.widthProperty().divide(2));
+    this.circleHold.centerYProperty().bind(this.stackPaneHold.heightProperty().divide(2));
+    this.circleHold.radiusProperty().bind(
+        Bindings.min(this.stackPaneHold.widthProperty(), this.stackPaneHold.heightProperty())
+            .divide(2));
+
+    this.circleNext.centerXProperty().bind(this.stackPaneNext.widthProperty().divide(2));
+    this.circleNext.centerYProperty().bind(this.stackPaneNext.heightProperty().divide(2));
+    this.circleNext.radiusProperty().bind(
+        Bindings.min(this.stackPaneNext.widthProperty(), this.stackPaneNext.heightProperty())
+            .divide(2));
+
+    // Bindings hold
+    this.holdTetromino.fitWidthProperty().bind(this.stackPaneHold.widthProperty().divide(1.3));
+    this.holdTetromino.fitHeightProperty().bind(this.stackPaneHold.heightProperty().divide(1.3));
+
+    // Binding next
+    this.nextTetromino.fitWidthProperty().bind(this.stackPaneNext.widthProperty().divide(1.3));
+    this.nextTetromino.fitHeightProperty().bind(this.stackPaneNext.heightProperty().divide(1.3));
+
+    // Board
+    this.boardPane.prefHeightProperty().bind(this.scene.heightProperty());
+    this.boardPane.prefWidthProperty().bind(this.scene.widthProperty());
+  }
 }

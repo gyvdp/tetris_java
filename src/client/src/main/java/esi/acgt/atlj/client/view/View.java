@@ -19,17 +19,18 @@ public class View implements ViewInterface {
   public void displayConnexion() {
     Connexion connexion = new Connexion(this.controller, this.primaryStage);
     this.primaryStage.centerOnScreen();
+    this.primaryStage.setResizable(false);
   }
 
   @Override
   public void displayBoard() {
+    this.primaryStage.setResizable(true);
     BothPlayerView bothPlayerView = new BothPlayerView(this.controller, this.primaryStage);
     this.primaryStage.centerOnScreen();
   }
 
   @Override
   public void show() {
-    this.primaryStage.setResizable(false);
     this.primaryStage.show();
   }
 
