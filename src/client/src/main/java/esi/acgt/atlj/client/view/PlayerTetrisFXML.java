@@ -125,10 +125,15 @@ public class PlayerTetrisFXML implements Initializable {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    // Bindings of this.scene 
+    this.scene.prefWidthProperty().bind(stage.getScene().widthProperty());
+    this.scene.prefHeightProperty().bind(stage.getScene().heightProperty());
   }
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
+    doBindings();
     for (int i = 0; i < boardPane.getColumnCount(); i++) {
       for (int j = 0; j < boardPane.getRowCount(); j++) {
         ImageView imageView = new ImageView();
@@ -140,11 +145,7 @@ public class PlayerTetrisFXML implements Initializable {
         imageView.setImage(this.image_NOMino);
         this.boardPane.add(imageView, i, j);
       }
-      doBindings();
     }
-
-//    updateHold(Tetromino.T);
-//    updateNextPiece(Tetromino.L);
   }
 
   public void updateBoard(Mino[][] board) {

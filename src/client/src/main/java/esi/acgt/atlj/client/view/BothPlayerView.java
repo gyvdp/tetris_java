@@ -61,12 +61,6 @@ public class BothPlayerView {
   }
 
   private void doBindings(Stage stage) {
-    this.player1.scene.prefWidthProperty().bind(this.scene.widthProperty());
-    this.player1.scene.prefHeightProperty().bind(this.scene.heightProperty());
-
-    this.player2.scene.prefWidthProperty().bind(this.scene.widthProperty());
-    this.player2.scene.prefHeightProperty().bind(this.scene.heightProperty());
-
     this.scene.prefHeightProperty().bind(stage.heightProperty());
     this.scene.prefWidthProperty().bind(stage.widthProperty());
   }
