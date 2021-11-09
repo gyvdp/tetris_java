@@ -1,6 +1,8 @@
 package esi.acgt.atlj.model;
 
 import esi.acgt.atlj.model.board.BoardInterface;
+import esi.acgt.atlj.model.board.ManagedBoard;
+import java.beans.PropertyChangeListener;
 
 public interface ModelInterface {
 
@@ -27,4 +29,9 @@ public interface ModelInterface {
    */
   BoardInterface getUnmanagedBoard(String username);
 
+  public void addPropertyChangeListener(PropertyChangeListener listener);
+
+  public void setPlayer1(String name);
+
+  public void removePropertyChangeListener(PropertyChangeListener listener);
 }

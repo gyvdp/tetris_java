@@ -25,7 +25,10 @@
 package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
+import esi.acgt.atlj.model.tetrimino.Mino;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -64,4 +67,49 @@ public class BothPlayerView {
     this.scene.prefHeightProperty().bind(stage.heightProperty());
     this.scene.prefWidthProperty().bind(stage.widthProperty());
   }
+
+  public void updateBoard(Mino[][] board, int playerID) {
+
+    if(playerID ==0){
+      this.player1.updateBoard(board);
+    }else{
+      this.player2.updateBoard(board);
+    }
+  }
+
+  public void updateScore(int newScore, int playerID) {
+
+    if(playerID ==0){
+      this.player1.updateScore(newScore);
+    }else{
+      this.player2.updateScore(newScore);
+    }
+  }
+
+  public void updateUsername(String newUsername, int playerID) {
+
+    if(playerID ==0){
+      this.player1.updateUsername(newUsername);
+    }else{
+      this.player2.updateUsername(newUsername);
+    }
+  }
+
+  public void updateTimer(int timer, int playerID) {
+
+    if(playerID ==0){
+      this.player1.updateTimer(timer);
+    }else{
+      this.player2.updateTimer(timer);
+    }
+  }
+
+  public void updateLine(int line, int playerID) {
+    if(playerID ==0){
+      this.player1.updateLine(line);
+    }else{
+      this.player2.updateLine(line);
+    }
+  }
+
 }

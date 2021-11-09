@@ -2,6 +2,8 @@ package esi.acgt.atlj.client.controller;
 
 import esi.acgt.atlj.client.view.ViewInterface;
 import esi.acgt.atlj.model.ModelInterface;
+import java.beans.PropertyChangeListener;
+import java.util.Objects;
 import javafx.scene.input.KeyCode;
 
 public class Controller {
@@ -11,16 +13,22 @@ public class Controller {
   private final ViewInterface view;
 
   public Controller(ModelInterface model, ViewInterface view) {
-    if (model == null) {
-      throw new IllegalArgumentException("model can not be null");
+
+    Objects.requireNonNull(model, "model can not be null");
+    Objects.requireNonNull(view, "view can not be null");
+
+/*    if (model == null) {
+      throw new IllegalArgumentException();
     }
 
     if (view == null) {
       throw new IllegalArgumentException("view can not be null");
     }
+*/
 
     this.model = model;
     this.view = view;
+    this.model.addPropertyChangeListener(this.view);
   }
 
   public void start() {
@@ -57,7 +65,7 @@ public class Controller {
 
   public void connexion(String ip, int port, String username) {
     System.out.println("Connect to : " + ip + " , port : " + port + ".");
-    System.out.println("Register : " + username);
+    this.model.setPlayer1(username);
     try {
       // Bla bla bla test connection
       this.view.displayBoard();

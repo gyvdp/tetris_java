@@ -26,6 +26,7 @@ package esi.acgt.atlj.model.board;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+import java.beans.PropertyChangeListener;
 
 public interface BoardInterface {
 
@@ -91,4 +92,9 @@ public interface BoardInterface {
    * @return the next tetrimino
    */
   TetriminoInterface getNextTetrimino();
+
+  public void addPropertyChangeListener(PropertyChangeListener listener);
+
+  public void removePropertyChangeListener(PropertyChangeListener listener);
+
 }

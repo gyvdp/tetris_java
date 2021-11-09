@@ -26,15 +26,26 @@ package esi.acgt.atlj.model.board;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 
-public abstract class Board implements BoardInterface {
+public abstract class Board implements BoardInterface, Serializable {
 
   protected Mino[][] minos;
   protected int score;
   protected String username;
+  protected int nbLine;
   protected TetriminoInterface hold;
   protected TetriminoInterface actualTetrimino;
   protected TetriminoInterface nextTetrimino;
+  protected PropertyChangeSupport changeSupport;
+
+  public Board(){
+    this.score = 0;
+    this.nbLine = 0;
+    this.changeSupport = new PropertyChangeSupport(this);
+  }
 
   @Override
   public void initTetrisBoard() {
@@ -75,4 +86,19 @@ public abstract class Board implements BoardInterface {
   public Mino[][] getBoard() {
     return minos;
   }
+
+  public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
+    changeSupport.addPropertyChangeListener(listener);
+  }
+
+  public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
+    changeSupport.removePropertyChangeListener(listener);
+  }
+
+  public abstract void setScore(int score);
+
+  public abstract void setUsername(String username);
+
+  public abstract void setNbLine(int nbLine);
+
 }

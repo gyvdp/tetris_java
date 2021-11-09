@@ -47,4 +47,20 @@ public class UnmanagedBoard extends Board {
   public void setNextTetrimino(TetriminoInterface tetrimino) {
     // TODO
   }
+
+  public void setScore(int score) {
+    this.score = score;
+    this.changeSupport.firePropertyChange("player2Name",this.score,this.score);
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+    this.changeSupport.firePropertyChange("player2Name",this.username,this.username);
+  }
+
+  public void setNbLine(int nbLine) {
+    this.nbLine = nbLine;
+    this.changeSupport.firePropertyChange("player2NbLine",this.nbLine,this.nbLine);
+  }
+
 }

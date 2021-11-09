@@ -21,53 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package esi.acgt.atlj.model;
 
-package esi.acgt.atlj.model.board;
-
-import java.util.Timer;
-
-public class ManagedBoard extends Board {
-
-  private Timer timer;
-
-  public ManagedBoard() {
-    //TODO
-  }
-
-  public void moveLeft() {
-    //TODO
-  }
-
-  public void moveRight() {
-    // TODO
-  }
-
-  public void softDrop() {
-    // TODO
-  }
-
-  public void hardDrop() {
-    // TODO
-  }
-
-  public void rotate(boolean clockwise, boolean[][] areaAround) {
-    actualTetrimino.rotate(clockwise, this.getSurroundingArea(0,0));
-  }
-
-  public void setScore(int score) {
-    this.score = score;
-    this.changeSupport.firePropertyChange("player1Name",this.score,this.score);
-  }
-
-  public void setUsername(String username) {
-    String oldValue = this.username;
-    this.username = username;
-    this.changeSupport.firePropertyChange("player1Name", oldValue, this.username);
-  }
-
-  public void setNbLine(int nbLine) {
-    this.nbLine = nbLine;
-    this.changeSupport.firePropertyChange("player1NbLine",this.nbLine,this.nbLine);
-  }
-
+public enum GameStatus {
+  STARTED,
+  FINISHED
 }
