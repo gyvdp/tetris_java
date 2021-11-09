@@ -31,25 +31,25 @@ public class Controller {
   public void keyBoardInput(KeyCode input) {
     switch (input) {
       case LEFT:
-        this.model.moveLeft();
+        //this.model.moveLeft();
         break;
       case RIGHT:
-        this.model.moveRight();
+        //this.model.moveRight();
         break;
       case DOWN:
-        this.model.softDrop();
+        //this.model.softDrop();
         break;
       case UP:
-        this.model.rotateClockwise();
+        //this.model.rotateClockwise();
         break;
       case SHIFT:
-        this.model.hold();
+        //this.model.hold();
         break;
       case SPACE:
-        this.model.hardDrop();
+        //this.model.hardDrop();
         break;
       case CONTROL:
-        this.model.rotateCounterClockwise();
+        //this.model.rotateCounterClockwise();
         break;
     }
   }
