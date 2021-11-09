@@ -259,7 +259,9 @@ public class PlayerTetrisFXML implements Initializable {
     this.nextTetromino.fitHeightProperty().bind(this.stackPaneNext.heightProperty().divide(1.3));
 
     // Board
-    this.boardPane.prefHeightProperty().bind(this.scene.heightProperty());
-    this.boardPane.prefWidthProperty().bind(this.scene.widthProperty());
+    this.boardPane.prefHeightProperty()
+        .bind(Bindings.min(this.scene.heightProperty(), this.scene.widthProperty()));
+    this.boardPane.prefWidthProperty()
+        .bind(Bindings.min(this.scene.widthProperty(), this.scene.heightProperty()));
   }
 }
