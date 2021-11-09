@@ -21,63 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package esi.acgt.atlj.model.player;
 
-package esi.acgt.atlj.model.board;
+public abstract class Player {
 
-import esi.acgt.atlj.model.tetrimino.Mino;
-import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
-
-public interface BoardInterface {
-
-  /**
-   * The width of the board
-   */
-  int WIDTH = 10;
+  private final String name;
+  private int level;
+  private int nbLine;
+  private int score;
 
   /**
-   * The height of the board
-   */
-  int HEIGHT = 22;
-
-  /**
-   * Get the matrix of the board (including falling piece)
+   * Instantiates a new Player.
    *
-   * @return the matrix of minos
+   * @param name the name
    */
-  Mino[][] getBoard();
+  public Player(String name) {
+    this.name = name;
+    this.score = 0;
+    this.nbLine = 0;
+  }
 
-  /**
-   * Get the actual score of the Player
-   *
-   * @return the score
-   */
-  int getScore();
 
-  /**
-   * Get the username of the Player
-   *
-   * @return the username of the Player
-   */
-  String getUsername();
-
-  /**
-   * Get the held piece
-   *
-   * @return the held piece or null if there is no piece
-   */
-  TetriminoInterface getHold();
-
-  /**
-   * Get the actual falling tetrimino
-   *
-   * @return the falling tetrimino
-   */
-  TetriminoInterface getActualTetrimino();
-
-  /**
-   * Get the next tetrimino of the Player
-   *
-   * @return the next tetrimino
-   */
-  TetriminoInterface getNextTetrimino();
 }

@@ -22,62 +22,21 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.board;
+package esi.acgt.atlj.model.player;
 
-import esi.acgt.atlj.model.tetrimino.Mino;
-import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+import esi.acgt.atlj.model.board.ManagedBoard;
 
-public interface BoardInterface {
+public class ManageablePlayer extends Player{
 
-  /**
-   * The width of the board
-   */
-  int WIDTH = 10;
+  private ManagedBoard board;
 
   /**
-   * The height of the board
-   */
-  int HEIGHT = 22;
-
-  /**
-   * Get the matrix of the board (including falling piece)
+   * Instantiates a new Player.
    *
-   * @return the matrix of minos
+   * @param name the name
    */
-  Mino[][] getBoard();
-
-  /**
-   * Get the actual score of the Player
-   *
-   * @return the score
-   */
-  int getScore();
-
-  /**
-   * Get the username of the Player
-   *
-   * @return the username of the Player
-   */
-  String getUsername();
-
-  /**
-   * Get the held piece
-   *
-   * @return the held piece or null if there is no piece
-   */
-  TetriminoInterface getHold();
-
-  /**
-   * Get the actual falling tetrimino
-   *
-   * @return the falling tetrimino
-   */
-  TetriminoInterface getActualTetrimino();
-
-  /**
-   * Get the next tetrimino of the Player
-   *
-   * @return the next tetrimino
-   */
-  TetriminoInterface getNextTetrimino();
+  public ManageablePlayer(String name) {
+    super(name);
+    this.board = new ManagedBoard();
+  }
 }

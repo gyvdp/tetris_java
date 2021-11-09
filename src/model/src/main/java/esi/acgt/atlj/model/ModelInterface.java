@@ -12,10 +12,10 @@ public interface ModelInterface {
   String[] getUsernames();
 
   /**
-   * Get the board of a particular player
+   * Get the board of a particular Player
    *
-   * @param username username of the player to get the board from
-   * @return the board of the asked player
+   * @param username username of the Player to get the board from
+   * @return the board of the asked Player
    */
   BoardInterface getBoard(String username);
 
