@@ -39,7 +39,7 @@ public abstract class Tetrimino implements TetriminoInterface {
    * {@inheritDoc}
    */
   @Override
-  public void rotate(boolean clockwise) {
+  public void rotate(boolean clockwise, boolean[][] surroundingArea) {
     Mino k;
     int l = this.minos.length-1;
     int i,j;

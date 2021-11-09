@@ -8,7 +8,12 @@ public class Model implements ModelInterface {
   }
 
   @Override
-  public BoardInterface getBoard(String username) {
+  public BoardInterface getManagedBoard(String username) {
+    return null;
+  }
+
+  @Override
+  public BoardInterface getUnmanagedBoard(String username) {
     return null;
   }
 }

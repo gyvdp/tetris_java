@@ -28,16 +28,6 @@ import esi.acgt.atlj.model.Mino;
 
 public class LTetrimino extends Tetrimino{
 
-  public static void main(String[] args) {
-    LTetrimino lTetrimino = new LTetrimino();
-    System.out.println(lTetrimino.toString());
-    lTetrimino.rotate(true);
-    System.out.println(lTetrimino.toString());
-    lTetrimino.rotate(true);
-    System.out.println(lTetrimino.toString());
-
-  }
-
   private static final Mino[][] template = {{Mino.L_MINO,null,null,null},{Mino.L_MINO,null,null,null},{Mino.L_MINO,Mino.L_MINO,null,null},{null,null,null,null}};
 
   public LTetrimino(){

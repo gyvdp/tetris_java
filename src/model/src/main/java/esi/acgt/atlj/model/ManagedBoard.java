@@ -31,11 +31,11 @@ public class ManagedBoard extends Board {
   private Timer timer;
 
   public ManagedBoard() {
-    //TODO Constructor
+    //TODO
   }
 
   public void moveLeft() {
-    //TODO moveLeft
+    //TODO
   }
 
   public void moveRight() {
@@ -50,7 +50,7 @@ public class ManagedBoard extends Board {
     // TODO
   }
 
-  public void rotate(boolean clockwise) {
-    actualTetrimino.rotate(clockwise);
+  public void rotate(boolean clockwise, boolean[][] areaAround) {
+    actualTetrimino.rotate(clockwise, this.getSurroundingArea(0,0));
   }
 }

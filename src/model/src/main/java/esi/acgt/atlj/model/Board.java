@@ -36,6 +36,16 @@ public abstract class Board implements BoardInterface {
   protected TetriminoInterface nextTetrimino;
 
   @Override
+  public void initTetrisBoard() {
+    minos=new Mino[HEIGHT][WIDTH];
+  }
+
+  @Override
+  public boolean[][] getSurroundingArea(int x, int y) {
+    return new boolean[0][]; //todo
+  }
+
+  @Override
   public int getScore() {
     return score;
   }
