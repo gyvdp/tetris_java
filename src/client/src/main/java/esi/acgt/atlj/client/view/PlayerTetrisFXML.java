@@ -24,11 +24,9 @@
 
 package esi.acgt.atlj.client.view;
 
-import static javafx.scene.input.KeyEvent.KEY_PRESSED;
-
+import esi.acgt.atlj.model.Mino;
 import java.io.IOException;
 import java.net.URL;
-import java.util.EventListener;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -39,8 +37,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
@@ -57,9 +53,7 @@ public class PlayerTetrisFXML implements Initializable {
   @FXML
   public Label linesLabel;
   @FXML
-  public Label levelLabel;
-  @FXML
-  public Label goalLabel;
+  public Label usernameLabel;
 
   // Hold
   @FXML
@@ -85,14 +79,14 @@ public class PlayerTetrisFXML implements Initializable {
   @FXML
   public GridPane scene;
 
-  private final Image whiteCube;
-  private final Image greenCube;
-  private final Image lightBlueCube;
-  private final Image darkBlueCube;
-  private final Image orangeCube;
-  private final Image purpleCube;
-  private final Image redCube;
-  private final Image yellowCube;
+  private final Image image_NOMino;
+  private final Image image_SMino;
+  private final Image image_IMino;
+  private final Image image_JMino;
+  private final Image image_LMino;
+  private final Image image_TMino;
+  private final Image image_ZMino;
+  private final Image image_OMino;
 
   private final Image tetro_J;
   private final Image tetro_S;
@@ -105,14 +99,14 @@ public class PlayerTetrisFXML implements Initializable {
 
   public PlayerTetrisFXML(Stage stage) {
     //Load all Images
-    this.whiteCube = new Image(getClass().getResourceAsStream("/image/WhiteCube.png"));
-    this.greenCube = new Image(getClass().getResourceAsStream("/image/GreenCube.png"));
-    this.lightBlueCube = new Image(getClass().getResourceAsStream("/image/LightBlueCube.png"));
-    this.darkBlueCube = new Image(getClass().getResourceAsStream("/image/DarkBlueCube.png"));
-    this.orangeCube = new Image(getClass().getResourceAsStream("/image/OrangeCube.png"));
-    this.purpleCube = new Image(getClass().getResourceAsStream("/image/PurpleCube.png"));
-    this.redCube = new Image(getClass().getResourceAsStream("/image/RedCube.png"));
-    this.yellowCube = new Image(getClass().getResourceAsStream("/image/YellowCube.png"));
+    this.image_NOMino = new Image(getClass().getResourceAsStream("/image/WhiteCube.png"));
+    this.image_SMino = new Image(getClass().getResourceAsStream("/image/GreenCube.png"));
+    this.image_IMino = new Image(getClass().getResourceAsStream("/image/LightBlueCube.png"));
+    this.image_JMino = new Image(getClass().getResourceAsStream("/image/DarkBlueCube.png"));
+    this.image_LMino = new Image(getClass().getResourceAsStream("/image/OrangeCube.png"));
+    this.image_TMino = new Image(getClass().getResourceAsStream("/image/PurpleCube.png"));
+    this.image_ZMino = new Image(getClass().getResourceAsStream("/image/RedCube.png"));
+    this.image_OMino = new Image(getClass().getResourceAsStream("/image/YellowCube.png"));
 
     this.tetro_I = new Image(getClass().getResourceAsStream("/image/I.png"));
     this.tetro_S = new Image(getClass().getResourceAsStream("/image/S.png"));
@@ -135,28 +129,25 @@ public class PlayerTetrisFXML implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    doBindings();
-    int[][] board = new int[10][20];
     for (int i = 0; i < boardPane.getColumnCount(); i++) {
       for (int j = 0; j < boardPane.getRowCount(); j++) {
-        board[i][j] = (int) (Math.random() * 8);
         ImageView imageView = new ImageView();
         imageView.setPreserveRatio(true);
-
         imageView.fitWidthProperty()
             .bind(this.boardPane.widthProperty().divide(11.5));
         imageView.fitHeightProperty()
             .bind(this.boardPane.heightProperty().divide(21.5));
+        imageView.setImage(this.image_NOMino);
         this.boardPane.add(imageView, i, j);
       }
+      doBindings();
     }
 
-    updateBoard(board);
 //    updateHold(Tetromino.T);
 //    updateNextPiece(Tetromino.L);
   }
 
-  private void updateBoard(int[][] board) {
+  public void updateBoard(Mino[][] board) {
     int i = 0;
     var list = this.boardPane.getChildren();
     for (Node node : list) {
@@ -167,6 +158,26 @@ public class PlayerTetrisFXML implements Initializable {
         i++;
       }
     }
+  }
+
+  public void updateScore(int newScore) {
+    this.scoreLabel.setText(Integer.toString(newScore));
+  }
+
+  public void updateUsername(String newUsername) {
+    this.usernameLabel.setText(newUsername);
+  }
+
+  public void updateTimer(int timer) {
+    int hours, minutes, seconds;
+    hours = timer / 3600;
+    minutes = (timer % 3600) / 60;
+    seconds = timer % 60;
+    this.timeLabel.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
+  }
+
+  public void updateLine(int line) {
+    this.linesLabel.setText(Integer.toString(line));
   }
 
 //  public void updateHold(Tetromino hold) {
@@ -198,26 +209,24 @@ public class PlayerTetrisFXML implements Initializable {
 //    }
 //  }
 
-  private Image cubeColor(int color) {
+  private Image cubeColor(Mino color) {
     switch (color) {
-      case 0:
-        return this.whiteCube;
-      case 1:
-        return this.greenCube;
-      case 2:
-        return this.purpleCube;
-      case 3:
-        return this.lightBlueCube;
-      case 4:
-        return this.darkBlueCube;
-      case 5:
-        return this.orangeCube;
-      case 6:
-        return this.redCube;
-      case 7:
-        return this.yellowCube;
+      case S_MINO:
+        return this.image_SMino;
+      case T_MINO:
+        return this.image_TMino;
+      case I_MINO:
+        return this.image_IMino;
+      case J_MINO:
+        return this.image_JMino;
+      case L_MINO:
+        return this.image_LMino;
+      case Z_MINO:
+        return this.image_ZMino;
+      case O_MINO:
+        return this.image_OMino;
       default:
-        throw new IllegalArgumentException("Color doesn't exists");
+        return this.image_NOMino;
     }
   }
 
