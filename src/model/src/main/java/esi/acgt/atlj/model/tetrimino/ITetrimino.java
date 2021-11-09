@@ -22,62 +22,26 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.server;
+package esi.acgt.atlj.model.tetrimino;
 
+import esi.acgt.atlj.model.Mino;
 
-import java.util.HashMap;
+public class ITetrimino extends Tetrimino{
 
-public class Server extends AbstractServer {
+  private int centerX;
+  private int centerY;
+  private static final Mino[][] template = {{null,null,null,null},{Mino.I_MINO,Mino.I_MINO,Mino.I_MINO,Mino.I_MINO},{null,null,null,null},{null,null,null,null}};
 
-  private int clientId;
-
-  private final HashMap<Integer, CustomClientThread> members;
-
-  public Server(int port) {
-    super(port);
-
-    clientId=0;
-    members = new HashMap<Integer, CustomClientThread>();
-    this.startServer();
-
-  }
-
-  @Override
-  protected void exceptionHook(Exception e) {
-    super.exceptionHook(e);
-  }
-
-  @Override
-  protected void handleMessageClient(Object msg, CustomClientThread client) {
-
-  }
-
-  @Override
-  protected void serverStopped() {
-    super.serverStopped();
-  }
-
-  private int getNextId(){
-    return this.clientId++;
-  }
-
-  @Override
-  protected void clientConnected(CustomClientThread client) {
-    super.clientConnected(client);
-    members.put(getNextId(), client);
-  }
-
-  @Override
-  protected void clientDiconnected(CustomClientThread client) {
-    super.clientDiconnected(client);
+  public ITetrimino(){
+    super();
+    this.minos = template;
   }
 
   /**
-   * Sends a message to a specific client
-   * @param information Message to send to client.
-   * @param clientId Unique id of client.
+   * {@inheritDoc}
    */
-  void sentToClient(Object information, int clientId){
+  @Override
+  public void rotate(boolean clockwise) {
 
   }
 }

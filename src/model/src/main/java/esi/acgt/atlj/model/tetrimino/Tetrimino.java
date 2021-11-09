@@ -22,62 +22,32 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.server;
+package esi.acgt.atlj.model.tetrimino;
+
+import esi.acgt.atlj.model.Mino;
+import esi.acgt.atlj.model.TetriminoInterface;
+
+public abstract class Tetrimino implements TetriminoInterface {
+
+  protected int x;
+  protected int y;
+  protected Mino[][] minos;
 
 
-import java.util.HashMap;
-
-public class Server extends AbstractServer {
-
-  private int clientId;
-
-  private final HashMap<Integer, CustomClientThread> members;
-
-  public Server(int port) {
-    super(port);
-
-    clientId=0;
-    members = new HashMap<Integer, CustomClientThread>();
-    this.startServer();
-
+  @Override
+  public int getX() {
+    return this.x;
   }
 
   @Override
-  protected void exceptionHook(Exception e) {
-    super.exceptionHook(e);
+  public int getY() {
+    return this.y;
   }
 
   @Override
-  protected void handleMessageClient(Object msg, CustomClientThread client) {
-
+  public Mino[][] getMinos() {
+    return this.minos;
   }
 
-  @Override
-  protected void serverStopped() {
-    super.serverStopped();
-  }
 
-  private int getNextId(){
-    return this.clientId++;
-  }
-
-  @Override
-  protected void clientConnected(CustomClientThread client) {
-    super.clientConnected(client);
-    members.put(getNextId(), client);
-  }
-
-  @Override
-  protected void clientDiconnected(CustomClientThread client) {
-    super.clientDiconnected(client);
-  }
-
-  /**
-   * Sends a message to a specific client
-   * @param information Message to send to client.
-   * @param clientId Unique id of client.
-   */
-  void sentToClient(Object information, int clientId){
-
-  }
 }
