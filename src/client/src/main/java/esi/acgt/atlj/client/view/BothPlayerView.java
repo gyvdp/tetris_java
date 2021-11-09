@@ -25,6 +25,8 @@
 package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -40,9 +42,9 @@ public class BothPlayerView {
     this.player1 = new PlayerTetrisFXML(stage);
     this.player2 = new PlayerTetrisFXML(stage);
     this.scene = new HBox();
-
-    this.scene.setSpacing(5);
-    this.scene.setStyle("-fx-background-color: black");
+    this.scene.setSpacing(15);
+    this.scene.setStyle("-fx-background-color: gray");
+    this.scene.setAlignment(Pos.CENTER);
 
     this.scene.getChildren().add(player1.scene);
     this.scene.getChildren().add(player2.scene);
@@ -61,12 +63,6 @@ public class BothPlayerView {
   }
 
   private void doBindings(Stage stage) {
-    this.player1.scene.prefWidthProperty().bind(this.scene.widthProperty());
-    this.player1.scene.prefHeightProperty().bind(this.scene.heightProperty());
-
-    this.player2.scene.prefWidthProperty().bind(this.scene.widthProperty());
-    this.player2.scene.prefHeightProperty().bind(this.scene.heightProperty());
-
     this.scene.prefHeightProperty().bind(stage.heightProperty());
     this.scene.prefWidthProperty().bind(stage.widthProperty());
   }
