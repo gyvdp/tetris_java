@@ -36,11 +36,5 @@ public class OTetrimino extends Tetrimino{
   }
 
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void rotate(boolean clockwise) {
 
-  }
 }

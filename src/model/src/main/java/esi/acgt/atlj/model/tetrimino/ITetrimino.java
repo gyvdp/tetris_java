@@ -28,20 +28,27 @@ import esi.acgt.atlj.model.Mino;
 
 public class ITetrimino extends Tetrimino{
 
-  private int centerX;
-  private int centerY;
+  public static void main(String[] args) {
+    ITetrimino iTetrimino = new ITetrimino();
+    iTetrimino.rotate(true);
+    System.out.println(iTetrimino);
+    iTetrimino.rotate(true);
+    System.out.println(iTetrimino);
+    iTetrimino.rotate(true);
+    System.out.println(iTetrimino);
+    iTetrimino.rotate(true);
+    System.out.println(iTetrimino);
+  }
+
   private static final Mino[][] template = {{null,null,null,null},{Mino.I_MINO,Mino.I_MINO,Mino.I_MINO,Mino.I_MINO},{null,null,null,null},{null,null,null,null}};
 
+  /**
+   * Constructor for I tetrimino.
+   */
   public ITetrimino(){
     super();
     this.minos = template;
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void rotate(boolean clockwise) {
 
-  }
 }
