@@ -21,30 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package esi.acgt.atlj.model.tetrimino;
 
-package esi.acgt.atlj.model;
-
-import java.util.Timer;
-
-public class UnmanagedBoard extends Board {
-
-  public UnmanagedBoard() {
-    // TODO Constructor
-  }
-
-  public void placeTetrimino(TetriminoInterface tetrimino) {
-    // TODO
-  }
-
-  public void setActualTetrimino(TetriminoInterface tetrimino) {
-    // TODO
-  }
-
-  public void removeLine(int line) {
-    // TODO
-  }
-
-  public void setNextTetrimino(TetriminoInterface tetrimino) {
-    // TODO
-  }
+public enum Mino {
+  L_MINO,
+  J_MINO,
+  Z_MINO,
+  S_MINO,
+  O_MINO,
+  I_MINO,
+  T_MINO,
 }

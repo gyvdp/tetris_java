@@ -21,10 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.model.tetrimino;
-
-import esi.acgt.atlj.model.Mino;
 
 public class ITetrimino extends Tetrimino{
 
@@ -44,4 +41,5 @@ public class ITetrimino extends Tetrimino{
   public void rotate(boolean clockwise) {
 
   }
+
 }

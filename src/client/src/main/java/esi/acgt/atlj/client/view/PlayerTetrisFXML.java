@@ -24,7 +24,7 @@
 
 package esi.acgt.atlj.client.view;
 
-import esi.acgt.atlj.model.Mino;
+import esi.acgt.atlj.model.tetrimino.Mino;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;

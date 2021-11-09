@@ -24,8 +24,6 @@
 
 package esi.acgt.atlj.model.tetrimino;
 
-import esi.acgt.atlj.model.Mino;
-
 public class JTetrimino extends Tetrimino {
   private static final Mino[][] template = {{null,Mino.J_MINO,null,null},{null,Mino.J_MINO,null,null},{Mino.J_MINO,Mino.J_MINO,null,null},{null,null,null,null}};
 

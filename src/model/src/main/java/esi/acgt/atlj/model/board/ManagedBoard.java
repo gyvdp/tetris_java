@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model;
+package esi.acgt.atlj.model.board;
 
 import java.util.Timer;
 

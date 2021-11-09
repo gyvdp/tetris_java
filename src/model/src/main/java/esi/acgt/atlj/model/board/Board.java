@@ -22,9 +22,10 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model;
+package esi.acgt.atlj.model.board;
 
-import java.io.Serializable;
+import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
 public abstract class Board implements BoardInterface {
 

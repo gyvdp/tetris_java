@@ -21,11 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.model.tetrimino;
-
-import esi.acgt.atlj.model.Mino;
-import esi.acgt.atlj.model.TetriminoInterface;
 
 public abstract class Tetrimino implements TetriminoInterface {
 

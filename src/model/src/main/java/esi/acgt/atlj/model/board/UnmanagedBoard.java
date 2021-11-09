@@ -22,39 +22,29 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model;
+package esi.acgt.atlj.model.board;
 
-/**
- * The TetriminoInterface
- */
-public interface TetriminoInterface {
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
-  /**
-   * Get the x position
-   *
-   * @return the x position
-   */
-  int getX();
+public class UnmanagedBoard extends Board {
 
-  /**
-   * Get the y position
-   *
-   * @return the y position
-   */
-  int getY();
+  public UnmanagedBoard() {
+    // TODO Constructor
+  }
 
-  /**
-   * Get a matrix of the minos in the tetrimino
-   *
-   * @return the tetrimino as minos matrix
-   */
-  Mino[][] getMinos();
+  public void placeTetrimino(TetriminoInterface tetrimino) {
+    // TODO
+  }
 
-  /**
-   * Rotate the Tetrimino
-   *
-   * @param clockwise true if clockwise
-   */
-  void rotate(boolean clockwise);
+  public void setActualTetrimino(TetriminoInterface tetrimino) {
+    // TODO
+  }
 
+  public void removeLine(int line) {
+    // TODO
+  }
+
+  public void setNextTetrimino(TetriminoInterface tetrimino) {
+    // TODO
+  }
 }

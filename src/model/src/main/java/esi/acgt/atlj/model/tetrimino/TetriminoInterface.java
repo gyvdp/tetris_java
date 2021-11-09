@@ -22,59 +22,41 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model;
+package esi.acgt.atlj.model.tetrimino;
 
-public interface BoardInterface {
+import esi.acgt.atlj.model.tetrimino.Mino;
 
-  /**
-   * The width of the board
-   */
-  int WIDTH = 10;
-
-  /**
-   * The height of the board
-   */
-  int HEIGHT = 22;
+/**
+ * The TetriminoInterface
+ */
+public interface TetriminoInterface {
 
   /**
-   * Get the matrix of the board (including falling piece)
+   * Get the x position
    *
-   * @return the matrix of minos
+   * @return the x position
    */
-  Mino[][] getBoard();
+  int getX();
 
   /**
-   * Get the actual score of the player
+   * Get the y position
    *
-   * @return the score
+   * @return the y position
    */
-  int getScore();
+  int getY();
 
   /**
-   * Get the username of the player
+   * Get a matrix of the minos in the tetrimino
    *
-   * @return the username of the player
+   * @return the tetrimino as minos matrix
    */
-  String getUsername();
+  Mino[][] getMinos();
 
   /**
-   * Get the held piece
+   * Rotate the Tetrimino
    *
-   * @return the held piece or null if there is no piece
+   * @param clockwise true if clockwise
    */
-  TetriminoInterface getHold();
+  void rotate(boolean clockwise);
 
-  /**
-   * Get the actual falling tetrimino
-   *
-   * @return the falling tetrimino
-   */
-  TetriminoInterface getActualTetrimino();
-
-  /**
-   * Get the next tetrimino of the player
-   *
-   * @return the next tetrimino
-   */
-  TetriminoInterface getNextTetrimino();
 }

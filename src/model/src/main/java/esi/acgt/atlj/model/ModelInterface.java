@@ -1,5 +1,7 @@
 package esi.acgt.atlj.model;
 
+import esi.acgt.atlj.model.board.BoardInterface;
+
 public interface ModelInterface {
 
   /**

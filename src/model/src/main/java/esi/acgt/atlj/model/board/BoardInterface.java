@@ -22,14 +22,62 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model;
+package esi.acgt.atlj.model.board;
 
-public enum Mino {
-  L_MINO,
-  J_MINO,
-  Z_MINO,
-  S_MINO,
-  O_MINO,
-  I_MINO,
-  T_MINO,
+import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+
+public interface BoardInterface {
+
+  /**
+   * The width of the board
+   */
+  int WIDTH = 10;
+
+  /**
+   * The height of the board
+   */
+  int HEIGHT = 22;
+
+  /**
+   * Get the matrix of the board (including falling piece)
+   *
+   * @return the matrix of minos
+   */
+  Mino[][] getBoard();
+
+  /**
+   * Get the actual score of the player
+   *
+   * @return the score
+   */
+  int getScore();
+
+  /**
+   * Get the username of the player
+   *
+   * @return the username of the player
+   */
+  String getUsername();
+
+  /**
+   * Get the held piece
+   *
+   * @return the held piece or null if there is no piece
+   */
+  TetriminoInterface getHold();
+
+  /**
+   * Get the actual falling tetrimino
+   *
+   * @return the falling tetrimino
+   */
+  TetriminoInterface getActualTetrimino();
+
+  /**
+   * Get the next tetrimino of the player
+   *
+   * @return the next tetrimino
+   */
+  TetriminoInterface getNextTetrimino();
 }
