@@ -96,6 +96,8 @@ public class PlayerTetrisFXML implements Initializable {
   private final Image tetro_I;
   private final Image tetro_T;
 
+  private Mino[][] oldBoard;
+
 
   public PlayerTetrisFXML(Stage stage) {
     //Load all Images
@@ -125,8 +127,9 @@ public class PlayerTetrisFXML implements Initializable {
     } catch (IOException e) {
       e.printStackTrace();
     }
-
-    // Bindings of this.scene 
+    //
+    oldBoard = new Mino[10][20];
+    // Bindings of this.scene
     this.scene.prefWidthProperty().bind(stage.getScene().widthProperty());
     this.scene.prefHeightProperty().bind(stage.getScene().heightProperty());
   }
@@ -153,9 +156,11 @@ public class PlayerTetrisFXML implements Initializable {
     var list = this.boardPane.getChildren();
     for (Node node : list) {
       if (node instanceof ImageView) {
-        ((ImageView) node).setImage(
-            cubeColor(
-                board[i / this.boardPane.getRowCount()][i % this.boardPane.getRowCount()]));
+        if (board[i / 20][i % 20] != this.oldBoard[i / 20][i % 20]) {
+          ((ImageView) node).setImage(
+              cubeColor(
+                  board[i / this.boardPane.getRowCount()][i % this.boardPane.getRowCount()]));
+        }
         i++;
       }
     }
