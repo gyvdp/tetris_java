@@ -37,6 +37,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 public class Connexion implements Initializable {
@@ -65,6 +67,11 @@ public class Connexion implements Initializable {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    this.stage.getScene().addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+      if (key.getCode() == KeyCode.ENTER) {
+        this.connexionPressed();
+      }
+    });
   }
 
   public void connexionPressed() {
