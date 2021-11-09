@@ -22,62 +22,29 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.server;
+package esi.acgt.atlj.model;
 
+import java.util.Timer;
 
-import java.util.HashMap;
+public class UnmanagedBoard extends Board {
 
-public class Server extends AbstractServer {
-
-  private int clientId;
-
-  private final HashMap<Integer, CustomClientThread> members;
-
-  public Server(int port) {
-    super(port);
-
-    clientId=0;
-    members = new HashMap<Integer, CustomClientThread>();
-    this.startServer();
-
+  public UnmanagedBoard() {
+    // TODO Constructor
   }
 
-  @Override
-  protected void exceptionHook(Exception e) {
-    super.exceptionHook(e);
+  public void placeTetrimino(TetriminoInterface tetrimino) {
+    // TODO
   }
 
-  @Override
-  protected void handleMessageClient(Object msg, CustomClientThread client) {
-
+  public void setActualTetrimino(TetriminoInterface tetrimino) {
+    // TODO
   }
 
-  @Override
-  protected void serverStopped() {
-    super.serverStopped();
+  public void removeLine(int line) {
+    // TODO
   }
 
-  private int getNextId(){
-    return this.clientId++;
-  }
-
-  @Override
-  protected void clientConnected(CustomClientThread client) {
-    super.clientConnected(client);
-    members.put(getNextId(), client);
-  }
-
-  @Override
-  protected void clientDiconnected(CustomClientThread client) {
-    super.clientDiconnected(client);
-  }
-
-  /**
-   * Sends a message to a specific client
-   * @param information Message to send to client.
-   * @param clientId Unique id of client.
-   */
-  void sentToClient(Object information, int clientId){
-
+  public void setNextTetrimino(TetriminoInterface tetrimino) {
+    // TODO
   }
 }

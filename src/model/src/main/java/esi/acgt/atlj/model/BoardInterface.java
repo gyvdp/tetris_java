@@ -22,62 +22,59 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.server;
+package esi.acgt.atlj.model;
 
-
-import java.util.HashMap;
-
-public class Server extends AbstractServer {
-
-  private int clientId;
-
-  private final HashMap<Integer, CustomClientThread> members;
-
-  public Server(int port) {
-    super(port);
-
-    clientId=0;
-    members = new HashMap<Integer, CustomClientThread>();
-    this.startServer();
-
-  }
-
-  @Override
-  protected void exceptionHook(Exception e) {
-    super.exceptionHook(e);
-  }
-
-  @Override
-  protected void handleMessageClient(Object msg, CustomClientThread client) {
-
-  }
-
-  @Override
-  protected void serverStopped() {
-    super.serverStopped();
-  }
-
-  private int getNextId(){
-    return this.clientId++;
-  }
-
-  @Override
-  protected void clientConnected(CustomClientThread client) {
-    super.clientConnected(client);
-    members.put(getNextId(), client);
-  }
-
-  @Override
-  protected void clientDiconnected(CustomClientThread client) {
-    super.clientDiconnected(client);
-  }
+public interface BoardInterface {
 
   /**
-   * Sends a message to a specific client
-   * @param information Message to send to client.
-   * @param clientId Unique id of client.
+   * The width of the board
    */
-  void sentToClient(Object information, int clientId){
+  int WIDTH = 10;
 
-  }
+  /**
+   * The height of the board
+   */
+  int HEIGHT = 22;
+
+  /**
+   * Get the matrix of the board (including falling piece)
+   *
+   * @return the matrix of minos
+   */
+  Mino[][] getBoard();
+
+  /**
+   * Get the actual score of the player
+   *
+   * @return the score
+   */
+  int getScore();
+
+  /**
+   * Get the username of the player
+   *
+   * @return the username of the player
+   */
+  String getUsername();
+
+  /**
+   * Get the held piece
+   *
+   * @return the held piece or null if there is no piece
+   */
+  TetriminoInterface getHold();
+
+  /**
+   * Get the actual falling tetrimino
+   *
+   * @return the falling tetrimino
+   */
+  TetriminoInterface getActualTetrimino();
+
+  /**
+   * Get the next tetrimino of the player
+   *
+   * @return the next tetrimino
+   */
+  TetriminoInterface getNextTetrimino();
 }

@@ -22,62 +22,39 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.server;
+package esi.acgt.atlj.model;
 
-
-import java.util.HashMap;
-
-public class Server extends AbstractServer {
-
-  private int clientId;
-
-  private final HashMap<Integer, CustomClientThread> members;
-
-  public Server(int port) {
-    super(port);
-
-    clientId=0;
-    members = new HashMap<Integer, CustomClientThread>();
-    this.startServer();
-
-  }
-
-  @Override
-  protected void exceptionHook(Exception e) {
-    super.exceptionHook(e);
-  }
-
-  @Override
-  protected void handleMessageClient(Object msg, CustomClientThread client) {
-
-  }
-
-  @Override
-  protected void serverStopped() {
-    super.serverStopped();
-  }
-
-  private int getNextId(){
-    return this.clientId++;
-  }
-
-  @Override
-  protected void clientConnected(CustomClientThread client) {
-    super.clientConnected(client);
-    members.put(getNextId(), client);
-  }
-
-  @Override
-  protected void clientDiconnected(CustomClientThread client) {
-    super.clientDiconnected(client);
-  }
+/**
+ * The TetriminoInterface
+ */
+public interface TetriminoInterface {
 
   /**
-   * Sends a message to a specific client
-   * @param information Message to send to client.
-   * @param clientId Unique id of client.
+   * Get the x position
+   *
+   * @return the x position
    */
-  void sentToClient(Object information, int clientId){
+  int getX();
 
-  }
+  /**
+   * Get the y position
+   *
+   * @return the y position
+   */
+  int getY();
+
+  /**
+   * Get a matrix of the minos in the tetrimino
+   *
+   * @return the tetrimino as minos matrix
+   */
+  Mino[][] getMinos();
+
+  /**
+   * Rotate the Tetrimino
+   *
+   * @param clockwise true if clockwise
+   */
+  void rotate(boolean clockwise);
+
 }
