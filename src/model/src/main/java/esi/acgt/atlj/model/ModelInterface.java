@@ -13,10 +13,18 @@ public interface ModelInterface {
 
   /**
    * Get the board of a particular Player
+   * Get the board of the managed board player
    *
    * @param username username of the Player to get the board from
    * @return the board of the asked Player
    */
-  BoardInterface getBoard(String username);
+  BoardInterface getManagedBoard(String username);
+
+  /**
+   * Gets the board of the unmanaged player
+   * @param username
+   * @return
+   */
+  BoardInterface getUnmanagedBoard(String username);
 
 }

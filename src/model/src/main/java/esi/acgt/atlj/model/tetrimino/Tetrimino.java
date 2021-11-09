@@ -27,8 +27,28 @@ public abstract class Tetrimino implements TetriminoInterface {
 
   protected int x;
   protected int y;
+  protected int xRotationCenter;
+  protected int yRotationCenter;
   protected Mino[][] minos;
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void rotate(boolean clockwise, boolean[][] surroundingArea) {
+    Mino k;
+    int l = this.minos.length-1;
+    int i,j;
+    for (i=0; i<Math.floor(this.minos.length/2); i++){
+      for (j=i; j<l-i; j++) {
+        k=this.minos[i][j];
+        this.minos[i][j] = this.minos[l-j][i];
+        this.minos[l-j][i] = this.minos[l-i][l-j];
+        this.minos[l-i][l-j] = this.minos[j][l-i];
+        this.minos[j][l-i] = k;
+      }
+    }
+  }
 
   @Override
   public int getX() {

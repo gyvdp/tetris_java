@@ -32,11 +32,4 @@ public class ZTetrimino extends Tetrimino{
     this.minos = template;
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void rotate(boolean clockwise) {
-
-  }
 }

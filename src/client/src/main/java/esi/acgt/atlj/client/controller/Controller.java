@@ -7,6 +7,7 @@ import javafx.scene.input.KeyCode;
 public class Controller {
 
   private final ModelInterface model;
+
   private final ViewInterface view;
 
   public Controller(ModelInterface model, ViewInterface view) {

@@ -56,7 +56,8 @@ public interface TetriminoInterface {
    * Rotate the Tetrimino
    *
    * @param clockwise true if clockwise
+   * @param surroundingArea Area of surrounding blocks.
    */
-  void rotate(boolean clockwise);
+  void rotate(boolean clockwise, boolean[][] surroundingArea);
 
 }

@@ -25,20 +25,16 @@ package esi.acgt.atlj.model.tetrimino;
 
 public class ITetrimino extends Tetrimino{
 
-  private int centerX;
-  private int centerY;
   private static final Mino[][] template = {{null,null,null,null},{Mino.I_MINO,Mino.I_MINO,Mino.I_MINO,Mino.I_MINO},{null,null,null,null},{null,null,null,null}};
 
+  /**
+   * Constructor for I tetrimino.
+   */
   public ITetrimino(){
     super();
     this.minos = template;
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void rotate(boolean clockwise) {
 
   }
 

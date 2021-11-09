@@ -54,6 +54,17 @@ public interface BoardInterface {
   int getScore();
 
   /**
+   * Initializes a board with width and height will all minos being equal to null.
+   */
+  void initTetrisBoard();
+
+  /**
+   * Gets a matrix of 6*6 of the surrounding area
+   * @return Matrix of surrounding area.
+   */
+  boolean[][] getSurroundingArea(int x, int y);
+
+  /**
    * Get the username of the Player
    *
    * @return the username of the Player

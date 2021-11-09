@@ -33,11 +33,16 @@ public class LTetrimino extends Tetrimino{
     this.minos = template;
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void rotate(boolean clockwise) {
-
+  public String toString(){
+    String res="";
+    for (int i =0; i <template.length; i++){
+      for (Mino m : template[i]){
+        if (m==null)
+          res+=" n ";
+        else res+=" I ";
+      }
+      res+="\n";
+    }
+    return res;
   }
 }
