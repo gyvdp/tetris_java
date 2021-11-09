@@ -88,6 +88,11 @@ public class Connexion implements Initializable {
     this.stage.close();
   }
 
+  //TODO retirer button test de la version finale
+  public void testPressed() {
+        this.controller.connexion("1.1.1.1", 1, "usertest");
+  }
+
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
 
