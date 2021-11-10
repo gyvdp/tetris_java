@@ -24,6 +24,7 @@
 
 package esi.acgt.atlj.model.board;
 
+import java.security.InvalidParameterException;
 import java.util.Timer;
 
 public class ManagedBoard extends Board {
@@ -35,10 +36,11 @@ public class ManagedBoard extends Board {
   }
 
   public void moveLeft() {
-    //TODO
+    rotate(false);
   }
 
   public void moveRight() {
+    rotate(true);
     // TODO
   }
 
@@ -50,8 +52,14 @@ public class ManagedBoard extends Board {
     // TODO
   }
 
-  public void rotate(boolean clockwise, boolean[][] areaAround) {
-    actualTetrimino.rotate(clockwise, this.getSurroundingArea(0,0));
+  private void rotate(boolean clockwise) {
+    try {
+      actualTetrimino.rotate(clockwise, this.getSurroundingArea(actualTetrimino.getX(),
+          actualTetrimino.getY()));
+    } catch(InvalidParameterException e){
+      //Check if there is another block or if its wall
+      //If it is another block tetrimino must be placed If wall do nothing
+    }
   }
 
   public void setScore(int score) {
