@@ -24,6 +24,8 @@
 
 package esi.acgt.atlj.model.board;
 
+import esi.acgt.atlj.model.tetrimino.Tetrimino;
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.security.InvalidParameterException;
 import java.util.Timer;
 
@@ -56,6 +58,7 @@ public class ManagedBoard extends Board {
     try {
       actualTetrimino.rotate(clockwise, this.getSurroundingArea(actualTetrimino.getX(),
           actualTetrimino.getY()));
+      this.changeSupport.firePropertyChange("player1Board", null, this.getBoard());
     } catch(InvalidParameterException e){
       //Check if there is another block or if its wall
       //If it is another block tetrimino must be placed If wall do nothing
@@ -63,8 +66,9 @@ public class ManagedBoard extends Board {
   }
 
   public void setScore(int score) {
+    int oldScore = this.score;
     this.score = score;
-    this.changeSupport.firePropertyChange("player1Name",this.score,this.score);
+    this.changeSupport.firePropertyChange("player1Score", oldScore, this.score);
   }
 
   public void setUsername(String username) {
@@ -74,8 +78,9 @@ public class ManagedBoard extends Board {
   }
 
   public void setNbLine(int nbLine) {
+    int oldNbLine = this.nbLine;
     this.nbLine = nbLine;
-    this.changeSupport.firePropertyChange("player1NbLine",this.nbLine,this.nbLine);
+    this.changeSupport.firePropertyChange("player1NbLine", oldNbLine, this.nbLine);
   }
 
 }

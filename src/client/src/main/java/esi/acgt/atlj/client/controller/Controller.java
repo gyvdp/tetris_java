@@ -9,7 +9,6 @@ import javafx.scene.input.KeyCode;
 public class Controller {
 
   private final ModelInterface model;
-
   private final ViewInterface view;
 
   public Controller(ModelInterface model, ViewInterface view) {
@@ -65,12 +64,13 @@ public class Controller {
 
   public void connexion(String ip, int port, String username) {
     System.out.println("Connect to : " + ip + " , port : " + port + ".");
-    this.model.setPlayer1(username);
     try {
       // Bla bla bla test connection
       this.view.displayBoard();
+      this.model.setPlayer1(username);
     } catch (Exception e) {
       this.view.displayError(e);
     }
   }
+
 }
