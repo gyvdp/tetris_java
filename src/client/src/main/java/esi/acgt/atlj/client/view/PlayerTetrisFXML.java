@@ -127,7 +127,6 @@ public class PlayerTetrisFXML implements Initializable {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    //
     oldBoard = new Mino[10][20];
     // Bindings of this.scene
     this.scene.prefWidthProperty().bind(stage.getScene().widthProperty());
