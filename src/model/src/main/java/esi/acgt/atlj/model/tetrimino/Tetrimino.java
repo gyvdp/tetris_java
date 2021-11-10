@@ -31,8 +31,6 @@ public abstract class Tetrimino implements TetriminoInterface {
 
   protected int x;
   protected int y;
-  protected int xRotationCenter;
-  protected int yRotationCenter;
   protected Mino[][] minos;
 
   /**
@@ -41,8 +39,7 @@ public abstract class Tetrimino implements TetriminoInterface {
   @Override
   public void rotate(boolean clockwise, boolean[][] surroundingArea) {
     Mino k;
-    int l = this.minos.length-1;
-    int i,j;
+    int l = this.minos.length-1,i,j;
     for (i=0; i<Math.floor(this.minos.length/2); i++){
       for (j=i; j<l-i; j++) {
         k=this.minos[i][j];
@@ -50,6 +47,13 @@ public abstract class Tetrimino implements TetriminoInterface {
         this.minos[l-j][i] = this.minos[l-i][l-j];
         this.minos[l-i][l-j] = this.minos[j][l-i];
         this.minos[j][l-i] = k;
+      }
+    }
+    for (i=0; i< minos.length; i++) {
+      for (j = 0; j < minos[1].length; j++) {
+        if (surroundingArea[i][j] && this.minos[i][j]!=null){
+          throw new IllegalArgumentException("Turn cannot be preformed");
+        }
       }
     }
   }

@@ -55,6 +55,7 @@ public interface TetriminoInterface {
    *
    * @param clockwise true if clockwise
    * @param surroundingArea Area of surrounding blocks.
+   * @throws IllegalArgumentException if non valid parameters.
    */
   void rotate(boolean clockwise, boolean[][] surroundingArea);
 

@@ -1,5 +1,0 @@
-FROM centos:centos8
-
-RUN yum install -y nmap
-
-CMD nmap -T5 -p443 esi-bru.be
