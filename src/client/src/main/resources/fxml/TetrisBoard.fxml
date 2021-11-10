@@ -49,7 +49,7 @@
       <RowConstraints prefHeight="500.0" valignment="CENTER" vgrow="ALWAYS" />
    </rowConstraints>
    <children>
-      <GridPane fx:id="boardPane" alignment="CENTER" style="-fx-background-color: black; -fx-border-color: black; -fx-border-width: 5px;" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2" GridPane.vgrow="ALWAYS">
+      <GridPane fx:id="boardPane" alignment="CENTER" style="-fx-background-color: gray; -fx-border-color: gray; -fx-border-width: 5px;" GridPane.columnIndex="2" GridPane.rowSpan="2">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />

@@ -25,6 +25,10 @@
 package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -43,20 +47,25 @@ public class BothPlayerView {
     this.player1 = new PlayerTetrisFXML(stage);
     this.player2 = new PlayerTetrisFXML(stage);
     this.scene = new HBox();
-
-    this.scene.setSpacing(5);
-    this.scene.setStyle("-fx-background-color: black");
+    this.scene.setSpacing(15);
+    this.scene.setStyle("-fx-background-color: gray");
+    this.scene.setAlignment(Pos.CENTER);
 
     this.scene.getChildren().add(player1.scene);
     this.scene.getChildren().add(player2.scene);
 
     stage.setScene(new Scene(this.scene));
-    stage.setMinHeight(700);
-    stage.setMinWidth(1150);
-    stage.setHeight(700);
-    stage.setWidth(1150);
-
     this.doBindings(stage);
+    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    int displayWidth = gd.getDisplayMode().getWidth();
+    int displayHeight = gd.getDisplayMode().getHeight();
+    stage.setMinHeight(displayHeight/gd.getDefaultConfiguration().getDefaultTransform().getScaleY()/2);
+    stage.setMinWidth(displayWidth/gd.getDefaultConfiguration().getDefaultTransform().getScaleX()/2);
+    stage.setMaxHeight(displayHeight/gd.getDefaultConfiguration().getDefaultTransform().getScaleY());
+      stage.setMaxWidth(displayWidth/gd.getDefaultConfiguration().getDefaultTransform().getScaleX());
+    stage.setHeight(displayHeight/gd.getDefaultConfiguration().getDefaultTransform().getScaleY()/1.5);
+    stage.setWidth(displayWidth/gd.getDefaultConfiguration().getDefaultTransform().getScaleX()/1.5);
+
 
     stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, (key) -> {
       controller.keyBoardInput(key.getCode());
