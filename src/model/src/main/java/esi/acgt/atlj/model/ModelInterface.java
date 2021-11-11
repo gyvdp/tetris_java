@@ -12,6 +12,8 @@ public interface ModelInterface {
    */
   String[] getUsernames();
 
+  void updateTest();
+
   /**
    * Get the board of a particular Player Get the board of the managed board player
    *
@@ -21,10 +23,10 @@ public interface ModelInterface {
   BoardInterface getManagedBoard(String username);
 
   /**
-   * Gets the board of the unmanaged player
+   * Gets the board of the unmanaged player.
    *
-   * @param username
-   * @return
+   * @param username Name of player.
+   * @return the unmanaged board.
    */
   BoardInterface getUnmanagedBoard(String username);
 

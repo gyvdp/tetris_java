@@ -16,6 +16,11 @@ public class Model implements ModelInterface {
   }
 
   @Override
+  public void updateTest() {
+    player1.initTetrisBoard();
+  }
+
+  @Override
   public String[] getUsernames() {
     return new String[0];
   }

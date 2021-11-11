@@ -45,16 +45,25 @@ public abstract class Board implements BoardInterface, Serializable {
     this.score = 0;
     this.nbLine = 0;
     this.changeSupport = new PropertyChangeSupport(this);
-  }
-
-  @Override
-  public void initTetrisBoard() {
     minos = new Mino[HEIGHT][WIDTH];
   }
 
   @Override
+  public void initTetrisBoard() {
+    minos[1][1] = Mino.Z_MINO;
+    var oldBoard = this.getBoard();
+    this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
+  }
+
+  @Override
   public boolean[][] getSurroundingArea(int x, int y) {
-    return new boolean[0][]; //todo
+    boolean surroundingArea[][] = new boolean[4][4];
+    for (int i = x; i <= x + 4; i++) {
+      for (int j = y; j <= y + 4; j++) {
+        //this.minos[i][j]=
+      }
+    }
+    return surroundingArea;
   }
 
   @Override

@@ -27,6 +27,7 @@ public class Controller {
     this.model = model;
     this.view = view;
     this.model.addPropertyChangeListener(this.view);
+    this.model.updateTest();
   }
 
   public void start() {

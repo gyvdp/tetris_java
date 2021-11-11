@@ -37,6 +37,4 @@ public class ITetrimino extends Tetrimino {
     this.minos = template;
     this.type = Mino.I_MINO;
   }
-
-
 }
