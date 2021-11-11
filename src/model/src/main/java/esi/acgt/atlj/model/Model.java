@@ -1,6 +1,7 @@
 package esi.acgt.atlj.model;
 
 import esi.acgt.atlj.model.board.BoardInterface;
+import esi.acgt.atlj.model.board.Direction;
 import esi.acgt.atlj.model.board.ManagedBoard;
 import esi.acgt.atlj.model.board.UnmanagedBoard;
 import java.beans.PropertyChangeListener;
@@ -13,6 +14,11 @@ public class Model implements ModelInterface {
   public Model() {
     this.player1 = new ManagedBoard();
     this.player2 = new UnmanagedBoard();
+  }
+
+  @Override
+  public void updateTest() {
+    player1.initTetrisBoard();
   }
 
   @Override
@@ -44,6 +50,11 @@ public class Model implements ModelInterface {
   public void removePropertyChangeListener(PropertyChangeListener listener) {
     this.player1.removePropertyChangeListener(listener);
     this.player2.removePropertyChangeListener(listener);
+  }
+
+  @Override
+  public void move(Direction direction) {
+    this.player1.move(direction);
   }
 
 }

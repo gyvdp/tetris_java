@@ -2,6 +2,7 @@ package esi.acgt.atlj.client.controller;
 
 import esi.acgt.atlj.client.view.ViewInterface;
 import esi.acgt.atlj.model.ModelInterface;
+import esi.acgt.atlj.model.board.Direction;
 import java.util.Objects;
 import javafx.scene.input.KeyCode;
 
@@ -15,15 +16,6 @@ public class Controller {
     Objects.requireNonNull(model, "model can not be null");
     Objects.requireNonNull(view, "view can not be null");
 
-/*    if (model == null) {
-      throw new IllegalArgumentException();
-    }
-
-    if (view == null) {
-      throw new IllegalArgumentException("view can not be null");
-    }
-*/
-
     this.model = model;
     this.view = view;
     this.model.addPropertyChangeListener(this.view);
@@ -33,21 +25,26 @@ public class Controller {
     view.setController(this);
     view.displayConnexion();
     view.show();
+
   }
 
   public void keyBoardInput(KeyCode input) {
     switch (input) {
       case LEFT:
-        //this.model.moveLeft();
+        this.model.move(Direction.LEFT);
+        System.out.println("move left");
         break;
       case RIGHT:
-        //this.model.moveRight();
+        this.model.move(Direction.RIGHT);
+        System.out.println("move right");
         break;
       case DOWN:
-        //this.model.softDrop();
+        this.model.move(Direction.DOWN);
+        System.out.println("move down");
         break;
       case UP:
-        //this.model.rotateClockwise();
+        this.model.move(Direction.UP);
+        System.out.println("move up");
         break;
       case SHIFT:
         //this.model.hold();
@@ -66,6 +63,7 @@ public class Controller {
     try {
       // Bla bla bla test connection
       this.view.displayBoard();
+      this.model.updateTest();
       this.model.setPlayer1(username);
     } catch (Exception e) {
       this.view.displayError(e);

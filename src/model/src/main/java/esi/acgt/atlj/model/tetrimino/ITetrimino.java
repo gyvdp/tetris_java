@@ -25,30 +25,6 @@ package esi.acgt.atlj.model.tetrimino;
 
 public class ITetrimino extends Tetrimino {
 
-  public static void main(String[] args) {
-    boolean[][] area = {
-        {false, false, false, false},
-        {false, false, false, false},
-        {false, false, false, false},
-        {false, false, false, false}
-    };
-
-    ITetrimino t = new ITetrimino();
-    System.out.println(t);
-
-    t.rotate(true, area);
-    System.out.println(t);
-
-    t.rotate(true, area);
-    System.out.println(t);
-
-    t.rotate(true, area);
-    System.out.println(t);
-
-    t.rotate(true, area);
-    System.out.println(t);
-  }
-
   /**
    * Constructor for I tetrimino.
    */

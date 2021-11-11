@@ -23,6 +23,8 @@
  */
 package esi.acgt.atlj.model.tetrimino;
 
+import esi.acgt.atlj.model.board.Direction;
+
 public abstract class Tetrimino implements TetriminoInterface {
 
   /**
@@ -66,7 +68,7 @@ public abstract class Tetrimino implements TetriminoInterface {
         this.minos[j][l - i] = k;
       }
     }
-    
+
     for (i = 0; i < minos.length; i++) {
       for (j = 0; j < minos[1].length; j++) {
         if (surroundingArea[i][j] && this.minos[i][j] != null) {
@@ -88,13 +90,20 @@ public abstract class Tetrimino implements TetriminoInterface {
 
   @Override
   public Mino[][] getMinos() {
-    return this.minos.clone();
+    return this.minos;
   }
 
   @Override
   public Mino getType() {
     return this.type;
   }
+
+  @Override
+  public void move(Direction direction) {
+    this.x += direction.getX();
+    this.y += direction.getY();
+  }
+
 
   @Override
   public String toString() {
