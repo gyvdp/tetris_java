@@ -77,12 +77,12 @@ public class BothPlayerView {
     this.scene.prefWidthProperty().bind(stage.widthProperty());
   }
 
-  public void updateBoard(Mino[][] board, int playerID) {
+  public void updateBoard(Mino[][] oldBoard, Mino[][] newBoard, int playerID) {
 
     if (playerID == 0) {
-      this.player1.updateBoard(board);
+      this.player1.updateBoard(oldBoard, newBoard);
     } else {
-      this.player2.updateBoard(board);
+      this.player2.updateBoard(oldBoard, newBoard);
     }
   }
 

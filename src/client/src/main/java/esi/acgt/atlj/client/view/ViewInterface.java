@@ -17,7 +17,7 @@ public interface ViewInterface extends PropertyChangeListener {
 
   void displayBoard();
 
-  void updateBoard(Mino[][] board, int playerID);
+  void updateBoard(Mino[][] oldBoard, Mino[][] newBoard, int playerID);
 
   void updateScore(int newScore, int playerID);
 

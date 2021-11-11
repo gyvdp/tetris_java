@@ -52,8 +52,8 @@ public class View implements ViewInterface, PropertyChangeListener {
   }
 
   @Override
-  public void updateBoard(Mino[][] board, int playerID) {
-    this.bothPlayerView.updateBoard(board, playerID);
+  public void updateBoard(Mino[][] oldBoard, Mino[][] newBoard, int playerID) {
+    this.bothPlayerView.updateBoard(oldBoard, newBoard, playerID);
   }
 
   @Override
@@ -83,7 +83,8 @@ public class View implements ViewInterface, PropertyChangeListener {
       // this.changeSupport.firePropertyChange("player1Board", null, this.getBoard());
       case "player1Board" -> {
         System.out.println("Board joueur 1 update");
-        this.bothPlayerView.updateBoard((Mino[][]) evt.getNewValue(), 0);
+        this.bothPlayerView.updateBoard((Mino[][]) evt.getOldValue(), (Mino[][]) evt.getNewValue(),
+            0);
       }
       case "player1NbLine" -> {
         System.out.println("NbLine du joueur 1 : " + evt.getNewValue());
