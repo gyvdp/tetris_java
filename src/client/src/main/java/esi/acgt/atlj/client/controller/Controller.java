@@ -67,6 +67,7 @@ public class Controller {
       // Bla bla bla test connection
       this.view.displayBoard();
       this.model.setPlayer1(username);
+      this.view.show();
     } catch (Exception e) {
       this.view.displayError(e);
     }
