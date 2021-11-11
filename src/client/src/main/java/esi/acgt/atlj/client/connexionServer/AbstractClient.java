@@ -24,6 +24,7 @@
 
 package esi.acgt.atlj.client.connexionServer;
 
+import esi.acgt.atlj.model.Message;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -85,7 +86,7 @@ public abstract class AbstractClient implements Runnable {
    * @return True if connection is still active.
    */
   public boolean isConnected() {
-    return clientThread != null && clientThread.isAlive();
+    return clientThread != null;
   }
 
   /**
@@ -94,10 +95,10 @@ public abstract class AbstractClient implements Runnable {
    * @param information Object to send to server.
    */
   public void sendToServer(Object information) throws IOException {
-    if (isConnected()) {
+    if (clientSocket == null) {
       throw new SocketException("Socket is null");
     }
-    output.writeObject(information);
+    output.writeObject("askPiece");
     output.flush();
   }
 
@@ -160,6 +161,7 @@ public abstract class AbstractClient implements Runnable {
   protected void closeConnection() {
   }
 
+
   /**
    * Hook function when connection to server throws exception. Need to be overridden for specific
    * behaviour.
@@ -168,7 +170,6 @@ public abstract class AbstractClient implements Runnable {
    */
   protected void connexionException(Exception e) {
   }
-
 
   /**
    * {@inheritDoc}
@@ -180,7 +181,6 @@ public abstract class AbstractClient implements Runnable {
     try {
       while (isActive) {
         try {
-          System.out.println("here");
           information = input.readObject();
           if (isActive) {
             handleServerMessage(information);
@@ -191,6 +191,7 @@ public abstract class AbstractClient implements Runnable {
       }
     } catch (Exception e) {
       if (isActive) {
+        System.out.println("j");
         closeConnectionToServer();
       }
       connexionException(e);

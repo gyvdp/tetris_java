@@ -21,16 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package esi.acgt.atlj.server;
 
-import esi.acgt.atlj.model.Model;
-import esi.acgt.atlj.model.ModelInterface;
+package esi.acgt.atlj.model;
 
-public class App {
+import java.io.Serializable;
 
-  public static void main(String[] args) {
-    Server server = new Server(6969);
+public class Message implements Serializable {
 
+  private String description;
+
+  public Message(String description) {
+    this.description = description;
   }
 
+  public String getDescription() {
+    return description;
+  }
 }

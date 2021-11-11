@@ -171,6 +171,16 @@ public abstract class AbstractServer implements Runnable {
     }
   }
 
+  public synchronized void refill() {
+    refillBag();
+  }
+
+  /**
+   * Hook function when bag needs to be refilled. Need to be overridden for specific behaviour.
+   */
+  void refillBag() {
+  }
+
   /**
    * Checks if the connection thread is declared and alive.
    *
@@ -215,6 +225,7 @@ public abstract class AbstractServer implements Runnable {
   final synchronized void receiveMessageFromClient(Object msg, CustomClientThread client) {
     this.handleMessageClient(msg, client);
   }
+
 
   /**
    * Sends a message to all clients
