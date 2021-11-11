@@ -65,6 +65,7 @@ public class Controller {
       this.view.displayBoard();
       this.model.updateTest();
       this.model.setPlayer1(username);
+      this.view.show();
     } catch (Exception e) {
       this.view.displayError(e);
     }
