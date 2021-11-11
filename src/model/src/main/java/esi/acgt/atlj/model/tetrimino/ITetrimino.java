@@ -49,19 +49,17 @@ public class ITetrimino extends Tetrimino {
     System.out.println(t);
   }
 
-  private static final Mino[][] template = {
-      {null, null, null, null},
-      {Mino.I_MINO, Mino.I_MINO, Mino.I_MINO, Mino.I_MINO},
-      {null, null, null, null},
-      {null, null, null, null}
-  };
-
   /**
    * Constructor for I tetrimino.
    */
   public ITetrimino() {
     super();
-    this.minos = template;
+    this.minos = new Mino[][]{
+        {null, null, null, null},
+        {Mino.I_MINO, Mino.I_MINO, Mino.I_MINO, Mino.I_MINO},
+        {null, null, null, null},
+        {null, null, null, null}
+    };
     this.type = Mino.I_MINO;
   }
 
