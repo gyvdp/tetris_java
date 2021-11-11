@@ -26,13 +26,12 @@ package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
 import esi.acgt.atlj.model.tetrimino.Mino;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class BothPlayerView {
@@ -45,35 +44,32 @@ public class BothPlayerView {
     this.scene = new HBox();
     this.player1 = new PlayerTetrisFXML(scene);
     this.player2 = new PlayerTetrisFXML(scene);
+
+    this.scene.getChildren().add(player1.scene);
+    this.scene.getChildren().add(player2.scene);
+
     this.scene.setSpacing(15);
     this.scene.setPadding(new Insets(10));
     this.scene.setStyle("-fx-background-color: gray");
     this.scene.setAlignment(Pos.CENTER);
 
-    this.scene.getChildren().add(player1.scene);
-    this.scene.getChildren().add(player2.scene);
-
-    stage.setScene(new Scene(this.scene));
     this.doBindings(stage);
-    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-    int displayWidth = gd.getDisplayMode().getWidth();
-    int displayHeight = gd.getDisplayMode().getHeight();
-    stage.setMinHeight(
-        displayHeight / gd.getDefaultConfiguration().getDefaultTransform().getScaleY() / 2);
-    stage.setMinWidth(
-        displayWidth / gd.getDefaultConfiguration().getDefaultTransform().getScaleX() / 2);
-    stage.setMaxHeight(
-        displayHeight / gd.getDefaultConfiguration().getDefaultTransform().getScaleY());
-    stage.setMaxWidth(
-        displayWidth / gd.getDefaultConfiguration().getDefaultTransform().getScaleX());
-    stage.setHeight(
-        displayHeight / gd.getDefaultConfiguration().getDefaultTransform().getScaleY() / 1.5);
-    stage.setWidth(
-        displayWidth / gd.getDefaultConfiguration().getDefaultTransform().getScaleX() / 1.5);
+    stage.setScene(new Scene(this.scene));
+    this.setSizeStage(stage);
 
-    stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, (key) -> {
-      controller.keyBoardInput(key.getCode());
-    });
+    stage.getScene()
+        .addEventFilter(KeyEvent.KEY_PRESSED, (key) -> controller.keyBoardInput(key.getCode()));
+  }
+
+  private void setSizeStage(Stage stage) {
+    double width = Screen.getPrimary().getBounds().getWidth();
+    double height = Screen.getPrimary().getBounds().getHeight();
+    stage.setMinWidth(width * 0.5);
+    stage.setMinHeight(height * 0.5);
+    stage.setMaxWidth(width);
+    stage.setMaxHeight(height);
+    stage.setWidth(width * 0.75);
+    stage.setHeight(height * 0.75);
   }
 
   private void doBindings(Stage stage) {

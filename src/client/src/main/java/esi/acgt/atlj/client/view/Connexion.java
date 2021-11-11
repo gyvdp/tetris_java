@@ -80,6 +80,7 @@ public class Connexion implements Initializable {
       } else {
         throw new IllegalArgumentException();
       }
+      this.stage.close();
     } catch (Exception e) {
       Alert alert = new Alert(AlertType.ERROR);
       alert.setContentText("Les informations entrées sont incorrects.");

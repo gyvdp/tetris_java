@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class View implements ViewInterface, PropertyChangeListener {
 
-  private final Stage primaryStage;
+  private Stage primaryStage;
   private Controller controller;
   private BothPlayerView bothPlayerView;
 
@@ -28,7 +28,7 @@ public class View implements ViewInterface, PropertyChangeListener {
 
   @Override
   public void displayBoard() {
-    this.primaryStage.setResizable(true);
+    this.primaryStage = new Stage();
     this.bothPlayerView = new BothPlayerView(this.controller, this.primaryStage);
     this.primaryStage.centerOnScreen();
   }
