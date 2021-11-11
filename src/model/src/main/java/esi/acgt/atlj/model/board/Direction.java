@@ -21,53 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package esi.acgt.atlj.model.board;
 
-package esi.acgt.atlj.model.tetrimino;
+public enum Direction {
+  UP(0, -1),
+  RIGHT(1, 0),
+  DOWN(0, 1),
+  LEFT(-1, 0);
 
-import esi.acgt.atlj.model.board.Direction;
+  private int x, y;
 
-/**
- * The TetriminoInterface
- */
-public interface TetriminoInterface {
+  Direction(int x, int y) {
+    this.x = x;
+    this.y = y;
+  }
 
-  /**
-   * Get the x position
-   *
-   * @return the x position
-   */
-  int getX();
+  public int getX() {
+    return x;
+  }
 
-  /**
-   * Get the y position
-   *
-   * @return the y position
-   */
-  int getY();
-
-  /**
-   * Get a matrix of the minos in the tetrimino
-   *
-   * @return the tetrimino as minos matrix
-   */
-  Mino[][] getMinos();
-
-  /**
-   * Get the minos wich the matrix is made of
-   *
-   * @return the mino contains in the matrix of minos
-   */
-  Mino getType();
-
-  /**
-   * Rotate the Tetrimino
-   *
-   * @param clockwise       true if clockwise
-   * @param surroundingArea Area of surrounding blocks.
-   * @throws IllegalArgumentException if non valid parameters.
-   */
-  void rotate(boolean clockwise, boolean[][] surroundingArea);
-
-  void move(Direction direction);
-
+  public int getY() {
+    return y;
+  }
 }

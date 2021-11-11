@@ -1,6 +1,7 @@
 package esi.acgt.atlj.model;
 
 import esi.acgt.atlj.model.board.BoardInterface;
+import esi.acgt.atlj.model.board.Direction;
 import java.beans.PropertyChangeListener;
 
 public interface ModelInterface {
@@ -35,4 +36,6 @@ public interface ModelInterface {
   void setPlayer1(String name);
 
   void removePropertyChangeListener(PropertyChangeListener listener);
+
+  void move(Direction direction);
 }

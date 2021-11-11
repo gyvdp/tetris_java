@@ -23,6 +23,8 @@
  */
 package esi.acgt.atlj.model.tetrimino;
 
+import esi.acgt.atlj.model.board.Direction;
+
 public abstract class Tetrimino implements TetriminoInterface {
 
   protected int x;
@@ -75,4 +77,11 @@ public abstract class Tetrimino implements TetriminoInterface {
   public Mino getType() {
     return this.type;
   }
+
+  @Override
+  public void move(Direction direction) {
+    this.x += direction.getX();
+    this.y += direction.getY();
+  }
+
 }

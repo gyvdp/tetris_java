@@ -98,4 +98,6 @@ public interface BoardInterface {
 
   void removePropertyChangeListener(PropertyChangeListener listener);
 
+  void move(Direction direction);
+
 }

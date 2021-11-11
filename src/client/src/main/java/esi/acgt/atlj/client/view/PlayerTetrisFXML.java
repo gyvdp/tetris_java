@@ -42,7 +42,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 
-
 public class PlayerTetrisFXML implements Initializable {
 
   private final Image image_NOMino;
@@ -120,7 +119,7 @@ public class PlayerTetrisFXML implements Initializable {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    oldBoard = new Mino[10][20];
+    oldBoard = new Mino[22][10];
     // Bindings of this.scene
     this.scene.prefWidthProperty().bind(motherbox.widthProperty().divide(2));
     this.scene.prefHeightProperty().bind(motherbox.heightProperty());
@@ -143,16 +142,16 @@ public class PlayerTetrisFXML implements Initializable {
     }
   }
 
-  public void updateBoard(Mino[][] board) {
+  public void updateBoard(Mino[][] oldBoard, Mino[][] newBoard) {
     int i = 0;
     var list = this.boardPane.getChildren();
     for (Node node : list) {
       if (node instanceof ImageView) {
-        if (board[i / 20][i % 20] != this.oldBoard[i / 20][i % 20]) {
-          ((ImageView) node).setImage(
-              cubeColor(
-                  board[i / this.boardPane.getRowCount()][i % this.boardPane.getRowCount()]));
-        }
+        //if (newBoard[i % 22][i / 22] != oldBoard[i % 22][i / 22]) {
+        ((ImageView) node).setImage(
+            cubeColor(
+                newBoard[i % this.boardPane.getRowCount()][i / this.boardPane.getRowCount()]));
+        //  }
         i++;
       }
     }
@@ -208,6 +207,10 @@ public class PlayerTetrisFXML implements Initializable {
   }
 
   private Image cubeColor(Mino color) {
+    if (color == null) {
+      return this.image_NOMino;
+    }
+
     switch (color) {
       case S_MINO:
         return this.image_SMino;

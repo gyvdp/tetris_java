@@ -24,11 +24,14 @@
 
 package esi.acgt.atlj.model.board;
 
+import esi.acgt.atlj.model.tetrimino.ITetrimino;
 import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
+import java.util.Arrays;
 
 public abstract class Board implements BoardInterface, Serializable {
 
@@ -44,13 +47,13 @@ public abstract class Board implements BoardInterface, Serializable {
   public Board() {
     this.score = 0;
     this.nbLine = 0;
+    this.actualTetrimino = new ITetrimino();
     this.changeSupport = new PropertyChangeSupport(this);
     minos = new Mino[HEIGHT][WIDTH];
   }
 
   @Override
   public void initTetrisBoard() {
-    minos[1][1] = Mino.Z_MINO;
     var oldBoard = this.getBoard();
     this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
   }
@@ -97,7 +100,22 @@ public abstract class Board implements BoardInterface, Serializable {
 
   @Override
   public Mino[][] getBoard() {
-    return minos;
+    Mino[][] copyBoard = new Mino[this.minos.length][];
+
+    for (int i = 0; i < this.minos.length; i++) {
+      copyBoard[i] = Arrays.copyOf(this.minos[i], this.minos[i].length);
+    }
+
+    for (int x = 0; x < this.actualTetrimino.getMinos().length; x++) {
+      for (int y = 0; y < this.actualTetrimino.getMinos()[x].length; y++) {
+        // if (this.actualTetrimino.getMinos()[x][y] != null) {
+        copyBoard[x + this.actualTetrimino.getY()][y
+            + this.actualTetrimino.getX()] = this.actualTetrimino.getMinos()[x][y];
+        //   }
+      }
+      // 015332266
+    }
+    return copyBoard;
   }
 
   public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -109,5 +127,7 @@ public abstract class Board implements BoardInterface, Serializable {
   }
 
   public abstract void setNbLine(int nbLine);
+
+  public abstract void move(Direction direction);
 
 }

@@ -63,4 +63,9 @@ public class UnmanagedBoard extends Board {
     this.changeSupport.firePropertyChange("player2NbLine", this.nbLine, this.nbLine);
   }
 
+  @Override
+  public void move(Direction direction) {
+
+  }
+
 }
