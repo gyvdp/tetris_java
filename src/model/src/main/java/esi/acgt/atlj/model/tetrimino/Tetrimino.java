@@ -69,5 +69,4 @@ public abstract class Tetrimino implements TetriminoInterface {
     return this.minos;
   }
 
-
 }
