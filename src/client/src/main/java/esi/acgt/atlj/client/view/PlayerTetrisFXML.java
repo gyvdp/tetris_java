@@ -45,6 +45,21 @@ import javafx.scene.shape.Circle;
 
 public class PlayerTetrisFXML implements Initializable {
 
+  private final Image image_NOMino;
+  private final Image image_SMino;
+  private final Image image_IMino;
+  private final Image image_JMino;
+  private final Image image_LMino;
+  private final Image image_TMino;
+  private final Image image_ZMino;
+  private final Image image_OMino;
+  private final Image tetro_J;
+  private final Image tetro_S;
+  private final Image tetro_O;
+  private final Image tetro_Z;
+  private final Image tetro_L;
+  private final Image tetro_I;
+  private final Image tetro_T;
   // Texts
   @FXML
   public Label scoreLabel;
@@ -54,7 +69,6 @@ public class PlayerTetrisFXML implements Initializable {
   public Label linesLabel;
   @FXML
   public Label usernameLabel;
-
   // Hold
   @FXML
   public Circle circleHold;
@@ -62,7 +76,6 @@ public class PlayerTetrisFXML implements Initializable {
   public ImageView holdTetromino;
   @FXML
   public StackPane stackPaneHold;
-
   // Next
   @FXML
   public ImageView nextTetromino;
@@ -70,33 +83,13 @@ public class PlayerTetrisFXML implements Initializable {
   public Circle circleNext;
   @FXML
   public StackPane stackPaneNext;
-
   //Board
   @FXML
   public GridPane boardPane;
-
   // Scene
   @FXML
   public GridPane scene;
-
-  private final Image image_NOMino;
-  private final Image image_SMino;
-  private final Image image_IMino;
-  private final Image image_JMino;
-  private final Image image_LMino;
-  private final Image image_TMino;
-  private final Image image_ZMino;
-  private final Image image_OMino;
-
-  private final Image tetro_J;
-  private final Image tetro_S;
-  private final Image tetro_O;
-  private final Image tetro_Z;
-  private final Image tetro_L;
-  private final Image tetro_I;
-  private final Image tetro_T;
-
-  private Mino[][] oldBoard;
+  private final Mino[][] oldBoard;
 
 
   public PlayerTetrisFXML(HBox motherbox) {

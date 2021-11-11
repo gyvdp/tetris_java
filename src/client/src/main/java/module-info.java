@@ -8,4 +8,5 @@ module atlj.client {
 
   exports esi.acgt.atlj.client;
   exports esi.acgt.atlj.client.view;
+  exports esi.acgt.atlj.client.controller;
 }

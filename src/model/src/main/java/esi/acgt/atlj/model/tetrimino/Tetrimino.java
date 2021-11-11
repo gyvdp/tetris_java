@@ -47,9 +47,9 @@ public abstract class Tetrimino implements TetriminoInterface {
         this.minos[j][l - i] = k;
       }
     }
-    for (i=0; i< minos.length; i++) {
+    for (i = 0; i < minos.length; i++) {
       for (j = 0; j < minos[1].length; j++) {
-        if (surroundingArea[i][j] && this.minos[i][j]!=null){
+        if (surroundingArea[i][j] && this.minos[i][j] != null) {
           throw new IllegalArgumentException("Turn cannot be preformed");
         }
       }

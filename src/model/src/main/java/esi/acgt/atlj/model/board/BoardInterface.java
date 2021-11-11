@@ -61,6 +61,7 @@ public interface BoardInterface {
 
   /**
    * Gets a matrix of 6*6 of the surrounding area
+   *
    * @return Matrix of surrounding area.
    */
   boolean[][] getSurroundingArea(int x, int y);
@@ -93,8 +94,8 @@ public interface BoardInterface {
    */
   TetriminoInterface getNextTetrimino();
 
-  public void addPropertyChangeListener(PropertyChangeListener listener);
+  void addPropertyChangeListener(PropertyChangeListener listener);
 
-  public void removePropertyChangeListener(PropertyChangeListener listener);
+  void removePropertyChangeListener(PropertyChangeListener listener);
 
 }

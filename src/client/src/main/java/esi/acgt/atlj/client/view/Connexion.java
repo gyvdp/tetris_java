@@ -43,18 +43,15 @@ import javafx.stage.Stage;
 
 public class Connexion implements Initializable {
 
-  private Controller controller;
-  private Stage stage;
   private static final Pattern regex = Pattern.compile("^(?:[0-9]{1,3}.){3}[0-9]{1,3}$");
-
   @FXML
   public TextField ip;
-
   @FXML
   public TextField username;
-
   @FXML
   public TextField port;
+  private final Controller controller;
+  private final Stage stage;
 
   public Connexion(Controller controller, Stage stage) {
     this.controller = controller;
@@ -97,7 +94,7 @@ public class Connexion implements Initializable {
 
   //TODO retirer button test de la version finale
   public void testPressed() {
-        this.controller.connexion("1.1.1.1", 1, "usertest");
+    this.controller.connexion("1.1.1.1", 1, "usertest");
   }
 
   @Override

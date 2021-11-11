@@ -29,14 +29,13 @@ import java.util.HashMap;
 
 public class Server extends AbstractServer {
 
-  private int clientId;
-
   private final HashMap<Integer, CustomClientThread> members;
+  private int clientId;
 
   public Server(int port) {
     super(port);
 
-    clientId=0;
+    clientId = 0;
     members = new HashMap<Integer, CustomClientThread>();
     this.startServer();
 
@@ -57,7 +56,7 @@ public class Server extends AbstractServer {
     super.serverStopped();
   }
 
-  private int getNextId(){
+  private int getNextId() {
     return this.clientId++;
   }
 
@@ -74,10 +73,11 @@ public class Server extends AbstractServer {
 
   /**
    * Sends a message to a specific client
+   *
    * @param information Message to send to client.
-   * @param clientId Unique id of client.
+   * @param clientId    Unique id of client.
    */
-  void sentToClient(Object information, int clientId){
+  void sentToClient(Object information, int clientId) {
 
   }
 }

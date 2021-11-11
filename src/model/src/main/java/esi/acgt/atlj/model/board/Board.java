@@ -41,7 +41,7 @@ public abstract class Board implements BoardInterface, Serializable {
   protected TetriminoInterface nextTetrimino;
   protected PropertyChangeSupport changeSupport;
 
-  public Board(){
+  public Board() {
     this.score = 0;
     this.nbLine = 0;
     this.changeSupport = new PropertyChangeSupport(this);
@@ -49,7 +49,7 @@ public abstract class Board implements BoardInterface, Serializable {
 
   @Override
   public void initTetrisBoard() {
-    minos=new Mino[HEIGHT][WIDTH];
+    minos = new Mino[HEIGHT][WIDTH];
   }
 
   @Override
@@ -62,10 +62,14 @@ public abstract class Board implements BoardInterface, Serializable {
     return score;
   }
 
+  public abstract void setScore(int score);
+
   @Override
   public String getUsername() {
     return username;
   }
+
+  public abstract void setUsername(String username);
 
   @Override
   public TetriminoInterface getHold() {
@@ -94,10 +98,6 @@ public abstract class Board implements BoardInterface, Serializable {
   public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
     changeSupport.removePropertyChangeListener(listener);
   }
-
-  public abstract void setScore(int score);
-
-  public abstract void setUsername(String username);
 
   public abstract void setNbLine(int nbLine);
 

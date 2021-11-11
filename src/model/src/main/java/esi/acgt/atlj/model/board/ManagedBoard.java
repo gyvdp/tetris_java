@@ -24,8 +24,6 @@
 
 package esi.acgt.atlj.model.board;
 
-import esi.acgt.atlj.model.tetrimino.Tetrimino;
-import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.security.InvalidParameterException;
 import java.util.Timer;
 
@@ -59,7 +57,7 @@ public class ManagedBoard extends Board {
       actualTetrimino.rotate(clockwise, this.getSurroundingArea(actualTetrimino.getX(),
           actualTetrimino.getY()));
       this.changeSupport.firePropertyChange("player1Board", null, this.getBoard());
-    } catch(InvalidParameterException e){
+    } catch (InvalidParameterException e) {
       //Check if there is another block or if its wall
       //If it is another block tetrimino must be placed If wall do nothing
     }

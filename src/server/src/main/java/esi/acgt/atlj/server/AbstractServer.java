@@ -35,48 +35,41 @@ import java.util.List;
 public abstract class AbstractServer implements Runnable {
 
   /**
-   * Socket of server
-   */
-  private ServerSocket serverSocket = null;
-
-  /**
    * Port on which server will listen to.
    */
   private final int port;
-
-  /**
-   * Thread that will await for client to connect.
-   */
-  private Thread connectionThread;
-
-  /**
-   * True if server is active.
-   */
-  private boolean isActive = false;
-
-  /**
-   * Server timeout for accepting connexions.
-   * Defaults to half a second.
-   */
-  private int timeout=500;
-
-  /**
-   * Maximum number of clients that can be in the queue at the same time.
-   * Default to 10 clients.
-   */
-  private int backlog=10;
-
   /**
    * List of all client threads
    */
   private final List<Thread> threads;
+  /**
+   * Socket of server
+   */
+  private ServerSocket serverSocket = null;
+  /**
+   * Thread that will await for client to connect.
+   */
+  private Thread connectionThread;
+  /**
+   * True if server is active.
+   */
+  private boolean isActive = false;
+  /**
+   * Server timeout for accepting connexions. Defaults to half a second.
+   */
+  private final int timeout = 500;
+  /**
+   * Maximum number of clients that can be in the queue at the same time. Default to 10 clients.
+   */
+  private final int backlog = 10;
 
   /**
    * Constructor for Abstract server
+   *
    * @param port Port on which to listen to.
    */
-  public AbstractServer(int port){
-    this.port= port;
+  public AbstractServer(int port) {
+    this.port = port;
     threads = new ArrayList<Thread>();
   }
 
@@ -84,15 +77,16 @@ public abstract class AbstractServer implements Runnable {
    * Stops the server from running.
    */
   public void stopServer() throws IOException {
-    if (serverSocket == null)
+    if (serverSocket == null) {
       return;
+    }
     try {
       serverSocket.close();
     } catch (IOException e) {
       e.printStackTrace();
     } finally {
-      synchronized (this){
-        for (Thread clientSockets : threads){
+      synchronized (this) {
+        for (Thread clientSockets : threads) {
           ((CustomClientThread) clientSockets).close();
         }
       }
@@ -101,64 +95,72 @@ public abstract class AbstractServer implements Runnable {
   }
 
   /**
-   * Hook for when there is an exception in the server.
-   * Defaults to nothing, needs to be overridden.
+   * Hook for when there is an exception in the server. Defaults to nothing, needs to be
+   * overridden.
+   *
    * @param e Exception e.
    */
-  protected void exceptionHook(Exception e){
+  protected void exceptionHook(Exception e) {
   }
 
   /**
    * Returns number of connected clients.
+   *
    * @return Size of thread.
    */
-  public int getNumberOfClients(){
+  public int getNumberOfClients() {
     return this.threads.size();
   }
 
   /**
-   * Getter for all the current connections to the server. New members with not figure in the
-   * list at all.
+   * Getter for all the current connections to the server. New members with not figure in the list
+   * at all.
+   *
    * @return List of all client threads.
    */
-  synchronized public final List<Thread> getAllConnectedClients(){return Collections.unmodifiableList(threads);}
-
-  /**
-   * Hook for when server has stopped.
-   * Defaults to nothing, needs to be overridden.
-   */
-  protected void serverStopped(){
+  synchronized public final List<Thread> getAllConnectedClients() {
+    return Collections.unmodifiableList(threads);
   }
 
   /**
-   * Hook for when message from client is received.
-   * Defaults to nothing, needs to be overridden.
-   * @param msg Object that has been received.
+   * Hook for when server has stopped. Defaults to nothing, needs to be overridden.
+   */
+  protected void serverStopped() {
+  }
+
+  /**
+   * Hook for when message from client is received. Defaults to nothing, needs to be overridden.
+   *
+   * @param msg    Object that has been received.
    * @param client Client that has sent the message.
    */
-  protected void handleMessageClient(Object msg, CustomClientThread client){
+  protected void handleMessageClient(Object msg, CustomClientThread client) {
   }
 
   /**
    * Hook for when a client has connected.
+   *
    * @param client Client that has successfully connected to the server.
    */
-  protected void clientConnected(CustomClientThread client){}
+  protected void clientConnected(CustomClientThread client) {
+  }
 
   /**
    * Hook for when a client has disconnected from the server.
+   *
    * @param client Client that has successfully disconnected form the server.
    */
-  protected void clientDiconnected(CustomClientThread client){}
+  protected void clientDiconnected(CustomClientThread client) {
+  }
 
   /**
-   * Establishes server socket, create new listener thread
-   * and turns isActive to true.
+   * Establishes server socket, create new listener thread and turns isActive to true.
    */
-  public void startServer (){
+  public void startServer() {
     try {
-      if (!isListening() && serverSocket == null)
+      if (!isListening() && serverSocket == null) {
         serverSocket = new ServerSocket(this.port, this.backlog);
+      }
       serverSocket.setSoTimeout(timeout);
     } catch (IOException e) {
       exceptionHook(e);
@@ -171,9 +173,12 @@ public abstract class AbstractServer implements Runnable {
 
   /**
    * Checks if the connection thread is declared and alive.
+   *
    * @return True if connection thread is listening.
    */
-  public boolean isListening(){return (connectionThread !=null&&connectionThread.isAlive());}
+  public boolean isListening() {
+    return (connectionThread != null && connectionThread.isAlive());
+  }
 
   /**
    * {@inheritDoc}
@@ -191,7 +196,8 @@ public abstract class AbstractServer implements Runnable {
               this.threads.add(customClientThread);
             }
           }
-        } catch (IOException e) {}
+        } catch (IOException e) {
+        }
       }
     } finally {
       this.isActive = false;
@@ -202,18 +208,20 @@ public abstract class AbstractServer implements Runnable {
   /**
    * Receives a message sent form the client to the server. This method is synchronized to ensure
    * that whatever effects it has does not conflict with work being done by another thread.
-   * @param msg Message received form client.
+   *
+   * @param msg    Message received form client.
    * @param client Author of the message.
    */
-  final synchronized void receiveMessageFromClient(Object msg, CustomClientThread client){
-    this.handleMessageClient(msg,client);
+  final synchronized void receiveMessageFromClient(Object msg, CustomClientThread client) {
+    this.handleMessageClient(msg, client);
   }
 
   /**
    * Sends a message to all clients
    */
   public void sendToAllClients(Object obj) throws IOException {
-    for (Thread clientThread : threads)
+    for (Thread clientThread : threads) {
       ((CustomClientThread) clientThread).sendMessage(obj);
+    }
   }
 }

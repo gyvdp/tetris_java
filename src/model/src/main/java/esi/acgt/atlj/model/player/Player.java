@@ -27,8 +27,8 @@ public abstract class Player {
 
   private final String name;
   private int level;
-  private int nbLine;
-  private int score;
+  private final int nbLine;
+  private final int score;
 
   /**
    * Instantiates a new Player.

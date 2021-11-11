@@ -79,23 +79,23 @@ public class View implements ViewInterface, PropertyChangeListener {
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
 
-    switch (evt.getPropertyName()){
-     // this.changeSupport.firePropertyChange("player1Board", null, this.getBoard());
-      case "player1Board" ->{
+    switch (evt.getPropertyName()) {
+      // this.changeSupport.firePropertyChange("player1Board", null, this.getBoard());
+      case "player1Board" -> {
         System.out.println("Board joueur 1 update");
-        this.bothPlayerView.updateBoard((Mino[][]) evt.getNewValue(),0);
+        this.bothPlayerView.updateBoard((Mino[][]) evt.getNewValue(), 0);
       }
-      case "player1NbLine" ->{
-        System.out.println("NbLine du joueur 1 : "+ evt.getNewValue());
-        this.bothPlayerView.updateLine((int)evt.getNewValue(),0);
+      case "player1NbLine" -> {
+        System.out.println("NbLine du joueur 1 : " + evt.getNewValue());
+        this.bothPlayerView.updateLine((int) evt.getNewValue(), 0);
       }
-      case "player1Score" ->{
-        System.out.println("Score du joueur 1 : "+ evt.getNewValue());
-        this.bothPlayerView.updateScore((int)evt.getNewValue(),0);
+      case "player1Score" -> {
+        System.out.println("Score du joueur 1 : " + evt.getNewValue());
+        this.bothPlayerView.updateScore((int) evt.getNewValue(), 0);
       }
       case "player1Name" -> {
-        System.out.println("nom du joueur 1 "+ evt.getNewValue());
-        this.bothPlayerView.updateUsername(evt.getNewValue().toString(),0);
+        System.out.println("nom du joueur 1 " + evt.getNewValue());
+        this.bothPlayerView.updateUsername(evt.getNewValue().toString(), 0);
       }
       default -> System.out.println(evt.getPropertyName() + evt.getNewValue());
     }

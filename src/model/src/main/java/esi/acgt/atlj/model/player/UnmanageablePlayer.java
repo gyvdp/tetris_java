@@ -25,8 +25,9 @@ package esi.acgt.atlj.model.player;
 
 import esi.acgt.atlj.model.board.UnmanagedBoard;
 
-public class UnmanageablePlayer extends Player{
-  private UnmanagedBoard board;
+public class UnmanageablePlayer extends Player {
+
+  private final UnmanagedBoard board;
 
   /**
    * Instantiates a new Player.

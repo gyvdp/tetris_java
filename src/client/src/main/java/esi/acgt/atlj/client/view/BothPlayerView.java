@@ -25,23 +25,21 @@
 package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
+import esi.acgt.atlj.model.tetrimino.Mino;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import esi.acgt.atlj.model.tetrimino.Mino;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class BothPlayerView {
 
-  private HBox scene;
-  private PlayerTetrisFXML player1;
-  private PlayerTetrisFXML player2;
+  private final HBox scene;
+  private final PlayerTetrisFXML player1;
+  private final PlayerTetrisFXML player2;
 
   public BothPlayerView(Controller controller, Stage stage) {
     this.scene = new HBox();

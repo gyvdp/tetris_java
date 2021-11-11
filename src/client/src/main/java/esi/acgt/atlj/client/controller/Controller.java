@@ -2,7 +2,6 @@ package esi.acgt.atlj.client.controller;
 
 import esi.acgt.atlj.client.view.ViewInterface;
 import esi.acgt.atlj.model.ModelInterface;
-import java.beans.PropertyChangeListener;
 import java.util.Objects;
 import javafx.scene.input.KeyCode;
 

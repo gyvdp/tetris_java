@@ -25,18 +25,20 @@
 package esi.acgt.atlj.client.connexionServer;
 
 /**
- * Sets up a specialized client with overridden methods from
- * AbstractClient on which application will run on.
+ * Sets up a specialized client with overridden methods from AbstractClient on which application
+ * will run on.
+ *
  * @see esi.acgt.atlj.client.connexionServer.AbstractClient
  */
 public class Client extends AbstractClient {
 
   /**
    * Constructor of a client.
+   *
    * @param port Port client must look for.
    * @param host Host client must connect to.
    */
-  public Client(int port, String host){
+  public Client(int port, String host) {
     super(port, host);
   }
 

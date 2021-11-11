@@ -7,26 +7,26 @@ import java.beans.PropertyChangeListener;
 
 public interface ViewInterface extends PropertyChangeListener {
 
-  public void show();
+  void show();
 
-  public void setController(Controller controller);
+  void setController(Controller controller);
 
-  public void displayError(Exception e);
+  void displayError(Exception e);
 
-  public void displayConnexion();
+  void displayConnexion();
 
-  public void displayBoard();
+  void displayBoard();
 
-  public void updateBoard(Mino[][] board, int playerID);
+  void updateBoard(Mino[][] board, int playerID);
 
-  public void updateScore(int newScore, int playerID);
+  void updateScore(int newScore, int playerID);
 
-  public void updateUsername(String newUsername, int playerID);
+  void updateUsername(String newUsername, int playerID);
 
-  public void updateTimer(int timer, int playerID);
+  void updateTimer(int timer, int playerID);
 
-  public void updateLine(int line, int playerID);
+  void updateLine(int line, int playerID);
 
-  public void propertyChange(PropertyChangeEvent evt);
+  void propertyChange(PropertyChangeEvent evt);
 
 }

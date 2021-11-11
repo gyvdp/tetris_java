@@ -24,8 +24,6 @@
 
 package esi.acgt.atlj.model.tetrimino;
 
-import esi.acgt.atlj.model.tetrimino.Mino;
-
 /**
  * The TetriminoInterface
  */
@@ -57,7 +55,7 @@ public interface TetriminoInterface {
    *
    * @return the mino contains in the matrix of minos
    */
-  public Mino getType();
+  Mino getType();
 
   /**
    * Rotate the Tetrimino

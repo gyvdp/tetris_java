@@ -26,9 +26,9 @@ package esi.acgt.atlj.model.player;
 
 import esi.acgt.atlj.model.board.ManagedBoard;
 
-public class ManageablePlayer extends Player{
+public class ManageablePlayer extends Player {
 
-  private ManagedBoard board;
+  private final ManagedBoard board;
 
   /**
    * Instantiates a new Player.

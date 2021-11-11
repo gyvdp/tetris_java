@@ -3,14 +3,14 @@ package esi.acgt.atlj.model;
 import esi.acgt.atlj.model.board.BoardInterface;
 import esi.acgt.atlj.model.board.ManagedBoard;
 import esi.acgt.atlj.model.board.UnmanagedBoard;
-import java.beans.*;
+import java.beans.PropertyChangeListener;
 
 public class Model implements ModelInterface {
 
   protected ManagedBoard player1;
   protected UnmanagedBoard player2;
 
-  public Model(){
+  public Model() {
     this.player1 = new ManagedBoard();
     this.player2 = new UnmanagedBoard();
   }
