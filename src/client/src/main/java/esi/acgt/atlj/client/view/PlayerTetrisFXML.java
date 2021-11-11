@@ -25,6 +25,7 @@
 package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -33,14 +34,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
 
 
 public class PlayerTetrisFXML implements Initializable {
@@ -99,7 +99,7 @@ public class PlayerTetrisFXML implements Initializable {
   private Mino[][] oldBoard;
 
 
-  public PlayerTetrisFXML(Stage stage) {
+  public PlayerTetrisFXML(HBox motherbox) {
     //Load all Images
     this.image_NOMino = new Image(getClass().getResourceAsStream("/image/WhiteCube.png"));
     this.image_SMino = new Image(getClass().getResourceAsStream("/image/GreenCube.png"));
@@ -123,14 +123,14 @@ public class PlayerTetrisFXML implements Initializable {
         "/fxml/TetrisBoard.fxml"));
     loader.setController(this);
     try {
-      stage.setScene(new Scene(loader.load()));
+      loader.load();
     } catch (IOException e) {
       e.printStackTrace();
     }
     oldBoard = new Mino[10][20];
     // Bindings of this.scene
-    this.scene.prefWidthProperty().bind(stage.getScene().widthProperty());
-    this.scene.prefHeightProperty().bind(stage.getScene().heightProperty());
+    this.scene.prefWidthProperty().bind(motherbox.widthProperty().divide(2));
+    this.scene.prefHeightProperty().bind(motherbox.heightProperty());
   }
 
   @Override
@@ -185,34 +185,34 @@ public class PlayerTetrisFXML implements Initializable {
     this.linesLabel.setText(Integer.toString(line));
   }
 
-//  public void updateHold(Tetromino hold) {
-//    this.holdTetromino.setImage(getTetrominoImage(hold));
-//  }
-//
-//  public void updateNextPiece(Tetromino tetromino) {
-//    this.nextTetromino.setImage(this.getTetrominoImage(tetromino));
-//  }
-//
-//  private Image getTetrominoImage(Tetromino tetromino) {
-//    switch (tetromino) {
-//      case I:
-//        return this.tetro_I;
-//      case J:
-//        return this.tetro_J;
-//      case L:
-//        return this.tetro_L;
-//      case O:
-//        return this.tetro_O;
-//      case S:
-//        return this.tetro_S;
-//      case T:
-//        return this.tetro_T;
-//      case Z:
-//        return this.tetro_Z;
-//      default:
-//        throw new IllegalArgumentException("Tetro doesn't exists.");
-//    }
-//  }
+  public void updateHold(TetriminoInterface hold) {
+    this.holdTetromino.setImage(getTetrominoImage(hold.getType()));
+  }
+
+  public void updateNextPiece(TetriminoInterface tetromino) {
+    this.nextTetromino.setImage(this.getTetrominoImage(tetromino.getType()));
+  }
+
+  private Image getTetrominoImage(Mino tetromino) {
+    switch (tetromino) {
+      case I_MINO:
+        return this.tetro_I;
+      case J_MINO:
+        return this.tetro_J;
+      case L_MINO:
+        return this.tetro_L;
+      case O_MINO:
+        return this.tetro_O;
+      case S_MINO:
+        return this.tetro_S;
+      case T_MINO:
+        return this.tetro_T;
+      case Z_MINO:
+        return this.tetro_Z;
+      default:
+        throw new IllegalArgumentException("Tetro doesn't exists.");
+    }
+  }
 
   private Image cubeColor(Mino color) {
     switch (color) {
@@ -258,9 +258,9 @@ public class PlayerTetrisFXML implements Initializable {
     this.nextTetromino.fitHeightProperty().bind(this.stackPaneNext.heightProperty().divide(1.3));
 
     // Board
-    this.boardPane.prefHeightProperty()
-        .bind(Bindings.min(this.scene.heightProperty(), this.scene.widthProperty()));
-    this.boardPane.prefWidthProperty()
-        .bind(Bindings.min(this.scene.widthProperty(), this.scene.heightProperty()));
+//    this.boardPane.prefHeightProperty()
+//        .bind(Bindings.min(this.scene.heightProperty(), this.scene.widthProperty()));
+//    this.boardPane.prefWidthProperty()
+//        .bind(Bindings.min(this.scene.widthProperty(), this.scene.heightProperty()));
   }
 }

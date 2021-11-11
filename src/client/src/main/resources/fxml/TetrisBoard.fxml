@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -40,49 +39,49 @@
 <GridPane fx:id="scene" alignment="CENTER" prefHeight="650.0" prefWidth="550.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
       <ColumnConstraints />
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" prefWidth="120.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" prefWidth="485.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" prefWidth="120.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="20.0" />
+      <ColumnConstraints halignment="CENTER" percentWidth="60.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="20.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints prefHeight="120.0" valignment="TOP" vgrow="ALWAYS" />
-      <RowConstraints prefHeight="500.0" valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints percentHeight="25.0" prefHeight="0.0" valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints percentHeight="75.0" prefHeight="0.0" vgrow="ALWAYS" />
    </rowConstraints>
    <children>
-      <GridPane fx:id="boardPane" alignment="CENTER" style="-fx-background-color: gray; -fx-border-color: gray; -fx-border-width: 5px;" GridPane.columnIndex="2" GridPane.rowSpan="2">
+      <GridPane fx:id="boardPane" alignment="CENTER" gridLinesVisible="true" style="-fx-background-color: gray; -fx-border-color: gray; -fx-border-width: 5px;" GridPane.columnIndex="2" GridPane.rowSpan="2">
          <columnConstraints>
-            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
-            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
-            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
-            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
-            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
-            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
-            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
-            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
-            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
-            <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+            <ColumnConstraints halignment="CENTER" />
+            <ColumnConstraints halignment="CENTER" />
+            <ColumnConstraints halignment="CENTER" />
+            <ColumnConstraints halignment="CENTER" />
+            <ColumnConstraints halignment="CENTER" />
+            <ColumnConstraints halignment="CENTER" />
+            <ColumnConstraints halignment="CENTER" />
+            <ColumnConstraints halignment="CENTER" />
+            <ColumnConstraints halignment="CENTER" />
+            <ColumnConstraints halignment="CENTER" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
-            <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints valignment="CENTER" />
+            <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" valignment="CENTER" />
+            <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" valignment="CENTER" />
          </rowConstraints>
          <GridPane.margin>
             <Insets />
@@ -91,7 +90,7 @@
             <Insets bottom="0.5" left="0.5" right="0.5" top="0.5" />
          </opaqueInsets>
       </GridPane>
-      <VBox alignment="TOP_CENTER" spacing="5.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+      <VBox alignment="TOP_CENTER" spacing="5.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
          <children>
             <Label fx:id="usernameLabel" text="Username">
                <font>
@@ -142,16 +141,13 @@
             <Insets />
          </GridPane.margin>
          <padding>
-            <Insets left="5.0" right="5.0" top="50.0" />
+            <Insets left="5.0" right="5.0" top="20.0" />
          </padding>
       </VBox>
       <StackPane fx:id="stackPaneHold" minHeight="100.0" minWidth="100.0" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
          <children>
             <Circle fx:id="circleHold" fill="WHITE" radius="50.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="5.0" StackPane.alignment="CENTER" />
             <ImageView fx:id="holdTetromino" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
-               <image>
-                  <Image url="@../image/T.png" />
-               </image>
                <viewport>
                   <Rectangle2D />
                </viewport>
@@ -165,9 +161,6 @@
          <children>
             <Circle fx:id="circleNext" fill="WHITE" radius="50.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="5.0" StackPane.alignment="CENTER" />
             <ImageView fx:id="nextTetromino" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
-               <image>
-                  <Image url="@../image/Z.png" />
-               </image>
                <viewport>
                   <Rectangle2D />
                </viewport>
@@ -178,7 +171,4 @@
          </GridPane.margin>
       </StackPane>
    </children>
-   <padding>
-      <Insets bottom="10.0" top="10.0" />
-   </padding>
 </GridPane>
