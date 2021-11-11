@@ -24,14 +24,16 @@
 
 package esi.acgt.atlj.model.tetrimino;
 
-public class OTetrimino extends Tetrimino{
-  private static final Mino[][] template = {{null,Mino.O_MINO,Mino.O_MINO,null},{null,Mino.O_MINO,Mino.O_MINO,null},{null,null,null,null},{null,null,null,null}};
+public class OTetrimino extends Tetrimino {
 
-  public OTetrimino(){
+  private static final Mino[][] template = {{null, Mino.O_MINO, Mino.O_MINO, null},
+      {null, Mino.O_MINO, Mino.O_MINO, null}, {null, null, null, null}, {null, null, null, null}};
+
+  public OTetrimino() {
     super();
     this.minos = template;
+    this.type = Mino.O_MINO;
   }
-
 
 
 }

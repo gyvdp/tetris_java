@@ -53,9 +53,16 @@ public interface TetriminoInterface {
   Mino[][] getMinos();
 
   /**
+   * Get the minos wich the matrix is made of
+   *
+   * @return the mino contains in the matrix of minos
+   */
+  public Mino getType();
+
+  /**
    * Rotate the Tetrimino
    *
-   * @param clockwise true if clockwise
+   * @param clockwise       true if clockwise
    * @param surroundingArea Area of surrounding blocks.
    * @throws IllegalArgumentException if non valid parameters.
    */

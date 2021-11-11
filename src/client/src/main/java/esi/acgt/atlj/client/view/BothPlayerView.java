@@ -44,10 +44,11 @@ public class BothPlayerView {
   private PlayerTetrisFXML player2;
 
   public BothPlayerView(Controller controller, Stage stage) {
-    this.player1 = new PlayerTetrisFXML(stage);
-    this.player2 = new PlayerTetrisFXML(stage);
     this.scene = new HBox();
+    this.player1 = new PlayerTetrisFXML(scene);
+    this.player2 = new PlayerTetrisFXML(scene);
     this.scene.setSpacing(15);
+    this.scene.setPadding(new Insets(10));
     this.scene.setStyle("-fx-background-color: gray");
     this.scene.setAlignment(Pos.CENTER);
 
@@ -59,13 +60,18 @@ public class BothPlayerView {
     GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     int displayWidth = gd.getDisplayMode().getWidth();
     int displayHeight = gd.getDisplayMode().getHeight();
-    stage.setMinHeight(displayHeight/gd.getDefaultConfiguration().getDefaultTransform().getScaleY()/2);
-    stage.setMinWidth(displayWidth/gd.getDefaultConfiguration().getDefaultTransform().getScaleX()/2);
-    stage.setMaxHeight(displayHeight/gd.getDefaultConfiguration().getDefaultTransform().getScaleY());
-      stage.setMaxWidth(displayWidth/gd.getDefaultConfiguration().getDefaultTransform().getScaleX());
-    stage.setHeight(displayHeight/gd.getDefaultConfiguration().getDefaultTransform().getScaleY()/1.5);
-    stage.setWidth(displayWidth/gd.getDefaultConfiguration().getDefaultTransform().getScaleX()/1.5);
-
+    stage.setMinHeight(
+        displayHeight / gd.getDefaultConfiguration().getDefaultTransform().getScaleY() / 2);
+    stage.setMinWidth(
+        displayWidth / gd.getDefaultConfiguration().getDefaultTransform().getScaleX() / 2);
+    stage.setMaxHeight(
+        displayHeight / gd.getDefaultConfiguration().getDefaultTransform().getScaleY());
+    stage.setMaxWidth(
+        displayWidth / gd.getDefaultConfiguration().getDefaultTransform().getScaleX());
+    stage.setHeight(
+        displayHeight / gd.getDefaultConfiguration().getDefaultTransform().getScaleY() / 1.5);
+    stage.setWidth(
+        displayWidth / gd.getDefaultConfiguration().getDefaultTransform().getScaleX() / 1.5);
 
     stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, (key) -> {
       controller.keyBoardInput(key.getCode());
@@ -79,44 +85,44 @@ public class BothPlayerView {
 
   public void updateBoard(Mino[][] board, int playerID) {
 
-    if(playerID ==0){
+    if (playerID == 0) {
       this.player1.updateBoard(board);
-    }else{
+    } else {
       this.player2.updateBoard(board);
     }
   }
 
   public void updateScore(int newScore, int playerID) {
 
-    if(playerID ==0){
+    if (playerID == 0) {
       this.player1.updateScore(newScore);
-    }else{
+    } else {
       this.player2.updateScore(newScore);
     }
   }
 
   public void updateUsername(String newUsername, int playerID) {
 
-    if(playerID ==0){
+    if (playerID == 0) {
       this.player1.updateUsername(newUsername);
-    }else{
+    } else {
       this.player2.updateUsername(newUsername);
     }
   }
 
   public void updateTimer(int timer, int playerID) {
 
-    if(playerID ==0){
+    if (playerID == 0) {
       this.player1.updateTimer(timer);
-    }else{
+    } else {
       this.player2.updateTimer(timer);
     }
   }
 
   public void updateLine(int line, int playerID) {
-    if(playerID ==0){
+    if (playerID == 0) {
       this.player1.updateLine(line);
-    }else{
+    } else {
       this.player2.updateLine(line);
     }
   }

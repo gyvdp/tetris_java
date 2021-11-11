@@ -8,7 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
-public class View implements ViewInterface, PropertyChangeListener{
+public class View implements ViewInterface, PropertyChangeListener {
 
   private final Stage primaryStage;
   private Controller controller;
@@ -29,7 +29,7 @@ public class View implements ViewInterface, PropertyChangeListener{
   @Override
   public void displayBoard() {
     this.primaryStage.setResizable(true);
-    this.bothPlayerView = new BothPlayerView(this.controller,this.primaryStage);
+    this.bothPlayerView = new BothPlayerView(this.controller, this.primaryStage);
     this.primaryStage.centerOnScreen();
   }
 
@@ -53,27 +53,27 @@ public class View implements ViewInterface, PropertyChangeListener{
 
   @Override
   public void updateBoard(Mino[][] board, int playerID) {
-      this.bothPlayerView.updateBoard(board, playerID);
+    this.bothPlayerView.updateBoard(board, playerID);
   }
 
   @Override
   public void updateScore(int newScore, int playerID) {
-      this.bothPlayerView.updateScore(newScore, playerID);
+    this.bothPlayerView.updateScore(newScore, playerID);
   }
 
   @Override
   public void updateUsername(String newUsername, int playerID) {
-      this.bothPlayerView.updateUsername(newUsername, playerID);
+    this.bothPlayerView.updateUsername(newUsername, playerID);
   }
 
   @Override
   public void updateTimer(int timer, int playerID) {
-      this.bothPlayerView.updateTimer(timer, playerID);
+    this.bothPlayerView.updateTimer(timer, playerID);
   }
 
   @Override
   public void updateLine(int line, int playerID) {
-      this.bothPlayerView.updateLine(line,playerID);
+    this.bothPlayerView.updateLine(line, playerID);
   }
 
   @Override
