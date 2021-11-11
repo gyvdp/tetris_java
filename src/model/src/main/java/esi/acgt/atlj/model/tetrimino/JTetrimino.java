@@ -26,9 +26,34 @@ package esi.acgt.atlj.model.tetrimino;
 
 public class JTetrimino extends Tetrimino {
 
-  private static final Mino[][] template = {{null, Mino.J_MINO, null, null},
-      {null, Mino.J_MINO, null, null},
-      {Mino.J_MINO, Mino.J_MINO, null, null},
+  public static void main(String[] args) {
+    boolean[][] area = {
+        {false, false, false, false},
+        {false, false, false, false},
+        {false, false, false, false},
+        {false, false, false, false}
+    };
+
+    JTetrimino t = new JTetrimino();
+    System.out.println(t);
+
+    t.rotate(true, area);
+    System.out.println(t);
+
+    t.rotate(true, area);
+    System.out.println(t);
+
+    t.rotate(true, area);
+    System.out.println(t);
+
+    t.rotate(true, area);
+    System.out.println(t);
+  }
+
+  private static final Mino[][] template = {
+      {Mino.J_MINO, null, null, null},
+      {Mino.J_MINO, Mino.J_MINO, Mino.J_MINO, null},
+      {null, null, null, null},
       {null, null, null, null}};
 
   public JTetrimino() {

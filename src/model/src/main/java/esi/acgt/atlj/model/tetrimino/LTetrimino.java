@@ -35,19 +35,4 @@ public class LTetrimino extends Tetrimino {
     this.minos = template;
     this.type = Mino.L_MINO;
   }
-
-  public String toString() {
-    String res = "";
-    for (int i = 0; i < template.length; i++) {
-      for (Mino m : template[i]) {
-        if (m == null) {
-          res += " n ";
-        } else {
-          res += " I ";
-        }
-      }
-      res += "\n";
-    }
-    return res;
-  }
 }

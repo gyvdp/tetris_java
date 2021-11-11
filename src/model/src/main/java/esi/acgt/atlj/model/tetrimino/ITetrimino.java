@@ -25,9 +25,36 @@ package esi.acgt.atlj.model.tetrimino;
 
 public class ITetrimino extends Tetrimino {
 
-  private static final Mino[][] template = {{null, null, null, null},
-      {Mino.I_MINO, Mino.I_MINO, Mino.I_MINO, Mino.I_MINO}, {null, null, null, null},
-      {null, null, null, null}};
+  public static void main(String[] args) {
+    boolean[][] area = {
+        {false, false, false, false},
+        {false, false, false, false},
+        {false, false, false, false},
+        {false, false, false, false}
+    };
+
+    ITetrimino t = new ITetrimino();
+    System.out.println(t);
+
+    t.rotate(true, area);
+    System.out.println(t);
+
+    t.rotate(true, area);
+    System.out.println(t);
+
+    t.rotate(true, area);
+    System.out.println(t);
+
+    t.rotate(true, area);
+    System.out.println(t);
+  }
+
+  private static final Mino[][] template = {
+      {null, null, null, null},
+      {Mino.I_MINO, Mino.I_MINO, Mino.I_MINO, Mino.I_MINO},
+      {null, null, null, null},
+      {null, null, null, null}
+  };
 
   /**
    * Constructor for I tetrimino.
@@ -37,6 +64,5 @@ public class ITetrimino extends Tetrimino {
     this.minos = template;
     this.type = Mino.I_MINO;
   }
-
 
 }

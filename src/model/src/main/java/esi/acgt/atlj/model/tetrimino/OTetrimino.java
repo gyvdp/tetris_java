@@ -26,8 +26,12 @@ package esi.acgt.atlj.model.tetrimino;
 
 public class OTetrimino extends Tetrimino {
 
-  private static final Mino[][] template = {{null, Mino.O_MINO, Mino.O_MINO, null},
-      {null, Mino.O_MINO, Mino.O_MINO, null}, {null, null, null, null}, {null, null, null, null}};
+  private static final Mino[][] template = {
+      {null, Mino.O_MINO, Mino.O_MINO, null},
+      {null, Mino.O_MINO, Mino.O_MINO, null},
+      {null, null, null, null},
+      {null, null, null, null}
+  };
 
   public OTetrimino() {
     super();
@@ -35,5 +39,7 @@ public class OTetrimino extends Tetrimino {
     this.type = Mino.O_MINO;
   }
 
-
+  @Override
+  public void rotate(boolean clockwise, boolean[][] surroundingArea) {
+  }
 }
