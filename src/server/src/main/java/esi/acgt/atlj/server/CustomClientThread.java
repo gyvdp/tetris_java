@@ -24,13 +24,21 @@
 
 package esi.acgt.atlj.server;
 
+import esi.acgt.atlj.model.Message;
+import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.LinkedList;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 
 public class CustomClientThread extends Thread {
+
+  private BlockingQueue<Tetrimino> myTetriminos;
 
   private final Socket clientSocket;
 
@@ -52,6 +60,7 @@ public class CustomClientThread extends Thread {
    */
   public CustomClientThread(Socket clientSocket, AbstractServer server) throws SocketException {
     this.clientSocket = clientSocket;
+    this.myTetriminos = new LinkedBlockingQueue<>();
     clientSocket.setSoTimeout(0);
     this.server = server;
     try {
@@ -67,6 +76,33 @@ public class CustomClientThread extends Thread {
     }
     isActive = true;
     start();
+  }
+
+  /**
+   * Adds a tetrimino to the players list.
+   *
+   * @param tetrimino Tetrimino to add.
+   */
+  public void addTetrimino(Tetrimino tetrimino) {
+    myTetriminos.add(tetrimino);
+  }
+
+  /**
+   * Pop front of players list of tetriminos;
+   *
+   * @return First element of list myTetriminos.
+   */
+  public Tetrimino getTetrimino() {
+    Tetrimino tetriminiToSend = null;
+    if (myTetriminos.isEmpty()) {
+      server.refill();
+    }
+    try {
+      tetriminiToSend = myTetriminos.take();
+    } catch (InterruptedException e) {
+      System.out.println("Sorry have to wait to long for new piece");
+    }
+    return tetriminiToSend;
   }
 
   /**
@@ -93,7 +129,6 @@ public class CustomClientThread extends Thread {
       Object obj;
       while (isActive) {
         try {
-          sendMessage("Welcome");
           obj = input.readObject();
           if (isActive) {
             server.receiveMessageFromClient(obj, this);
@@ -115,12 +150,16 @@ public class CustomClientThread extends Thread {
   /**
    * Sends a message to the client.
    */
-  public void sendMessage(Object information) throws IOException {
+  public void sendMessage(Object information) {
     if (clientSocket == null || output == null) {
       System.out.println("Sorry stream does not exist");
     }
-    output.writeObject(information);
-    output.flush();
+    try {
+      output.writeObject("t");
+      output.flush();
+    } catch (IOException e) {
+      System.out.println("Could not send message" + information.toString());
+    }
   }
 
   /**
