@@ -100,4 +100,6 @@ public interface BoardInterface {
 
   void move(Direction direction);
 
+  void hardDrop();
+
 }

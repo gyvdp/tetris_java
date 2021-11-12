@@ -57,4 +57,9 @@ public class Model implements ModelInterface {
     this.player1.move(direction);
   }
 
+  @Override
+  public void hardDrop() {
+    this.player1.hardDrop();
+  }
+
 }

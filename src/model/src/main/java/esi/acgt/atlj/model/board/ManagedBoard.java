@@ -28,6 +28,7 @@ import esi.acgt.atlj.model.tetrimino.Mino;
 import java.security.InvalidParameterException;
 import java.util.Arrays;
 import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 public class ManagedBoard extends Board {
 
@@ -46,10 +47,10 @@ public class ManagedBoard extends Board {
   }
 
   private boolean isMoveValid(Direction direction) {
-    System.out.println("x " + this.actualTetrimino.getX() + " y " + this.actualTetrimino.getY());
+    //System.out.println("x " + this.actualTetrimino.getX() + " y " + this.actualTetrimino.getY());
     switch (direction) {
       case UP -> {
-        if (this.actualTetrimino.getY() < 0) {
+        if (this.actualTetrimino.getY() <= 0) {
           for (var mino : this.actualTetrimino.getMinos()[Math.abs(this.actualTetrimino.getY())]) {
             if (mino != null) {
               return false;
@@ -100,6 +101,16 @@ public class ManagedBoard extends Board {
 
   public void hardDrop() {
     // TODO
+    while (isMoveValid(Direction.DOWN)) {
+      Mino[][] oldBoard = this.getBoard();
+      this.actualTetrimino.move(Direction.DOWN);
+      //    try {
+      //      TimeUnit.MILLISECONDS.sleep(100);
+      //    } catch (InterruptedException e) {
+      //      e.printStackTrace();
+      //    }
+      this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
+    }
   }
 
   private void rotate(boolean clockwise) {

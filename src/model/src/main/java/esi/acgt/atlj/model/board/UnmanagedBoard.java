@@ -68,4 +68,9 @@ public class UnmanagedBoard extends Board {
 
   }
 
+  @Override
+  public void hardDrop() {
+    
+  }
+
 }
