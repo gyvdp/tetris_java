@@ -25,6 +25,7 @@
 package esi.acgt.atlj.server;
 
 
+import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.messageTypes.*;
 import esi.acgt.atlj.model.tetrimino.ITetrimino;
 import esi.acgt.atlj.model.tetrimino.JTetrimino;
@@ -165,7 +166,9 @@ public class Server extends AbstractServer {
    * @param clientId    Unique id of client.
    */
   void sendToClient(Object information, int clientId) {
-    members.get(clientId).sendMessage(information);
+    if (information instanceof Message) {
+      members.get(clientId).sendMessage((Message) information);
+    }
   }
 
 }

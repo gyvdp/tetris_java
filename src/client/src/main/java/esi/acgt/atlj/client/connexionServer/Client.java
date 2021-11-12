@@ -51,11 +51,9 @@ public class Client extends AbstractClient {
    */
   @Override
   protected void handleServerMessage(Object information) {
-    System.out.println("h");
-    switch (information.toString()) {
-      case ("SendPiece"):
-        System.out.println((SendPiece.class.cast(information)).getTetrimino());
-        break;
+    System.out.println(information);
+    if (information instanceof SendPiece) {
+      System.out.println(((SendPiece) information).getTetrimino());
     }
   }
 
