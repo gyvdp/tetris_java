@@ -26,8 +26,10 @@ package esi.acgt.atlj.model.board;
 
 import esi.acgt.atlj.model.tetrimino.ITetrimino;
 import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.OTetrimino;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+import esi.acgt.atlj.model.tetrimino.ZTetrimino;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
@@ -47,7 +49,7 @@ public abstract class Board implements BoardInterface, Serializable {
   public Board() {
     this.score = 0;
     this.nbLine = 0;
-    this.actualTetrimino = new ITetrimino();
+    this.actualTetrimino = new OTetrimino();
     this.changeSupport = new PropertyChangeSupport(this);
     minos = new Mino[HEIGHT][WIDTH];
   }
