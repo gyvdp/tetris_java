@@ -24,6 +24,7 @@
 
 package esi.acgt.atlj.model.board;
 
+import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
 public class UnmanagedBoard extends Board {
@@ -65,7 +66,15 @@ public class UnmanagedBoard extends Board {
 
   @Override
   public void move(Direction direction) {
+  }
 
+  @Override
+  public void setHold(Mino hold) {
+
+  }
+
+  @Override
+  public void hold() {
   }
 
 }

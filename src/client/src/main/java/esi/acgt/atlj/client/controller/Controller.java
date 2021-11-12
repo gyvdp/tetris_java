@@ -64,7 +64,7 @@ public class Controller {
         System.out.println("move up");
         break;
       case SHIFT:
-        //this.model.hold();
+        this.model.hold();
         break;
       case SPACE:
         //this.model.hardDrop();

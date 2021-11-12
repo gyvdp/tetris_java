@@ -24,7 +24,9 @@
 
 package esi.acgt.atlj.model.board;
 
+import esi.acgt.atlj.model.tetrimino.JTetrimino;
 import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.security.InvalidParameterException;
 import java.util.Arrays;
 import java.util.Timer;
@@ -43,6 +45,40 @@ public class ManagedBoard extends Board {
       this.actualTetrimino.move(direction);
       this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
     }
+  }
+
+  @Override
+  public void setHold(Mino hold) {
+    this.hold = hold;
+    this.changeSupport.firePropertyChange("player1Hold", null, this.getHold());
+  }
+
+  @Override
+  public void setNextTetrimino(TetriminoInterface nextTetrimino) {
+    this.nextTetrimino = nextTetrimino;
+    this.changeSupport.firePropertyChange("player1Next", null, this.getNextTetrimino());
+  }
+
+  @Override
+  public void hold() {
+    if (hold == null) {
+      this.setHold(this.actualTetrimino.getType());
+      //todo A GENERER LE PROCHAINE ELEMENT.
+      this.setActualTetrimino(this.nextTetrimino);
+      this.setNextTetrimino(new JTetrimino());
+    } else {
+      TetriminoInterface temp = this.getHold();
+      this.setHold(this.actualTetrimino.getType());
+      this.setActualTetrimino(temp);
+    }
+    // this.hold.resetPosition();
+  }
+
+  @Override
+  public void setActualTetrimino(TetriminoInterface actualTetrimino) {
+    Mino[][] oldBoard = this.getBoard();
+    this.actualTetrimino = actualTetrimino;
+    this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
   }
 
   private boolean isMoveValid(Direction direction) {

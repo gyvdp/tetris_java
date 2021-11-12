@@ -51,6 +51,18 @@ public abstract class Tetrimino implements TetriminoInterface {
     this.x = 3;
   }
 
+  public static TetriminoInterface createTetrimino(Mino hold) {
+    return switch (hold) {
+      case I_MINO -> new ITetrimino();
+      case J_MINO -> new JTetrimino();
+      case O_MINO -> new OTetrimino();
+      case L_MINO -> new LTetrimino();
+      case S_MINO -> new STetrimino();
+      case T_MINO -> new TTetrimino();
+      case Z_MINO -> new ZTetrimino();
+    };
+  }
+
   /**
    * {@inheritDoc}
    */

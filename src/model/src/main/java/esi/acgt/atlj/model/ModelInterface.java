@@ -38,4 +38,6 @@ public interface ModelInterface {
   void removePropertyChangeListener(PropertyChangeListener listener);
 
   void move(Direction direction);
+
+  void hold();
 }
