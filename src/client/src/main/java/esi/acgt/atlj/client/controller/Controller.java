@@ -65,7 +65,8 @@ public class Controller {
         this.model.hold();
         break;
       case SPACE:
-        //this.model.hardDrop();
+        this.model.hardDrop();
+        System.out.println("hard drop");
         break;
       case CONTROL:
         //this.model.rotateCounterClockwise();

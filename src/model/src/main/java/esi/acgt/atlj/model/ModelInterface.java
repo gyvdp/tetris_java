@@ -40,4 +40,6 @@ public interface ModelInterface {
   void move(Direction direction);
 
   void hold();
+
+  void hardDrop();
 }
