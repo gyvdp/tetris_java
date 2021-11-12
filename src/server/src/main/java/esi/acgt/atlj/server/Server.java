@@ -65,7 +65,7 @@ public class Server extends AbstractServer {
   @Override
   protected void handleMessageClient(Object msg, CustomClientThread client) {
     CustomClientThread opPlayer = members.get(0).equals(client) ? members.get(1) : members.get(0);
-    switch (msg.toString()) {
+    switch (msg.toString().toUpperCase()) {
       case "ASKPIECE":
         client.sendMessage(new SendPiece(client.getTetrimino()));
         break;
