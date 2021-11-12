@@ -8,6 +8,9 @@ import esi.acgt.atlj.model.ModelInterface;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+/**
+ * Client Application
+ */
 public class App extends Application {
 
   @Override

@@ -57,7 +57,7 @@ public abstract class Board implements BoardInterface, Serializable {
 
   @Override
   public void initTetrisBoard() {
-    var oldBoard = this.getBoard();
+    var oldBoard = new Mino[HEIGHT][WIDTH];
     this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
     this.changeSupport.firePropertyChange("player1Next", null, this.getNextTetrimino());
   }

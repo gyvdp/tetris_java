@@ -35,12 +35,21 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+/**
+ * View Item that contains both player's boards
+ */
 public class BothPlayerView {
 
   private final HBox scene;
   private final PlayerTetrisFXML player1;
   private final PlayerTetrisFXML player2;
 
+  /**
+   * Constructor of BothPlayerView
+   *
+   * @param controller Controller to interact with
+   * @param stage      stage that this scene will use
+   */
   public BothPlayerView(Controller controller, Stage stage) {
     this.scene = new HBox();
     this.setSizeStage(stage);
@@ -62,6 +71,11 @@ public class BothPlayerView {
         .addEventFilter(KeyEvent.KEY_PRESSED, (key) -> controller.keyBoardInput(key.getCode()));
   }
 
+  /**
+   * Set the new size of the Stage with Screen informations
+   *
+   * @param stage stage that we resize
+   */
   private void setSizeStage(Stage stage) {
     double width = Screen.getPrimary().getBounds().getWidth();
     double height = Screen.getPrimary().getBounds().getHeight();
@@ -73,11 +87,23 @@ public class BothPlayerView {
     stage.setHeight(height * 0.75);
   }
 
+  /**
+   * Bind every element with stage property
+   *
+   * @param stage stage that we bind with
+   */
   private void doBindings(Stage stage) {
     this.scene.prefHeightProperty().bind(stage.heightProperty());
     this.scene.prefWidthProperty().bind(stage.widthProperty());
   }
 
+  /**
+   * Update the board.
+   *
+   * @param oldBoard old board
+   * @param newBoard new board
+   * @param playerID player that we need to update
+   */
   public void updateBoard(Mino[][] oldBoard, Mino[][] newBoard, int playerID) {
 
     if (playerID == 0) {
@@ -87,6 +113,12 @@ public class BothPlayerView {
     }
   }
 
+  /**
+   * Update the score
+   *
+   * @param newScore new score
+   * @param playerID player that we need to update
+   */
   public void updateScore(int newScore, int playerID) {
 
     if (playerID == 0) {
@@ -96,6 +128,12 @@ public class BothPlayerView {
     }
   }
 
+  /**
+   * Update the username
+   *
+   * @param newUsername new username
+   * @param playerID    player that we need to update
+   */
   public void updateUsername(String newUsername, int playerID) {
 
     if (playerID == 0) {
@@ -105,6 +143,12 @@ public class BothPlayerView {
     }
   }
 
+  /**
+   * Update the timer
+   *
+   * @param timer    new timer
+   * @param playerID player that we need to update
+   */
   public void updateTimer(int timer, int playerID) {
     if (playerID == 0) {
       this.player1.updateTimer(timer);
@@ -113,6 +157,12 @@ public class BothPlayerView {
     }
   }
 
+  /**
+   * Update the line
+   *
+   * @param line     new Line
+   * @param playerID player that we need to update
+   */
   public void updateLine(int line, int playerID) {
     if (playerID == 0) {
       this.player1.updateLine(line);
@@ -121,6 +171,12 @@ public class BothPlayerView {
     }
   }
 
+  /**
+   * Update the hold
+   *
+   * @param hold     new hold
+   * @param playerID player that we need to update
+   */
   public void updateHold(TetriminoInterface hold, int playerID) {
     if (playerID == 0) {
       this.player1.updateHold(hold);
@@ -129,6 +185,12 @@ public class BothPlayerView {
     }
   }
 
+  /**
+   * update the next
+   *
+   * @param next     new next
+   * @param playerID player that we need to update
+   */
   public void updateNext(TetriminoInterface next, int playerID) {
     if (playerID == 0) {
       this.player1.updateNextPiece(next);

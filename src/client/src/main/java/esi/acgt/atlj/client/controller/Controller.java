@@ -8,41 +8,53 @@ import esi.acgt.atlj.model.board.Direction;
 import java.util.Objects;
 import javafx.scene.input.KeyCode;
 
+/**
+ * Controller of the Client application
+ */
 public class Controller {
 
   private final Client client;
   private final ModelInterface model;
   private final ViewInterface view;
 
+  /**
+   * Construtctor of Controller
+   *
+   * @param model Model of the Client
+   * @param view  View of the Client
+   */
   public Controller(ModelInterface model, ViewInterface view) {
 
     Objects.requireNonNull(model, "model can not be null");
     Objects.requireNonNull(view, "view can not be null");
 
-/*    if (model == null) {
-      throw new IllegalArgumentException();
-    }
-
-    if (view == null) {
-      throw new IllegalArgumentException("view can not be null");
-    }
-*/
     this.client = new Client(6969, "localhost");
     this.model = model;
     this.view = view;
     this.model.addPropertyChangeListener(this.view);
   }
 
+  /**
+   * Launch the view
+   */
   public void start() {
     view.setController(this);
     view.displayConnexion();
     view.show();
   }
 
+  /**
+   * End the Programme
+   */
   public void disconnect() {
     System.exit(0);
   }
 
+  /**
+   * Forward inputs from the view to the model
+   *
+   * @param input keyboard input from the view
+   */
   public void keyBoardInput(KeyCode input) {
     switch (input) {
       case LEFT:
@@ -74,6 +86,13 @@ public class Controller {
     }
   }
 
+  /**
+   * Connexion to the server and when it's done start the board view
+   *
+   * @param ip       ip of the server to connect to
+   * @param port     port of the server to connect to
+   * @param username username of the player
+   */
   public void connexion(String ip, int port, String username) {
     System.out.println("Connect to : " + ip + " , port : " + port + ".");
     try {
