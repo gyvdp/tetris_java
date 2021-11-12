@@ -22,21 +22,30 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.player;
+package esi.acgt.atlj.model.board;
 
-import esi.acgt.atlj.model.board.ManagedBoard;
+import java.util.TimerTask;
 
-public class ManageablePlayer extends Player {
+public class Manager extends TimerTask {
 
-  private final ManagedBoard board;
+  private final ManagedBoard managedBoard;
 
-  /**
-   * Instantiates a new Player.
-   *
-   * @param name the name
-   */
-  public ManageablePlayer(String name) {
-    super(name);
-    this.board = new ManagedBoard();
+  public Manager(ManagedBoard managedBoard) {
+    this.managedBoard = managedBoard;
+  }
+
+  @Override
+  public synchronized void run() {
+    if (managedBoard.getStatus() == BoardStatus.TETRIMINO_FALLING) {
+      if (!managedBoard.move(Direction.DOWN)) {
+        managedBoard.setStatus(BoardStatus.LOCK_DOWN);
+      }
+    } else if (managedBoard.getStatus() == BoardStatus.LOCK_DOWN) {
+      managedBoard.lock();
+    }
+  }
+
+  public static long tickDelay(int level) {
+    return (int) ((Math.pow(0.8 - ((level - 1) * 0.007), level - 1)) * 1000);
   }
 }

@@ -3,7 +3,7 @@ package esi.acgt.atlj.client.controller;
 import esi.acgt.atlj.client.connexionServer.Client;
 import esi.acgt.atlj.client.view.ViewInterface;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
-import esi.acgt.atlj.model.ModelInterface;
+import esi.acgt.atlj.model.ClientModel;
 import esi.acgt.atlj.model.board.Direction;
 import java.util.Objects;
 import javafx.scene.input.KeyCode;
@@ -11,10 +11,10 @@ import javafx.scene.input.KeyCode;
 public class Controller {
 
   private final Client client;
-  private final ModelInterface model;
+  private final ClientModel model;
   private final ViewInterface view;
 
-  public Controller(ModelInterface model, ViewInterface view) {
+  public Controller(ClientModel model, ViewInterface view) {
 
     Objects.requireNonNull(model, "model can not be null");
     Objects.requireNonNull(view, "view can not be null");
@@ -30,7 +30,6 @@ public class Controller {
     this.client = new Client(6969, "localhost");
     this.model = model;
     this.view = view;
-    this.model.addPropertyChangeListener(this.view);
   }
 
   public void start() {
@@ -69,7 +68,7 @@ public class Controller {
         System.out.println("hard drop");
         break;
       case CONTROL:
-        //this.model.rotateCounterClockwise();
+        this.model.rotate(true);
         break;
     }
   }
@@ -80,8 +79,9 @@ public class Controller {
       this.client.connectToServer();
       this.client.sendToServer(new AskPiece());
       this.view.displayBoard();
-      this.model.updateTest();
-      this.model.setPlayer1(username);
+      this.model.initManagedBoard(username);
+      this.model.start();
+      this.model.addPropertyChangeListener(this.view);
       this.view.show();
     } catch (Exception e) {
       this.view.displayError(e);

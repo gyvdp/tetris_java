@@ -1,75 +1,62 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM, Thomas LEUTSCHER
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package esi.acgt.atlj.model;
 
 import esi.acgt.atlj.model.board.BoardInterface;
-import esi.acgt.atlj.model.board.Direction;
-import esi.acgt.atlj.model.board.ManagedBoard;
-import esi.acgt.atlj.model.board.UnmanagedBoard;
-import java.beans.PropertyChangeListener;
+import java.util.LinkedList;
+import java.util.List;
 
-public class Model implements ModelInterface {
+public abstract class Model implements ModelInterface {
 
-  protected ManagedBoard player1;
-  protected UnmanagedBoard player2;
+  protected List<BoardInterface> players;
 
-  public Model() {
-    this.player1 = new ManagedBoard();
-    this.player2 = new UnmanagedBoard();
-  }
-
-  @Override
-  public void updateTest() {
-    player1.initTetrisBoard();
+  protected Model() {
+    this.players = new LinkedList<>();
   }
 
   @Override
   public String[] getUsernames() {
-    return new String[0];
+    var players = new String[this.players.size()];
+    for (var i = 0; i < this.players.size(); ++i) {
+      players[i] = this.players.get(i).getUsername();
+    }
+    return players;
   }
 
   @Override
-  public BoardInterface getManagedBoard(String username) {
+  public BoardInterface getBoard(String username) {
+    for (BoardInterface player : this.players) {
+      if (player.getUsername().equals(username)) {
+        return player;
+      }
+    }
     return null;
   }
 
   @Override
-  public BoardInterface getUnmanagedBoard(String username) {
-    return null;
+  public void addPlayer(BoardInterface board) {
+    this.players.add(board);
   }
-
-  public void setPlayer1(String userName) {
-    this.player1.setUsername(userName);
-  }
-
-  @Override
-  public void addPropertyChangeListener(PropertyChangeListener listener) {
-    this.player1.addPropertyChangeListener(listener);
-    this.player2.addPropertyChangeListener(listener);
-  }
-
-  @Override
-  public void removePropertyChangeListener(PropertyChangeListener listener) {
-    this.player1.removePropertyChangeListener(listener);
-    this.player2.removePropertyChangeListener(listener);
-  }
-
-  @Override
-  public void move(Direction direction) {
-    this.player1.move(direction);
-  }
-
-  @Override
-  public void hold() {
-    this.player1.hold();
-  }
-
-  @Override
-  public void hardDrop() {
-    this.player1.hardDrop();
-  }
-
-  @Override
-  public void softDrop() {
-    this.player1.softDrop();
-  }
-
 }

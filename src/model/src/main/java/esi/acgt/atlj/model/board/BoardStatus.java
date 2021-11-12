@@ -21,25 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package esi.acgt.atlj.model.player;
 
-public abstract class Player {
+package esi.acgt.atlj.model.board;
 
-  private final String name;
-  private int level;
-  private final int nbLine;
-  private final int score;
-
-  /**
-   * Instantiates a new Player.
-   *
-   * @param name the name
-   */
-  public Player(String name) {
-    this.name = name;
-    this.score = 0;
-    this.nbLine = 0;
-  }
-
-
+public enum BoardStatus {
+  NOT_STARTED,
+  TETRIMINO_FALLING,
+  TETRIMINO_LOCKED,
+  LOCK_DOWN,
+  LOCK_OUT
 }
