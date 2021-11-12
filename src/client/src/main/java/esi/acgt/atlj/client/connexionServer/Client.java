@@ -24,8 +24,6 @@
 
 package esi.acgt.atlj.client.connexionServer;
 
-import esi.acgt.atlj.message.Message;
-import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 
 /**
@@ -53,7 +51,7 @@ public class Client extends AbstractClient {
   protected void handleServerMessage(Object information) {
     System.out.println(information);
     if (information instanceof SendPiece) {
-      System.out.println(((SendPiece) information).getTetrimino());
+      System.out.println(((SendPiece) information).getMino());
     }
   }
 

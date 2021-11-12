@@ -22,30 +22,13 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message.messageTypes;
+package esi.acgt.atlj.server;
 
-import esi.acgt.atlj.message.Message;
-import esi.acgt.atlj.message.MessageType;
-import esi.acgt.atlj.model.tetrimino.Mino;
-
-public class SendPiece extends Message {
-
-  private final Mino mino;
-
-  /**
-   * Constructor for send piece type of message.
-   */
-  public SendPiece(Mino mino) {
-    this.mino = mino;
-    this.messageType = MessageType.SEND_PIECE;
-  }
-
-  /**
-   * Getter for the tetrimino of the current instance.
-   *
-   * @return Tetrimino that is sent.
-   */
-  public Mino getMino() {
-    return mino;
-  }
+/**
+ * Different status a player can take
+ */
+public enum PlayerStatus {
+  WAITING, //Waiting for other player to connect.
+  READY, //Ready to play the game & while playing.
+  LOST, //Player has lost his game of tetris.
 }

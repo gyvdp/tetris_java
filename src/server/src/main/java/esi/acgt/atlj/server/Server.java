@@ -28,19 +28,13 @@ package esi.acgt.atlj.server;
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.messageTypes.*;
 import esi.acgt.atlj.model.tetrimino.ITetrimino;
-import esi.acgt.atlj.model.tetrimino.JTetrimino;
-import esi.acgt.atlj.model.tetrimino.LTetrimino;
-import esi.acgt.atlj.model.tetrimino.OTetrimino;
-import esi.acgt.atlj.model.tetrimino.STetrimino;
-import esi.acgt.atlj.model.tetrimino.TTetrimino;
-import esi.acgt.atlj.model.tetrimino.Tetrimino;
-import esi.acgt.atlj.model.tetrimino.ZTetrimino;
+import esi.acgt.atlj.model.tetrimino.Mino;
 import java.util.HashMap;
 import java.util.Random;
 
 public class Server extends AbstractServer {
 
-  private final Tetrimino[] firstBag;
+  private final Mino[] firstBag;
   private final HashMap<Integer, CustomClientThread> members;
   private int clientId;
 
@@ -70,9 +64,20 @@ public class Server extends AbstractServer {
    */
   @Override
   protected void handleMessageClient(Object msg, CustomClientThread client) {
+    CustomClientThread opPlayer = members.get(0).equals(client) ? members.get(1) : members.get(0);
     switch (msg.toString()) {
-      case ("askPiece"):
+      case "ASKPIECE":
         client.sendMessage(new SendPiece(client.getTetrimino()));
+        break;
+      case "ADDTETRIMINO":
+        opPlayer.sendMessage(new AddTetrimino(
+            new ITetrimino())); //TODO // Add correct tetrimino coming from other client
+        break;
+      case "REMOVELINE":
+        opPlayer.sendMessage(new RemoveLine(4)); //TODO Add correct line coming from other player
+        break;
+      case "SENDSCORE":
+        opPlayer.sendMessage(new SendScore(5)); // TODO add correct score coming from other player
         break;
     }
   }
@@ -83,8 +88,8 @@ public class Server extends AbstractServer {
   @Override
   void refillBag() {
     for (int numberOfPlayer = 0; numberOfPlayer < members.size(); numberOfPlayer++) {
-      Tetrimino[] newBag = regenBag();
-      for (Tetrimino tetrimino : newBag) {
+      Mino[] newBag = regenBag();
+      for (Mino tetrimino : newBag) {
         members.get(numberOfPlayer).addTetrimino(tetrimino);
       }
     }
@@ -95,10 +100,10 @@ public class Server extends AbstractServer {
    *
    * @return Array of shuffled tetriminodes.
    */
-  private Tetrimino[] regenBag() {
-    Tetrimino[] bag = new Tetrimino[]{
-        new ITetrimino(), new ZTetrimino(), new STetrimino(), new TTetrimino(), new OTetrimino(),
-        new JTetrimino(), new LTetrimino()
+  private Mino[] regenBag() {
+    Mino[] bag = new Mino[]{
+        Mino.S_MINO, Mino.Z_MINO, Mino.O_MINO, Mino.J_MINO, Mino.T_MINO,
+        Mino.I_MINO, Mino.L_MINO
     };
     shuffle(bag);
     return bag;
@@ -109,12 +114,12 @@ public class Server extends AbstractServer {
    *
    * @param array Shuffled array.
    */
-  private static void shuffle(Tetrimino[] array) {
+  private static void shuffle(Mino[] array) {
     int n = array.length;
     Random random = new Random();
     for (int i = 0; i < array.length; i++) {
       int randomValue = i + random.nextInt(n - i);
-      Tetrimino randomElement = array[randomValue];
+      Mino randomElement = array[randomValue];
       array[randomValue] = array[i];
       array[i] = randomElement;
     }
@@ -144,8 +149,11 @@ public class Server extends AbstractServer {
   protected void clientConnected(CustomClientThread client) {
     super.clientConnected(client);
     members.put(getNextId(), client);
-    for (Tetrimino t : firstBag) {
+    for (Mino t : firstBag) {
       client.addTetrimino(t);
+    }
+    if (members.size() == 2) {
+      updateAllPlayerState(PlayerStatus.READY);
     }
   }
 
@@ -156,6 +164,17 @@ public class Server extends AbstractServer {
   protected void clientDisconnected(CustomClientThread client) {
     super.clientDisconnected(client);
     System.out.println(client + "has disconnected");
+  }
+
+  /**
+   * Updates the player state for every player
+   *
+   * @param playerstate PlayerState to update to.
+   */
+  public void updateAllPlayerState(PlayerStatus playerstate) {
+    for (int numberOfPlayer = 0; numberOfPlayer < members.size(); numberOfPlayer++) {
+      members.get(numberOfPlayer).setClientStatus(playerstate);
+    }
   }
 
 
