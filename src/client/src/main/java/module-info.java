@@ -8,6 +8,8 @@ module atlj.client {
   requires java.desktop;
 
   exports esi.acgt.atlj.client;
+  exports esi.acgt.atlj.client.model;
   exports esi.acgt.atlj.client.view;
   exports esi.acgt.atlj.client.controller;
+  exports esi.acgt.atlj.client.connexionServer;
 }
