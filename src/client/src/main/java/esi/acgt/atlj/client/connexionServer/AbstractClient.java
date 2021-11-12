@@ -28,6 +28,7 @@ import esi.acgt.atlj.model.Message;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -129,7 +130,7 @@ public abstract class AbstractClient implements Runnable {
   /**
    * Establishes a connection to the server.
    */
-  public void connectToServer() {
+  public void connectToServer() throws ConnectException {
     if (isConnected()) {
       return;
     }
@@ -141,10 +142,7 @@ public abstract class AbstractClient implements Runnable {
       this.isActive = true;
       clientThread.start();
     } catch (IOException e) {
-      closeConnectionToServer();
-      connexionException(e);
-      System.out.println("Sorry could not find " + host + " at " + port);
-      System.exit(0);
+      throw new ConnectException("Sorry could not find " + host + " at " + port);
     }
   }
 
