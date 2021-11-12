@@ -22,7 +22,6 @@ public class View implements ViewInterface, PropertyChangeListener {
   @Override
   public void displayConnexion() {
     Connexion connexion = new Connexion(this.controller, this.primaryStage);
-    this.primaryStage.centerOnScreen();
     this.primaryStage.setResizable(false);
   }
 
@@ -30,7 +29,6 @@ public class View implements ViewInterface, PropertyChangeListener {
   public void displayBoard() {
     this.primaryStage = new Stage();
     this.bothPlayerView = new BothPlayerView(this.controller, this.primaryStage);
-    this.primaryStage.centerOnScreen();
   }
 
   @Override
@@ -38,6 +36,7 @@ public class View implements ViewInterface, PropertyChangeListener {
     this.primaryStage.setOnCloseRequest(event -> {
       this.controller.disconnect();
     });
+    this.primaryStage.centerOnScreen();
     this.primaryStage.show();
   }
 

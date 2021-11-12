@@ -42,6 +42,10 @@ public class BothPlayerView {
 
   public BothPlayerView(Controller controller, Stage stage) {
     this.scene = new HBox();
+    this.setSizeStage(stage);
+    this.doBindings(stage);
+    stage.setScene(new Scene(this.scene));
+
     this.player1 = new PlayerTetrisFXML(scene);
     this.player2 = new PlayerTetrisFXML(scene);
 
@@ -52,10 +56,6 @@ public class BothPlayerView {
     this.scene.setPadding(new Insets(10));
     this.scene.setStyle("-fx-background-color: gray");
     this.scene.setAlignment(Pos.CENTER);
-
-    this.doBindings(stage);
-    stage.setScene(new Scene(this.scene));
-    this.setSizeStage(stage);
 
     stage.getScene()
         .addEventFilter(KeyEvent.KEY_PRESSED, (key) -> controller.keyBoardInput(key.getCode()));
