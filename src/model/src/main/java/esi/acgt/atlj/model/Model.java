@@ -62,4 +62,9 @@ public class Model implements ModelInterface {
     this.player1.hold();
   }
 
+  @Override
+  public void hardDrop() {
+    this.player1.hardDrop();
+  }
+
 }

@@ -64,7 +64,7 @@ public abstract class Board implements BoardInterface, Serializable {
 
   @Override
   public boolean[][] getSurroundingArea(int x, int y) {
-    boolean surroundingArea[][] = new boolean[4][4];
+    boolean[][] surroundingArea = new boolean[4][4];
     for (int i = x; i <= x + 4; i++) {
       for (int j = y; j <= y + 4; j++) {
         //this.minos[i][j]=
@@ -112,7 +112,8 @@ public abstract class Board implements BoardInterface, Serializable {
 
     for (int x = 0; x < this.actualTetrimino.getMinos().length; x++) {
       for (int y = 0; y < this.actualTetrimino.getMinos()[x].length; y++) {
-        if ((x + this.actualTetrimino.getY() >= 0)
+        if ((this.actualTetrimino.getMinos()[x][y] != null
+            && x + this.actualTetrimino.getY() >= 0)
             && (x + this.actualTetrimino.getY() < this.minos.length)
             && (y + this.actualTetrimino.getX() >= 0)
             && (y + this.actualTetrimino.getX() < this.minos[x].length)) {
@@ -135,13 +136,9 @@ public abstract class Board implements BoardInterface, Serializable {
 
   public abstract void setNbLine(int nbLine);
 
-  public abstract void move(Direction direction);
-
   public abstract void setHold(Mino hold);
 
   public abstract void setNextTetrimino(TetriminoInterface nextTetrimino);
 
   public abstract void setActualTetrimino(TetriminoInterface actualTetrimino);
-
-  public abstract void hold();
 }
