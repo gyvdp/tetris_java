@@ -65,7 +65,8 @@ public class UnmanagedBoard extends Board {
   }
 
   @Override
-  public void move(Direction direction) {
+  public boolean move(Direction direction) {
+    return false;
   }
 
   @Override

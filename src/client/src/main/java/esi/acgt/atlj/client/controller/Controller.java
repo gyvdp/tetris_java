@@ -54,7 +54,7 @@ public class Controller {
         System.out.println("move right");
         break;
       case DOWN:
-        this.model.move(Direction.DOWN);
+        this.model.softDrop();
         System.out.println("move down");
         break;
       case UP:

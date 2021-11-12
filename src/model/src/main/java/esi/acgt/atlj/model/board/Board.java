@@ -24,8 +24,6 @@
 
 package esi.acgt.atlj.model.board;
 
-import static esi.acgt.atlj.model.tetrimino.Mino.*;
-
 import esi.acgt.atlj.model.tetrimino.ITetrimino;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.OTetrimino;
@@ -55,15 +53,6 @@ public abstract class Board implements BoardInterface, Serializable {
     this.nextTetrimino = new ITetrimino();
     this.changeSupport = new PropertyChangeSupport(this);
     minos = new Mino[HEIGHT][WIDTH];
-    this.minos[10][9] = I_MINO;
-    this.minos[11][9] = I_MINO;
-    this.minos[12][9] = I_MINO;
-    this.minos[10][0] = I_MINO;
-    this.minos[11][0] = I_MINO;
-    this.minos[12][0] = I_MINO;
-    this.minos[21][5] = I_MINO;
-    this.minos[21][6] = I_MINO;
-    this.minos[21][7] = I_MINO;
   }
 
   @Override
@@ -75,7 +64,7 @@ public abstract class Board implements BoardInterface, Serializable {
 
   @Override
   public boolean[][] getSurroundingArea(int x, int y) {
-    boolean surroundingArea[][] = new boolean[4][4];
+    boolean[][] surroundingArea = new boolean[4][4];
     for (int i = x; i <= x + 4; i++) {
       for (int j = y; j <= y + 4; j++) {
         //this.minos[i][j]=
@@ -147,13 +136,9 @@ public abstract class Board implements BoardInterface, Serializable {
 
   public abstract void setNbLine(int nbLine);
 
-  public abstract void move(Direction direction);
-
   public abstract void setHold(Mino hold);
 
   public abstract void setNextTetrimino(TetriminoInterface nextTetrimino);
 
   public abstract void setActualTetrimino(TetriminoInterface actualTetrimino);
-
-  public abstract void hold();
 }
