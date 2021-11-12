@@ -26,6 +26,7 @@ package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
 import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -105,7 +106,6 @@ public class BothPlayerView {
   }
 
   public void updateTimer(int timer, int playerID) {
-
     if (playerID == 0) {
       this.player1.updateTimer(timer);
     } else {
@@ -121,4 +121,19 @@ public class BothPlayerView {
     }
   }
 
+  public void updateHold(TetriminoInterface hold, int playerID) {
+    if (playerID == 0) {
+      this.player1.updateHold(hold);
+    } else {
+      this.player2.updateHold(hold);
+    }
+  }
+
+  public void updateNext(TetriminoInterface next, int playerID) {
+    if (playerID == 0) {
+      this.player1.updateNextPiece(next);
+    } else {
+      this.player2.updateNextPiece(next);
+    }
+  }
 }

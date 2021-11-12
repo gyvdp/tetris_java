@@ -2,6 +2,7 @@ package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
 import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javafx.scene.control.Alert;
@@ -79,6 +80,11 @@ public class View implements ViewInterface, PropertyChangeListener {
   }
 
   @Override
+  public void updateHold(TetriminoInterface hold, int playerID) {
+    this.bothPlayerView.updateHold(hold, playerID);
+  }
+
+  @Override
   public void propertyChange(PropertyChangeEvent evt) {
 
     switch (evt.getPropertyName()) {
@@ -99,6 +105,12 @@ public class View implements ViewInterface, PropertyChangeListener {
       case "player1Name" -> {
         System.out.println("nom du joueur 1 " + evt.getNewValue());
         this.bothPlayerView.updateUsername(evt.getNewValue().toString(), 0);
+      }
+      case "player1Hold" -> {
+        this.bothPlayerView.updateHold((TetriminoInterface) evt.getNewValue(), 0);
+      }
+      case "player1Next" -> {
+        this.bothPlayerView.updateNext((TetriminoInterface) evt.getNewValue(), 0);
       }
       default -> System.out.println(evt.getPropertyName() + evt.getNewValue());
     }
