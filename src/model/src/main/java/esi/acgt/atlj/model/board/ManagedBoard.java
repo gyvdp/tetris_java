@@ -71,7 +71,7 @@ public class ManagedBoard extends Board {
         if ((this.actualTetrimino.getY() + this.actualTetrimino.getMinos().length)
             > this.minos.length) {
           for (var mino : this.actualTetrimino.getMinos()[this.minos.length
-              - this.actualTetrimino.getY()]) {
+              - this.actualTetrimino.getY() - 1]) {
             if (mino != null) {
               return false;
             }
@@ -79,9 +79,11 @@ public class ManagedBoard extends Board {
         }
       }
       case LEFT -> {
+        System.out.println(Math.abs(this.actualTetrimino.getX() + 1));
         if (this.actualTetrimino.getX() <= 0) {
           for (var mino : this.actualTetrimino.getMinos()) {
-            if (mino[0] != null) {
+            System.out.println(Math.abs(this.actualTetrimino.getX() + 1));
+            if (mino[Math.abs(this.actualTetrimino.getX())] != null) {
               return false;
             }
           }

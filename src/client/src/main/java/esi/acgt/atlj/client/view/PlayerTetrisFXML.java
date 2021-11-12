@@ -24,6 +24,9 @@
 
 package esi.acgt.atlj.client.view;
 
+import static esi.acgt.atlj.model.board.BoardInterface.HEIGHT;
+import static esi.acgt.atlj.model.board.BoardInterface.WIDTH;
+
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.io.IOException;
@@ -60,6 +63,7 @@ public class PlayerTetrisFXML implements Initializable {
   private final static Image tetri_L;
   private final static Image tetri_I;
   private final static Image tetri_T;
+  private ImageView[][] minosGrid;
 
   static {
     image_NOMino = new Image(
@@ -131,7 +135,6 @@ public class PlayerTetrisFXML implements Initializable {
   @FXML
   public GridPane scene;
 
-
   public PlayerTetrisFXML(HBox motherbox) {
     // FXML loading
     FXMLLoader loader = new FXMLLoader(getClass().getResource(
@@ -151,40 +154,33 @@ public class PlayerTetrisFXML implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     doBindings();
-    for (int i = 0; i < boardPane.getColumnCount(); i++) {
-      for (int j = 0; j < boardPane.getRowCount(); j++) {
-        ImageView imageView = new ImageView();
-        imageView.setPreserveRatio(true);
-        imageView.fitWidthProperty()
-            .bind(Bindings.min(this.boardPane.widthProperty().subtract(0.5 * 11).divide(11),
-                this.boardPane.heightProperty().subtract(0.5 * 23).divide(23)));
-        imageView.fitHeightProperty()
-            .bind(Bindings.min(this.boardPane.widthProperty().subtract(0.5 * 11).divide(11),
-                this.boardPane.heightProperty().subtract(0.5 * 23).divide(23)));
-        imageView.setImage(image_NOMino);
-        this.boardPane.add(imageView, i, j);
+
+    if (this.minosGrid == null) {
+      this.minosGrid = new ImageView[HEIGHT][WIDTH];
+      for (int i = 0; i < this.minosGrid.length; i++) {
+        for (int j = 0; j < this.minosGrid[i].length; j++) {
+          this.minosGrid[i][j] = new ImageView();
+          this.minosGrid[i][j].setPreserveRatio(true);
+          this.minosGrid[i][j].fitWidthProperty()
+              .bind(Bindings.min(this.boardPane.widthProperty().subtract(0.5 * 11).divide(11),
+                  this.boardPane.heightProperty().subtract(0.5 * 23).divide(23)));
+          this.minosGrid[i][j].fitHeightProperty()
+              .bind(Bindings.min(this.boardPane.widthProperty().subtract(0.5 * 11).divide(11),
+                  this.boardPane.heightProperty().subtract(0.5 * 23).divide(23)));
+          this.minosGrid[i][j].setImage(image_NOMino);
+
+          this.boardPane.add(this.minosGrid[i][j], j, i);
+        }
       }
     }
+
   }
 
   public void updateBoard(Mino[][] oldBoard, Mino[][] newBoard) {
-    int i = 0;
-    var list = this.boardPane.getChildren();
-    for (Node node : list) {
-      if (node instanceof ImageView) {
-<<<<<<<<< Temporary merge branch 1
-        if (newBoard[i / 22][i % 22] != oldboard[i / 22][i % 22]) {
-          ((ImageView) node).setImage(
-              cubeColor(newBoard[i / 22][i % 22]));
-        }
-=========
-        //if (newBoard[i % 22][i / 22] != oldBoard[i % 22][i / 22]) {
-        ((ImageView) node).setImage(
-            cubeColor(
-                newBoard[i % this.boardPane.getRowCount()][i / this.boardPane.getRowCount()]));
-        //  }
->>>>>>>>> Temporary merge branch 2
-        i++;
+
+    for (int i = 0; i < this.minosGrid.length; i++) {
+      for (int j = 0; j < this.minosGrid[i].length; j++) {
+        this.minosGrid[i][j].setImage(cubeColor(newBoard[i][j]));
       }
     }
   }
