@@ -172,15 +172,18 @@ public class PlayerTetrisFXML implements Initializable {
     var list = this.boardPane.getChildren();
     for (Node node : list) {
       if (node instanceof ImageView) {
+<<<<<<<<< Temporary merge branch 1
+        if (newBoard[i / 22][i % 22] != oldboard[i / 22][i % 22]) {
+          ((ImageView) node).setImage(
+              cubeColor(newBoard[i / 22][i % 22]));
+        }
+=========
         //if (newBoard[i % 22][i / 22] != oldBoard[i % 22][i / 22]) {
         ((ImageView) node).setImage(
             cubeColor(
                 newBoard[i % this.boardPane.getRowCount()][i / this.boardPane.getRowCount()]));
         //  }
-        if (newBoard[i / 22][i % 22] != oldboard[i / 22][i % 22]) {
-          ((ImageView) node).setImage(
-              cubeColor(newBoard[i / 22][i % 22]));
-        }
+>>>>>>>>> Temporary merge branch 2
         i++;
       }
     }

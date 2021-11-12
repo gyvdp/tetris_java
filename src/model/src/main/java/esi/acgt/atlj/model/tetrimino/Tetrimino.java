@@ -27,10 +27,29 @@ import esi.acgt.atlj.model.board.Direction;
 
 public abstract class Tetrimino implements TetriminoInterface {
 
+  /**
+   * x coordinate of the tetrimino on the board
+   */
   protected int x;
+
+  /**
+   * y coordinate of the tetrimino on the board
+   */
   protected int y;
+
+  /**
+   * minos matrix that composed
+   */
   protected Mino[][] minos;
   protected Mino type;
+
+  /**
+   * Initiates default values of all Tetrimino
+   */
+  protected Tetrimino() {
+    this.y = 0;
+    this.x = 3;
+  }
 
   /**
    * {@inheritDoc}
@@ -40,7 +59,7 @@ public abstract class Tetrimino implements TetriminoInterface {
     Mino k;
     int l = this.minos.length - 1;
     int i, j;
-    for (i = 0; i < Math.floor(this.minos.length / 2); i++) {
+    for (i = 0; i < Math.floor(this.minos.length * 0.5); i++) {
       for (j = i; j < l - i; j++) {
         k = this.minos[i][j];
         this.minos[i][j] = this.minos[l - j][i];
@@ -49,6 +68,7 @@ public abstract class Tetrimino implements TetriminoInterface {
         this.minos[j][l - i] = k;
       }
     }
+
     for (i = 0; i < minos.length; i++) {
       for (j = 0; j < minos[1].length; j++) {
         if (surroundingArea[i][j] && this.minos[i][j] != null) {
@@ -84,4 +104,22 @@ public abstract class Tetrimino implements TetriminoInterface {
     this.y += direction.getY();
   }
 
+
+  @Override
+  public String toString() {
+    StringBuilder result = new StringBuilder();
+
+    for (var line : this.minos) {
+      for (var mino : line) {
+        if (mino == null) {
+          result.append("·");
+        } else {
+          result.append("x");
+        }
+      }
+      result.append("\n");
+    }
+
+    return result.toString();
+  }
 }

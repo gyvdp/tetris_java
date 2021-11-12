@@ -1,13 +1,17 @@
 package esi.acgt.atlj.client.controller;
 
+import esi.acgt.atlj.client.connexionServer.Client;
 import esi.acgt.atlj.client.view.ViewInterface;
+import esi.acgt.atlj.model.Message;
 import esi.acgt.atlj.model.ModelInterface;
 import esi.acgt.atlj.model.board.Direction;
+import java.io.IOException;
 import java.util.Objects;
 import javafx.scene.input.KeyCode;
 
 public class Controller {
 
+  private final Client client;
   private final ModelInterface model;
   private final ViewInterface view;
 
@@ -16,16 +20,31 @@ public class Controller {
     Objects.requireNonNull(model, "model can not be null");
     Objects.requireNonNull(view, "view can not be null");
 
+/*    if (model == null) {
+      throw new IllegalArgumentException();
+    }
+
+    if (view == null) {
+      throw new IllegalArgumentException("view can not be null");
+    }
+*/
+    this.client = new Client(6969, "localhost");
     this.model = model;
     this.view = view;
     this.model.addPropertyChangeListener(this.view);
   }
 
   public void start() {
+    this.client.connectToServer();
+    Message message = new Message("askPiece");
+    try {
+      this.client.sendToServer(message);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     view.setController(this);
     view.displayConnexion();
     view.show();
-
   }
 
   public void keyBoardInput(KeyCode input) {

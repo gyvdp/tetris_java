@@ -22,22 +22,19 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.tetrimino;
+package esi.acgt.atlj.model;
 
-public class OTetrimino extends Tetrimino {
+import java.io.Serializable;
 
-  public OTetrimino() {
-    super();
-    this.minos = new Mino[][]{
-        {null, Mino.O_MINO, Mino.O_MINO, null},
-        {null, Mino.O_MINO, Mino.O_MINO, null},
-        {null, null, null, null},
-        {null, null, null, null}
-    };
-    this.type = Mino.O_MINO;
+public class Message implements Serializable {
+
+  private String description;
+
+  public Message(String description) {
+    this.description = description;
   }
 
-  @Override
-  public void rotate(boolean clockwise, boolean[][] surroundingArea) {
+  public String getDescription() {
+    return description;
   }
 }

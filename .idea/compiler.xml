@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="atlj.model" />
+        <module name="atlj.message" />
         <module name="atlj.server" />
         <module name="atlj.client" />
       </profile>

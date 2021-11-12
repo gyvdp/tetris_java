@@ -47,7 +47,7 @@ public class Client extends AbstractClient {
    */
   @Override
   protected void handleServerMessage(Object information) {
-    System.out.println(information);
+    System.out.println("message received");
   }
 
   /**

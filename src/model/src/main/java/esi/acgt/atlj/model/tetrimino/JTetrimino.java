@@ -26,14 +26,14 @@ package esi.acgt.atlj.model.tetrimino;
 
 public class JTetrimino extends Tetrimino {
 
-  private static final Mino[][] template = {{null, Mino.J_MINO, null, null},
-      {null, Mino.J_MINO, null, null},
-      {Mino.J_MINO, Mino.J_MINO, null, null},
-      {null, null, null, null}};
-
   public JTetrimino() {
     super();
-    this.minos = template;
+    this.minos = new Mino[][]{
+        {Mino.J_MINO, null, null, null},
+        {Mino.J_MINO, Mino.J_MINO, Mino.J_MINO, null},
+        {null, null, null, null},
+        {null, null, null, null}
+    };
     this.type = Mino.J_MINO;
   }
 }

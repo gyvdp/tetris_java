@@ -29,9 +29,8 @@ import esi.acgt.atlj.model.ModelInterface;
 public class App {
 
   public static void main(String[] args) {
-    ModelInterface model = new Model();
+    Server server = new Server(6969);
 
-    System.out.println("Ceci n'est pas un serveur.");
   }
 
 }

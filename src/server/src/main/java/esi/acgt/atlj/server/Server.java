@@ -25,7 +25,20 @@
 package esi.acgt.atlj.server;
 
 
+import esi.acgt.atlj.model.Message;
+import esi.acgt.atlj.model.tetrimino.ITetrimino;
+import esi.acgt.atlj.model.tetrimino.JTetrimino;
+import esi.acgt.atlj.model.tetrimino.LTetrimino;
+import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.OTetrimino;
+import esi.acgt.atlj.model.tetrimino.STetrimino;
+import esi.acgt.atlj.model.tetrimino.TTetrimino;
+import esi.acgt.atlj.model.tetrimino.Tetrimino;
+import esi.acgt.atlj.model.tetrimino.ZTetrimino;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Random;
+
 
 public class Server extends AbstractServer {
 
@@ -34,11 +47,9 @@ public class Server extends AbstractServer {
 
   public Server(int port) {
     super(port);
-
     clientId = 0;
     members = new HashMap<Integer, CustomClientThread>();
     this.startServer();
-
   }
 
   @Override
@@ -48,7 +59,47 @@ public class Server extends AbstractServer {
 
   @Override
   protected void handleMessageClient(Object msg, CustomClientThread client) {
+    if (msg.equals("askPiece")) {
+      Tetrimino tetrimino = client.getTetrimino();
+      client.sendMessage(tetrimino);
+    } else if (msg.equals("")) {
+      System.out.println("TODO");
+    }
+  }
 
+  @Override
+  void refillBag() {
+    for (int numberOfPlayer = 0; numberOfPlayer < members.size(); numberOfPlayer++) {
+      Tetrimino[] newBag = regenBag();
+      for (Tetrimino tetrimino : newBag) {
+        members.get(numberOfPlayer).addTetrimino(tetrimino);
+      }
+    }
+  }
+
+  private Tetrimino[] regenBag() {
+    Tetrimino[] bag = new Tetrimino[]{
+        new ITetrimino(), new ZTetrimino(), new STetrimino(), new TTetrimino(), new OTetrimino(),
+        new JTetrimino(), new LTetrimino()
+    };
+    shuffle(bag);
+    return bag;
+  }
+
+  private static void shuffle(Tetrimino[] array) {
+    int n = array.length;
+    Random random = new Random();
+    // Loop over array.
+    for (int i = 0; i < array.length; i++) {
+      // Get a random index of the array past the current index.
+      // ... The argument is an exclusive bound.
+      //     It will not go past the array send.
+      int randomValue = i + random.nextInt(n - i);
+      // Swap the random element with the present element.
+      Tetrimino randomElement = array[randomValue];
+      array[randomValue] = array[i];
+      array[i] = randomElement;
+    }
   }
 
   @Override
@@ -64,6 +115,7 @@ public class Server extends AbstractServer {
   protected void clientConnected(CustomClientThread client) {
     super.clientConnected(client);
     members.put(getNextId(), client);
+    System.out.println(members.size());
   }
 
   @Override
@@ -78,6 +130,7 @@ public class Server extends AbstractServer {
    * @param clientId    Unique id of client.
    */
   void sentToClient(Object information, int clientId) {
-
+    members.get(0).sendMessage("i");
   }
+
 }

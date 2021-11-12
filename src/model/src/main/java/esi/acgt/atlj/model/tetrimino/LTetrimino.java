@@ -26,28 +26,14 @@ package esi.acgt.atlj.model.tetrimino;
 
 public class LTetrimino extends Tetrimino {
 
-  private static final Mino[][] template = {{Mino.L_MINO, null, null, null},
-      {Mino.L_MINO, null, null, null}, {Mino.L_MINO, Mino.L_MINO, null, null},
-      {null, null, null, null}};
-
   public LTetrimino() {
     super();
-    this.minos = template;
+    this.minos = new Mino[][]{
+        {null, null, Mino.L_MINO, null},
+        {Mino.L_MINO, Mino.L_MINO, Mino.L_MINO, null},
+        {null, null, null, null},
+        {null, null, null, null}
+    };
     this.type = Mino.L_MINO;
-  }
-
-  public String toString() {
-    String res = "";
-    for (int i = 0; i < template.length; i++) {
-      for (Mino m : template[i]) {
-        if (m == null) {
-          res += " n ";
-        } else {
-          res += " I ";
-        }
-      }
-      res += "\n";
-    }
-    return res;
   }
 }
