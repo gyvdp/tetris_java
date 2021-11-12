@@ -41,6 +41,10 @@ public class Controller {
     view.show();
   }
 
+  public void disconnect() {
+    System.exit(0);
+  }
+
   public void keyBoardInput(KeyCode input) {
     switch (input) {
       case LEFT:

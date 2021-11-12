@@ -35,6 +35,9 @@ public class View implements ViewInterface, PropertyChangeListener {
 
   @Override
   public void show() {
+    this.primaryStage.setOnCloseRequest(event -> {
+      this.controller.disconnect();
+    });
     this.primaryStage.show();
   }
 
