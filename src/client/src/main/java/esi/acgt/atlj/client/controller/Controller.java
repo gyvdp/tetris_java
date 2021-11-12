@@ -3,7 +3,6 @@ package esi.acgt.atlj.client.controller;
 import esi.acgt.atlj.client.connexionServer.Client;
 import esi.acgt.atlj.client.connexionServer.ClientInterface;
 import esi.acgt.atlj.client.view.ViewInterface;
-import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.model.ClientModel;
 import esi.acgt.atlj.model.board.Direction;
 import java.util.Objects;
@@ -31,8 +30,6 @@ public class Controller {
     this.client = new Client(6969, "localhost");
     this.model = model;
     this.view = view;
-    this.model.addPropertyChangeListener(this.view);
-    this.model.addPropertyChangeListener(this.client);
   }
 
   public void start() {
