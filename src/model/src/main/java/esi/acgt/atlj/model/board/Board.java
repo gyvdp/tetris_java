@@ -26,8 +26,10 @@ package esi.acgt.atlj.model.board;
 
 import esi.acgt.atlj.model.tetrimino.ITetrimino;
 import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.OTetrimino;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+import esi.acgt.atlj.model.tetrimino.ZTetrimino;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
@@ -47,7 +49,7 @@ public abstract class Board implements BoardInterface, Serializable {
   public Board() {
     this.score = 0;
     this.nbLine = 0;
-    this.actualTetrimino = new ITetrimino();
+    this.actualTetrimino = new OTetrimino();
     this.changeSupport = new PropertyChangeSupport(this);
     minos = new Mino[HEIGHT][WIDTH];
   }
@@ -108,10 +110,13 @@ public abstract class Board implements BoardInterface, Serializable {
 
     for (int x = 0; x < this.actualTetrimino.getMinos().length; x++) {
       for (int y = 0; y < this.actualTetrimino.getMinos()[x].length; y++) {
-        // if (this.actualTetrimino.getMinos()[x][y] != null) {
-        copyBoard[x + this.actualTetrimino.getY()][y
-            + this.actualTetrimino.getX()] = this.actualTetrimino.getMinos()[x][y];
-        //   }
+        if ((x + this.actualTetrimino.getY() >= 0)
+            && (x + this.actualTetrimino.getY() < this.minos.length)
+            && (y + this.actualTetrimino.getX() >= 0)
+            && (y + this.actualTetrimino.getX() < this.minos[x].length)) {
+          copyBoard[x + this.actualTetrimino.getY()][y
+              + this.actualTetrimino.getX()] = this.actualTetrimino.getMinos()[x][y];
+        }
       }
       // 015332266
     }
