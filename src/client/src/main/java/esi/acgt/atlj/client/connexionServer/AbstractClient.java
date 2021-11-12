@@ -94,7 +94,7 @@ public abstract class AbstractClient implements Runnable {
    *
    * @param information Object to send to server.
    */
-  public void sendToServer(Object information) throws IOException {
+  protected void sendToServer(Object information) throws IOException {
     if (clientSocket == null) {
       throw new SocketException("Socket is null");
     }

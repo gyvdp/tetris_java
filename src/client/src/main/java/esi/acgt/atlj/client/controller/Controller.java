@@ -1,6 +1,7 @@
 package esi.acgt.atlj.client.controller;
 
 import esi.acgt.atlj.client.connexionServer.Client;
+import esi.acgt.atlj.client.connexionServer.ClientInterface;
 import esi.acgt.atlj.client.view.ViewInterface;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.model.ClientModel;
@@ -10,8 +11,8 @@ import javafx.scene.input.KeyCode;
 
 public class Controller {
 
-  private final Client client;
   private final ClientModel model;
+  private final ClientInterface client;
   private final ViewInterface view;
 
   public Controller(ClientModel model, ViewInterface view) {
@@ -30,6 +31,8 @@ public class Controller {
     this.client = new Client(6969, "localhost");
     this.model = model;
     this.view = view;
+    this.model.addPropertyChangeListener(this.view);
+    this.model.addPropertyChangeListener(this.client);
   }
 
   public void start() {
@@ -65,7 +68,6 @@ public class Controller {
         break;
       case SPACE:
         this.model.hardDrop();
-        System.out.println("hard drop");
         break;
       case CONTROL:
         this.model.rotate(true);
@@ -76,8 +78,7 @@ public class Controller {
   public void connexion(String ip, int port, String username) {
     System.out.println("Connect to : " + ip + " , port : " + port + ".");
     try {
-      this.client.connectToServer();
-      this.client.sendToServer(new AskPiece());
+      this.client.connect();
       this.view.displayBoard();
       this.model.initManagedBoard(username);
       this.model.start();

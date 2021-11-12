@@ -25,6 +25,10 @@
 package esi.acgt.atlj.client.connexionServer;
 
 import esi.acgt.atlj.message.messageTypes.SendPiece;
+import esi.acgt.atlj.model.tetrimino.Mino;
+import java.beans.PropertyChangeEvent;
+import java.net.ConnectException;
+
 
 /**
  * Sets up a specialized client with overridden methods from AbstractClient on which application
@@ -32,7 +36,7 @@ import esi.acgt.atlj.message.messageTypes.SendPiece;
  *
  * @see esi.acgt.atlj.client.connexionServer.AbstractClient
  */
-public class Client extends AbstractClient {
+public class Client extends AbstractClient implements ClientInterface {
 
   /**
    * Constructor of a client.
@@ -49,9 +53,8 @@ public class Client extends AbstractClient {
    */
   @Override
   protected void handleServerMessage(Object information) {
-    System.out.println(information);
     if (information instanceof SendPiece) {
-      System.out.println(((SendPiece) information).getMino());
+      System.err.println(((SendPiece) information).getMino());
     }
   }
 
@@ -77,5 +80,65 @@ public class Client extends AbstractClient {
   @Override
   protected void connexionException(Exception e) {
     e.printStackTrace();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void connect() {
+    try {
+      connectToServer();
+    } catch (ConnectException e) {
+      //pop to gui
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Mino requestNextMino() {
+    return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void syncBoardWithServer() {
+
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void sendName(String name) {
+
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void sendScore(int Score) {
+
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void removeLine(int line) {
+
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void propertyChange(PropertyChangeEvent evt) {
+
   }
 }
