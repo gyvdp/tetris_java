@@ -67,4 +67,9 @@ public class Model implements ModelInterface {
     this.player1.hardDrop();
   }
 
+  @Override
+  public void softDrop() {
+    this.player1.softDrop();
+  }
+
 }

@@ -26,17 +26,28 @@ package esi.acgt.atlj.model.board;
 
 import esi.acgt.atlj.model.tetrimino.JTetrimino;
 import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.security.InvalidParameterException;
-import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 public class ManagedBoard extends Board {
 
   private Timer timer;
+  private Queue<Mino> nextTetriminos;
 
   public ManagedBoard() {
+    this.nextTetriminos = new LinkedList<>();
+    // TODO FILL WITH SERVER
+    nextTetriminos.add(Mino.L_MINO);
+    nextTetriminos.add(Mino.O_MINO);
+    nextTetriminos.add(Mino.Z_MINO);
+    nextTetriminos.add(Mino.I_MINO);
+    nextTetriminos.add(Mino.T_MINO);
+    nextTetriminos.add(Mino.S_MINO);
     //TODO
   }
 
@@ -48,6 +59,10 @@ public class ManagedBoard extends Board {
       return true;
     }
     return false;
+  }
+
+  public void addNextTetriminos(Mino mino) {
+    this.nextTetriminos.add(mino);
   }
 
   @Override
@@ -62,19 +77,17 @@ public class ManagedBoard extends Board {
     this.changeSupport.firePropertyChange("player1Next", null, this.getNextTetrimino());
   }
 
-  @Override
   public void hold() {
     if (hold == null) {
       this.setHold(this.actualTetrimino.getType());
       //todo A GENERER LE PROCHAINE ELEMENT.
       this.setActualTetrimino(this.nextTetrimino);
-      this.setNextTetrimino(new JTetrimino());
+      this.setNextTetrimino(Tetrimino.createTetrimino(this.nextTetriminos.poll()));
     } else {
       TetriminoInterface temp = this.getHold();
       this.setHold(this.actualTetrimino.getType());
       this.setActualTetrimino(temp);
     }
-    // this.hold.resetPosition();
   }
 
   @Override
@@ -164,7 +177,33 @@ public class ManagedBoard extends Board {
 
   public void softDrop() {
     //Todo Gestion reset timer
-    this.move(Direction.DOWN);
+    System.out.println("passage Avant Move");
+    if (!this.move(Direction.DOWN)) {
+      System.out.println("passage");
+      lockDown();
+    }
+  }
+
+  private void lockDown() {
+    //TODO a faire via la queue;
+    this.printOnBoard();
+    setActualTetrimino(nextTetrimino);
+    setNextTetrimino(Tetrimino.createTetrimino(this.nextTetriminos.poll()));
+  }
+
+  private void printOnBoard() {
+    for (int x = 0; x < this.actualTetrimino.getMinos().length; x++) {
+      for (int y = 0; y < this.actualTetrimino.getMinos()[x].length; y++) {
+        if ((this.actualTetrimino.getMinos()[x][y] != null
+            && x + this.actualTetrimino.getY() >= 0)
+            && (x + this.actualTetrimino.getY() < this.minos.length)
+            && (y + this.actualTetrimino.getX() >= 0)
+            && (y + this.actualTetrimino.getX() < this.minos[x].length)) {
+          this.minos[x + this.actualTetrimino.getY()][y
+              + this.actualTetrimino.getX()] = this.actualTetrimino.getMinos()[x][y];
+        }
+      }
+    }
   }
 
   public void hardDrop() {

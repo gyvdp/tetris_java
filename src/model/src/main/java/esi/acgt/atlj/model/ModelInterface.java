@@ -42,4 +42,6 @@ public interface ModelInterface {
   void hold();
 
   void hardDrop();
+
+  void softDrop();
 }
