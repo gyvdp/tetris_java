@@ -41,7 +41,7 @@ public abstract class Board implements BoardInterface, Serializable {
   protected int score;
   protected String username;
   protected int nbLine;
-  protected TetriminoInterface hold;
+  protected Mino hold;
   protected TetriminoInterface actualTetrimino;
   protected TetriminoInterface nextTetrimino;
   protected PropertyChangeSupport changeSupport;
@@ -50,6 +50,7 @@ public abstract class Board implements BoardInterface, Serializable {
     this.score = 0;
     this.nbLine = 0;
     this.actualTetrimino = new OTetrimino();
+    this.nextTetrimino = new ITetrimino();
     this.changeSupport = new PropertyChangeSupport(this);
     minos = new Mino[HEIGHT][WIDTH];
   }
@@ -58,6 +59,7 @@ public abstract class Board implements BoardInterface, Serializable {
   public void initTetrisBoard() {
     var oldBoard = this.getBoard();
     this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
+    this.changeSupport.firePropertyChange("player1Next", null, this.getNextTetrimino());
   }
 
   @Override
@@ -87,7 +89,7 @@ public abstract class Board implements BoardInterface, Serializable {
 
   @Override
   public TetriminoInterface getHold() {
-    return hold;
+    return Tetrimino.createTetrimino(this.hold);
   }
 
   @Override
@@ -135,4 +137,11 @@ public abstract class Board implements BoardInterface, Serializable {
 
   public abstract void move(Direction direction);
 
+  public abstract void setHold(Mino hold);
+
+  public abstract void setNextTetrimino(TetriminoInterface nextTetrimino);
+
+  public abstract void setActualTetrimino(TetriminoInterface actualTetrimino);
+
+  public abstract void hold();
 }

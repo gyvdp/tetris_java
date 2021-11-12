@@ -262,19 +262,19 @@ public class PlayerTetrisFXML implements Initializable {
 
     // Bindings hold
     this.holdTetrimino.fitWidthProperty().bind(
-        Bindings.min(this.stackPaneHold.widthProperty().divide(1.3),
-            this.stackPaneHold.heightProperty().divide(1.3)));
+        Bindings.min(this.stackPaneHold.widthProperty().multiply(0.6),
+            this.stackPaneHold.heightProperty().multiply(0.6)));
     this.holdTetrimino.fitHeightProperty().bind(
-        Bindings.min(this.stackPaneHold.widthProperty().divide(1.3),
-            this.stackPaneHold.heightProperty().divide(1.3)));
+        Bindings.min(this.stackPaneHold.widthProperty().multiply(0.6),
+            this.stackPaneHold.heightProperty().multiply(0.6)));
 
     // Binding next
     this.nextTetrimino.fitWidthProperty()
-        .bind(Bindings.min(this.stackPaneNext.widthProperty().divide(1.3),
-            this.stackPaneNext.heightProperty().divide(1.3)));
+        .bind(Bindings.min(this.stackPaneNext.widthProperty().multiply(0.6),
+            this.stackPaneNext.heightProperty().multiply(0.6)));
     this.nextTetrimino.fitHeightProperty()
-        .bind(Bindings.min(this.stackPaneNext.widthProperty().divide(1.3),
-            this.stackPaneNext.heightProperty().divide(1.3)));
+        .bind(Bindings.min(this.stackPaneNext.widthProperty().multiply(0.6),
+            this.stackPaneNext.heightProperty().multiply(0.6)));
 
   }
 }
