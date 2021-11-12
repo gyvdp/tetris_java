@@ -24,30 +24,45 @@
 
 package esi.acgt.atlj.server;
 
-import esi.acgt.atlj.model.Message;
-import esi.acgt.atlj.model.tetrimino.Tetrimino;
+import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.model.tetrimino.Mino;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.LinkedList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.SynchronousQueue;
 
 public class CustomClientThread extends Thread {
 
-  private BlockingQueue<Tetrimino> myTetriminos;
-
+  /**
+   * State of current player.
+   */
+  private PlayerStatus clientStatus;
+  /**
+   * List of next tetriminos of player.
+   */
+  private BlockingQueue<Mino> myTetriminos;
+  /**
+   * Socket of client.
+   */
   private final Socket clientSocket;
-
+  /**
+   * Server that client is connected to.
+   */
   private final AbstractServer server;
-
+  /**
+   * Input stream of socket
+   */
   private ObjectInputStream input;
-
+  /**
+   * Output stream of socket
+   */
   private ObjectOutputStream output;
-
+  /**
+   * Status of client connexion.
+   */
   private boolean isActive;
 
 
@@ -59,6 +74,7 @@ public class CustomClientThread extends Thread {
    * @throws SocketException Thrown if function cannot instantiate input or output streams.
    */
   public CustomClientThread(Socket clientSocket, AbstractServer server) throws SocketException {
+    clientStatus = PlayerStatus.WAITING;
     this.clientSocket = clientSocket;
     this.myTetriminos = new LinkedBlockingQueue<>();
     clientSocket.setSoTimeout(0);
@@ -83,8 +99,26 @@ public class CustomClientThread extends Thread {
    *
    * @param tetrimino Tetrimino to add.
    */
-  public void addTetrimino(Tetrimino tetrimino) {
+  public void addTetrimino(Mino tetrimino) {
     myTetriminos.add(tetrimino);
+  }
+
+  /**
+   * Gets the state of the player.
+   *
+   * @return Player state.
+   */
+  public PlayerStatus getClientStatus() {
+    return clientStatus;
+  }
+
+  /**
+   * Sets the state of the player.
+   *
+   * @param clientStatus Status to set the player to.
+   */
+  public void setClientStatus(PlayerStatus clientStatus) {
+    this.clientStatus = clientStatus;
   }
 
   /**
@@ -92,17 +126,17 @@ public class CustomClientThread extends Thread {
    *
    * @return First element of list myTetriminos.
    */
-  public Tetrimino getTetrimino() {
-    Tetrimino tetriminiToSend = null;
+  public Mino getTetrimino() {
+    Mino tetriminoToSend = null;
     if (myTetriminos.isEmpty()) {
       server.refill();
     }
     try {
-      tetriminiToSend = myTetriminos.take();
+      tetriminoToSend = myTetriminos.take();
     } catch (InterruptedException e) {
       System.out.println("Sorry have to wait to long for new piece");
     }
-    return tetriminiToSend;
+    return tetriminoToSend;
   }
 
   /**
@@ -155,8 +189,10 @@ public class CustomClientThread extends Thread {
       System.out.println("Sorry stream does not exist");
     }
     try {
-      output.writeObject("t");
-      output.flush();
+      if (information instanceof Message) {
+        output.writeObject((Message) information);
+        output.flush();
+      }
     } catch (IOException e) {
       System.out.println("Could not send message" + information.toString());
     }

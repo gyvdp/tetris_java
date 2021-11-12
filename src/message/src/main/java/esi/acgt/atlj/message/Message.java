@@ -22,19 +22,30 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model;
+package esi.acgt.atlj.message;
 
 import java.io.Serializable;
 
-public class Message implements Serializable {
+public abstract class Message implements Serializable {
 
-  private String description;
+  public MessageType messageType;
 
-  public Message(String description) {
-    this.description = description;
+  /**
+   * Gets the type of message.
+   *
+   * @return Type of message.
+   */
+  public MessageType getType() {
+    return this.messageType;
   }
 
-  public String getDescription() {
-    return description;
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String toString() {
+    return messageType.toString();
   }
+
+
 }

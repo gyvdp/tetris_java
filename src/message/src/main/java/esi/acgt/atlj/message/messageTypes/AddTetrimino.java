@@ -22,60 +22,31 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.client.connexionServer;
+package esi.acgt.atlj.message.messageTypes;
 
-import esi.acgt.atlj.message.messageTypes.SendPiece;
+import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.MessageType;
+import esi.acgt.atlj.model.tetrimino.Tetrimino;
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
-/**
- * Sets up a specialized client with overridden methods from AbstractClient on which application
- * will run on.
- *
- * @see esi.acgt.atlj.client.connexionServer.AbstractClient
- */
-public class Client extends AbstractClient {
+public class AddTetrimino extends Message {
+
+  private final TetriminoInterface tetrimino;
 
   /**
-   * Constructor of a client.
+   * Constructor for tetrimino message.
    *
-   * @param port Port client must look for.
-   * @param host Host client must connect to.
+   * @param tetrimino Tetrimino to add.
    */
-  public Client(int port, String host) {
-    super(port, host);
+  public AddTetrimino(Tetrimino tetrimino) {
+    this.tetrimino = tetrimino;
+    this.messageType = MessageType.ADD_TETRIMINO;
   }
 
   /**
-   * {@inheritDoc}
+   * Constructor for add tetrimino type of message.
    */
-  @Override
-  protected void handleServerMessage(Object information) {
-    System.out.println(information);
-    if (information instanceof SendPiece) {
-      System.out.println(((SendPiece) information).getMino());
-    }
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void connectionEstablished() {
-    System.out.println("Connection to server is established");
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void closeConnection() {
-    System.out.println("Connection to server has been suspended");
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void connexionException(Exception e) {
-    e.printStackTrace();
+  public TetriminoInterface getTetrimino() {
+    return tetrimino;
   }
 }

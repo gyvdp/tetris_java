@@ -22,60 +22,33 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.client.connexionServer;
+package esi.acgt.atlj.message.messageTypes;
 
-import esi.acgt.atlj.message.messageTypes.SendPiece;
+import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.MessageType;
 
-/**
- * Sets up a specialized client with overridden methods from AbstractClient on which application
- * will run on.
- *
- * @see esi.acgt.atlj.client.connexionServer.AbstractClient
- */
-public class Client extends AbstractClient {
+public class SendScore extends Message {
+
+  private final int score;
 
   /**
-   * Constructor of a client.
+   * Constructor for a sendScore message.
    *
-   * @param port Port client must look for.
-   * @param host Host client must connect to.
+   * @param score Score to send.
    */
-  public Client(int port, String host) {
-    super(port, host);
+  public SendScore(int score) {
+    this.score = score;
+    this.messageType = MessageType.SEND_SCORE;
   }
 
   /**
-   * {@inheritDoc}
+   * Getter for the score of the sent score.
+   *
+   * @return Score of the sent message.
    */
-  @Override
-  protected void handleServerMessage(Object information) {
-    System.out.println(information);
-    if (information instanceof SendPiece) {
-      System.out.println(((SendPiece) information).getMino());
-    }
+  public int getScore() {
+    return this.score;
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void connectionEstablished() {
-    System.out.println("Connection to server is established");
-  }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void closeConnection() {
-    System.out.println("Connection to server has been suspended");
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void connexionException(Exception e) {
-    e.printStackTrace();
-  }
 }

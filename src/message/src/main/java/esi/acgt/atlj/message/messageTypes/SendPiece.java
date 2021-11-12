@@ -22,60 +22,30 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.client.connexionServer;
+package esi.acgt.atlj.message.messageTypes;
 
-import esi.acgt.atlj.message.messageTypes.SendPiece;
+import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.MessageType;
+import esi.acgt.atlj.model.tetrimino.Mino;
 
-/**
- * Sets up a specialized client with overridden methods from AbstractClient on which application
- * will run on.
- *
- * @see esi.acgt.atlj.client.connexionServer.AbstractClient
- */
-public class Client extends AbstractClient {
+public class SendPiece extends Message {
+
+  private final Mino mino;
 
   /**
-   * Constructor of a client.
+   * Constructor for send piece type of message.
+   */
+  public SendPiece(Mino mino) {
+    this.mino = mino;
+    this.messageType = MessageType.SEND_PIECE;
+  }
+
+  /**
+   * Getter for the tetrimino of the current instance.
    *
-   * @param port Port client must look for.
-   * @param host Host client must connect to.
+   * @return Tetrimino that is sent.
    */
-  public Client(int port, String host) {
-    super(port, host);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void handleServerMessage(Object information) {
-    System.out.println(information);
-    if (information instanceof SendPiece) {
-      System.out.println(((SendPiece) information).getMino());
-    }
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void connectionEstablished() {
-    System.out.println("Connection to server is established");
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void closeConnection() {
-    System.out.println("Connection to server has been suspended");
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void connexionException(Exception e) {
-    e.printStackTrace();
+  public Mino getMino() {
+    return mino;
   }
 }

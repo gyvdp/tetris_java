@@ -21,17 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package esi.acgt.atlj.server;
 
-public class App {
-
-  /**
-   * Main class to launch server.
-   *
-   * @param args
-   */
-  public static void main(String[] args) {
-    Server server = new Server(6969);
-  }
-
+/**
+ * Different status a player can take
+ */
+public enum PlayerStatus {
+  WAITING, //Waiting for other player to connect.
+  READY, //Ready to play the game & while playing.
+  LOST, //Player has lost his game of tetris.
 }

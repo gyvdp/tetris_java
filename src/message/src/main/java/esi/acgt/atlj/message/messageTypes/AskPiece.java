@@ -22,60 +22,17 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.client.connexionServer;
+package esi.acgt.atlj.message.messageTypes;
 
-import esi.acgt.atlj.message.messageTypes.SendPiece;
+import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.MessageType;
 
-/**
- * Sets up a specialized client with overridden methods from AbstractClient on which application
- * will run on.
- *
- * @see esi.acgt.atlj.client.connexionServer.AbstractClient
- */
-public class Client extends AbstractClient {
-
+public class AskPiece extends Message {
+  
   /**
-   * Constructor of a client.
-   *
-   * @param port Port client must look for.
-   * @param host Host client must connect to.
+   * Constructor for askPiece type of message.
    */
-  public Client(int port, String host) {
-    super(port, host);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void handleServerMessage(Object information) {
-    System.out.println(information);
-    if (information instanceof SendPiece) {
-      System.out.println(((SendPiece) information).getMino());
-    }
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void connectionEstablished() {
-    System.out.println("Connection to server is established");
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void closeConnection() {
-    System.out.println("Connection to server has been suspended");
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void connexionException(Exception e) {
-    e.printStackTrace();
+  public AskPiece() {
+    this.messageType = MessageType.ASK_PIECE;
   }
 }

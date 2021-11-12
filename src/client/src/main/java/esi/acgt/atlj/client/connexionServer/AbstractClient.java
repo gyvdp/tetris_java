@@ -24,7 +24,6 @@
 
 package esi.acgt.atlj.client.connexionServer;
 
-import esi.acgt.atlj.model.Message;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -142,6 +141,8 @@ public abstract class AbstractClient implements Runnable {
       this.isActive = true;
       clientThread.start();
     } catch (IOException e) {
+      closeConnectionToServer();
+      connexionException(e);
       throw new ConnectException("Sorry could not find " + host + " at " + port);
     }
   }
