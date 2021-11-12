@@ -21,21 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package esi.acgt.atlj.model.player;
 
-import esi.acgt.atlj.model.board.UnmanagedBoard;
+package esi.acgt.atlj.model.board;
 
-public class UnmanageablePlayer extends Player {
-
-  private final UnmanagedBoard board;
-
-  /**
-   * Instantiates a new Player.
-   *
-   * @param name the name
-   */
-  public UnmanageablePlayer(String name) {
-    super(name);
-    this.board = new UnmanagedBoard();
-  }
+public enum BoardStatus {
+  NOT_STARTED,
+  TETRIMINO_FALLING,
+  TETRIMINO_LOCKED,
+  LOCK_DOWN,
+  LOCK_OUT
 }

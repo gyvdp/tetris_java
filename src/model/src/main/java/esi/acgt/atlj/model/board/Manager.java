@@ -21,25 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package esi.acgt.atlj.model.player;
 
-public abstract class Player {
+package esi.acgt.atlj.model.board;
 
-  private final String name;
-  private int level;
-  private final int nbLine;
-  private final int score;
+import java.util.TimerTask;
 
-  /**
-   * Instantiates a new Player.
-   *
-   * @param name the name
-   */
-  public Player(String name) {
-    this.name = name;
-    this.score = 0;
-    this.nbLine = 0;
+public class Manager extends TimerTask {
+
+  private final ManagedBoard managedBoard;
+
+  public Manager(ManagedBoard managedBoard) {
+    this.managedBoard = managedBoard;
   }
 
+  @Override
+  public synchronized void run() {
+    if (managedBoard.getStatus() == BoardStatus.TETRIMINO_FALLING) {
+      if (!managedBoard.move(Direction.DOWN)) {
+        managedBoard.setStatus(BoardStatus.LOCK_DOWN);
+      }
+    } else if (managedBoard.getStatus() == BoardStatus.LOCK_DOWN) {
+      managedBoard.lock();
+    }
+  }
 
+  public static long tickDelay(int level) {
+    return (int) ((Math.pow(0.8 - ((level - 1) * 0.007), level - 1)) * 1000);
+  }
 }

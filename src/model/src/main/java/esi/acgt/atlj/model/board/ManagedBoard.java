@@ -25,54 +25,51 @@
 package esi.acgt.atlj.model.board;
 
 import esi.acgt.atlj.model.tetrimino.JTetrimino;
+import esi.acgt.atlj.model.tetrimino.LTetrimino;
 import esi.acgt.atlj.model.tetrimino.Mino;
-import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+import esi.acgt.atlj.model.tetrimino.ZTetrimino;
 import java.security.InvalidParameterException;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Timer;
-import java.util.concurrent.TimeUnit;
 
 public class ManagedBoard extends Board {
 
-  private Timer timer;
-  private Queue<Mino> nextTetriminos;
+  private BoardStatus status;
+  private int level;
+  private final Timer timer;
+  private Manager manager;
 
-  public ManagedBoard() {
-    this.nextTetriminos = new LinkedList<>();
-    // TODO FILL WITH SERVER
-    nextTetriminos.add(Mino.L_MINO);
-    nextTetriminos.add(Mino.O_MINO);
-    nextTetriminos.add(Mino.Z_MINO);
-    nextTetriminos.add(Mino.I_MINO);
-    nextTetriminos.add(Mino.T_MINO);
-    nextTetriminos.add(Mino.S_MINO);
-    //TODO
+  public ManagedBoard(String username) {
+    super(username);
+    this.status = BoardStatus.NOT_STARTED;
+    this.level = 3;
+    this.timer = new Timer(true);
+    this.manager = new Manager(this);
   }
 
-  public boolean move(Direction direction) {
+  public synchronized void start() {
+    setStatus(BoardStatus.TETRIMINO_FALLING);
+  }
+
+  public synchronized boolean move(Direction direction) {
     if (isMoveValid(direction)) {
       Mino[][] oldBoard = this.getBoard();
       this.actualTetrimino.move(direction);
       this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
       return true;
     }
+
     return false;
   }
 
-  public void addNextTetriminos(Mino mino) {
-    this.nextTetriminos.add(mino);
-  }
-
   @Override
-  public void setHold(Mino hold) {
+  public synchronized void setHold(Mino hold) {
     this.hold = hold;
     this.changeSupport.firePropertyChange("player1Hold", null, this.getHold());
   }
 
   @Override
-  public void setNextTetrimino(TetriminoInterface nextTetrimino) {
+  public synchronized void setNextTetrimino(TetriminoInterface nextTetrimino) {
     this.nextTetrimino = nextTetrimino;
     this.changeSupport.firePropertyChange("player1Next", null, this.getNextTetrimino());
   }
@@ -82,7 +79,7 @@ public class ManagedBoard extends Board {
       this.setHold(this.actualTetrimino.getType());
       //todo A GENERER LE PROCHAINE ELEMENT.
       this.setActualTetrimino(this.nextTetrimino);
-      this.setNextTetrimino(Tetrimino.createTetrimino(this.nextTetriminos.poll()));
+      this.setNextTetrimino(new JTetrimino());
     } else {
       TetriminoInterface temp = this.getHold();
       this.setHold(this.actualTetrimino.getType());
@@ -91,13 +88,13 @@ public class ManagedBoard extends Board {
   }
 
   @Override
-  public void setActualTetrimino(TetriminoInterface actualTetrimino) {
+  public synchronized void setActualTetrimino(TetriminoInterface actualTetrimino) {
     Mino[][] oldBoard = this.getBoard();
     this.actualTetrimino = actualTetrimino;
     this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
   }
 
-  private boolean isMoveValid(Direction direction) {
+  private synchronized boolean isMoveValid(Direction direction) {
     switch (direction) {
       case UP -> {
         if (this.actualTetrimino.getY() <= 0) {
@@ -175,52 +172,20 @@ public class ManagedBoard extends Board {
     return true;
   }
 
-  public void softDrop() {
+  public synchronized void softDrop() {
     //Todo Gestion reset timer
-    System.out.println("passage Avant Move");
-    if (!this.move(Direction.DOWN)) {
-      System.out.println("passage");
-      lockDown();
-    }
+    this.move(Direction.DOWN);
   }
 
-  private void lockDown() {
-    //TODO a faire via la queue;
-    this.printOnBoard();
-    setActualTetrimino(nextTetrimino);
-    setNextTetrimino(Tetrimino.createTetrimino(this.nextTetriminos.poll()));
-  }
-
-  private void printOnBoard() {
-    for (int x = 0; x < this.actualTetrimino.getMinos().length; x++) {
-      for (int y = 0; y < this.actualTetrimino.getMinos()[x].length; y++) {
-        if ((this.actualTetrimino.getMinos()[x][y] != null
-            && x + this.actualTetrimino.getY() >= 0)
-            && (x + this.actualTetrimino.getY() < this.minos.length)
-            && (y + this.actualTetrimino.getX() >= 0)
-            && (y + this.actualTetrimino.getX() < this.minos[x].length)) {
-          this.minos[x + this.actualTetrimino.getY()][y
-              + this.actualTetrimino.getX()] = this.actualTetrimino.getMinos()[x][y];
-        }
-      }
-    }
-  }
-
-  public void hardDrop() {
-    // TODO
+  public synchronized void hardDrop() {
     while (isMoveValid(Direction.DOWN)) {
       Mino[][] oldBoard = this.getBoard();
       this.actualTetrimino.move(Direction.DOWN);
-      //    try {
-      //      TimeUnit.MILLISECONDS.sleep(100);
-      //    } catch (InterruptedException e) {
-      //      e.printStackTrace();
-      //    }
       this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
     }
   }
 
-  private void rotate(boolean clockwise) {
+  public synchronized void rotate(boolean clockwise) {
     var oldBoard = this.getBoard();
     try {
       actualTetrimino.rotate(clockwise, this.getSurroundingArea(actualTetrimino.getX(),
@@ -232,22 +197,64 @@ public class ManagedBoard extends Board {
     }
   }
 
-  public void setScore(int score) {
+  public synchronized void setScore(int score) {
     int oldScore = this.score;
     this.score = score;
     this.changeSupport.firePropertyChange("player1Score", oldScore, this.score);
   }
 
-  public void setUsername(String username) {
+  public synchronized void setUsername(String username) {
     String oldValue = this.username;
     this.username = username;
     this.changeSupport.firePropertyChange("player1Name", oldValue, this.username);
   }
 
-  public void setNbLine(int nbLine) {
+  public synchronized void setNbLine(int nbLine) {
     int oldNbLine = this.nbLine;
     this.nbLine = nbLine;
     this.changeSupport.firePropertyChange("player1NbLine", oldNbLine, this.nbLine);
+  }
+
+  public synchronized BoardStatus getStatus() {
+    return this.status;
+  }
+
+  public synchronized void setStatus(BoardStatus status) {
+    this.manager.cancel();
+    this.manager = new Manager(this);
+    this.status = status;
+
+    if (status == BoardStatus.TETRIMINO_FALLING) {
+      timer.schedule(this.manager, 0, Manager.tickDelay(this.level));
+    }
+
+    if (status == BoardStatus.LOCK_DOWN) {
+      this.timer.schedule(this.manager, 500);
+    }
+  }
+
+  public synchronized void lock() {
+    var oldBoard = getBoard();
+    var t = this.actualTetrimino;
+    var tMinos = this.actualTetrimino.getMinos();
+    for (var i = 0; i < tMinos.length; ++i) {
+      for (var j = 0; j < tMinos[i].length; ++j) {
+        if (tMinos[i][j] == null) {
+          continue;
+        }
+        var line = t.getY() + i;
+        var col = t.getX() + j;
+
+        if (line < minos.length && col < minos[line].length) {
+          minos[line][col] = tMinos[i][j];
+        }
+
+      }
+    }
+
+    setActualTetrimino(new LTetrimino());
+    setNextTetrimino(new ZTetrimino());
+    setStatus(BoardStatus.TETRIMINO_FALLING);
   }
 
 }

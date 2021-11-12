@@ -29,7 +29,8 @@ import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
 public class UnmanagedBoard extends Board {
 
-  public UnmanagedBoard() {
+  public UnmanagedBoard(String username) {
+    super(username);
     // TODO Constructor
   }
 
@@ -65,9 +66,18 @@ public class UnmanagedBoard extends Board {
   }
 
   @Override
+  public boolean move(Direction direction) {
+    return false;
+  }
+
+  @Override
   public void setHold(Mino hold) {
 
   }
 
+  @Override
+  public void hardDrop() {
+
+  }
 
 }

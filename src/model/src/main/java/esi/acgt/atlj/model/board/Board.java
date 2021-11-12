@@ -29,7 +29,6 @@ import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.OTetrimino;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
-import esi.acgt.atlj.model.tetrimino.ZTetrimino;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
@@ -46,7 +45,8 @@ public abstract class Board implements BoardInterface, Serializable {
   protected TetriminoInterface nextTetrimino;
   protected PropertyChangeSupport changeSupport;
 
-  public Board() {
+  public Board(String username) {
+    this.username = username;
     this.score = 0;
     this.nbLine = 0;
     this.actualTetrimino = new OTetrimino();
@@ -56,14 +56,14 @@ public abstract class Board implements BoardInterface, Serializable {
   }
 
   @Override
-  public void initTetrisBoard() {
-    var oldBoard = new Mino[HEIGHT][WIDTH];
+  public synchronized void initTetrisBoard() {
+    var oldBoard = new Mino[HEIGHT][WIDTH];;
     this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
     this.changeSupport.firePropertyChange("player1Next", null, this.getNextTetrimino());
   }
 
   @Override
-  public boolean[][] getSurroundingArea(int x, int y) {
+  public synchronized boolean[][] getSurroundingArea(int x, int y) {
     boolean[][] surroundingArea = new boolean[4][4];
     for (int i = x; i <= x + 4; i++) {
       for (int j = y; j <= y + 4; j++) {
@@ -74,36 +74,36 @@ public abstract class Board implements BoardInterface, Serializable {
   }
 
   @Override
-  public int getScore() {
+  public synchronized int getScore() {
     return score;
   }
 
   public abstract void setScore(int score);
 
   @Override
-  public String getUsername() {
+  public synchronized String getUsername() {
     return username;
   }
 
   public abstract void setUsername(String username);
 
   @Override
-  public TetriminoInterface getHold() {
+  public synchronized TetriminoInterface getHold() {
     return Tetrimino.createTetrimino(this.hold);
   }
 
   @Override
-  public TetriminoInterface getActualTetrimino() {
+  public synchronized TetriminoInterface getActualTetrimino() {
     return actualTetrimino;
   }
 
   @Override
-  public TetriminoInterface getNextTetrimino() {
+  public synchronized TetriminoInterface getNextTetrimino() {
     return nextTetrimino;
   }
 
   @Override
-  public Mino[][] getBoard() {
+  public synchronized Mino[][] getBoard() {
     Mino[][] copyBoard = new Mino[this.minos.length][];
 
     for (int i = 0; i < this.minos.length; i++) {

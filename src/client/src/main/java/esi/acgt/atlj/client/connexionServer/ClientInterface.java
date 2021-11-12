@@ -22,21 +22,51 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.player;
+package esi.acgt.atlj.client.connexionServer;
 
-import esi.acgt.atlj.model.board.ManagedBoard;
+import esi.acgt.atlj.model.tetrimino.Mino;
+import java.beans.PropertyChangeListener;
 
-public class ManageablePlayer extends Player {
-
-  private final ManagedBoard board;
+/**
+ * Contains all necessary methods to interact with the client.
+ */
+public interface ClientInterface extends PropertyChangeListener {
 
   /**
-   * Instantiates a new Player.
-   *
-   * @param name the name
+   * Tries to establish a connexion with server.
    */
-  public ManageablePlayer(String name) {
-    super(name);
-    this.board = new ManagedBoard();
-  }
+  public void connect();
+
+  /**
+   * Request the next color of Tetrimino.
+   *
+   * @return Next tetrimino in the bag of the server.
+   */
+  public Mino requestNextMino();
+
+  /**
+   * Syncs your board with the server.
+   */
+  public void syncBoardWithServer();
+
+  /**
+   * Sends your name to the server.
+   *
+   * @param name Name of the current player.
+   */
+  public void sendName(String name);
+
+  /**
+   * Sends your score to the server.
+   *
+   * @param Score Score of the current player.
+   */
+  public void sendScore(int Score);
+
+  /**
+   * Sends line that current player just destroyed.
+   *
+   * @param line Line that current player just destroyed.
+   */
+  public void removeLine(int line);
 }
