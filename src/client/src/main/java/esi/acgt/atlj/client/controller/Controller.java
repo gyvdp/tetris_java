@@ -6,6 +6,7 @@ import esi.acgt.atlj.model.Message;
 import esi.acgt.atlj.model.ModelInterface;
 import esi.acgt.atlj.model.board.Direction;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.Objects;
 import javafx.scene.input.KeyCode;
 
@@ -35,13 +36,6 @@ public class Controller {
   }
 
   public void start() {
-    this.client.connectToServer();
-    Message message = new Message("askPiece");
-    try {
-      this.client.sendToServer(message);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
     view.setController(this);
     view.displayConnexion();
     view.show();
@@ -80,13 +74,16 @@ public class Controller {
   public void connexion(String ip, int port, String username) {
     System.out.println("Connect to : " + ip + " , port : " + port + ".");
     try {
-      // Bla bla bla test connection
+      this.client.connectToServer();
+      Message message = new Message("askPiece");
+      this.client.sendToServer(message);
       this.view.displayBoard();
       this.model.updateTest();
       this.model.setPlayer1(username);
       this.view.show();
     } catch (Exception e) {
       this.view.displayError(e);
+      this.view.displayConnexion();
     }
   }
 
