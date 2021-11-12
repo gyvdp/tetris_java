@@ -22,19 +22,30 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model;
+package esi.acgt.atlj.message.messageTypes;
 
-import java.io.Serializable;
+import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.MessageType;
+import esi.acgt.atlj.model.tetrimino.Tetrimino;
 
-public class Message implements Serializable {
+public class AddTetrimino extends Message {
 
-  private String description;
+  Tetrimino tetrimino;
 
-  public Message(String description) {
-    this.description = description;
+  /**
+   * Constructor for tetrimino message.
+   *
+   * @param tetrimino Tetrimino to add.
+   */
+  public AddTetrimino(Tetrimino tetrimino) {
+    this.tetrimino = tetrimino;
+    this.messageType = MessageType.ADD_TETRIMINO;
   }
 
-  public String getDescription() {
-    return description;
+  /**
+   * Constructor for add tetrimino type of message.
+   */
+  public Tetrimino getTetrimino() {
+    return tetrimino;
   }
 }

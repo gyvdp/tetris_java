@@ -24,6 +24,10 @@
 
 package esi.acgt.atlj.client.connexionServer;
 
+import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.MessageType;
+import esi.acgt.atlj.message.messageTypes.SendPiece;
+
 /**
  * Sets up a specialized client with overridden methods from AbstractClient on which application
  * will run on.
@@ -47,7 +51,12 @@ public class Client extends AbstractClient {
    */
   @Override
   protected void handleServerMessage(Object information) {
-    System.out.println("message received");
+    System.out.println("h");
+    switch (information.toString()) {
+      case ("SendPiece"):
+        System.out.println((SendPiece.class.cast(information)).getTetrimino());
+        break;
+    }
   }
 
   /**

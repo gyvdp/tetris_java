@@ -21,17 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package esi.acgt.atlj.server;
 
-public class App {
+package esi.acgt.atlj.message.messageTypes;
+
+import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.MessageType;
+
+public class RemoveLine extends Message {
+
+  private final int line;
 
   /**
-   * Main class to launch server.
-   *
-   * @param args
+   * Constructor for remove line type of message.
    */
-  public static void main(String[] args) {
-    Server server = new Server(6969);
+  public RemoveLine(int line) {
+    this.messageType = MessageType.REMOVE_LINE;
+    this.line = line;
   }
 
-}
+  ;
+
+  /**
+   * Getter for line to remove
+   *
+   * @return Line to send in message to be removed.
+   */
+  public int getLine() {
+    return line;
+  }
+};

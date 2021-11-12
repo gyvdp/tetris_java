@@ -21,17 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package esi.acgt.atlj.server;
 
-public class App {
+package esi.acgt.atlj.message.messageTypes;
+
+import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.MessageType;
+import esi.acgt.atlj.model.tetrimino.Tetrimino;
+
+public class SendPiece extends Message {
+
+  private final Tetrimino tetrimino;
 
   /**
-   * Main class to launch server.
-   *
-   * @param args
+   * Constructor for send piece type of message.
    */
-  public static void main(String[] args) {
-    Server server = new Server(6969);
+  public SendPiece(Tetrimino tetrimino) {
+    this.tetrimino = tetrimino;
+    this.messageType = MessageType.SEND_PIECE;
   }
 
+  /**
+   * Getter for the tetrimino of the current instance.
+   *
+   * @return Tetrimino that is sent.
+   */
+  public Tetrimino getTetrimino() {
+    return tetrimino;
+  }
 }

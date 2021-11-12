@@ -24,30 +24,40 @@
 
 package esi.acgt.atlj.server;
 
-import esi.acgt.atlj.model.Message;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.LinkedList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.SynchronousQueue;
 
 public class CustomClientThread extends Thread {
 
+  /**
+   * List of next tetriminos of player.
+   */
   private BlockingQueue<Tetrimino> myTetriminos;
-
+  /**
+   * Socket of client.
+   */
   private final Socket clientSocket;
-
+  /**
+   * Server that client is connected to.
+   */
   private final AbstractServer server;
-
+  /**
+   * Input stream of socket
+   */
   private ObjectInputStream input;
-
+  /**
+   * Output stream of socket
+   */
   private ObjectOutputStream output;
-
+  /**
+   * Status of client connexion.
+   */
   private boolean isActive;
 
 
@@ -85,6 +95,7 @@ public class CustomClientThread extends Thread {
    */
   public void addTetrimino(Tetrimino tetrimino) {
     myTetriminos.add(tetrimino);
+    System.out.println(tetrimino.getType());
   }
 
   /**

@@ -21,17 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package esi.acgt.atlj.server;
 
-public class App {
+package esi.acgt.atlj.message.messageTypes;
+
+import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.MessageType;
+
+public class SendScore extends Message {
+
+  private final int score;
 
   /**
-   * Main class to launch server.
+   * Constructor for a sendScore message.
    *
-   * @param args
+   * @param score Score to send.
    */
-  public static void main(String[] args) {
-    Server server = new Server(6969);
+  public SendScore(int score) {
+    this.score = score;
+    this.messageType = MessageType.SEND_SCORE;
   }
+
+  /**
+   * Getter for the score of the sent score.
+   *
+   * @return Score of the sent message.
+   */
+  public int getScore() {
+    return this.score;
+  }
+
 
 }

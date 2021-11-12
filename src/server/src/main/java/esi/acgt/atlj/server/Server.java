@@ -25,48 +25,60 @@
 package esi.acgt.atlj.server;
 
 
-import esi.acgt.atlj.model.Message;
+import esi.acgt.atlj.message.messageTypes.*;
 import esi.acgt.atlj.model.tetrimino.ITetrimino;
 import esi.acgt.atlj.model.tetrimino.JTetrimino;
 import esi.acgt.atlj.model.tetrimino.LTetrimino;
-import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.OTetrimino;
 import esi.acgt.atlj.model.tetrimino.STetrimino;
 import esi.acgt.atlj.model.tetrimino.TTetrimino;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.ZTetrimino;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 
-
 public class Server extends AbstractServer {
 
+  private final Tetrimino[] firstBag;
   private final HashMap<Integer, CustomClientThread> members;
   private int clientId;
 
+  /**
+   * Constructor for a server.
+   *
+   * @param port Port for server to listen on.
+   */
   public Server(int port) {
     super(port);
+    firstBag = regenBag();
     clientId = 0;
     members = new HashMap<Integer, CustomClientThread>();
     this.startServer();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   protected void exceptionHook(Exception e) {
     super.exceptionHook(e);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   protected void handleMessageClient(Object msg, CustomClientThread client) {
-    if (msg.equals("askPiece")) {
-      Tetrimino tetrimino = client.getTetrimino();
-      client.sendMessage(tetrimino);
-    } else if (msg.equals("")) {
-      System.out.println("TODO");
+    switch (msg.toString()) {
+      case ("askPiece"):
+        client.sendMessage(new SendPiece(client.getTetrimino()));
+        break;
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   void refillBag() {
     for (int numberOfPlayer = 0; numberOfPlayer < members.size(); numberOfPlayer++) {
@@ -77,6 +89,11 @@ public class Server extends AbstractServer {
     }
   }
 
+  /**
+   * Regenerates a new bag of seven tetriminodes that has been shuffled.
+   *
+   * @return Array of shuffled tetriminodes.
+   */
   private Tetrimino[] regenBag() {
     Tetrimino[] bag = new Tetrimino[]{
         new ITetrimino(), new ZTetrimino(), new STetrimino(), new TTetrimino(), new OTetrimino(),
@@ -86,51 +103,69 @@ public class Server extends AbstractServer {
     return bag;
   }
 
+  /**
+   * Shuffles an array with the Fisher-Yates algorithm.
+   *
+   * @param array Shuffled array.
+   */
   private static void shuffle(Tetrimino[] array) {
     int n = array.length;
     Random random = new Random();
-    // Loop over array.
     for (int i = 0; i < array.length; i++) {
-      // Get a random index of the array past the current index.
-      // ... The argument is an exclusive bound.
-      //     It will not go past the array send.
       int randomValue = i + random.nextInt(n - i);
-      // Swap the random element with the present element.
       Tetrimino randomElement = array[randomValue];
       array[randomValue] = array[i];
       array[i] = randomElement;
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   protected void serverStopped() {
     super.serverStopped();
   }
 
+  /**
+   * Gets the next id.
+   *
+   * @return Next available id.
+   */
   private int getNextId() {
     return this.clientId++;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   protected void clientConnected(CustomClientThread client) {
     super.clientConnected(client);
     members.put(getNextId(), client);
-    System.out.println(members.size());
+    for (Tetrimino t : firstBag) {
+      client.addTetrimino(t);
+    }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  protected void clientDiconnected(CustomClientThread client) {
-    super.clientDiconnected(client);
+  protected void clientDisconnected(CustomClientThread client) {
+    super.clientDisconnected(client);
+    System.out.println(client + "has disconnected");
   }
+
 
   /**
    * Sends a message to a specific client
    *
-   * @param information Message to send to client.
+   * @param information messageTypes.Message to send to client.
    * @param clientId    Unique id of client.
    */
-  void sentToClient(Object information, int clientId) {
-    members.get(0).sendMessage("i");
+  void sendToClient(Object information, int clientId) {
+    members.get(clientId).sendMessage(information);
   }
 
 }
