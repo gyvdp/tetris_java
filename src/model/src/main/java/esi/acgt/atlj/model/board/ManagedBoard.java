@@ -38,9 +38,11 @@ public class ManagedBoard extends Board {
   private int level;
   private final Timer timer;
   private Manager manager;
+  private boolean hasAlreadyHolded;
 
   public ManagedBoard(String username) {
     super(username);
+    hasAlreadyHolded = false;
     this.status = BoardStatus.NOT_STARTED;
     this.level = 3;
     this.timer = new Timer(true);
@@ -75,15 +77,18 @@ public class ManagedBoard extends Board {
   }
 
   public void hold() {
-    if (hold == null) {
-      this.setHold(this.actualTetrimino.getType());
-      //todo A GENERER LE PROCHAINE ELEMENT.
-      this.setActualTetrimino(this.nextTetrimino);
-      this.setNextTetrimino(new JTetrimino());
-    } else {
-      TetriminoInterface temp = this.getHold();
-      this.setHold(this.actualTetrimino.getType());
-      this.setActualTetrimino(temp);
+    if (!hasAlreadyHolded) {
+      if (hold == null) {
+        this.setHold(this.actualTetrimino.getType());
+        //todo A GENERER LE PROCHAINE ELEMENT.
+        this.setActualTetrimino(this.nextTetrimino);
+        this.setNextTetrimino(new JTetrimino());
+      } else {
+        TetriminoInterface temp = this.getHold();
+        this.setHold(this.actualTetrimino.getType());
+        this.setActualTetrimino(temp);
+      }
+      hasAlreadyHolded = true;
     }
   }
 
@@ -251,7 +256,7 @@ public class ManagedBoard extends Board {
 
       }
     }
-
+    this.hasAlreadyHolded = false;
     setActualTetrimino(new LTetrimino());
     setNextTetrimino(new ZTetrimino());
     setStatus(BoardStatus.TETRIMINO_FALLING);
