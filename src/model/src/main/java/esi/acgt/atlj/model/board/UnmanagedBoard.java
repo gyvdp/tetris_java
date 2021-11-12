@@ -64,13 +64,8 @@ public class UnmanagedBoard extends Board {
   }
 
   @Override
-  public void move(Direction direction) {
-
-  }
-
-  @Override
   public void hardDrop() {
-    
+
   }
 
 }

@@ -73,7 +73,7 @@ public abstract class Board implements BoardInterface, Serializable {
 
   @Override
   public boolean[][] getSurroundingArea(int x, int y) {
-    boolean surroundingArea[][] = new boolean[4][4];
+    boolean[][] surroundingArea = new boolean[4][4];
     for (int i = x; i <= x + 4; i++) {
       for (int j = y; j <= y + 4; j++) {
         //this.minos[i][j]=
@@ -144,7 +144,4 @@ public abstract class Board implements BoardInterface, Serializable {
   }
 
   public abstract void setNbLine(int nbLine);
-
-  public abstract void move(Direction direction);
-
 }

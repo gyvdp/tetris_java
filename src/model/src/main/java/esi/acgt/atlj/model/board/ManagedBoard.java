@@ -38,16 +38,17 @@ public class ManagedBoard extends Board {
     //TODO
   }
 
-  public void move(Direction direction) {
+  public boolean move(Direction direction) {
     if (isMoveValid(direction)) {
       Mino[][] oldBoard = this.getBoard();
       this.actualTetrimino.move(direction);
       this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
+      return true;
     }
+    return false;
   }
 
   private boolean isMoveValid(Direction direction) {
-    //System.out.println("x " + this.actualTetrimino.getX() + " y " + this.actualTetrimino.getY());
     switch (direction) {
       case UP -> {
         if (this.actualTetrimino.getY() <= 0) {
