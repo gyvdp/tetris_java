@@ -108,10 +108,13 @@ public abstract class Board implements BoardInterface, Serializable {
 
     for (int x = 0; x < this.actualTetrimino.getMinos().length; x++) {
       for (int y = 0; y < this.actualTetrimino.getMinos()[x].length; y++) {
-        // if (this.actualTetrimino.getMinos()[x][y] != null) {
-        copyBoard[x + this.actualTetrimino.getY()][y
-            + this.actualTetrimino.getX()] = this.actualTetrimino.getMinos()[x][y];
-        //   }
+        if ((x + this.actualTetrimino.getY() >= 0)
+            && (x + this.actualTetrimino.getY() < this.minos.length)
+            && (y + this.actualTetrimino.getX() >= 0)
+            && (y + this.actualTetrimino.getX() < this.minos[x].length)) {
+          copyBoard[x + this.actualTetrimino.getY()][y
+              + this.actualTetrimino.getX()] = this.actualTetrimino.getMinos()[x][y];
+        }
       }
       // 015332266
     }

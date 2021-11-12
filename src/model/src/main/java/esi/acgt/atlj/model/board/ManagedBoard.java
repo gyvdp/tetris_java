@@ -38,9 +38,57 @@ public class ManagedBoard extends Board {
   }
 
   public void move(Direction direction) {
-    Mino[][] oldBoard = this.getBoard();
-    this.actualTetrimino.move(direction);
-    this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
+    if (isMoveValid(direction)) {
+      Mino[][] oldBoard = this.getBoard();
+      this.actualTetrimino.move(direction);
+      this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
+    }
+  }
+
+  private boolean isMoveValid(Direction direction) {
+    System.out.println("x " + this.actualTetrimino.getX() + " y " + this.actualTetrimino.getY());
+    switch (direction) {
+      case UP -> {
+        if (this.actualTetrimino.getY() < 0) {
+          for (var mino : this.actualTetrimino.getMinos()[Math.abs(this.actualTetrimino.getY())]) {
+            if (mino != null) {
+              return false;
+            }
+          }
+        }
+      }
+      case RIGHT -> {
+        if (this.actualTetrimino.getX()
+            >= this.minos[0].length - this.actualTetrimino.getMinos().length) {
+          for (var mino : this.actualTetrimino.getMinos()) {
+            if (mino[this.minos[0].length - this.actualTetrimino.getX() - 1] != null) {
+              return false;
+            }
+          }
+        }
+      }
+      case DOWN -> {
+        if ((this.actualTetrimino.getY() + this.actualTetrimino.getMinos().length)
+            > this.minos.length) {
+          for (var mino : this.actualTetrimino.getMinos()[this.minos.length
+              - this.actualTetrimino.getY()]) {
+            if (mino != null) {
+              return false;
+            }
+          }
+        }
+      }
+      case LEFT -> {
+        if (this.actualTetrimino.getX() <= 0) {
+          for (var mino : this.actualTetrimino.getMinos()) {
+            if (mino[0] != null) {
+              return false;
+            }
+          }
+        }
+      }
+    }
+    return true;
   }
 
   public void softDrop() {
