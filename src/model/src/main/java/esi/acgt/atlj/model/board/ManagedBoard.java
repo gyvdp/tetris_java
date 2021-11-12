@@ -59,10 +59,22 @@ public class ManagedBoard extends Board {
         }
       }
       case RIGHT -> {
+        //colision mur droit
         if (this.actualTetrimino.getX()
             >= this.minos[0].length - this.actualTetrimino.getMinos().length) {
           for (var mino : this.actualTetrimino.getMinos()) {
             if (mino[this.minos[0].length - this.actualTetrimino.getX() - 1] != null) {
+              return false;
+            }
+          }
+        }
+        // colision piece à droite
+        //    if (this.actualTetrimino.getX() > this.minos[0].length - this.actualTetrimino.getMinos().length) {
+        for (int i = 0; i < this.actualTetrimino.getMinos().length; i++) {
+          for (int j = 0; j < this.actualTetrimino.getMinos()[i].length; j++) {
+            if (this.actualTetrimino.getMinos()[i][j] != null
+                && this.minos[this.actualTetrimino.getY() + i][this.actualTetrimino.getX() + j + 1]
+                != null) {
               return false;
             }
           }
@@ -78,13 +90,32 @@ public class ManagedBoard extends Board {
             }
           }
         }
+
+        for (int i = 0; i < this.actualTetrimino.getMinos().length; i++) {
+          for (int j = 0; j < this.actualTetrimino.getMinos()[i].length; j++) {
+            if (this.actualTetrimino.getMinos()[i][j] != null
+                &&
+                this.minos[this.actualTetrimino.getY() + i + 1][this.actualTetrimino.getX() + j]
+                    != null) {
+              return false;
+            }
+          }
+        }
       }
       case LEFT -> {
-        System.out.println(Math.abs(this.actualTetrimino.getX() + 1));
         if (this.actualTetrimino.getX() <= 0) {
           for (var mino : this.actualTetrimino.getMinos()) {
             System.out.println(Math.abs(this.actualTetrimino.getX() + 1));
             if (mino[Math.abs(this.actualTetrimino.getX())] != null) {
+              return false;
+            }
+          }
+        }
+        for (int i = 0; i < this.actualTetrimino.getMinos().length; i++) {
+          for (int j = 0; j < this.actualTetrimino.getMinos()[i].length; j++) {
+            if (this.actualTetrimino.getMinos()[i][j] != null
+                && this.minos[this.actualTetrimino.getY() + i][this.actualTetrimino.getX() + j - 1]
+                != null) {
               return false;
             }
           }

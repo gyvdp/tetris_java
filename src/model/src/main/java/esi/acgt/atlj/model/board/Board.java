@@ -24,6 +24,8 @@
 
 package esi.acgt.atlj.model.board;
 
+import static esi.acgt.atlj.model.tetrimino.Mino.*;
+
 import esi.acgt.atlj.model.tetrimino.ITetrimino;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.OTetrimino;
@@ -49,9 +51,18 @@ public abstract class Board implements BoardInterface, Serializable {
   public Board() {
     this.score = 0;
     this.nbLine = 0;
-    this.actualTetrimino = new OTetrimino();
+    this.actualTetrimino = new ITetrimino();
     this.changeSupport = new PropertyChangeSupport(this);
     minos = new Mino[HEIGHT][WIDTH];
+    this.minos[10][9] = I_MINO;
+    this.minos[11][9] = I_MINO;
+    this.minos[12][9] = I_MINO;
+    this.minos[10][0] = I_MINO;
+    this.minos[11][0] = I_MINO;
+    this.minos[12][0] = I_MINO;
+    this.minos[21][5] = I_MINO;
+    this.minos[21][6] = I_MINO;
+    this.minos[21][7] = I_MINO;
   }
 
   @Override
@@ -110,7 +121,8 @@ public abstract class Board implements BoardInterface, Serializable {
 
     for (int x = 0; x < this.actualTetrimino.getMinos().length; x++) {
       for (int y = 0; y < this.actualTetrimino.getMinos()[x].length; y++) {
-        if ((x + this.actualTetrimino.getY() >= 0)
+        if ((this.actualTetrimino.getMinos()[x][y] != null
+            && x + this.actualTetrimino.getY() >= 0)
             && (x + this.actualTetrimino.getY() < this.minos.length)
             && (y + this.actualTetrimino.getX() >= 0)
             && (y + this.actualTetrimino.getX() < this.minos[x].length)) {
