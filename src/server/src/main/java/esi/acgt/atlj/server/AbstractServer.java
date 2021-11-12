@@ -25,6 +25,7 @@
 package esi.acgt.atlj.server;
 
 
+import esi.acgt.atlj.message.Message;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -236,7 +237,9 @@ public abstract class AbstractServer implements Runnable {
    */
   public void sendToAllClients(Object obj) throws IOException {
     for (Thread clientThread : threads) {
-      ((CustomClientThread) clientThread).sendMessage(obj);
+      if (obj instanceof Message) {
+        ((CustomClientThread) clientThread).sendMessage((Message) obj);
+      }
     }
   }
 }

@@ -24,8 +24,9 @@
 package esi.acgt.atlj.model.tetrimino;
 
 import esi.acgt.atlj.model.board.Direction;
+import java.io.Serializable;
 
-public abstract class Tetrimino implements TetriminoInterface {
+public abstract class Tetrimino implements TetriminoInterface, Serializable {
 
   /**
    * x coordinate of the tetrimino on the board

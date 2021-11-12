@@ -24,6 +24,7 @@
 
 package esi.acgt.atlj.server;
 
+import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -104,16 +105,16 @@ public class CustomClientThread extends Thread {
    * @return First element of list myTetriminos.
    */
   public Tetrimino getTetrimino() {
-    Tetrimino tetriminiToSend = null;
+    Tetrimino tetriminoToSend = null;
     if (myTetriminos.isEmpty()) {
       server.refill();
     }
     try {
-      tetriminiToSend = myTetriminos.take();
+      tetriminoToSend = myTetriminos.take();
     } catch (InterruptedException e) {
       System.out.println("Sorry have to wait to long for new piece");
     }
-    return tetriminiToSend;
+    return tetriminoToSend;
   }
 
   /**
@@ -166,8 +167,10 @@ public class CustomClientThread extends Thread {
       System.out.println("Sorry stream does not exist");
     }
     try {
-      output.writeObject("t");
-      output.flush();
+      if (information instanceof Message) {
+        output.writeObject((Message) information);
+        output.flush();
+      }
     } catch (IOException e) {
       System.out.println("Could not send message" + information.toString());
     }

@@ -27,10 +27,11 @@ package esi.acgt.atlj.message.messageTypes;
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
 public class SendPiece extends Message {
 
-  private final Tetrimino tetrimino;
+  private final TetriminoInterface tetrimino;
 
   /**
    * Constructor for send piece type of message.
@@ -45,7 +46,7 @@ public class SendPiece extends Message {
    *
    * @return Tetrimino that is sent.
    */
-  public Tetrimino getTetrimino() {
+  public TetriminoInterface getTetrimino() {
     return tetrimino;
   }
 }
