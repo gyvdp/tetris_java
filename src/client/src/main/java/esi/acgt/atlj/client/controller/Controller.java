@@ -2,11 +2,9 @@ package esi.acgt.atlj.client.controller;
 
 import esi.acgt.atlj.client.connexionServer.Client;
 import esi.acgt.atlj.client.view.ViewInterface;
-import esi.acgt.atlj.model.Message;
+import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.model.ModelInterface;
 import esi.acgt.atlj.model.board.Direction;
-import java.io.IOException;
-import java.net.ConnectException;
 import java.util.Objects;
 import javafx.scene.input.KeyCode;
 
@@ -75,8 +73,7 @@ public class Controller {
     System.out.println("Connect to : " + ip + " , port : " + port + ".");
     try {
       this.client.connectToServer();
-      Message message = new Message("askPiece");
-      this.client.sendToServer(message);
+      this.client.sendToServer(new AskPiece());
       this.view.displayBoard();
       this.model.updateTest();
       this.model.setPlayer1(username);

@@ -150,7 +150,7 @@ public abstract class AbstractServer implements Runnable {
    *
    * @param client Client that has successfully disconnected form the server.
    */
-  protected void clientDiconnected(CustomClientThread client) {
+  protected void clientDisconnected(CustomClientThread client) {
   }
 
   /**
@@ -171,6 +171,10 @@ public abstract class AbstractServer implements Runnable {
     }
   }
 
+  /**
+   * Asked by client if his tetriminos list if empty. This method is synchronized to ensure that
+   * whatever effects it has does not conflict with work being done by another thread.
+   */
   public synchronized void refill() {
     refillBag();
   }
@@ -219,7 +223,7 @@ public abstract class AbstractServer implements Runnable {
    * Receives a message sent form the client to the server. This method is synchronized to ensure
    * that whatever effects it has does not conflict with work being done by another thread.
    *
-   * @param msg    Message received form client.
+   * @param msg    messageTypes.Message received form client.
    * @param client Author of the message.
    */
   final synchronized void receiveMessageFromClient(Object msg, CustomClientThread client) {

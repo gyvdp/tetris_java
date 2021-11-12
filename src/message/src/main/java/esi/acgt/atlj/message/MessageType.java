@@ -21,17 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package esi.acgt.atlj.server;
 
-public class App {
+package esi.acgt.atlj.message;
 
-  /**
-   * Main class to launch server.
-   *
-   * @param args
-   */
-  public static void main(String[] args) {
-    Server server = new Server(6969);
-  }
-
+public enum MessageType {
+  ASK_PIECE, // asks a piece to the server
+  ADD_MINO, //Adds a mino to the unmanaged board of the other player
+  REMOVE_MINO, //Removes a mino to the unmanaged board of the other player
+  SEND_PIECE, //Send a piece from the server to the client
+  SEND_SCORE, //Sends the score to the server or client
+  REMOVELINE, //Removes a line to the unmanaged board of the other player
 }

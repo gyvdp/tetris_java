@@ -21,17 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package esi.acgt.atlj.server;
 
-public class App {
+package esi.acgt.atlj.message;
+
+import java.io.Serializable;
+
+public abstract class Message implements Serializable {
+
+  public MessageType messageType;
 
   /**
-   * Main class to launch server.
+   * Gets the type of message.
    *
-   * @param args
+   * @return Type of message.
    */
-  public static void main(String[] args) {
-    Server server = new Server(6969);
+  public MessageType getType() {
+    return this.messageType;
   }
+
 
 }
