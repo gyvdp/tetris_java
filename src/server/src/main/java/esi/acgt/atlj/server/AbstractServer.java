@@ -204,7 +204,6 @@ public abstract class AbstractServer implements Runnable {
       while (isActive) {
         try {
           Socket clientSocket = serverSocket.accept();
-          System.out.println(clientSocket.getInetAddress());
           synchronized (this) {
             if (isActive) {
               CustomClientThread customClientThread = new CustomClientThread(clientSocket, this);

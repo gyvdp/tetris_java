@@ -25,7 +25,7 @@
 package esi.acgt.atlj.server;
 
 import esi.acgt.atlj.message.Message;
-import esi.acgt.atlj.model.tetrimino.Tetrimino;
+import esi.acgt.atlj.model.tetrimino.Mino;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -37,9 +37,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class CustomClientThread extends Thread {
 
   /**
+   * State of current player.
+   */
+  private PlayerStatus clientStatus;
+  /**
    * List of next tetriminos of player.
    */
-  private BlockingQueue<Tetrimino> myTetriminos;
+  private BlockingQueue<Mino> myTetriminos;
   /**
    * Socket of client.
    */
@@ -70,6 +74,7 @@ public class CustomClientThread extends Thread {
    * @throws SocketException Thrown if function cannot instantiate input or output streams.
    */
   public CustomClientThread(Socket clientSocket, AbstractServer server) throws SocketException {
+    clientStatus = PlayerStatus.WAITING;
     this.clientSocket = clientSocket;
     this.myTetriminos = new LinkedBlockingQueue<>();
     clientSocket.setSoTimeout(0);
@@ -94,9 +99,26 @@ public class CustomClientThread extends Thread {
    *
    * @param tetrimino Tetrimino to add.
    */
-  public void addTetrimino(Tetrimino tetrimino) {
+  public void addTetrimino(Mino tetrimino) {
     myTetriminos.add(tetrimino);
-    System.out.println(tetrimino.getType());
+  }
+
+  /**
+   * Gets the state of the player.
+   *
+   * @return Player state.
+   */
+  public PlayerStatus getClientStatus() {
+    return clientStatus;
+  }
+
+  /**
+   * Sets the state of the player.
+   *
+   * @param clientStatus Status to set the player to.
+   */
+  public void setClientStatus(PlayerStatus clientStatus) {
+    this.clientStatus = clientStatus;
   }
 
   /**
@@ -104,8 +126,8 @@ public class CustomClientThread extends Thread {
    *
    * @return First element of list myTetriminos.
    */
-  public Tetrimino getTetrimino() {
-    Tetrimino tetriminoToSend = null;
+  public Mino getTetrimino() {
+    Mino tetriminoToSend = null;
     if (myTetriminos.isEmpty()) {
       server.refill();
     }
