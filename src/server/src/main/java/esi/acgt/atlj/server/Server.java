@@ -62,7 +62,7 @@ public class Server extends AbstractServer {
     if (msg.equals("askPiece")) {
       Tetrimino tetrimino = client.getTetrimino();
       client.sendMessage(tetrimino);
-    } else {
+    } else if (msg.equals("")) {
       System.out.println("TODO");
     }
   }
