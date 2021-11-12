@@ -26,26 +26,27 @@ package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.MessageType;
-import esi.acgt.atlj.model.tetrimino.Tetrimino;
 
-public class SendPiece extends Message {
+public class RemoveLine extends Message {
 
-  private final Tetrimino tetrimino;
+  private final int line;
 
   /**
-   * Constructor for send piece type of message.
+   * Constructor for remove line type of message.
    */
-  public SendPiece(Tetrimino tetrimino) {
-    this.tetrimino = tetrimino;
-    this.messageType = MessageType.SEND_PIECE;
+  public RemoveLine(int line) {
+    this.messageType = MessageType.REMOVE_LINE;
+    this.line = line;
   }
 
+  ;
+
   /**
-   * Getter for the tetrimino of the current instance.
+   * Getter for line to remove
    *
-   * @return Tetrimino that is sent.
+   * @return Line to send in message to be removed.
    */
-  public Tetrimino getTetrimino() {
-    return tetrimino;
+  public int getLine() {
+    return line;
   }
-}
+};

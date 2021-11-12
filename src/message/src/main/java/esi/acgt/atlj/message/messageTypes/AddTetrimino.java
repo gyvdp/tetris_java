@@ -28,22 +28,22 @@ import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 
-public class SendPiece extends Message {
+public class AddTetrimino extends Message {
 
-  private final Tetrimino tetrimino;
+  Tetrimino tetrimino;
 
   /**
-   * Constructor for send piece type of message.
+   * Constructor for tetrimino message.
+   *
+   * @param tetrimino Tetrimino to add.
    */
-  public SendPiece(Tetrimino tetrimino) {
+  public AddTetrimino(Tetrimino tetrimino) {
     this.tetrimino = tetrimino;
-    this.messageType = MessageType.SEND_PIECE;
+    this.messageType = MessageType.ADD_TETRIMINO;
   }
 
   /**
-   * Getter for the tetrimino of the current instance.
-   *
-   * @return Tetrimino that is sent.
+   * Constructor for add tetrimino type of message.
    */
   public Tetrimino getTetrimino() {
     return tetrimino;

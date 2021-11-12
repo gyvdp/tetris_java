@@ -39,5 +39,13 @@ public abstract class Message implements Serializable {
     return this.messageType;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String toString() {
+    return messageType.toString();
+  }
+
 
 }

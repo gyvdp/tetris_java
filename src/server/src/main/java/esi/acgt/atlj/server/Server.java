@@ -71,9 +71,7 @@ public class Server extends AbstractServer {
   protected void handleMessageClient(Object msg, CustomClientThread client) {
     switch (msg.toString()) {
       case ("askPiece"):
-        SendPiece sendPiece = new SendPiece();
-        sendPiece.setTetrimino(client.getTetrimino());
-        client.sendMessage(sendPiece);
+        client.sendMessage(new SendPiece(client.getTetrimino()));
         break;
     }
   }

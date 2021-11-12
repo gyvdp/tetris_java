@@ -28,7 +28,7 @@ import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.MessageType;
 
 public class AskPiece extends Message {
-
+  
   /**
    * Constructor for askPiece type of message.
    */

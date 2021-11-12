@@ -26,26 +26,29 @@ package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.MessageType;
-import esi.acgt.atlj.model.tetrimino.Tetrimino;
 
-public class SendPiece extends Message {
+public class SendScore extends Message {
 
-  private final Tetrimino tetrimino;
-
-  /**
-   * Constructor for send piece type of message.
-   */
-  public SendPiece(Tetrimino tetrimino) {
-    this.tetrimino = tetrimino;
-    this.messageType = MessageType.SEND_PIECE;
-  }
+  private final int score;
 
   /**
-   * Getter for the tetrimino of the current instance.
+   * Constructor for a sendScore message.
    *
-   * @return Tetrimino that is sent.
+   * @param score Score to send.
    */
-  public Tetrimino getTetrimino() {
-    return tetrimino;
+  public SendScore(int score) {
+    this.score = score;
+    this.messageType = MessageType.SEND_SCORE;
   }
+
+  /**
+   * Getter for the score of the sent score.
+   *
+   * @return Score of the sent message.
+   */
+  public int getScore() {
+    return this.score;
+  }
+
+
 }

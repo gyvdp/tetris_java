@@ -24,11 +24,13 @@
 
 package esi.acgt.atlj.message;
 
+/**
+ * All different type of message that are possible to send/receive from client/server
+ */
 public enum MessageType {
   ASK_PIECE, // asks a piece to the server
-  ADD_MINO, //Adds a mino to the unmanaged board of the other player
-  REMOVE_MINO, //Removes a mino to the unmanaged board of the other player
+  ADD_TETRIMINO, //Adds a tetrimino to the unmanaged board of the other player
   SEND_PIECE, //Send a piece from the server to the client
   SEND_SCORE, //Sends the score to the server or client
-  REMOVELINE, //Removes a line to the unmanaged board of the other player
+  REMOVE_LINE, //Removes a line to the unmanaged board of the other player
 }
