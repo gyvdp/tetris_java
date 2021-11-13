@@ -56,13 +56,6 @@ public abstract class Board implements BoardInterface, Serializable {
   }
 
   @Override
-  public synchronized void initTetrisBoard() {
-    var oldBoard = new Mino[HEIGHT][WIDTH];;
-    this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
-    this.changeSupport.firePropertyChange("player1Next", null, this.getNextTetrimino());
-  }
-
-  @Override
   public synchronized boolean[][] getSurroundingArea(int x, int y) {
     boolean[][] surroundingArea = new boolean[4][4];
     for (int i = x; i <= x + 4; i++) {
@@ -105,11 +98,9 @@ public abstract class Board implements BoardInterface, Serializable {
   @Override
   public synchronized Mino[][] getBoard() {
     Mino[][] copyBoard = new Mino[this.minos.length][];
-
     for (int i = 0; i < this.minos.length; i++) {
       copyBoard[i] = Arrays.copyOf(this.minos[i], this.minos[i].length);
     }
-
     for (int x = 0; x < this.actualTetrimino.getMinos().length; x++) {
       for (int y = 0; y < this.actualTetrimino.getMinos()[x].length; y++) {
         if ((this.actualTetrimino.getMinos()[x][y] != null
@@ -121,7 +112,6 @@ public abstract class Board implements BoardInterface, Serializable {
               + this.actualTetrimino.getX()] = this.actualTetrimino.getMinos()[x][y];
         }
       }
-      // 015332266
     }
     return copyBoard;
   }

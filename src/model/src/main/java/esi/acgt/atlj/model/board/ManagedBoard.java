@@ -93,7 +93,6 @@ public class ManagedBoard extends Board {
     if (!hasAlreadyHolded) {
       if (hold == null) {
         this.setHold(this.actualTetrimino.getType());
-        //todo A GENERER LE PROCHAINE ELEMENT.
         this.setActualTetrimino(this.nextTetrimino);
         this.setNextTetrimino(new JTetrimino());
       } else {
@@ -170,7 +169,6 @@ public class ManagedBoard extends Board {
       case LEFT -> {
         if (this.actualTetrimino.getX() <= 0) {
           for (var mino : this.actualTetrimino.getMinos()) {
-            System.out.println(Math.abs(this.actualTetrimino.getX() + 1));
             if (mino[Math.abs(this.actualTetrimino.getX())] != null) {
               return false;
             }
@@ -191,7 +189,6 @@ public class ManagedBoard extends Board {
   }
 
   public synchronized void softDrop() {
-    //Todo Gestion reset timer
     this.move(Direction.DOWN);
   }
 
