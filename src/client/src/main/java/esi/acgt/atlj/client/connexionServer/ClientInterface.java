@@ -93,6 +93,11 @@ public interface ClientInterface extends PropertyChangeListener {
    */
   public void connectSendScore(Consumer<Integer> sendScore);
 
+
+  public void closeConnectionToServer();
+
+  public void connectReceiveUserName(Consumer<String> receiveName);
+
   /**
    * Connect a consumer of remove line of model to client.
    *

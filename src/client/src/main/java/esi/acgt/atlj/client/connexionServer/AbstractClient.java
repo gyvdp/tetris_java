@@ -110,6 +110,8 @@ public abstract class AbstractClient implements Runnable {
     try {
       if (clientSocket != null) {
         clientSocket.close();
+        output.close();
+        input.close();
         closeConnection();
       }
     } catch (IOException e) {

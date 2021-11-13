@@ -29,6 +29,7 @@ public class Controller {
     this.view = view;
   }
 
+
   /**
    * Launch the view
    */
@@ -42,8 +43,7 @@ public class Controller {
    * End the Programme
    */
   public void disconnect() {
-    //TODO @Greg :)
-    //DISCONET CLIENT
+    model.closeConnection();
     System.exit(0);
   }
 

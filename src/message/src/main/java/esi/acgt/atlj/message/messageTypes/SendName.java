@@ -22,20 +22,24 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message;
+package esi.acgt.atlj.message.messageTypes;
 
-/**
- * All different type of message that are possible to send/receive from client/server
- */
-public enum MessageType {
-  ASK_PIECE, // asks a piece to the server
-  ADD_TETRIMINO, //Adds a tetrimino to the unmanaged board of the other player
-  SEND_PIECE, //Send a piece from the server to the client
-  SEND_SCORE, //Sends the score to the server or client
-  REMOVE_LINE, //Removes a line to the unmanaged board of the other player
-  PLAYER_STATUS,
-  UPDATE_PIECE_UNMANAGED,
-  SEND_NAME // Sends username of player to other player.
+import static esi.acgt.atlj.message.MessageType.SEND_NAME;
+
+import esi.acgt.atlj.message.Message;
+
+public class SendName extends Message {
+
+  private String username;
+
+  public SendName(String username) {
+    this.username = username;
+    this.messageType = SEND_NAME;
+  }
+
+  public String getUsername() {
+    return this.username;
+  }
 
 
 }

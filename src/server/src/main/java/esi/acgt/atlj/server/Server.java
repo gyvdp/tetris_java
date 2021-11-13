@@ -93,6 +93,9 @@ public class Server extends AbstractServer {
         case "SEND_SCORE":
           opPlayer.sendMessage(new SendScore(5)); // TODO add correct score coming from other player
           break;
+        case "SEND_NAME":
+          if (msg instanceof SendName)
+            opPlayer.sendMessage(new SendName(((SendName) msg).getUsername()));
       }
     }
   }

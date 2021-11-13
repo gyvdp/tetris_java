@@ -29,6 +29,7 @@ import esi.acgt.atlj.message.messageTypes.AddTetrimino;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.RemoveLine;
+import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.SendScore;
 import esi.acgt.atlj.message.messageTypes.UpdatePieceUnmanagedBoard;
@@ -52,6 +53,8 @@ public class Client extends AbstractClient implements ClientInterface {
    * Method used when sendPiece message comes from server.
    */
   private Consumer<Mino> newMino;
+
+  private Consumer<String> receiveName;
   /**
    * Method used when removeLine message comes from server.
    */
@@ -107,8 +110,19 @@ public class Client extends AbstractClient implements ClientInterface {
       } else if (((PlayerState) information).getPlayerState().equals(PlayerStatus.DISCONNECTED)) {
         playerDisconnected.run();
       }
-
+    } else if (information instanceof SendName) {
+      receiveName.accept(((SendName) information).getUsername());
     }
+  }
+
+  @Override
+  public void closeConnectionToServer() {
+    super.closeConnectionToServer();
+  }
+
+  @Override
+  public void connectReceiveUserName(Consumer<String> receiveName) {
+    this.receiveName = receiveName;
   }
 
   public void connectUpdateNextTetriminoOtherPlayer(Consumer<Mino> updateNextTetriminoOtherPlayer) {

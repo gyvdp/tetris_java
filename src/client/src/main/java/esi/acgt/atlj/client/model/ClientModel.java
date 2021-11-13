@@ -64,6 +64,11 @@ public class ClientModel extends Model {
     player1.setNextTetrimino(Tetrimino.createTetrimino(nextMino));
   };
 
+  Consumer<String> receiveName = (String name) ->
+  {
+    player2.setUsername(name);
+  };
+
   /**
    * Lambda expression to connect remove line to update from unmanaged board
    */
@@ -80,6 +85,10 @@ public class ClientModel extends Model {
   {
     player2.placeTetrimino(tetriminoInterface);
   };
+
+  public void closeConnection() {
+    this.client.closeConnectionToServer();
+  }
 
   /**
    * Send a pawn to another player.
@@ -146,6 +155,7 @@ public class ClientModel extends Model {
     client.connectPlayerReady(playerReady);
     client.connectOtherPlayerLost(otherPlayerLost);
     client.connectPlayerDisconnected(playerDisconnected);
+    client.connectReceiveUserName(this.receiveName);
     this.client.connect();
 
   }
