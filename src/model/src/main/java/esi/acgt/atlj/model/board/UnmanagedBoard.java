@@ -29,8 +29,8 @@ import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
 public class UnmanagedBoard extends Board {
 
-  public UnmanagedBoard(String username) {
-    super(username);
+  public UnmanagedBoard() {
+    super(null);
     // TODO Constructor
   }
 
