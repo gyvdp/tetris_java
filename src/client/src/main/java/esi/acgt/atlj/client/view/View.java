@@ -1,9 +1,6 @@
 package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
-import esi.acgt.atlj.model.tetrimino.Mino;
-import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -34,11 +31,13 @@ public class View implements ViewInterface {
 
   /**
    * {@inheritDoc}
+   *
+   * @param username
    */
   @Override
-  public void displayBoard() {
+  public void displayBoard(String username) {
     this.primaryStage = new Stage();
-    this.bothPlayerView = new BothPlayerView(this.controller, this.primaryStage);
+    this.bothPlayerView = new BothPlayerView(this.controller, this.primaryStage, username);
   }
 
   /**

@@ -58,8 +58,9 @@ public class BothPlayerView {
    *
    * @param controller Controller to interact with
    * @param stage      stage that this scene will use
+   * @param username   username of the player
    */
-  public BothPlayerView(Controller controller, Stage stage) {
+  public BothPlayerView(Controller controller, Stage stage, String username) {
     this.scene = new HBox();
     this.setSizeStage(stage);
     this.doBindings(stage);
@@ -67,6 +68,8 @@ public class BothPlayerView {
 
     this.player1 = new PlayerTetrisFXML(scene);
     this.player2 = new PlayerTetrisFXML(scene);
+    
+    this.player1.updateUsername(username);
 
     this.scene.getChildren().add(player1.scene);
     this.scene.getChildren().add(player2.scene);
