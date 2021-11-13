@@ -134,6 +134,7 @@ public class Client extends AbstractClient implements ClientInterface {
     }
   }
 
+  @Override
   public void connectUpdateNextTetriminoOtherPlayer(Consumer<Mino> updateNextTetriminoOtherPlayer) {
     this.updateNextTetriminoOtherPlayer = updateNextTetriminoOtherPlayer;
   }

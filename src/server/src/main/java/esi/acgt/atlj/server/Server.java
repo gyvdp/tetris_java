@@ -42,7 +42,7 @@ public class Server extends AbstractServer {
    */
   private final HashMap<Integer, CustomClientThread> members;
   /**
-   * current taly of client id.
+   * current tally of client id.
    */
   private int clientId;
 
@@ -73,7 +73,7 @@ public class Server extends AbstractServer {
    */
   @Override
   protected void handleMessageClient(Object msg, CustomClientThread client) {
-    if (client.getClientStatus().equals(PlayerStatus.READY)) { //If player is not ready discard msg
+    if (client.getClientStatus().equals(PlayerStatus.READY)) {
       CustomClientThread opPlayer = members.get(0).equals(client) ? members.get(1) : members.get(0);
       switch (msg.toString().toUpperCase()) {
         case "ASK_PIECE":
@@ -94,20 +94,21 @@ public class Server extends AbstractServer {
           opPlayer.sendMessage(new SendScore(5)); // TODO add correct score coming from other player
           break;
         case "SEND_NAME":
-          if (msg instanceof SendName)
+          if (msg instanceof SendName) {
             opPlayer.sendMessage(new SendName(((SendName) msg).getUsername()));
+          }
       }
     }
   }
-//  }
+
 
   /**
    * {@inheritDoc}
    */
   @Override
   void refillBag() {
+    Mino[] newBag = regenBag();
     for (int numberOfPlayer = 0; numberOfPlayer < members.size(); numberOfPlayer++) {
-      Mino[] newBag = regenBag();
       for (Mino tetrimino : newBag) {
         members.get(numberOfPlayer).addTetrimino(tetrimino);
       }
