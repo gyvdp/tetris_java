@@ -50,29 +50,28 @@ public class UnmanagedBoard extends Board {
 
   public void setNextTetrimino(TetriminoInterface tetrimino) {
     this.nextTetrimino = tetrimino;
-    System.out.println("fire");
-    this.changeSupport.firePropertyChange("next", this.nextTetrimino, this.nextTetrimino);
+    this.changeSupport.firePropertyChange("next", null, this.getNextTetrimino());
   }
 
   public void setScore(int score) {
     this.score = score;
-    this.changeSupport.firePropertyChange("score", this.score, this.score);
+    this.changeSupport.firePropertyChange("score", null, this.score);
   }
 
   public void setUsername(String username) {
     this.username = username;
-    this.changeSupport.firePropertyChange("username", this.username, this.username);
+    this.changeSupport.firePropertyChange("username", null, this.username);
   }
 
   public void setNbLine(int nbLine) {
     this.nbLine = nbLine;
-    this.changeSupport.firePropertyChange("line", this.nbLine, this.nbLine);
+    this.changeSupport.firePropertyChange("line", null, this.nbLine);
   }
 
   @Override
   public void setHold(Mino hold) {
     this.hold = hold;
-    this.changeSupport.firePropertyChange("hold", this.hold, this.hold);
+    this.changeSupport.firePropertyChange("hold", null, this.hold);
   }
 
 

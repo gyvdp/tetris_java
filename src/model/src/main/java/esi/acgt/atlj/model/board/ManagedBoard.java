@@ -94,7 +94,6 @@ public class ManagedBoard extends Board {
       if (hold == null) {
         this.setHold(this.actualTetrimino.getType());
         this.setActualTetrimino(this.nextTetrimino);
-        this.setNextTetrimino(new JTetrimino());
       } else {
         TetriminoInterface temp = this.getHold();
         this.setHold(this.actualTetrimino.getType());
