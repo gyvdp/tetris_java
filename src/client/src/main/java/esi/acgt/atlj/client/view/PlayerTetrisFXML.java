@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -116,8 +117,6 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
   // Texts
   @FXML
   public Label scoreLabel;
-  @FXML
-  public Label timeLabel;
   @FXML
   public Label linesLabel;
   @FXML
@@ -223,20 +222,7 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
    * @param newUsername new Username of this player
    */
   public void updateUsername(String newUsername) {
-    this.usernameLabel.setText(newUsername);
-  }
-
-  /**
-   * Update Timer of this player
-   *
-   * @param timer new timer of this player
-   */
-  public void updateTimer(int timer) {
-    int hours, minutes, seconds;
-    hours = timer / 3600;
-    minutes = (timer % 3600) / 60;
-    seconds = timer % 60;
-    this.timeLabel.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
+    Platform.runLater(() -> this.usernameLabel.setText(newUsername));
   }
 
   /**
