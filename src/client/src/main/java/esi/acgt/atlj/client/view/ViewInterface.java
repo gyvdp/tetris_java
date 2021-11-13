@@ -6,7 +6,7 @@ import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public interface ViewInterface extends PropertyChangeListener {
+public interface ViewInterface {
 
   /**
    * Show the primary stage in the center of the screen
@@ -37,11 +37,5 @@ public interface ViewInterface extends PropertyChangeListener {
    */
   void displayBoard();
 
-  /**
-   * Get all propertyChange to update the view
-   *
-   * @param evt event of the propertyChange
-   */
-  void propertyChange(PropertyChangeEvent evt);
-
+  PropertyChangeListener[] getListeners();
 }
