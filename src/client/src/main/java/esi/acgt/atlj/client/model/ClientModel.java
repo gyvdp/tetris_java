@@ -111,7 +111,6 @@ public class ClientModel extends Model {
    */
   Consumer<Mino> updateNextTetriminoOtherPlayer = (Mino m) ->
   {
-    System.out.println("Pass");
     player2.setNextTetrimino(Tetrimino.createTetrimino(m));
   };
 
@@ -172,7 +171,7 @@ public class ClientModel extends Model {
 
   public void initManagedBoard(String username) {
     player1 = new ManagedBoard(username);
-    player2 = new UnmanagedBoard(username);
+    player2 = new UnmanagedBoard();
     this.player1.connectAskNewMino(askNextMino);
     this.player1.connectAddTetrimino(addTetriminoToOtherPlayer);
   }

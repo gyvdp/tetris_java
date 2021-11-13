@@ -228,12 +228,6 @@ public class ManagedBoard extends Board {
     this.changeSupport.firePropertyChange("score", oldScore, this.score);
   }
 
-  public synchronized void setUsername(String username) {
-    String oldValue = this.username;
-    this.username = username;
-    this.changeSupport.firePropertyChange("name", oldValue, this.username);
-  }
-
   public synchronized void setNbLine(int nbLine) {
     int oldNbLine = this.nbLine;
     this.nbLine = nbLine;

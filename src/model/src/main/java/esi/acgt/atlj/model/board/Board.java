@@ -78,8 +78,6 @@ public abstract class Board implements BoardInterface, Serializable {
     return username;
   }
 
-  public abstract void setUsername(String username);
-
   @Override
   public synchronized TetriminoInterface getHold() {
     return Tetrimino.createTetrimino(this.hold);

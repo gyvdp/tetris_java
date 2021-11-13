@@ -1,9 +1,6 @@
 package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
-import esi.acgt.atlj.model.tetrimino.Mino;
-import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public interface ViewInterface {
@@ -34,8 +31,10 @@ public interface ViewInterface {
 
   /**
    * Display the board of your tetris game and opponent one
+   *
+   * @param username
    */
-  void displayBoard();
+  void displayBoard(String username);
 
   PropertyChangeListener[] getListeners();
 }

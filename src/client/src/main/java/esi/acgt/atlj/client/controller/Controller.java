@@ -77,7 +77,7 @@ public class Controller {
   public void connexion(String ip, int port, String username) {
     try {
       this.model.initManagedBoard(username);
-      this.view.displayBoard();
+      this.view.displayBoard(username);
       this.model.connect(6969, "localhost");
       this.model.addPropertyChangeListener(this.view.getListeners());
     } catch (Exception e) {
