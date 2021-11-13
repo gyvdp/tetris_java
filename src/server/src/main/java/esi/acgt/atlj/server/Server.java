@@ -54,7 +54,7 @@ public class Server extends AbstractServer {
     super(port);
     firstBag = regenBag();
     clientId = 0;
-    members = new HashMap<Integer, CustomClientThread>();
+    members = new HashMap<>();
     this.startServer();
   }
 
@@ -64,6 +64,7 @@ public class Server extends AbstractServer {
   @Override
   protected void exceptionHook(Exception e) {
     super.exceptionHook(e);
+    e.printStackTrace();
   }
 
   /**
@@ -71,22 +72,25 @@ public class Server extends AbstractServer {
    */
   @Override
   protected void handleMessageClient(Object msg, CustomClientThread client) {
-    //if (client.getClientStatus().equals(PlayerStatus.READY)) { //If player is not ready discard msg
-    CustomClientThread opPlayer = members.get(0).equals(client) ? members.get(1) : members.get(0);
-    switch (msg.toString().toUpperCase()) {
-      case "ASK_PIECE":
-        client.sendMessage(new SendPiece(client.getTetrimino()));
-        break;
-      case "ADD_TETRIMINO":
-        opPlayer.sendMessage(new AddTetrimino(
-            new ITetrimino())); //TODO  Add correct tetrimino coming from other client
-        break;
-      case "REMOVE_LINE":
-        opPlayer.sendMessage(new RemoveLine(4)); //TODO Add correct line coming from other player
-        break;
-      case "SEND_SCORE":
-        opPlayer.sendMessage(new SendScore(5)); // TODO add correct score coming from other player
-        break;
+    if (client.getClientStatus().equals(PlayerStatus.READY)) { //If player is not ready discard msg
+      CustomClientThread opPlayer = members.get(0).equals(client) ? members.get(1) : members.get(0);
+      switch (msg.toString().toUpperCase()) {
+        case "ASK_PIECE":
+          Mino m = client.getTetrimino();
+          client.sendMessage(new SendPiece(m));
+          opPlayer.sendMessage(new UpdatePieceUnmanagedBoard(m));
+          break;
+        case "ADD_TETRIMINO":
+          opPlayer.sendMessage(new AddTetrimino(
+              new ITetrimino())); //TODO  Add correct tetrimino coming from other client
+          break;
+        case "REMOVE_LINE":
+          opPlayer.sendMessage(new RemoveLine(4)); //TODO Add correct line coming from other player
+          break;
+        case "SEND_SCORE":
+          opPlayer.sendMessage(new SendScore(5)); // TODO add correct score coming from other player
+          break;
+      }
     }
   }
 //  }
@@ -183,6 +187,7 @@ public class Server extends AbstractServer {
   public void updateAllPlayerState(PlayerStatus playerState) {
     for (int numberOfPlayer = 0; numberOfPlayer < members.size(); numberOfPlayer++) {
       members.get(numberOfPlayer).setClientStatus(playerState);
+      members.get(numberOfPlayer).sendMessage(new ReadyState());
     }
   }
 }

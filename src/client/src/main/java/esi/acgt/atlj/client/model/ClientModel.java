@@ -88,6 +88,20 @@ public class ClientModel extends Model {
   };
 
   /**
+   * Updates next mino of other player.
+   */
+  Consumer<Mino> updateNextTetriminoOtherPlayer = (Mino m) ->
+  {
+    player2.setNextTetrimino(Tetrimino.createTetrimino(m));
+  };
+
+  Runnable playerReady = () ->
+  {
+    
+    //player1.playerIsReady;
+  };
+
+  /**
    * Instantiates a new client with port and host to connect to. Connects all lambda methods in
    * client.
    *
@@ -100,6 +114,8 @@ public class ClientModel extends Model {
     client.connectRemoveLine(this.removeLine);
     client.connectAddTetrimino(this.addTetrimino);
     client.connectSendScore(this.sendScore);
+    client.connectUpdateNextTetriminoOtherPlayer(this.updateNextTetriminoOtherPlayer);
+    client.connectPlayerReady(playerReady);
     this.client.connect();
   }
 
@@ -115,19 +131,20 @@ public class ClientModel extends Model {
 
   public void initManagedBoard(String username) {
     player1 = new ManagedBoard(username);
+    player2 = new UnmanagedBoard(username);
     this.player1.connectAskNewMino(askNextMino);
   }
 
   @Override
   public void addPropertyChangeListener(PropertyChangeListener[] listener) {
     this.player1.addPropertyChangeListener(listener[0]);
-    //this.player2.addPropertyChangeListener(listener[1]);
+    this.player2.addPropertyChangeListener(listener[1]);
   }
 
   @Override
   public void removePropertyChangeListener(PropertyChangeListener listener) {
     this.player1.removePropertyChangeListener(listener);
-    //this.player2.removePropertyChangeListener(listener);
+    this.player2.removePropertyChangeListener(listener);
   }
 
   public void move(Direction direction) {
