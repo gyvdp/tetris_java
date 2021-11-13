@@ -125,6 +125,15 @@ public class Client extends AbstractClient implements ClientInterface {
     this.receiveName = receiveName;
   }
 
+  @Override
+  public void sendNameToServer(String name) {
+    try {
+      sendToServer(new SendName(name));
+    } catch (IOException e) {
+      System.err.println("Sorry cannot send name");
+    }
+  }
+
   public void connectUpdateNextTetriminoOtherPlayer(Consumer<Mino> updateNextTetriminoOtherPlayer) {
     this.updateNextTetriminoOtherPlayer = updateNextTetriminoOtherPlayer;
   }
