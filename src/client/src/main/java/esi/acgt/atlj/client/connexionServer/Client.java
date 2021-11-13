@@ -24,10 +24,17 @@
 
 package esi.acgt.atlj.client.connexionServer;
 
+import esi.acgt.atlj.message.messageTypes.AddTetrimino;
+import esi.acgt.atlj.message.messageTypes.AskPiece;
+import esi.acgt.atlj.message.messageTypes.RemoveLine;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
+import esi.acgt.atlj.message.messageTypes.SendScore;
 import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeEvent;
+import java.io.IOException;
 import java.net.ConnectException;
+import java.util.function.Consumer;
 
 
 /**
@@ -37,6 +44,23 @@ import java.net.ConnectException;
  * @see esi.acgt.atlj.client.connexionServer.AbstractClient
  */
 public class Client extends AbstractClient implements ClientInterface {
+
+  /**
+   * Method used when sendPiece message comes from server.
+   */
+  private Consumer<Mino> newMino;
+  /**
+   * Method used when removeLine message comes from server.
+   */
+  private Consumer<Integer> removeLine;
+  /**
+   * Method used when addTetrimino message comes from server.
+   */
+  private Consumer<TetriminoInterface> addTetrimino;
+  /**
+   * Method used when sendScore message comes from server.
+   */
+  private Consumer<Integer> sendScore;
 
   /**
    * Constructor of a client.
@@ -54,8 +78,46 @@ public class Client extends AbstractClient implements ClientInterface {
   @Override
   protected void handleServerMessage(Object information) {
     if (information instanceof SendPiece) {
-      System.err.println(((SendPiece) information).getMino());
+      newMino.accept(((SendPiece) information).getMino());
+    } else if (information instanceof RemoveLine) {
+      removeLine.accept(((RemoveLine) information).getLine());
+    } else if (information instanceof AddTetrimino) {
+      addTetrimino.accept(((AddTetrimino) information).getTetrimino());
+    } else if (information instanceof SendScore) {
+      sendScore.accept(((SendScore) information).getScore());
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void connectNewMinoFromServer(Consumer<Mino> newMino) {
+    this.newMino = newMino;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void connectAddTetrimino(Consumer<TetriminoInterface> addTetrimino) {
+    this.addTetrimino = addTetrimino;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void connectSendScore(Consumer<Integer> sendScore) {
+    this.sendScore = sendScore;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void connectRemoveLine(Consumer<Integer> removeLine) {
+    this.removeLine = removeLine;
   }
 
   /**
@@ -98,8 +160,12 @@ public class Client extends AbstractClient implements ClientInterface {
    * {@inheritDoc}
    */
   @Override
-  public Mino requestNextMino() {
-    return null;
+  public void requestNextMino() {
+    try {
+      sendToServer(new AskPiece());
+    } catch (IOException e) {
+      //pop up to gui
+    }
   }
 
   /**
@@ -107,7 +173,11 @@ public class Client extends AbstractClient implements ClientInterface {
    */
   @Override
   public void syncBoardWithServer() {
-
+    try {
+      sendToServer(new AskPiece());
+    } catch (IOException e) {
+      //pop up to gui
+    }
   }
 
   /**
@@ -115,15 +185,24 @@ public class Client extends AbstractClient implements ClientInterface {
    */
   @Override
   public void sendName(String name) {
-
+    try {
+      sendToServer(new AskPiece());
+    } catch (IOException e) {
+      //pop up to gui
+    }
   }
+
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public void sendScore(int Score) {
-
+  public void sendScore(int score) {
+    try {
+      sendToServer(new SendScore(score));
+    } catch (IOException e) {
+      //pop up to gui
+    }
   }
 
   /**
@@ -131,7 +210,11 @@ public class Client extends AbstractClient implements ClientInterface {
    */
   @Override
   public void removeLine(int line) {
-
+    try {
+      sendToServer(new RemoveLine(line));
+    } catch (IOException e) {
+      //pop up to gui
+    }
   }
 
   /**

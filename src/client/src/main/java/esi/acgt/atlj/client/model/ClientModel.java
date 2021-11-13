@@ -30,7 +30,11 @@ import esi.acgt.atlj.model.Model;
 import esi.acgt.atlj.model.board.Direction;
 import esi.acgt.atlj.model.board.ManagedBoard;
 import esi.acgt.atlj.model.board.UnmanagedBoard;
+import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.Tetrimino;
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
+import java.util.function.Consumer;
 
 public class ClientModel extends Model {
 
@@ -38,12 +42,67 @@ public class ClientModel extends Model {
   private UnmanagedBoard player2;
   private ClientInterface client;
 
+
   public ClientModel() {
     super();
   }
 
+  /**
+   * Lambda expression to connect ask new mino from managed board to server.
+   */
+  Runnable askNextMino = () ->
+  {
+    this.client.requestNextMino();
+  };
+
+  /**
+   * Lambda expression to connect new mino from server to update from managed board.
+   */
+  Consumer<Mino> newMinoFromServer = (Mino nextMino) ->
+  {
+    player1.setNextTetrimino(Tetrimino.createTetrimino(nextMino));
+  };
+
+  /**
+   * Lambda expression to connect remove line to update from unmanaged board
+   */
+  Consumer<Integer> removeLine = (Integer line) ->
+  {
+    player2.removeLine(line);
+  };
+
+  /**
+   * Lambda expression to connect add tetrimino to update from unmanaged board
+   */
+  Consumer<TetriminoInterface> addTetrimino = (TetriminoInterface tetriminoInterface) ->
+  {
+    player2.placeTetrimino(tetriminoInterface);
+  };
+
+  /**
+   * Lambda expression to connect send score to update from unmanaged board
+   */
+  Consumer<Integer> sendScore = (Integer score) ->
+  {
+    player2.setScore(score);
+  };
+
+  /**
+   * Instantiates a new client with port and host to connect to. Connects all lambda methods in
+   * client.
+   *
+   * @param port Port client must connect to.
+   * @param host Hostname of server.
+   */
   public void connect(int port, String host) {
     this.client = new Client(port, host);
+    client.connectNewMinoFromServer(this.newMinoFromServer);
+    client.connectRemoveLine(this.removeLine);
+    client.connectAddTetrimino(this.addTetrimino);
+    client.connectSendScore(this.sendScore);
+    this.client.connect();
+    this.client.requestNextMino();
+    this.player1.connectAskNewMino(askNextMino);
   }
 
   public ClientInterface getClient() {

@@ -25,10 +25,12 @@
 package esi.acgt.atlj.client.connexionServer;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
+import java.util.function.Consumer;
 
 /**
- * Contains all necessary methods to interact with the client.
+ * Contains all necessary methods to interact with a client.
  */
 public interface ClientInterface extends PropertyChangeListener {
 
@@ -42,7 +44,7 @@ public interface ClientInterface extends PropertyChangeListener {
    *
    * @return Next tetrimino in the bag of the server.
    */
-  public Mino requestNextMino();
+  public void requestNextMino();
 
   /**
    * Syncs your board with the server.
@@ -55,6 +57,34 @@ public interface ClientInterface extends PropertyChangeListener {
    * @param name Name of the current player.
    */
   public void sendName(String name);
+
+  /**
+   * Connects a consumer of new mino of model to client.
+   *
+   * @param newMino Lambda function to connect.
+   */
+  public void connectNewMinoFromServer(Consumer<Mino> newMino);
+
+  /**
+   * Connect a consumer of  addTetrimino of model to client.
+   *
+   * @param addTetrimino Lambda function to connect.
+   */
+  public void connectAddTetrimino(Consumer<TetriminoInterface> addTetrimino);
+
+  /**
+   * Connect a consumer of sendScore of model to client.
+   *
+   * @param sendScore Lambda function to connect.
+   */
+  public void connectSendScore(Consumer<Integer> sendScore);
+
+  /**
+   * Connect a consumer of remove line of model to client.
+   *
+   * @param removeLine Lambda function to connect.
+   */
+  public void connectRemoveLine(Consumer<Integer> removeLine);
 
   /**
    * Sends your score to the server.

@@ -34,6 +34,10 @@ import java.util.Timer;
 
 public class ManagedBoard extends Board {
 
+  /**
+   * Lambda expression to ask client for next piece in bag.
+   */
+  Runnable askNextMino;
   private BoardStatus status;
   private int level;
   private final Timer timer;
@@ -47,6 +51,15 @@ public class ManagedBoard extends Board {
     this.level = 3;
     this.timer = new Timer(true);
     this.manager = new Manager(this);
+  }
+
+  /**
+   * Connect lambda expression from ModelClient to ask client for new mino.
+   *
+   * @param askNextMino Lambda expression to connect.
+   */
+  public void connectAskNewMino(Runnable askNextMino) {
+    this.askNextMino = askNextMino;
   }
 
   public synchronized void start() {
@@ -258,7 +271,7 @@ public class ManagedBoard extends Board {
     }
     this.hasAlreadyHolded = false;
     setActualTetrimino(this.nextTetrimino);
-    /*askNextMino.run();*/
+    askNextMino.run();
     setStatus(BoardStatus.TETRIMINO_FALLING);
   }
 
