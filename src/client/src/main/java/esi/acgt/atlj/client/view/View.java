@@ -15,23 +15,37 @@ public class View implements ViewInterface, PropertyChangeListener {
   private Controller controller;
   private BothPlayerView bothPlayerView;
 
+  /**
+   * Constructor of view.
+   *
+   * @param stage Stage that the view will use.
+   */
   public View(Stage stage) {
     this.primaryStage = stage;
     this.primaryStage.setTitle("Tetris");
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void displayConnexion() {
     Connexion connexion = new Connexion(this.controller, this.primaryStage);
     this.primaryStage.setResizable(false);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void displayBoard() {
     this.primaryStage = new Stage();
     this.bothPlayerView = new BothPlayerView(this.controller, this.primaryStage);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void show() {
     this.primaryStage.setOnCloseRequest(event -> {
@@ -41,11 +55,17 @@ public class View implements ViewInterface, PropertyChangeListener {
     this.primaryStage.show();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void setController(Controller controller) {
     this.controller = controller;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void displayError(Exception e) {
     Alert alert = new Alert(AlertType.ERROR);
@@ -54,64 +74,124 @@ public class View implements ViewInterface, PropertyChangeListener {
     alert.show();
   }
 
-  @Override
+  /**
+   * Update the board.
+   *
+   * @param oldBoard old board
+   * @param newBoard new board
+   * @param playerID player that we need to update
+   */
   public void updateBoard(Mino[][] oldBoard, Mino[][] newBoard, int playerID) {
     this.bothPlayerView.updateBoard(oldBoard, newBoard, playerID);
   }
 
-  @Override
+  /**
+   * Update the score
+   *
+   * @param newScore new score
+   * @param playerID player that we need to update
+   */
   public void updateScore(int newScore, int playerID) {
     this.bothPlayerView.updateScore(newScore, playerID);
   }
 
-  @Override
+  /**
+   * Update the username
+   *
+   * @param newUsername new username
+   * @param playerID    player that we need to update
+   */
   public void updateUsername(String newUsername, int playerID) {
     this.bothPlayerView.updateUsername(newUsername, playerID);
   }
 
-  @Override
+  /**
+   * Update the timer
+   *
+   * @param timer    new timer
+   * @param playerID player that we need to update
+   */
   public void updateTimer(int timer, int playerID) {
     this.bothPlayerView.updateTimer(timer, playerID);
   }
 
-  @Override
+  /**
+   * Update the line
+   *
+   * @param line     new Line
+   * @param playerID player that we need to update
+   */
   public void updateLine(int line, int playerID) {
     this.bothPlayerView.updateLine(line, playerID);
   }
 
-  @Override
+  /**
+   * Update the hold
+   *
+   * @param hold     new hold
+   * @param playerID player that we need to update
+   */
   public void updateHold(TetriminoInterface hold, int playerID) {
     this.bothPlayerView.updateHold(hold, playerID);
   }
 
+  /**
+   * update the next
+   *
+   * @param next     new next
+   * @param playerID player that we need to update
+   */
+  public void updateNext(TetriminoInterface next, int playerID) {
+    this.bothPlayerView.updateNext(next, playerID);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
 
     switch (evt.getPropertyName()) {
-      // this.changeSupport.firePropertyChange("player1Board", null, this.getBoard());
       case "player1Board" -> {
-        System.out.println("Board joueur 1 update");
-        this.bothPlayerView.updateBoard((Mino[][]) evt.getOldValue(), (Mino[][]) evt.getNewValue(),
+        updateBoard((Mino[][]) evt.getOldValue(), (Mino[][]) evt.getNewValue(),
             0);
       }
+      case "player2Board" -> {
+        updateBoard((Mino[][]) evt.getOldValue(), (Mino[][]) evt.getNewValue(),
+            1);
+      }
       case "player1NbLine" -> {
-        System.out.println("NbLine du joueur 1 : " + evt.getNewValue());
-        this.bothPlayerView.updateLine((int) evt.getNewValue(), 0);
+        updateLine((int) evt.getNewValue(), 0);
+      }
+      case "player2NbLine" -> {
+        updateLine((int) evt.getNewValue(), 1);
       }
       case "player1Score" -> {
-        System.out.println("Score du joueur 1 : " + evt.getNewValue());
-        this.bothPlayerView.updateScore((int) evt.getNewValue(), 0);
+        updateScore((int) evt.getNewValue(), 0);
+      }
+      case "player2Score" -> {
+        updateScore((int) evt.getNewValue(), 1);
       }
       case "player1Name" -> {
-        System.out.println("nom du joueur 1 " + evt.getNewValue());
-        this.bothPlayerView.updateUsername(evt.getNewValue().toString(), 0);
+        updateUsername(evt.getNewValue().toString(), 0);
       }
+      case "player2Name" -> {
+        updateUsername(evt.getNewValue().toString(), 1);
+      }
+
       case "player1Hold" -> {
-        this.bothPlayerView.updateHold((TetriminoInterface) evt.getNewValue(), 0);
+        updateHold((TetriminoInterface) evt.getNewValue(), 0);
+      }
+      case "player2Hold" -> {
+        updateHold((TetriminoInterface) evt.getNewValue(), 1);
       }
       case "player1Next" -> {
         this.bothPlayerView.updateNext((TetriminoInterface) evt.getNewValue(), 0);
       }
+      case "player2Next" -> {
+        this.bothPlayerView.updateNext((TetriminoInterface) evt.getNewValue(), 1);
+      }
+
       default -> System.out.println(evt.getPropertyName() + evt.getNewValue());
     }
 

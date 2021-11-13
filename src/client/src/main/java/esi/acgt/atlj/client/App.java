@@ -7,6 +7,9 @@ import esi.acgt.atlj.client.view.ViewInterface;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+/**
+ * Client Application
+ */
 public class App extends Application {
 
   @Override

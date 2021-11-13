@@ -46,6 +46,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 
+/**
+ * Scene that contains a player's board and informations
+ */
 public class PlayerTetrisFXML implements Initializable {
 
   private final static Image image_NOMino;
@@ -65,6 +68,9 @@ public class PlayerTetrisFXML implements Initializable {
   private final static Image tetri_T;
   private ImageView[][] minosGrid;
 
+  /**
+   * load all Images
+   */
   static {
     image_NOMino = new Image(
         Objects.requireNonNull(PlayerTetrisFXML.class.getResourceAsStream("/image/WhiteCube.png")));
@@ -135,6 +141,11 @@ public class PlayerTetrisFXML implements Initializable {
   @FXML
   public GridPane scene;
 
+  /**
+   * Constructor of PlayerTetrisFXML
+   *
+   * @param motherbox Box wich we will bind everything
+   */
   public PlayerTetrisFXML(HBox motherbox) {
     // FXML loading
     FXMLLoader loader = new FXMLLoader(getClass().getResource(
@@ -151,6 +162,9 @@ public class PlayerTetrisFXML implements Initializable {
     this.scene.prefHeightProperty().bind(motherbox.heightProperty());
   }
 
+  /**
+   * Initialize for TetrisBoard.fxml
+   */
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     doBindings();
@@ -176,23 +190,45 @@ public class PlayerTetrisFXML implements Initializable {
 
   }
 
+  /**
+   * Update the board of this player
+   *
+   * @param oldBoard oldBoard of this player
+   * @param newBoard newBoard of this player
+   */
   public void updateBoard(Mino[][] oldBoard, Mino[][] newBoard) {
-
     for (int i = 0; i < this.minosGrid.length; i++) {
       for (int j = 0; j < this.minosGrid[i].length; j++) {
-        this.minosGrid[i][j].setImage(cubeColor(newBoard[i][j]));
+        if (oldBoard[i][j] != newBoard[i][j]) {
+          this.minosGrid[i][j].setImage(cubeColor(newBoard[i][j]));
+        }
       }
     }
   }
 
+  /**
+   * Update score of this player
+   *
+   * @param newScore new Score of this player
+   */
   public void updateScore(int newScore) {
     this.scoreLabel.setText(Integer.toString(newScore));
   }
 
+  /**
+   * Update username of this player
+   *
+   * @param newUsername new Username of this player
+   */
   public void updateUsername(String newUsername) {
     this.usernameLabel.setText(newUsername);
   }
 
+  /**
+   * Update Timer of this player
+   *
+   * @param timer new timer of this player
+   */
   public void updateTimer(int timer) {
     int hours, minutes, seconds;
     hours = timer / 3600;
@@ -201,18 +237,39 @@ public class PlayerTetrisFXML implements Initializable {
     this.timeLabel.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
   }
 
+  /**
+   * Update Line of this player
+   *
+   * @param line new Line of this player
+   */
   public void updateLine(int line) {
     this.linesLabel.setText(Integer.toString(line));
   }
 
+  /**
+   * Update Hold Image of this player
+   *
+   * @param hold new hold Tetrimino of this player
+   */
   public void updateHold(TetriminoInterface hold) {
     this.holdTetrimino.setImage(this.getTetriminoImage(hold.getType()));
   }
 
+  /**
+   * Update NextPiece of this player
+   *
+   * @param tetrimino new next Tetrimino of this player
+   */
   public void updateNextPiece(TetriminoInterface tetrimino) {
     this.nextTetrimino.setImage(this.getTetriminoImage(tetrimino.getType()));
   }
 
+  /**
+   * Return a Tetrimino Image relatide to the input Mino
+   *
+   * @param tetrimino Mino of a Tetrimino
+   * @return Tetrimino Image
+   */
   private Image getTetriminoImage(Mino tetrimino) {
     return switch (tetrimino) {
       case I_MINO -> tetri_I;
@@ -225,31 +282,30 @@ public class PlayerTetrisFXML implements Initializable {
     };
   }
 
+  /**
+   * Return a Image is determine from the input color
+   *
+   * @param color Mino that will determine the image
+   * @return Image that is a Mino
+   */
   private Image cubeColor(Mino color) {
     if (color == null) {
       return this.image_NOMino;
     }
-
-    switch (color) {
-      case S_MINO:
-        return image_SMino;
-      case T_MINO:
-        return image_TMino;
-      case I_MINO:
-        return image_IMino;
-      case J_MINO:
-        return image_JMino;
-      case L_MINO:
-        return image_LMino;
-      case Z_MINO:
-        return image_ZMino;
-      case O_MINO:
-        return image_OMino;
-      default:
-        return image_NOMino;
-    }
+    return switch (color) {
+      case S_MINO -> image_SMino;
+      case T_MINO -> image_TMino;
+      case I_MINO -> image_IMino;
+      case J_MINO -> image_JMino;
+      case L_MINO -> image_LMino;
+      case Z_MINO -> image_ZMino;
+      case O_MINO -> image_OMino;
+    };
   }
 
+  /**
+   * Do all the Binding for this scene and item in this class
+   */
   private void doBindings() {
     // Bindings circles
     this.circleHold.radiusProperty().bind(

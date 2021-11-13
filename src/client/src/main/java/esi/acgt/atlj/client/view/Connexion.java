@@ -41,8 +41,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
+/**
+ * Connexion Scene
+ */
 public class Connexion implements Initializable {
 
+  /**
+   * Pattern of a adress IP
+   */
   private static final Pattern regex = Pattern.compile("^(?:[0-9]{1,3}.){3}[0-9]{1,3}$");
   @FXML
   public TextField ip;
@@ -53,6 +59,12 @@ public class Connexion implements Initializable {
   private final Controller controller;
   private final Stage stage;
 
+  /**
+   * Constructor of Connexion
+   *
+   * @param controller controller wich we interact with
+   * @param stage      stage of the window for this scene
+   */
   public Connexion(Controller controller, Stage stage) {
     this.controller = controller;
     this.stage = stage;
@@ -71,6 +83,9 @@ public class Connexion implements Initializable {
     });
   }
 
+  /**
+   * Action when you press on the button for connexion
+   */
   public void connexionPressed() {
     try {
       Matcher m = regex.matcher(this.ip.getText());
@@ -89,6 +104,9 @@ public class Connexion implements Initializable {
     }
   }
 
+  /**
+   * Action when you press on the button to leave the application
+   */
   public void leavePressed() {
     this.stage.close();
   }
@@ -99,6 +117,9 @@ public class Connexion implements Initializable {
     this.stage.close();
   }
 
+  /**
+   * Initiale of the Connexion.fxml
+   */
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
 

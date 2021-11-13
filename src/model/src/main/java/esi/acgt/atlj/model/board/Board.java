@@ -57,7 +57,7 @@ public abstract class Board implements BoardInterface, Serializable {
 
   @Override
   public synchronized void initTetrisBoard() {
-    var oldBoard = this.getBoard();
+    var oldBoard = new Mino[HEIGHT][WIDTH];;
     this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
     this.changeSupport.firePropertyChange("player1Next", null, this.getNextTetrimino());
   }
@@ -135,8 +135,6 @@ public abstract class Board implements BoardInterface, Serializable {
   }
 
   public abstract void setNbLine(int nbLine);
-
-  public abstract boolean move(Direction direction);
 
   public abstract void setHold(Mino hold);
 

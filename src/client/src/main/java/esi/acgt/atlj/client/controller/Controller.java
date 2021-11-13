@@ -6,12 +6,20 @@ import esi.acgt.atlj.model.board.Direction;
 import java.util.Objects;
 import javafx.scene.input.KeyCode;
 
+/**
+ * Controller of the Client application
+ */
 public class Controller {
 
   private final ClientModel model;
 
   private final ViewInterface view;
-
+  /**
+   * Construtctor of Controller
+   *
+   * @param model Model of the Client
+   * @param view  View of the Client
+   */
   public Controller(ClientModel model, ViewInterface view) {
     Objects.requireNonNull(model, "model can not be null");
     Objects.requireNonNull(view, "view can not be null");
@@ -19,16 +27,27 @@ public class Controller {
     this.view = view;
   }
 
+  /**
+   * Launch the view
+   */
   public void start() {
     view.setController(this);
     view.displayConnexion();
     view.show();
   }
 
+  /**
+   * End the Programme
+   */
   public void disconnect() {
     System.exit(0);
   }
 
+  /**
+   * Forward inputs from the view to the model
+   *
+   * @param input keyboard input from the view
+   */
   public void keyBoardInput(KeyCode input) {
     switch (input) {
       case LEFT -> this.model.move(Direction.LEFT);
@@ -42,6 +61,13 @@ public class Controller {
 
   }
 
+  /**
+   * Connexion to the server and when it's done start the board view
+   *
+   * @param ip       ip of the server to connect to
+   * @param port     port of the server to connect to
+   * @param username username of the player
+   */
   public void connexion(String ip, int port, String username) {
     try {
       this.model.connect(port, ip);

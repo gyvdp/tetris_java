@@ -25,6 +25,7 @@
 package esi.acgt.atlj.model.board;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
 public class UnmanagedBoard extends Board {
@@ -39,7 +40,8 @@ public class UnmanagedBoard extends Board {
   }
 
   public void setActualTetrimino(TetriminoInterface tetrimino) {
-    // TODO
+    this.actualTetrimino = tetrimino;
+    this.changeSupport.firePropertyChange("board", this.getBoard(), this.getBoard());
   }
 
   public void removeLine(int line) {
@@ -47,37 +49,30 @@ public class UnmanagedBoard extends Board {
   }
 
   public void setNextTetrimino(TetriminoInterface tetrimino) {
-    // TODO
+    this.nextTetrimino = tetrimino;
+    this.changeSupport.firePropertyChange("next", this.nextTetrimino, this.nextTetrimino);
   }
 
   public void setScore(int score) {
     this.score = score;
-    this.changeSupport.firePropertyChange("player2Name", this.score, this.score);
+    this.changeSupport.firePropertyChange("score", this.score, this.score);
   }
 
   public void setUsername(String username) {
     this.username = username;
-    this.changeSupport.firePropertyChange("player2Name", this.username, this.username);
+    this.changeSupport.firePropertyChange("username", this.username, this.username);
   }
 
   public void setNbLine(int nbLine) {
     this.nbLine = nbLine;
-    this.changeSupport.firePropertyChange("player2NbLine", this.nbLine, this.nbLine);
-  }
-
-  @Override
-  public boolean move(Direction direction) {
-    return false;
+    this.changeSupport.firePropertyChange("line", this.nbLine, this.nbLine);
   }
 
   @Override
   public void setHold(Mino hold) {
-
+    this.hold = hold;
+    this.changeSupport.firePropertyChange("hold", this.hold, this.hold);
   }
 
-  @Override
-  public void hardDrop() {
-
-  }
 
 }
