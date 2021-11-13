@@ -277,4 +277,8 @@ public class ManagedBoard extends Board {
     setStatus(BoardStatus.TETRIMINO_FALLING);
   }
 
+  public void fireEndGame(String winnerName, String reason) {
+    this.changeSupport.firePropertyChange("winner", winnerName, reason);
+  }
+
 }

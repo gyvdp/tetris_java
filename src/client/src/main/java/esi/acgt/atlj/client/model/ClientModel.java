@@ -134,7 +134,7 @@ public class ClientModel extends Model {
    */
   Runnable playerDisconnected = () ->
   {
-    //this.start(); //TODO
+    this.player1.fireEndGame(this.player1.getUsername(), "Le joueurs adverse s'est déconnecté.");
   };
 
   /**
