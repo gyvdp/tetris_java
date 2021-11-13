@@ -121,20 +121,6 @@
             <Font name="Arial Black" size="14.0"/>
           </font>
         </Label>
-        <Label text="TIME :" wrapText="true" VBox.vgrow="ALWAYS">
-          <font>
-            <Font name="Arial Black" size="14.0"/>
-          </font>
-        </Label>
-        <Label fx:id="timeLabel" text="00:00:00" textAlignment="CENTER" wrapText="true"
-          VBox.vgrow="ALWAYS">
-          <font>
-            <Font name="Arial Black" size="14.0"/>
-          </font>
-          <VBox.margin>
-            <Insets bottom="15.0"/>
-          </VBox.margin>
-        </Label>
         <Label text="LINES :" wrapText="true" VBox.vgrow="ALWAYS">
           <font>
             <Font name="System Bold" size="14.0"/>

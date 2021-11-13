@@ -117,8 +117,6 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
   @FXML
   public Label scoreLabel;
   @FXML
-  public Label timeLabel;
-  @FXML
   public Label linesLabel;
   @FXML
   public Label usernameLabel;
@@ -224,19 +222,6 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
    */
   public void updateUsername(String newUsername) {
     this.usernameLabel.setText(newUsername);
-  }
-
-  /**
-   * Update Timer of this player
-   *
-   * @param timer new timer of this player
-   */
-  public void updateTimer(int timer) {
-    int hours, minutes, seconds;
-    hours = timer / 3600;
-    minutes = (timer % 3600) / 60;
-    seconds = timer % 60;
-    this.timeLabel.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
   }
 
   /**
