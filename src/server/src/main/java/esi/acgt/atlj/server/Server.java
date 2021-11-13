@@ -27,7 +27,6 @@ package esi.acgt.atlj.server;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.*;
 import esi.acgt.atlj.model.tetrimino.Mino;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -84,7 +83,7 @@ public class Server extends AbstractServer {
         case "ADD_TETRIMINO":
           if (msg instanceof AddTetrimino) {
             opPlayer.sendMessage(new AddTetrimino(
-                ((AddTetrimino) msg).getTetrimino())); //TODO  Add correct tetrimino coming from other client
+                ((AddTetrimino) msg).getTetrimino()));
           }
           break;
         case "REMOVE_LINE":
@@ -183,12 +182,8 @@ public class Server extends AbstractServer {
   @Override
   protected void clientDisconnected(CustomClientThread client) {
     super.clientDisconnected(client);
-    try {
-      sendToAllClients(
-          new PlayerState(PlayerStatus.DISCONNECTED)); //TODO do not send to all players.
-    } catch (IOException e) {
-      exceptionHook(e);
-    }
+    members.get(client.getIdOfClient() == 0 ? 1 : 0)
+        .sendMessage(new PlayerState(PlayerStatus.DISCONNECTED));
   }
 
   /**

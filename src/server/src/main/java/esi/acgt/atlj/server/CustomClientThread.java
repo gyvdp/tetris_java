@@ -67,6 +67,8 @@ public class CustomClientThread extends Thread {
    */
   private boolean isActive;
 
+  private final int id;
+
 
   /**
    * Constructor for custom client thread.
@@ -75,8 +77,11 @@ public class CustomClientThread extends Thread {
    * @param server       Server to which the client is connected.
    * @throws SocketException Thrown if function cannot instantiate input or output streams.
    */
-  public CustomClientThread(Socket clientSocket, AbstractServer server) throws SocketException {
+  public CustomClientThread(Socket clientSocket, AbstractServer server, int id)
+      throws SocketException {
     clientStatus = PlayerStatus.WAITING;
+    this.id = id;
+    System.out.println(id);
     this.clientSocket = clientSocket;
     this.myTetriminos = new LinkedBlockingQueue<>();
     clientSocket.setSoTimeout(0);
@@ -94,6 +99,15 @@ public class CustomClientThread extends Thread {
     }
     isActive = true;
     start();
+  }
+
+  /**
+   * Getter for the client id.
+   *
+   * @return The id of the client.
+   */
+  public int getIdOfClient() {
+    return this.id;
   }
 
   /**

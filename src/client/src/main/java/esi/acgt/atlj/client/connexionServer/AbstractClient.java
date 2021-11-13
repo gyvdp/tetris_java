@@ -186,8 +186,7 @@ public abstract class AbstractClient implements Runnable {
           if (isActive) {
             handleServerMessage(information);
           }
-        } catch (RuntimeException | ClassNotFoundException e) {
-          connexionException(e);
+        } catch (RuntimeException | ClassNotFoundException | SocketException ignored) {
         }
       }
     } catch (Exception e) {
