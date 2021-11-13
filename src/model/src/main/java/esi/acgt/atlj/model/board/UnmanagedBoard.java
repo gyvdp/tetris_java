@@ -50,6 +50,7 @@ public class UnmanagedBoard extends Board {
 
   public void setNextTetrimino(TetriminoInterface tetrimino) {
     this.nextTetrimino = tetrimino;
+    System.out.println("fire");
     this.changeSupport.firePropertyChange("next", this.nextTetrimino, this.nextTetrimino);
   }
 

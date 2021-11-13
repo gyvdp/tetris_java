@@ -27,6 +27,7 @@ package esi.acgt.atlj.client.model;
 import esi.acgt.atlj.client.connexionServer.Client;
 import esi.acgt.atlj.client.connexionServer.ClientInterface;
 import esi.acgt.atlj.model.Model;
+import esi.acgt.atlj.model.board.BoardStatus;
 import esi.acgt.atlj.model.board.Direction;
 import esi.acgt.atlj.model.board.ManagedBoard;
 import esi.acgt.atlj.model.board.UnmanagedBoard;
@@ -92,13 +93,13 @@ public class ClientModel extends Model {
    */
   Consumer<Mino> updateNextTetriminoOtherPlayer = (Mino m) ->
   {
+    System.out.println("Pass");
     player2.setNextTetrimino(Tetrimino.createTetrimino(m));
   };
 
   Runnable playerReady = () ->
   {
-    
-    //player1.playerIsReady;
+    this.start();
   };
 
   /**
@@ -165,5 +166,9 @@ public class ClientModel extends Model {
 
   public void rotate(boolean clockwise) {
     player1.rotate(clockwise);
+  }
+
+  public BoardStatus getStatus() {
+    return this.player1.getStatus();
   }
 }
