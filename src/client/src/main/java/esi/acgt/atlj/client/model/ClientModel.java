@@ -101,8 +101,6 @@ public class ClientModel extends Model {
     client.connectAddTetrimino(this.addTetrimino);
     client.connectSendScore(this.sendScore);
     this.client.connect();
-    this.client.requestNextMino();
-    this.player1.connectAskNewMino(askNextMino);
   }
 
   public ClientInterface getClient() {
@@ -110,11 +108,14 @@ public class ClientModel extends Model {
   }
 
   public void start() {
+    askNextMino.run();
     this.player1.start();
+
   }
 
   public void initManagedBoard(String username) {
     player1 = new ManagedBoard(username);
+    this.player1.connectAskNewMino(askNextMino);
   }
 
   @Override

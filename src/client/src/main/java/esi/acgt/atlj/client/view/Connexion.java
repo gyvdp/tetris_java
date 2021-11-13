@@ -113,7 +113,7 @@ public class Connexion implements Initializable {
 
   //TODO retirer button test de la version finale
   public void testPressed() {
-    this.controller.connexion("1.1.1.1", 1, "usertest");
+    this.controller.connexion("localhost", 6969, "usertest");
     this.stage.close();
   }
 
