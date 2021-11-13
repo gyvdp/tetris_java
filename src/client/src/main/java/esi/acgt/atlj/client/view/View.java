@@ -17,12 +17,8 @@ public class View implements ViewInterface {
 
   /**
    * Constructor of view.
-   *
-   * @param stage Stage that the view will use.
    */
-  public View(Stage stage) {
-    this.primaryStage = stage;
-    this.primaryStage.setTitle("Tetris");
+  public View() {
   }
 
   /**
@@ -30,6 +26,8 @@ public class View implements ViewInterface {
    */
   @Override
   public void displayConnexion() {
+    this.primaryStage = new Stage();
+    this.primaryStage.setTitle("Tetris connexion");
     Connexion connexion = new Connexion(this.controller, this.primaryStage);
     this.primaryStage.setResizable(false);
   }
@@ -71,7 +69,7 @@ public class View implements ViewInterface {
     Alert alert = new Alert(AlertType.ERROR);
     alert.setHeaderText("Erreur");
     alert.setContentText(e.getMessage());
-    alert.show();
+    alert.showAndWait();
   }
 
   @Override

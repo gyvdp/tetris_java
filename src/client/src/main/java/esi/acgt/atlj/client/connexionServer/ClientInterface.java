@@ -27,6 +27,7 @@ package esi.acgt.atlj.client.connexionServer;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
+import java.net.ConnectException;
 import java.util.function.Consumer;
 
 /**
@@ -37,7 +38,7 @@ public interface ClientInterface extends PropertyChangeListener {
   /**
    * Tries to establish a connexion with server.
    */
-  public void connect();
+  public void connect() throws ConnectException;
 
   /**
    * Request the next color of Tetrimino.

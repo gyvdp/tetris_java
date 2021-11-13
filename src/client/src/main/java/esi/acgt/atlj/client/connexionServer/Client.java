@@ -166,12 +166,8 @@ public class Client extends AbstractClient implements ClientInterface {
    * {@inheritDoc}
    */
   @Override
-  public void connect() {
-    try {
-      connectToServer();
-    } catch (ConnectException e) {
-      //pop to gui
-    }
+  public void connect() throws ConnectException {
+    connectToServer();
   }
 
   /**

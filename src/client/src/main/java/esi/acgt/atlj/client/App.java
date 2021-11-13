@@ -15,7 +15,7 @@ public class App extends Application {
   @Override
   public void start(Stage stage) {
     ClientModel model = new ClientModel();
-    ViewInterface view = new View(stage);
+    ViewInterface view = new View();
     Controller controller = new Controller(model, view);
     controller.start();
   }

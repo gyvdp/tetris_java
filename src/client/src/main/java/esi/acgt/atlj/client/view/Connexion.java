@@ -100,7 +100,7 @@ public class Connexion implements Initializable {
       Alert alert = new Alert(AlertType.ERROR);
       alert.setContentText("Les informations entrées sont incorrects.");
       alert.setHeaderText("Information Erroné");
-      alert.show();
+      alert.showAndWait();
     }
   }
 
