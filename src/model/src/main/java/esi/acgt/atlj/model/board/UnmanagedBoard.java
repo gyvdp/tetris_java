@@ -35,7 +35,25 @@ public class UnmanagedBoard extends Board {
   }
 
   public void placeTetrimino(TetriminoInterface tetrimino) {
-    //TODO
+    //TODO a faire en static via le lock.
+    var oldBoard = getBoard();
+    var t = tetrimino;
+    var tMinos = tetrimino.getMinos();
+    for (var i = 0; i < tMinos.length; ++i) {
+      for (var j = 0; j < tMinos[i].length; ++j) {
+        if (tMinos[i][j] == null) {
+          continue;
+        }
+        var line = t.getY() + i;
+        var col = t.getX() + j;
+
+        if (line < minos.length && col < minos[line].length) {
+          minos[line][col] = tMinos[i][j];
+        }
+      }
+    }
+
+    this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
   }
 
   public void setActualTetrimino(TetriminoInterface tetrimino) {
