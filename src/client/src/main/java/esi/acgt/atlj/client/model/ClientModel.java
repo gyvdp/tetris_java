@@ -166,6 +166,7 @@ public class ClientModel extends Model {
   public void start() {
     askNextMino.run();
     this.player1.start();
+    client.sendNameToServer(player1.getUsername());
 
   }
 

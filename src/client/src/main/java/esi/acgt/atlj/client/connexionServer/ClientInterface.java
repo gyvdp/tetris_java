@@ -98,6 +98,8 @@ public interface ClientInterface extends PropertyChangeListener {
 
   public void connectReceiveUserName(Consumer<String> receiveName);
 
+  public void sendNameToServer(String name);
+
   /**
    * Connect a consumer of remove line of model to client.
    *
