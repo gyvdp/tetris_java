@@ -160,7 +160,7 @@ public abstract class AbstractServer implements Runnable {
   public void startServer() {
     try {
       if (!isListening() && serverSocket == null) {
-        serverSocket = new ServerSocket(this.port, this.backlog);
+        this.serverSocket = new ServerSocket(this.port, this.backlog);
       }
       serverSocket.setSoTimeout(timeout);
     } catch (IOException e) {
