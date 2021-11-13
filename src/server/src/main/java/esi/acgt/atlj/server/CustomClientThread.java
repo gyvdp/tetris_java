@@ -26,6 +26,7 @@ package esi.acgt.atlj.server;
 
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.PlayerStatus;
+import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -120,6 +121,7 @@ public class CustomClientThread extends Thread {
    */
   public void setClientStatus(PlayerStatus clientStatus) {
     this.clientStatus = clientStatus;
+    sendMessage(new PlayerState(clientStatus));
   }
 
   /**
@@ -179,6 +181,8 @@ public class CustomClientThread extends Thread {
           System.out.println("Cannot close socket");
         }
       }
+    } finally {
+      server.clientDisconnected(this);
     }
   }
 

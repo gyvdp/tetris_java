@@ -38,7 +38,7 @@ public class AddTetrimino extends Message {
    *
    * @param tetrimino Tetrimino to add.
    */
-  public AddTetrimino(Tetrimino tetrimino) {
+  public AddTetrimino(TetriminoInterface tetrimino) {
     this.tetrimino = tetrimino;
     this.messageType = MessageType.ADD_TETRIMINO;
   }

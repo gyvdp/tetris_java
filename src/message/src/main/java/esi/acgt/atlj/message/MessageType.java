@@ -33,6 +33,8 @@ public enum MessageType {
   SEND_PIECE, //Send a piece from the server to the client
   SEND_SCORE, //Sends the score to the server or client
   REMOVE_LINE, //Removes a line to the unmanaged board of the other player
-  UpdatePieceUnmanagedBoard,
+  PLAYER_STATUS,
+  UPDATE_PIECE_UNMANAGED
+
 
 }

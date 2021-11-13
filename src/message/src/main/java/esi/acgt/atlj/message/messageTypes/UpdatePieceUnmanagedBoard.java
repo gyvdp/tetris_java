@@ -25,6 +25,7 @@
 package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.model.tetrimino.Mino;
 
 /**
@@ -43,6 +44,7 @@ public class UpdatePieceUnmanagedBoard extends Message {
    * @param piece Piece to update
    */
   public UpdatePieceUnmanagedBoard(Mino piece) {
+    this.messageType = MessageType.UPDATE_PIECE_UNMANAGED;
     this.piece = piece;
   }
 

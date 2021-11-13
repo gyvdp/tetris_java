@@ -25,7 +25,6 @@
 package esi.acgt.atlj.model.board;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
-import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
 public class UnmanagedBoard extends Board {
@@ -36,7 +35,7 @@ public class UnmanagedBoard extends Board {
   }
 
   public void placeTetrimino(TetriminoInterface tetrimino) {
-    // TODO
+    //TODO
   }
 
   public void setActualTetrimino(TetriminoInterface tetrimino) {

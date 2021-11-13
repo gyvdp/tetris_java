@@ -25,6 +25,7 @@
 package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.message.PlayerStatus;
 
 public class PlayerState extends Message {
@@ -36,6 +37,7 @@ public class PlayerState extends Message {
   }
 
   public PlayerStatus getPlayerState() {
+    this.messageType = MessageType.PLAYER_STATUS;
     return this.playerState;
   }
 }

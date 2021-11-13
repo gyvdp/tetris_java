@@ -24,8 +24,12 @@
 
 package esi.acgt.atlj.message;
 
+/**
+ * Status of player for the servers point of view.
+ */
 public enum PlayerStatus {
-  READY,
-  WAITING,
-  LOST
+  READY, // Status when both players are connected
+  WAITING, // Players
+  LOST, // Player has lost
+  DISCONNECTED //Player is disconnected
 }
