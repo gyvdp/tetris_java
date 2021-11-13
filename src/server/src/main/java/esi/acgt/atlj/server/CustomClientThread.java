@@ -25,6 +25,7 @@
 package esi.acgt.atlj.server;
 
 import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import java.io.IOException;
 import java.io.ObjectInputStream;

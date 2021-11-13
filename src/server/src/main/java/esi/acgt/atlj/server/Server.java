@@ -24,6 +24,7 @@
 
 package esi.acgt.atlj.server;
 
+import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.*;
 import esi.acgt.atlj.model.tetrimino.ITetrimino;
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -187,7 +188,7 @@ public class Server extends AbstractServer {
   public void updateAllPlayerState(PlayerStatus playerState) {
     for (int numberOfPlayer = 0; numberOfPlayer < members.size(); numberOfPlayer++) {
       members.get(numberOfPlayer).setClientStatus(playerState);
-      members.get(numberOfPlayer).sendMessage(new ReadyState());
+      members.get(numberOfPlayer).sendMessage(new PlayerState(PlayerStatus.READY));
     }
   }
 }

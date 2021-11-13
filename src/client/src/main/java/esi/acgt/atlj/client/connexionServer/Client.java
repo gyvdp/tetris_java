@@ -24,9 +24,10 @@
 
 package esi.acgt.atlj.client.connexionServer;
 
+import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.AddTetrimino;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
-import esi.acgt.atlj.message.messageTypes.ReadyState;
+import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.RemoveLine;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.SendScore;
@@ -96,8 +97,11 @@ public class Client extends AbstractClient implements ClientInterface {
       sendScore.accept(((SendScore) information).getScore());
     } else if (information instanceof UpdatePieceUnmanagedBoard) {
       updateNextTetriminoOtherPlayer.accept(((UpdatePieceUnmanagedBoard) information).getPiece());
-    } else if (information instanceof ReadyState) {
-      playerReady.run();
+    } else if (information instanceof PlayerState) {
+      if (((PlayerState) information).getPlayerState().equals(PlayerStatus.READY)) {
+        playerReady.run();
+      }
+
     }
   }
 
