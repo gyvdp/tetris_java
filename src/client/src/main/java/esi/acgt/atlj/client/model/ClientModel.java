@@ -35,6 +35,7 @@ import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
+import java.net.ConnectException;
 import java.util.function.Consumer;
 
 public class ClientModel extends Model {
@@ -135,7 +136,7 @@ public class ClientModel extends Model {
    * @param port Port client must connect to.
    * @param host Hostname of server.
    */
-  public void connect(int port, String host) {
+  public void connect(int port, String host) throws ConnectException {
     this.client = new Client(port, host);
     client.connectNewMinoFromServer(this.newMinoFromServer);
     client.connectRemoveLine(this.removeLine);

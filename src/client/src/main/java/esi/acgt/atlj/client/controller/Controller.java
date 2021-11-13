@@ -80,11 +80,11 @@ public class Controller {
       this.view.displayBoard();
       this.model.connect(6969, "localhost");
       this.model.addPropertyChangeListener(this.view.getListeners());
-      this.view.show();
     } catch (Exception e) {
       this.view.displayError(e);
       this.view.displayConnexion();
     }
+    this.view.show();
   }
 
 }
