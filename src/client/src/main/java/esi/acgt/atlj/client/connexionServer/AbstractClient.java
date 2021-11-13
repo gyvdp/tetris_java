@@ -98,7 +98,7 @@ public abstract class AbstractClient implements Runnable {
     if (clientSocket == null) {
       throw new SocketException("Socket is null");
     }
-    output.writeObject("askPiece");
+    output.writeObject(information);
     output.flush();
   }
 
