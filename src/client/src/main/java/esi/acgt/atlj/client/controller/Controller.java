@@ -44,7 +44,7 @@ public class Controller {
 
   public void connexion(String ip, int port, String username) {
     try {
-      this.model.connect(port, ip);
+      this.model.connect(6969, "localhost");
       this.view.displayBoard();
       this.model.initManagedBoard(username);
       this.model.addPropertyChangeListener(this.view);
