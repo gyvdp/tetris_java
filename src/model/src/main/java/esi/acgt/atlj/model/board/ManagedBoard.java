@@ -57,7 +57,7 @@ public class ManagedBoard extends Board {
     if (isMoveValid(direction)) {
       Mino[][] oldBoard = this.getBoard();
       this.actualTetrimino.move(direction);
-      this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
+      this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
       return true;
     }
 
@@ -67,13 +67,13 @@ public class ManagedBoard extends Board {
   @Override
   public synchronized void setHold(Mino hold) {
     this.hold = hold;
-    this.changeSupport.firePropertyChange("player1Hold", null, this.getHold());
+    this.changeSupport.firePropertyChange("hold", null, this.getHold());
   }
 
   @Override
   public synchronized void setNextTetrimino(TetriminoInterface nextTetrimino) {
     this.nextTetrimino = nextTetrimino;
-    this.changeSupport.firePropertyChange("player1Next", null, this.getNextTetrimino());
+    this.changeSupport.firePropertyChange("next", null, this.getNextTetrimino());
   }
 
   public void hold() {
@@ -96,7 +96,7 @@ public class ManagedBoard extends Board {
   public synchronized void setActualTetrimino(TetriminoInterface actualTetrimino) {
     Mino[][] oldBoard = this.getBoard();
     this.actualTetrimino = actualTetrimino;
-    this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
+    this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
   }
 
   private synchronized boolean isMoveValid(Direction direction) {
@@ -186,7 +186,7 @@ public class ManagedBoard extends Board {
     while (isMoveValid(Direction.DOWN)) {
       Mino[][] oldBoard = this.getBoard();
       this.actualTetrimino.move(Direction.DOWN);
-      this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
+      this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
     }
   }
 
@@ -195,7 +195,7 @@ public class ManagedBoard extends Board {
     try {
       actualTetrimino.rotate(clockwise, this.getSurroundingArea(actualTetrimino.getX(),
           actualTetrimino.getY()));
-      this.changeSupport.firePropertyChange("player1Board", oldBoard, this.getBoard());
+      this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
     } catch (InvalidParameterException e) {
       //Check if there is another block or if its wall
       //If it is another block tetrimino must be placed If wall do nothing
@@ -205,19 +205,19 @@ public class ManagedBoard extends Board {
   public synchronized void setScore(int score) {
     int oldScore = this.score;
     this.score = score;
-    this.changeSupport.firePropertyChange("player1Score", oldScore, this.score);
+    this.changeSupport.firePropertyChange("score", oldScore, this.score);
   }
 
   public synchronized void setUsername(String username) {
     String oldValue = this.username;
     this.username = username;
-    this.changeSupport.firePropertyChange("player1Name", oldValue, this.username);
+    this.changeSupport.firePropertyChange("name", oldValue, this.username);
   }
 
   public synchronized void setNbLine(int nbLine) {
     int oldNbLine = this.nbLine;
     this.nbLine = nbLine;
-    this.changeSupport.firePropertyChange("player1NbLine", oldNbLine, this.nbLine);
+    this.changeSupport.firePropertyChange("line", oldNbLine, this.nbLine);
   }
 
   public synchronized BoardStatus getStatus() {
@@ -257,8 +257,8 @@ public class ManagedBoard extends Board {
       }
     }
     this.hasAlreadyHolded = false;
-    setActualTetrimino(new LTetrimino());
-    setNextTetrimino(new ZTetrimino());
+    setActualTetrimino(this.nextTetrimino);
+    /*askNextMino.run();*/
     setStatus(BoardStatus.TETRIMINO_FALLING);
   }
 
