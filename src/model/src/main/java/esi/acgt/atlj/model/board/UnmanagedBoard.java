@@ -57,8 +57,9 @@ public class UnmanagedBoard extends Board {
   }
 
   public void setActualTetrimino(TetriminoInterface tetrimino) {
+    Mino[][] oldBoard = this.getBoard();
     this.actualTetrimino = tetrimino;
-    this.changeSupport.firePropertyChange("board", this.getBoard(), this.getBoard());
+    this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
   }
 
   public void removeLine(int line) {
