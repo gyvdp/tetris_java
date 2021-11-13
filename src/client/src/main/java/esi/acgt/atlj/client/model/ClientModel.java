@@ -44,7 +44,6 @@ public class ClientModel extends Model {
   private UnmanagedBoard player2;
   private ClientInterface client;
 
-
   public ClientModel() {
     super();
   }
@@ -74,11 +73,20 @@ public class ClientModel extends Model {
   };
 
   /**
-   * Lambda expression to connect add tetrimino to update from unmanaged board
+   * Lambda expression to connect add tetrimino to update from unmanaged board. Behaviour for when a
+   * player send you his placed pawn.
    */
   Consumer<TetriminoInterface> addTetrimino = (TetriminoInterface tetriminoInterface) ->
   {
     player2.placeTetrimino(tetriminoInterface);
+  };
+
+  /**
+   * Send a pawn to another player.
+   */
+  Consumer<TetriminoInterface> addTetriminoToOtherPlayer = (TetriminoInterface tetriminoInterface) ->
+  {
+    this.client.sendTetriminoToOtherPlayer(tetriminoInterface);
   };
 
   /**
@@ -98,9 +106,27 @@ public class ClientModel extends Model {
     player2.setNextTetrimino(Tetrimino.createTetrimino(m));
   };
 
-  Runnable playerReady = () ->
+  /**
+   * Lambda expression to connect game state from server to model.
+   */
+  Runnable playerReady = this::start;
+
+  /**
+   * Lambda expression to connect game state from server to model. Runs if other player has lost
+   */
+  Runnable otherPlayerLost = () ->
   {
-    this.start();
+    //player2.hasLost()
+    //this.start();  //TODO
+  };
+
+  /**
+   * Lambda expression to connect game state from server to model. Runs if other player has been
+   * disconnected
+   */
+  Runnable playerDisconnected = () ->
+  {
+    //this.start(); //TODO
   };
 
   /**
@@ -118,7 +144,10 @@ public class ClientModel extends Model {
     client.connectSendScore(this.sendScore);
     client.connectUpdateNextTetriminoOtherPlayer(this.updateNextTetriminoOtherPlayer);
     client.connectPlayerReady(playerReady);
+    client.connectOtherPlayerLost(otherPlayerLost);
+    client.connectPlayerDisconnected(playerDisconnected);
     this.client.connect();
+
   }
 
   public ClientInterface getClient() {
@@ -135,6 +164,7 @@ public class ClientModel extends Model {
     player1 = new ManagedBoard(username);
     player2 = new UnmanagedBoard(username);
     this.player1.connectAskNewMino(askNextMino);
+    this.player1.connectAddTetrimino(addTetriminoToOtherPlayer);
   }
 
   @Override

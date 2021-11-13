@@ -27,10 +27,12 @@ package esi.acgt.atlj.model.board;
 import esi.acgt.atlj.model.tetrimino.JTetrimino;
 import esi.acgt.atlj.model.tetrimino.LTetrimino;
 import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import esi.acgt.atlj.model.tetrimino.ZTetrimino;
 import java.security.InvalidParameterException;
 import java.util.Timer;
+import java.util.function.Consumer;
 
 public class ManagedBoard extends Board {
 
@@ -38,6 +40,11 @@ public class ManagedBoard extends Board {
    * Lambda expression to ask client for next piece in bag.
    */
   Runnable askNextMino;
+  /**
+   * Locked tetrimino to send to server.
+   */
+  Consumer<TetriminoInterface> addTetrimino;
+
   private BoardStatus status;
   private int level;
   private final Timer timer;
@@ -60,6 +67,10 @@ public class ManagedBoard extends Board {
    */
   public void connectAskNewMino(Runnable askNextMino) {
     this.askNextMino = askNextMino;
+  }
+
+  public void connectAddTetrimino(Consumer<TetriminoInterface> addTetrimino) {
+    this.addTetrimino = addTetrimino;
   }
 
   public synchronized void start() {
@@ -266,6 +277,7 @@ public class ManagedBoard extends Board {
       }
     }
     this.hasAlreadyHolded = false;
+    addTetrimino.accept(actualTetrimino);
     setActualTetrimino(this.nextTetrimino);
     askNextMino.run();
     setStatus(BoardStatus.TETRIMINO_FALLING);

@@ -24,9 +24,10 @@
 
 package esi.acgt.atlj.server;
 
+import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.*;
-import esi.acgt.atlj.model.tetrimino.ITetrimino;
 import esi.acgt.atlj.model.tetrimino.Mino;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -81,8 +82,10 @@ public class Server extends AbstractServer {
           opPlayer.sendMessage(new UpdatePieceUnmanagedBoard(m));
           break;
         case "ADD_TETRIMINO":
-          opPlayer.sendMessage(new AddTetrimino(
-              new ITetrimino())); //TODO  Add correct tetrimino coming from other client
+          if (msg instanceof AddTetrimino) {
+            opPlayer.sendMessage(new AddTetrimino(
+                ((AddTetrimino) msg).getTetrimino())); //TODO  Add correct tetrimino coming from other client
+          }
           break;
         case "REMOVE_LINE":
           opPlayer.sendMessage(new RemoveLine(4)); //TODO Add correct line coming from other player
@@ -176,7 +179,12 @@ public class Server extends AbstractServer {
   @Override
   protected void clientDisconnected(CustomClientThread client) {
     super.clientDisconnected(client);
-    System.out.println(client + "has disconnected");
+    try {
+      sendToAllClients(
+          new PlayerState(PlayerStatus.DISCONNECTED)); //TODO do not send to all players.
+    } catch (IOException e) {
+      exceptionHook(e);
+    }
   }
 
   /**
@@ -187,7 +195,6 @@ public class Server extends AbstractServer {
   public void updateAllPlayerState(PlayerStatus playerState) {
     for (int numberOfPlayer = 0; numberOfPlayer < members.size(); numberOfPlayer++) {
       members.get(numberOfPlayer).setClientStatus(playerState);
-      members.get(numberOfPlayer).sendMessage(new ReadyState());
     }
   }
 }

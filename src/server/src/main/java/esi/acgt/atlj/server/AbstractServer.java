@@ -102,6 +102,7 @@ public abstract class AbstractServer implements Runnable {
    * @param e Exception e.
    */
   protected void exceptionHook(Exception e) {
+    System.err.println(e.getMessage());
   }
 
   /**

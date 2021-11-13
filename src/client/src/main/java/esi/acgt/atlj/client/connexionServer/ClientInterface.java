@@ -49,6 +49,10 @@ public interface ClientInterface extends PropertyChangeListener {
 
   public void connectPlayerReady(Runnable playerReady);
 
+  public void connectOtherPlayerLost(Runnable otherPlayerLost);
+
+  public void connectPlayerDisconnected(Runnable playerDisconnected);
+
   /**
    * Connects a consumer of updateTetriminoOtherPlayer client to model.
    *
@@ -95,6 +99,9 @@ public interface ClientInterface extends PropertyChangeListener {
    * @param removeLine Lambda function to connect.
    */
   public void connectRemoveLine(Consumer<Integer> removeLine);
+
+
+  public void sendTetriminoToOtherPlayer(TetriminoInterface tetriminoInterface);
 
   /**
    * Sends your score to the server.

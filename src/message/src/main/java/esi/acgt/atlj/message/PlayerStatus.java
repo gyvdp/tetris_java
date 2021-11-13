@@ -22,13 +22,14 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.server;
+package esi.acgt.atlj.message;
 
 /**
- * Different status a player can take
+ * Status of player for the servers point of view.
  */
 public enum PlayerStatus {
-  WAITING, //Waiting for other player to connect.
-  READY, //Ready to play the game & while playing.
-  LOST, //Player has lost his game of tetris.
+  READY, // Status when both players are connected
+  WAITING, // Players
+  LOST, // Player has lost
+  DISCONNECTED //Player is disconnected
 }

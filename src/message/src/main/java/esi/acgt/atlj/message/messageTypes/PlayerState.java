@@ -25,7 +25,19 @@
 package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.MessageType;
+import esi.acgt.atlj.message.PlayerStatus;
 
-public class ReadyState extends Message {
+public class PlayerState extends Message {
 
+  private PlayerStatus playerState;
+
+  public PlayerState(PlayerStatus p) {
+    this.playerState = p;
+  }
+
+  public PlayerStatus getPlayerState() {
+    this.messageType = MessageType.PLAYER_STATUS;
+    return this.playerState;
+  }
 }

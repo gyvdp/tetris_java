@@ -24,9 +24,10 @@
 
 package esi.acgt.atlj.client.connexionServer;
 
+import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.AddTetrimino;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
-import esi.acgt.atlj.message.messageTypes.ReadyState;
+import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.RemoveLine;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.SendScore;
@@ -70,6 +71,8 @@ public class Client extends AbstractClient implements ClientInterface {
   private Consumer<Mino> updateNextTetriminoOtherPlayer;
 
   Runnable playerReady;
+  Runnable otherPlayerLost;
+  Runnable playerDisconnected;
 
   /**
    * Constructor of a client.
@@ -96,8 +99,15 @@ public class Client extends AbstractClient implements ClientInterface {
       sendScore.accept(((SendScore) information).getScore());
     } else if (information instanceof UpdatePieceUnmanagedBoard) {
       updateNextTetriminoOtherPlayer.accept(((UpdatePieceUnmanagedBoard) information).getPiece());
-    } else if (information instanceof ReadyState) {
-      playerReady.run();
+    } else if (information instanceof PlayerState) {
+      if (((PlayerState) information).getPlayerState().equals(PlayerStatus.READY)) {
+        playerReady.run();
+      } else if (((PlayerState) information).getPlayerState().equals(PlayerStatus.LOST)) {
+        otherPlayerLost.run();
+      } else if (((PlayerState) information).getPlayerState().equals(PlayerStatus.DISCONNECTED)) {
+        playerDisconnected.run();
+      }
+
     }
   }
 
@@ -136,6 +146,15 @@ public class Client extends AbstractClient implements ClientInterface {
   @Override
   public void connectRemoveLine(Consumer<Integer> removeLine) {
     this.removeLine = removeLine;
+  }
+
+  @Override
+  public void sendTetriminoToOtherPlayer(TetriminoInterface tetriminoInterface) {
+    try {
+      sendToServer(new AddTetrimino(tetriminoInterface));
+    } catch (IOException e) {
+      System.err.println("Cannot send tetrimino to server"); //TODO
+    }
   }
 
   /**
@@ -182,9 +201,20 @@ public class Client extends AbstractClient implements ClientInterface {
     }
   }
 
+
   @Override
   public void connectPlayerReady(Runnable playerReady) {
     this.playerReady = playerReady;
+  }
+
+  @Override
+  public void connectOtherPlayerLost(Runnable otherPlayerLost) {
+    this.otherPlayerLost = otherPlayerLost;
+  }
+
+  @Override
+  public void connectPlayerDisconnected(Runnable playerDisconnected) {
+    this.playerDisconnected = playerDisconnected;
   }
 
   /**
