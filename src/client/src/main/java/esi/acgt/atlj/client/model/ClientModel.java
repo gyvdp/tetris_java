@@ -30,7 +30,10 @@ import esi.acgt.atlj.model.Model;
 import esi.acgt.atlj.model.board.Direction;
 import esi.acgt.atlj.model.board.ManagedBoard;
 import esi.acgt.atlj.model.board.UnmanagedBoard;
+import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
+import java.util.function.Consumer;
 
 public class ClientModel extends Model {
 
@@ -38,12 +41,56 @@ public class ClientModel extends Model {
   private UnmanagedBoard player2;
   private ClientInterface client;
 
+
   public ClientModel() {
     super();
   }
 
+  /**
+   * Lambda expression to connect new mino from server to update from managed board.
+   */
+  Consumer<Mino> newMinoFromServer = (Mino nextMino) ->
+  {
+    //TODO
+  };
+
+  /**
+   * Lambda expression to connect remove line to update from unmanaged board
+   */
+  Consumer<Integer> removeLine = (Integer line) ->
+  {
+    //TODO
+  };
+
+  /**
+   * Lambda expression to connect add tetrimino to update from unmanaged board
+   */
+  Consumer<TetriminoInterface> addTetrimino = (TetriminoInterface tetriminoInterface) ->
+  {
+    //TODO
+  };
+
+  /**
+   * Lambda expression to connect send score to update from unmanaged board
+   */
+  Consumer<Integer> sendScore = (Integer score) ->
+  {
+    //TODO
+  };
+
+  /**
+   * Instantiates a new client with port and host to connect to. Connects all lambda methods in
+   * client.
+   *
+   * @param port Port client must connect to.
+   * @param host Hostname of server.
+   */
   public void connect(int port, String host) {
     this.client = new Client(port, host);
+    client.connectNewMinoFromServer(this.newMinoFromServer);
+    client.connectRemoveLine(this.removeLine);
+    client.connectAddTetrimino(this.addTetrimino);
+    client.connectSendScore(this.sendScore);
   }
 
   public ClientInterface getClient() {
