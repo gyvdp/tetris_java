@@ -46,6 +46,15 @@ public interface ClientInterface extends PropertyChangeListener {
    */
   public void requestNextMino();
 
+  public void connectPlayerReady(Runnable playerReady);
+
+  /**
+   * Connects a consumer of updateTetriminoOtherPlayer client to model.
+   *
+   * @param updateNextTetriminoOtherPlayer Lambda function to connect.
+   */
+  public void connectUpdateNextTetriminoOtherPlayer(Consumer<Mino> updateNextTetriminoOtherPlayer);
+
   /**
    * Syncs your board with the server.
    */

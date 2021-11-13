@@ -26,9 +26,11 @@ package esi.acgt.atlj.client.connexionServer;
 
 import esi.acgt.atlj.message.messageTypes.AddTetrimino;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
+import esi.acgt.atlj.message.messageTypes.ReadyState;
 import esi.acgt.atlj.message.messageTypes.RemoveLine;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.SendScore;
+import esi.acgt.atlj.message.messageTypes.UpdatePieceUnmanagedBoard;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeEvent;
@@ -63,6 +65,13 @@ public class Client extends AbstractClient implements ClientInterface {
   private Consumer<Integer> sendScore;
 
   /**
+   * Method used when updating next mino of other player
+   */
+  private Consumer<Mino> updateNextTetriminoOtherPlayer;
+
+  Runnable playerReady;
+
+  /**
    * Constructor of a client.
    *
    * @param port Port client must look for.
@@ -85,8 +94,17 @@ public class Client extends AbstractClient implements ClientInterface {
       addTetrimino.accept(((AddTetrimino) information).getTetrimino());
     } else if (information instanceof SendScore) {
       sendScore.accept(((SendScore) information).getScore());
+    } else if (information instanceof UpdatePieceUnmanagedBoard) {
+      updateNextTetriminoOtherPlayer.accept(((UpdatePieceUnmanagedBoard) information).getPiece());
+    } else if (information instanceof ReadyState) {
+      playerReady.run();
     }
   }
+
+  public void connectUpdateNextTetriminoOtherPlayer(Consumer<Mino> updateNextTetriminoOtherPlayer) {
+    this.updateNextTetriminoOtherPlayer = updateNextTetriminoOtherPlayer;
+  }
+
 
   /**
    * {@inheritDoc}
@@ -166,6 +184,11 @@ public class Client extends AbstractClient implements ClientInterface {
     } catch (IOException e) {
       //pop up to gui
     }
+  }
+
+  @Override
+  public void connectPlayerReady(Runnable playerReady) {
+    this.playerReady = playerReady;
   }
 
   /**
