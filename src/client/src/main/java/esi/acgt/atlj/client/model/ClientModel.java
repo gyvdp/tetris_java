@@ -119,9 +119,9 @@ public class ClientModel extends Model {
   }
 
   @Override
-  public void addPropertyChangeListener(PropertyChangeListener listener) {
-    this.player1.addPropertyChangeListener(listener);
-    //this.player2.addPropertyChangeListener(listener);
+  public void addPropertyChangeListener(PropertyChangeListener[] listener) {
+    this.player1.addPropertyChangeListener(listener[0]);
+    //this.player2.addPropertyChangeListener(listener[1]);
   }
 
   @Override

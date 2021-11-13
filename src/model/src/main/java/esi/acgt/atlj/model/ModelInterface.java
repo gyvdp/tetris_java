@@ -22,7 +22,7 @@ public interface ModelInterface {
 
   void addPlayer(BoardInterface board);
 
-  void addPropertyChangeListener(PropertyChangeListener listener);
+  void addPropertyChangeListener(PropertyChangeListener[] listener);
 
   void removePropertyChangeListener(PropertyChangeListener listener);
 }

@@ -14,6 +14,7 @@ public class Controller {
   private final ClientModel model;
 
   private final ViewInterface view;
+
   /**
    * Construtctor of Controller
    *
@@ -73,7 +74,7 @@ public class Controller {
       this.model.connect(6969, "localhost");
       this.view.displayBoard();
       this.model.initManagedBoard(username);
-      this.model.addPropertyChangeListener(this.view);
+      this.model.addPropertyChangeListener(this.view.getListeners());
       this.model.start();
       this.view.show();
     } catch (Exception e) {

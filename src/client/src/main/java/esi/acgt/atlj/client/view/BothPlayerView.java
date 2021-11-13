@@ -27,6 +27,7 @@ package esi.acgt.atlj.client.view;
 import esi.acgt.atlj.client.controller.Controller;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+import java.beans.PropertyChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -43,6 +44,14 @@ public class BothPlayerView {
   private final HBox scene;
   private final PlayerTetrisFXML player1;
   private final PlayerTetrisFXML player2;
+
+  public PropertyChangeListener getPlayer1() {
+    return player1;
+  }
+
+  public PropertyChangeListener getPlayer2() {
+    return player2;
+  }
 
   /**
    * Constructor of BothPlayerView
@@ -95,107 +104,5 @@ public class BothPlayerView {
   private void doBindings(Stage stage) {
     this.scene.prefHeightProperty().bind(stage.heightProperty());
     this.scene.prefWidthProperty().bind(stage.widthProperty());
-  }
-
-  /**
-   * Update the board.
-   *
-   * @param oldBoard old board
-   * @param newBoard new board
-   * @param playerID player that we need to update
-   */
-  public void updateBoard(Mino[][] oldBoard, Mino[][] newBoard, int playerID) {
-
-    if (playerID == 0) {
-      this.player1.updateBoard(oldBoard, newBoard);
-    } else {
-      this.player2.updateBoard(oldBoard, newBoard);
-    }
-  }
-
-  /**
-   * Update the score
-   *
-   * @param newScore new score
-   * @param playerID player that we need to update
-   */
-  public void updateScore(int newScore, int playerID) {
-
-    if (playerID == 0) {
-      this.player1.updateScore(newScore);
-    } else {
-      this.player2.updateScore(newScore);
-    }
-  }
-
-  /**
-   * Update the username
-   *
-   * @param newUsername new username
-   * @param playerID    player that we need to update
-   */
-  public void updateUsername(String newUsername, int playerID) {
-
-    if (playerID == 0) {
-      this.player1.updateUsername(newUsername);
-    } else {
-      this.player2.updateUsername(newUsername);
-    }
-  }
-
-  /**
-   * Update the timer
-   *
-   * @param timer    new timer
-   * @param playerID player that we need to update
-   */
-  public void updateTimer(int timer, int playerID) {
-    if (playerID == 0) {
-      this.player1.updateTimer(timer);
-    } else {
-      this.player2.updateTimer(timer);
-    }
-  }
-
-  /**
-   * Update the line
-   *
-   * @param line     new Line
-   * @param playerID player that we need to update
-   */
-  public void updateLine(int line, int playerID) {
-    if (playerID == 0) {
-      this.player1.updateLine(line);
-    } else {
-      this.player2.updateLine(line);
-    }
-  }
-
-  /**
-   * Update the hold
-   *
-   * @param hold     new hold
-   * @param playerID player that we need to update
-   */
-  public void updateHold(TetriminoInterface hold, int playerID) {
-    if (playerID == 0) {
-      this.player1.updateHold(hold);
-    } else {
-      this.player2.updateHold(hold);
-    }
-  }
-
-  /**
-   * update the next
-   *
-   * @param next     new next
-   * @param playerID player that we need to update
-   */
-  public void updateNext(TetriminoInterface next, int playerID) {
-    if (playerID == 0) {
-      this.player1.updateNextPiece(next);
-    } else {
-      this.player2.updateNextPiece(next);
-    }
   }
 }
