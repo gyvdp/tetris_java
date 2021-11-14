@@ -129,7 +129,8 @@ public class Client extends AbstractClient implements ClientInterface {
           .equals(PlayerStatus.READY)) { // When player state ready is sent from server
         playerReady.run();
       } else if (((PlayerState) information).getPlayerState()
-          .equals(PlayerStatus.LOST)) { // When player state lost is sent from server
+          .equals(PlayerStatus.LOST)) {
+        System.out.println("hello");// When player state lost is sent from server
         otherPlayerLost.run();
       } else if (((PlayerState) information).getPlayerState().equals(
           PlayerStatus.DISCONNECTED)) { // When player state disconnected is sent from server
@@ -231,7 +232,7 @@ public class Client extends AbstractClient implements ClientInterface {
     try {
       sendToServer(new AddTetrimino(tetriminoInterface));
     } catch (IOException e) {
-      System.err.println("Cannot send tetrimino to server"); //TODO
+      System.err.println("Cannot send tetrimino to server");
     }
   }
 

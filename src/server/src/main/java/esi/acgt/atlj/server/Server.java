@@ -79,6 +79,11 @@ public class Server extends AbstractServer {
         client.sendMessage(new SendPiece(m));
         opPlayer.sendMessage(new UpdatePieceUnmanagedBoard(m));
       } else {
+        if (msg instanceof PlayerState) {
+          if (((PlayerState) msg).getPlayerState().equals(PlayerStatus.LOST)) {
+            System.out.println("g");
+          }
+        }
         opPlayer.sendMessage(msg);
       }
     }

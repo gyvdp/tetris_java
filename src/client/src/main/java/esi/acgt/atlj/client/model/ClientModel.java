@@ -96,10 +96,6 @@ public class ClientModel extends Model {
   {
     if (client != null) {
       this.client.notifyLoss();
-    } else {
-      var minos = Mino.values();
-      player.setNextTetrimino(
-          Tetrimino.createTetrimino(minos[(int) (Math.random() * (minos.length))]));
     }
   };
 
@@ -164,8 +160,9 @@ public class ClientModel extends Model {
   /**
    * Lambda expression to connect game state from server to model. Runs if other player has lost
    */
-  Runnable otherPlayerLost = () ->
-      this.otherPlayer.playerStatus("Lost", 1);
+  Runnable otherPlayerLost = () -> {
+    this.otherPlayer.playerStatus("Lost", 1);
+  };
 
   /**
    * Sends the score to the server to be updated in other board
@@ -258,7 +255,6 @@ public class ClientModel extends Model {
     player.connectLineDestroyed(this.lineDestroyed);
     player.connectSendScoreServer(sendScoreServer);
     player.connectLost(this.iLost);
-
   }
 
   /**

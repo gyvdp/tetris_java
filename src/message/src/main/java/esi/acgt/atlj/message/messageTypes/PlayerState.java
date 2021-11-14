@@ -56,4 +56,8 @@ public class PlayerState extends Message {
     this.messageType = MessageType.PLAYER_STATUS;
     return this.playerState;
   }
+
+  public String toString() {
+    return this.playerState.toString();
+  }
 }
