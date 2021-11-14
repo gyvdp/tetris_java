@@ -28,6 +28,9 @@ import java.io.Serializable;
 
 public abstract class Message implements Serializable {
 
+  /**
+   * Type of message to send.
+   */
   public MessageType messageType;
 
   /**

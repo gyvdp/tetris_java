@@ -52,8 +52,14 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
     this.x = 3;
   }
 
-  public static TetriminoInterface createTetrimino(Mino hold) {
-    return switch (hold) {
+  /**
+   * Create a tetrimino from a mino
+   *
+   * @param mino Mino to create into tetrimino
+   * @return New tetrimino created from mino
+   */
+  public static TetriminoInterface createTetrimino(Mino mino) {
+    return switch (mino) {
       case I_MINO -> new ITetrimino();
       case J_MINO -> new JTetrimino();
       case O_MINO -> new OTetrimino();
