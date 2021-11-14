@@ -67,10 +67,10 @@ class ZTetriminoTest {
         Mino mino = Mino.Z_MINO;
         ZTetrimino tetrimino = new ZTetrimino();
         boolean[][] area = {
-            {false, false, false, false},
-            {false, false, false, false},
-            {false, false, false, false},
-            {false, false, false, false}
+            {true, true, true, true},
+            {true, true, true, true},
+            {true, true, true, true},
+            {true, true, true, true}
         };
         tetrimino.rotate(true, area);
 
@@ -89,10 +89,10 @@ class ZTetriminoTest {
         Mino mino = Mino.Z_MINO;
         ZTetrimino tetrimino = new ZTetrimino();
         boolean[][] area = {
-            {false, false, false, false},
-            {false, false, false, false},
-            {false, false, false, false},
-            {false, false, false, false}
+            {true, true, true, true},
+            {true, true, true, true},
+            {true, true, true, true},
+            {true, true, true, true}
         };
         tetrimino.rotate(true, area);
         tetrimino.rotate(true, area);
@@ -112,10 +112,10 @@ class ZTetriminoTest {
         Mino mino = Mino.Z_MINO;
         ZTetrimino tetrimino = new ZTetrimino();
         boolean[][] area = {
-            {false, false, false, false},
-            {false, false, false, false},
-            {false, false, false, false},
-            {false, false, false, false}
+            {true, true, true, true},
+            {true, true, true, true},
+            {true, true, true, true},
+            {true, true, true, true}
         };
         tetrimino.rotate(true, area);
         tetrimino.rotate(true, area);
@@ -136,10 +136,10 @@ class ZTetriminoTest {
         Mino mino = Mino.Z_MINO;
         ZTetrimino tetrimino = new ZTetrimino();
         boolean[][] area = {
-            {false, false, false, false},
-            {false, false, false, false},
-            {false, false, false, false},
-            {false, false, false, false}
+            {true, true, true, true},
+            {true, true, true, true},
+            {true, true, true, true},
+            {true, true, true, true}
         };
         tetrimino.rotate(true, area);
         tetrimino.rotate(true, area);

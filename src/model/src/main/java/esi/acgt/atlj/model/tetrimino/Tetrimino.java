@@ -91,14 +91,18 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
 
   private static Mino[][] generateRotatedTetrimino(Mino[][] actual, boolean clockwise) {
     Mino[][] rotated = new Mino[4][4];
-    int l = actual.length - 1;
-    for (int i = 0; i < Math.floor(actual.length * 0.5); i++) {
-      for (int j = i; j < l - i; j++) {
-        var k = actual[i][j];
-        rotated[i][j] = actual[l - j][i];
-        rotated[l - j][i] = actual[l - i][l - j];
-        rotated[l - i][l - j] = actual[j][l - i];
-        rotated[j][l - i] = k;
+
+    if (clockwise) {
+      for (int i = 0; i < actual.length; i++) {
+        for (int j = 0; j < actual[i].length; j++) {
+          rotated[i][j] = actual[3 - j][i];
+        }
+      }
+    } else {
+      for (int i = 0; i < actual.length; i++) {
+        for (int j = 0; j < actual[i].length; j++) {
+          rotated[i][j] = actual[j][3 - i];
+        }
       }
     }
 
