@@ -25,6 +25,7 @@ public class View implements ViewInterface {
   public void displayConnexion() {
     this.primaryStage = new Stage();
     this.primaryStage.setTitle("Tetris connexion");
+    // TODO Cest quoi cette connection?
     new Connexion(this.controller, this.primaryStage);
     this.primaryStage.setResizable(false);
   }
@@ -48,6 +49,7 @@ public class View implements ViewInterface {
    */
   @Override
   public void show() {
+    this.primaryStage.setOnCloseRequest(event -> this.controller.disconnect());
     this.primaryStage.centerOnScreen();
     this.primaryStage.show();
   }

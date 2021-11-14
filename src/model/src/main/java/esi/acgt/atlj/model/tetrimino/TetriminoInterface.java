@@ -74,4 +74,5 @@ public interface TetriminoInterface {
    */
   boolean move(Direction direction, boolean[][] freeMask);
 
+  Mino[][] rotatedShape(boolean clockwise);
 }

@@ -24,6 +24,7 @@
 package esi.acgt.atlj.model.tetrimino;
 
 import esi.acgt.atlj.model.game.Direction;
+import esi.acgt.atlj.model.shape.Orientation;
 import java.io.Serializable;
 
 public abstract class Tetrimino implements TetriminoInterface, Serializable {
@@ -43,6 +44,7 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
    */
   protected Mino[][] minos;
   protected Mino type;
+  protected Orientation orientation;
 
   /**
    * Initiates default values of all Tetrimino
@@ -50,6 +52,7 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
   protected Tetrimino() {
     this.y = 0;
     this.x = 3;
+    this.orientation = Orientation.NORTH;
   }
 
   /**
@@ -75,8 +78,8 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
    */
   @Override
   public void rotate(boolean clockwise, boolean[][] freeMask) {
-
-    Mino[][] rotated = generateRotatedTetrimino(minos, clockwise);
+    Orientation nextOrientation = Orientation.next(orientation, clockwise);
+    Mino[][] rotated = rotatedShape(clockwise);
 
     for (int i = 0; i < minos.length; i++) {
       for (int j = 0; j < minos[1].length; j++) {
@@ -87,26 +90,7 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
     }
 
     minos = rotated;
-  }
-
-  private static Mino[][] generateRotatedTetrimino(Mino[][] actual, boolean clockwise) {
-    Mino[][] rotated = new Mino[4][4];
-
-    if (clockwise) {
-      for (int i = 0; i < actual.length; i++) {
-        for (int j = 0; j < actual[i].length; j++) {
-          rotated[i][j] = actual[3 - j][i];
-        }
-      }
-    } else {
-      for (int i = 0; i < actual.length; i++) {
-        for (int j = 0; j < actual[i].length; j++) {
-          rotated[i][j] = actual[j][3 - i];
-        }
-      }
-    }
-
-    return rotated;
+    orientation = nextOrientation;
   }
 
   @Override

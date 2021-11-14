@@ -22,29 +22,44 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.tetrimino;
+package esi.acgt.atlj.model.shape;
 
-import esi.acgt.atlj.model.shape.JShape;
-import esi.acgt.atlj.model.shape.Orientation;
+import esi.acgt.atlj.model.tetrimino.Mino;
+import java.util.Map;
 
-public class JTetrimino extends Tetrimino implements JShape {
+public interface TShape {
 
-  /**
-   * Constructor for JTetrimino
-   */
-  public JTetrimino() {
-    super();
-    this.minos = new Mino[][]{
-        {Mino.J_MINO, null, null, null},
-        {Mino.J_MINO, Mino.J_MINO, Mino.J_MINO, null},
-        {null, null, null, null},
-        {null, null, null, null}
-    };
-    this.type = Mino.J_MINO;
-  }
+  static Map<Orientation, Mino[][]> shapes = Map.of(
+      Orientation.NORTH,
+      new Mino[][]{
+          {null, Mino.T_MINO, null, null},
+          {Mino.T_MINO, Mino.T_MINO, Mino.T_MINO, null},
+          {null, null, null, null},
+          {null, null, null, null}
+      },
 
-  @Override
-  public Mino[][] rotatedShape(boolean clockwise) {
-    return shapes.get(Orientation.next(orientation, clockwise));
-  }
+      Orientation.EAST,
+      new Mino[][]{
+          {null, Mino.T_MINO, null, null},
+          {null, Mino.T_MINO, Mino.T_MINO, null},
+          {null, Mino.T_MINO, null, null},
+          {null, null, null, null}
+      },
+
+      Orientation.SOUTH,
+      new Mino[][]{
+          {null, null, null, null},
+          {Mino.T_MINO, Mino.T_MINO, Mino.T_MINO, null},
+          {null, Mino.T_MINO, null, null},
+          {null, null, null, null}
+      },
+
+      Orientation.WEST,
+      new Mino[][]{
+          {null, Mino.T_MINO, null, null},
+          {Mino.T_MINO, Mino.T_MINO, null, null},
+          {null, Mino.T_MINO, null, null},
+          {null, null, null, null}
+      }
+  );
 }

@@ -24,7 +24,10 @@
 
 package esi.acgt.atlj.model.tetrimino;
 
-public class STetrimino extends Tetrimino {
+import esi.acgt.atlj.model.shape.Orientation;
+import esi.acgt.atlj.model.shape.SShape;
+
+public class STetrimino extends Tetrimino implements SShape {
 
   /**
    * Constructor for STetrimino
@@ -40,5 +43,8 @@ public class STetrimino extends Tetrimino {
     this.type = Mino.S_MINO;
   }
 
-
+  @Override
+  public Mino[][] rotatedShape(boolean clockwise) {
+    return shapes.get(Orientation.next(orientation, clockwise));
+  }
 }
