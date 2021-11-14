@@ -26,9 +26,7 @@ package esi.acgt.atlj.client.connexionServer;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
-import java.beans.PropertyChangeListener;
 import java.net.ConnectException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -51,7 +49,6 @@ public interface ClientInterface {
    * Sends the mino that has been put into hold by player to server
    */
   void sendHoldMino(Mino m);
-
 
   /**
    * Connects hold to client
@@ -135,6 +132,11 @@ public interface ClientInterface {
    * @param name Same to send
    */
   void sendNameToServer(String name);
+
+  /**
+   * Notifies server of player loss
+   */
+  void notifyLoss();
 
   /**
    * Connect a consumer of remove line of model to client.

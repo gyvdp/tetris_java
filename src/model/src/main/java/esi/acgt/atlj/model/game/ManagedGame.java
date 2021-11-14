@@ -49,6 +49,11 @@ public class ManagedGame extends AbstractGame {
   Runnable askNextMino;
 
   /**
+   * Sends to server that you lost.
+   */
+  Runnable iLost;
+
+  /**
    * Locked tetrimino to send to server.
    */
   Consumer<TetriminoInterface> addTetrimino;
@@ -72,7 +77,7 @@ public class ManagedGame extends AbstractGame {
   /**
    * Establishes a new managed game
    *
-   * @param username Username of playe .
+   * @param username Username of player.
    */
   public ManagedGame(String username) {
     super(username);
@@ -91,6 +96,15 @@ public class ManagedGame extends AbstractGame {
   public void connectAskNewMino(Runnable askNextMino) {
     this.askNextMino = askNextMino;
   }
+
+
+  /**
+   * Connect lambda to send to server that player lost.
+   */
+  public void connectLost(Runnable iLost) {
+    this.iLost = iLost;
+  }
+
 
   /**
    * Sends the score to the server via a Lambda
