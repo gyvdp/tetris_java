@@ -50,15 +50,15 @@ public interface JShape {
       new Mino[][]{
           {null, null, null, null},
           {Mino.J_MINO, Mino.J_MINO, Mino.J_MINO, null},
-          {Mino.J_MINO, null, null, null},
+          {null, null, Mino.J_MINO, null},
           {null, null, null, null}
       },
 
       Orientation.WEST,
       new Mino[][]{
+          {null, Mino.J_MINO, null, null},
+          {null, Mino.J_MINO, null, null},
           {Mino.J_MINO, Mino.J_MINO, null, null},
-          {null, Mino.J_MINO, null, null},
-          {null, Mino.J_MINO, null, null},
           {null, null, null, null}
       }
   );
