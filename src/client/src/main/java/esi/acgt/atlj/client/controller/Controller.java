@@ -78,7 +78,7 @@ public class Controller {
     try {
       this.model.initManagedBoard(username);
       this.view.displayBoard(username);
-      this.model.connect(6969, "localhost");
+      this.model.connect(port, ip);
       this.model.addPropertyChangeListener(this.view.getListeners());
     } catch (Exception e) {
       this.view.displayError(e);
