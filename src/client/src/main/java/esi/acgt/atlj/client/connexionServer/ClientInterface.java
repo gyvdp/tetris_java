@@ -35,7 +35,7 @@ import java.util.function.Consumer;
 /**
  * Contains all necessary methods to interact with a client.
  */
-public interface ClientInterface extends PropertyChangeListener {
+public interface ClientInterface {
 
   /**
    * Tries to establish a connexion with server.
