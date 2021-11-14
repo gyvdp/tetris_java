@@ -110,18 +110,7 @@ public class Connexion implements Initializable {
   public void leavePressed() {
     this.stage.close();
   }
-
-  //TODO retirer button test de la version finale
-  public void testPressed() {
-    this.controller.connexion("localhost", 6969, "Paclinio");
-    this.stage.close();
-  }
-
-  public void clientTest() {
-    this.controller.solo("Pacliclown");
-    this.stage.close();
-  }
-
+  
   /**
    * Initiale of the Connexion.fxml
    */

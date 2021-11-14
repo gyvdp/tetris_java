@@ -16,6 +16,7 @@ public class View implements ViewInterface {
    * Constructor of view.
    */
   public View() {
+
   }
 
   /**
