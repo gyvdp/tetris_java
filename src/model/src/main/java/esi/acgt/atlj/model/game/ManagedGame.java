@@ -299,6 +299,7 @@ public class ManagedGame extends AbstractGame {
           ROTATING_CLOCKWISE,
           ROTATING_ANTI_CLOCKWISE,
           SOFT_DROPPING -> this.timer.schedule(this.tickHandler, 1);
+      case LOCK_OUT -> this.playerStatus("LOCK OUT", 0.9);
     }
   }
 

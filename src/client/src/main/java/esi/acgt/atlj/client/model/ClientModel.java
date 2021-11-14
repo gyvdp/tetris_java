@@ -27,8 +27,8 @@ package esi.acgt.atlj.client.model;
 import esi.acgt.atlj.client.connexionServer.Client;
 import esi.acgt.atlj.client.connexionServer.ClientInterface;
 import esi.acgt.atlj.model.Model;
-import esi.acgt.atlj.model.game.GameStatus;
 import esi.acgt.atlj.model.game.Direction;
+import esi.acgt.atlj.model.game.GameStatus;
 import esi.acgt.atlj.model.game.ManagedGame;
 import esi.acgt.atlj.model.game.UnmanagedGame;
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -161,7 +161,7 @@ public class ClientModel extends Model {
    * Lambda expression to connect game state from server to model. Runs if other player has lost
    */
   Runnable otherPlayerLost = () -> {
-    this.otherPlayer.playerStatus("Lost", 1);
+    this.otherPlayer.playerStatus("LOCK OUT", 0.9);
   };
 
   /**

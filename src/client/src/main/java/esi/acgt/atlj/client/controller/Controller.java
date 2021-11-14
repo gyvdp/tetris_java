@@ -52,14 +52,16 @@ public class Controller {
    * @param input keyboard input from the view
    */
   public void keyBoardInput(KeyCode input) {
-    if (this.model.getStatus() != GameStatus.NOT_STARTED) {
+    if (this.model.getStatus() != GameStatus.NOT_STARTED
+        && this.model.getStatus() != GameStatus.LOCK_OUT) {
       switch (input) {
         case LEFT -> this.model.move(Direction.LEFT);
         case RIGHT -> this.model.move(Direction.RIGHT);
         case DOWN -> this.model.softDrop();
-        case SHIFT -> this.model.hold();
+        case UP, X -> this.model.rotate(true);
+        case SHIFT, C -> this.model.hold();
         case SPACE -> this.model.hardDrop();
-        case CONTROL -> this.model.rotate(true);
+        case CONTROL -> this.model.rotate(false);
       }
     }
 
