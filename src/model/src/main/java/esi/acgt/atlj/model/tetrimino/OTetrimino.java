@@ -24,7 +24,10 @@
 
 package esi.acgt.atlj.model.tetrimino;
 
-public class OTetrimino extends Tetrimino {
+import esi.acgt.atlj.model.shape.OShape;
+import esi.acgt.atlj.model.shape.Orientation;
+
+public class OTetrimino extends Tetrimino implements OShape {
 
   /**
    * Constructor for OTetrimino
@@ -42,5 +45,10 @@ public class OTetrimino extends Tetrimino {
 
   @Override
   public void rotate(boolean clockwise, boolean[][] freeMask) {
+  }
+
+  @Override
+  public Mino[][] rotatedShape(boolean clockwise) {
+    return shapes.get(Orientation.next(orientation, clockwise));
   }
 }

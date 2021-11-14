@@ -23,53 +23,22 @@
  */
 package esi.acgt.atlj.model.tetrimino;
 
-public class ITetrimino extends Tetrimino {
+import esi.acgt.atlj.model.shape.IShape;
+import esi.acgt.atlj.model.shape.Orientation;
+
+public class ITetrimino extends Tetrimino implements IShape {
 
   /**
    * Constructor for Itetrimino.
    */
   public ITetrimino() {
     super();
-    this.minos = new Mino[][]{
-        {null, null, null, null},
-        {Mino.I_MINO, Mino.I_MINO, Mino.I_MINO, Mino.I_MINO},
-        {null, null, null, null},
-        {null, null, null, null}
-    };
+    this.minos = shapes.get(orientation);
     this.type = Mino.I_MINO;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
-  public void rotate(boolean clockwise, boolean[][] freeMask) {
-
-    Mino[][] rotated = generateRotatedTetrimino(minos, clockwise);
-
-    for (int i = 0; i < minos.length; i++) {
-      for (int j = 0; j < minos[1].length; j++) {
-        if (!freeMask[i][j] && rotated[i][j] != null) {
-          throw new IllegalArgumentException("Turn cannot be preformed");
-        }
-      }
-    }
-
-    minos = rotated;
-  }
-
-  private static Mino[][] generateRotatedTetrimino(Mino[][] actual, boolean clockwise) {
-    Mino[][] rotated = new Mino[4][4];
-    if (clockwise) {
-
-    } else {
-      for (int i = 0; i < actual.length; i++) {
-        for (int j = 0; j < actual[i].length; j++) {
-          rotated[i][j] = actual[j][actual.length - 1 - i];
-        }
-      }
-    }
-
-    return rotated;
+  public Mino[][] rotatedShape(boolean clockwise) {
+    return shapes.get(Orientation.next(orientation, clockwise));
   }
 }
