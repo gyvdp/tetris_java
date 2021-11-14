@@ -68,17 +68,12 @@ public class ClientModel extends Model {
    * Lambda expression to connect new mino from server to update from managed board.
    */
   Consumer<Mino> newMinoFromServer = (Mino nextMino) ->
-  {
-    player.setNextTetrimino(Tetrimino.createTetrimino(nextMino));
-  };
+      player.setNextTetrimino(Tetrimino.createTetrimino(nextMino));
 
   /**
    * Sets the name of the player given from the server
    */
-  Consumer<String> receiveName = (String name) ->
-  {
-    otherPlayer.setUsername(name);
-  };
+  Consumer<String> receiveName = (String name) -> otherPlayer.setUsername(name);
 
   /**
    * Lambda expression to connect remove line to update from unmanaged board
@@ -103,9 +98,7 @@ public class ClientModel extends Model {
    * player send you his placed pawn.
    */
   Consumer<TetriminoInterface> addTetrimino = (TetriminoInterface tetriminoInterface) ->
-  {
-    otherPlayer.placeTetrimino(tetriminoInterface);
-  };
+      otherPlayer.placeTetrimino(tetriminoInterface);
 
   public void closeConnection() {
     if (client != null) {
@@ -145,17 +138,13 @@ public class ClientModel extends Model {
    * Lambda expression to connect hold with client
    */
   Consumer<Mino> hold = (Mino mino) ->
-  {
-    otherPlayer.setHold(mino);
-  };
+      otherPlayer.setHold(mino);
 
   /**
    * Updates next mino of other player.
    */
   Consumer<Mino> updateNextTetriminoOtherPlayer = (Mino m) ->
-  {
-    otherPlayer.setNextTetrimino(Tetrimino.createTetrimino(m));
-  };
+      otherPlayer.setNextTetrimino(Tetrimino.createTetrimino(m));
 
   /**
    * Lambda expression to connect game state from server to model.
@@ -166,9 +155,7 @@ public class ClientModel extends Model {
    * Lambda expression to connect game state from server to model. Runs if other player has lost
    */
   Runnable otherPlayerLost = () ->
-  {
-    this.otherPlayer.playerStatus("Lost", 1);
-  };
+      this.otherPlayer.playerStatus("Lost", 1);
 
   /**
    * Sends the score to the server to be updated in other board
@@ -184,9 +171,7 @@ public class ClientModel extends Model {
    * disconnected
    */
   Runnable playerDisconnected = () ->
-  {
-    this.player.fireEndGame(this.player.getUsername(), "Le joueurs adverse s'est déconnecté.");
-  };
+      this.player.fireEndGame(this.player.getUsername(), "Le joueurs adverse s'est déconnecté.");
 
   /**
    * Instantiates a new client with port and host to connect to. Connects all lambda methods in
