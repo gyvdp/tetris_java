@@ -27,7 +27,17 @@ public interface ModelInterface {
    */
   void addPlayer(GameInterface board);
 
+  /**
+   * Links Games (ManagedGame and Unmanaged) with their owm Listener
+   *
+   * @param listener all listerners
+   */
   void addPropertyChangeListener(PropertyChangeListener[] listener);
 
+  /**
+   * Remove listener from the PropertyChanger
+   *
+   * @param listener listener to remove.
+   */
   void removePropertyChangeListener(PropertyChangeListener listener);
 }

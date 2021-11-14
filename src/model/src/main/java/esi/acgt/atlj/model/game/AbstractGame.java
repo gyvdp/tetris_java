@@ -85,33 +85,56 @@ public abstract class AbstractGame implements GameInterface, Serializable {
     return mask;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public synchronized int getScore() {
     return score;
   }
 
+  /**
+   * Setter of Score
+   *
+   * @param score new score
+   */
   public abstract void setScore(int score);
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public synchronized String getUsername() {
     return username;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public synchronized Mino getHold() {
     return this.hold;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public synchronized TetriminoInterface getActualTetrimino() {
     return actualTetrimino;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public synchronized TetriminoInterface getNextTetrimino() {
     return nextTetrimino;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public synchronized Mino[][] getBoard() {
     Mino[][] copyBoard = new Mino[this.minos.length][];
@@ -133,22 +156,56 @@ public abstract class AbstractGame implements GameInterface, Serializable {
     return copyBoard;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
     changeSupport.addPropertyChangeListener(listener);
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
     changeSupport.removePropertyChangeListener(listener);
   }
 
+  /**
+   * Setter of nbLine
+   *
+   * @param nbLine new NbLine
+   */
   public abstract void setNbLine(int nbLine);
 
+  /**
+   * Setter of hold
+   *
+   * @param hold new mino that you hold
+   */
   public abstract void setHold(Mino hold);
 
+  /**
+   * Setter of nextTetrimino
+   *
+   * @param nextTetrimino new nextTetrimino
+   */
   public abstract void setNextTetrimino(TetriminoInterface nextTetrimino);
 
+  /**
+   * Setter of actualTetrimino
+   *
+   * @param actualTetrimino new actualTetrimino
+   */
   public abstract void setActualTetrimino(TetriminoInterface actualTetrimino);
 
+  /**
+   * Fire a propertChange on the status to the view
+   *
+   * @param status  new Status to display
+   * @param opacity opcaity of this new status
+   */
   public void playerStatus(String status, double opacity) {
     this.changeSupport.firePropertyChange("status", status, opacity);
   }

@@ -127,6 +127,9 @@ public class UnmanagedGame extends AbstractGame {
     this.changeSupport.firePropertyChange("line", null, this.nbLine);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void setHold(Mino hold) {
     this.hold = hold;
