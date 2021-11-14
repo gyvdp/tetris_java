@@ -114,27 +114,32 @@ public class Client extends AbstractClient implements ClientInterface {
    */
   @Override
   protected void handleServerMessage(Object information) {
-    if (information instanceof SendPiece) {
+    if (information instanceof SendPiece) { //When next tetrimino is sent from server
       newMino.accept(((SendPiece) information).getMino());
-    } else if (information instanceof RemoveLine) {
+    } else if (information instanceof RemoveLine) { //When remove line is send from server
       removeLine.accept(((RemoveLine) information).getLine());
-    } else if (information instanceof AddTetrimino) {
-      addTetrimino.accept(((AddTetrimino) information).getTetrimino());
-    } else if (information instanceof SendScore) {
+    } else if (information instanceof AddTetrimino) { //When add tetrimino is sent from server
+      addTetrimino.accept(
+          ((AddTetrimino) information).getTetrimino());
+    } else if (information instanceof SendScore) { // When send score is sent from server
       sendScore.accept(((SendScore) information).getScore());
-    } else if (information instanceof UpdatePieceUnmanagedBoard) {
+    } else if (information instanceof
+        UpdatePieceUnmanagedBoard) {//When update next tetrimino is// sent from server
       updateNextTetriminoOtherPlayer.accept(((UpdatePieceUnmanagedBoard) information).getPiece());
     } else if (information instanceof PlayerState) {
-      if (((PlayerState) information).getPlayerState().equals(PlayerStatus.READY)) {
+      if (((PlayerState) information).getPlayerState()
+          .equals(PlayerStatus.READY)) { // When player state ready is sent from server
         playerReady.run();
-      } else if (((PlayerState) information).getPlayerState().equals(PlayerStatus.LOST)) {
+      } else if (((PlayerState) information).getPlayerState()
+          .equals(PlayerStatus.LOST)) { // When player state lost is sent from server
         otherPlayerLost.run();
-      } else if (((PlayerState) information).getPlayerState().equals(PlayerStatus.DISCONNECTED)) {
+      } else if (((PlayerState) information).getPlayerState().equals(
+          PlayerStatus.DISCONNECTED)) { // When player state disconnected is sent from server
         playerDisconnected.run();
       }
-    } else if (information instanceof SendName) {
+    } else if (information instanceof SendName) { // When send name is sent from server
       receiveName.accept(((SendName) information).getUsername());
-    } else if (information instanceof SetHold) {
+    } else if (information instanceof SetHold) { // When hold tetrimino is sent from server
       hold.accept(((SetHold) information).getHold());
     }
   }
@@ -164,6 +169,18 @@ public class Client extends AbstractClient implements ClientInterface {
       sendToServer(new SendName(name));
     } catch (IOException e) {
       System.err.println("Sorry cannot send name");
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void notifyLoss() {
+    try {
+      sendToServer(new PlayerState(PlayerStatus.LOST));
+    } catch (IOException e) {
+      System.err.println("Sorry cannot send loss");
     }
   }
 
@@ -241,7 +258,7 @@ public class Client extends AbstractClient implements ClientInterface {
    */
   @Override
   protected void connexionException(Exception e) {
-    
+
   }
 
   /**

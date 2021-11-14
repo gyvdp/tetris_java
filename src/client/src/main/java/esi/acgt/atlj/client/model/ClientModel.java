@@ -93,6 +93,17 @@ public class ClientModel extends Model {
     }
   };
 
+  Runnable iLost = () ->
+  {
+    if (client != null) {
+      this.client.notifyLoss();
+    } else {
+      var minos = Mino.values();
+      player.setNextTetrimino(
+          Tetrimino.createTetrimino(minos[(int) (Math.random() * (minos.length))]));
+    }
+  };
+
   /**
    * Lambda expression to connect add tetrimino to update from unmanaged board. Behaviour for when a
    * player send you his placed pawn.
@@ -165,6 +176,8 @@ public class ClientModel extends Model {
       this.client.sendScore(score);
     }
   };
+
+  Runnable playerLost = () -> this.client.notifyLoss();
 
   /**
    * Lambda expression to connect game state from server to model. Runs if other player has been
@@ -245,6 +258,7 @@ public class ClientModel extends Model {
     player.connectHoldMino(this.setHold);
     player.connectLineDestroyed(this.lineDestroyed);
     player.connectSendScoreServer(sendScoreServer);
+    player.connectLost(this.iLost);
   }
 
   /**
