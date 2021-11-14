@@ -194,12 +194,14 @@ public abstract class AbstractServer implements Runnable {
             }
           }
         } catch (IOException e) {
-          //Other client is disconnected //TODO
         }
       }
     } finally {
       this.isActive = false;
-      serverStopped();
+      try {
+        stopServer();
+      } catch (IOException e) {
+      }
     }
   }
 

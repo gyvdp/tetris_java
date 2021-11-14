@@ -27,6 +27,7 @@ package esi.acgt.atlj.model.game;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Game that is going to be updated by server. Opponent.
@@ -75,15 +76,6 @@ public class UnmanagedGame extends AbstractGame {
     Mino[][] oldBoard = this.getBoard();
     this.actualTetrimino = tetrimino;
     this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
-  }
-
-  /**
-   * Removes lines from the board.
-   *
-   * @param linesToRemove X coordinates of lines to remove.
-   */
-  public void removeLine(ArrayList<Integer> linesToRemove) {
-    // TODO
   }
 
   /**

@@ -29,6 +29,7 @@ import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
 import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -140,7 +141,7 @@ public interface ClientInterface extends PropertyChangeListener {
    *
    * @param removeLine Lambda function to connect.
    */
-  void connectRemoveLine(Consumer<ArrayList<Integer>> removeLine);
+  void connectRemoveLine(Consumer<List<Integer>> removeLine);
 
 
   /**
@@ -162,5 +163,5 @@ public interface ClientInterface extends PropertyChangeListener {
    *
    * @param linesDestroyed Line that current player just destroyed.
    */
-  void removeLine(ArrayList<Integer> linesDestroyed);
+  void removeLine(List<Integer> linesDestroyed);
 }

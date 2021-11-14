@@ -37,6 +37,7 @@ import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
 import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class ClientModel extends Model {
@@ -77,16 +78,16 @@ public class ClientModel extends Model {
   /**
    * Lambda expression to connect remove line to update from unmanaged board
    */
-  Consumer<ArrayList<Integer>> removeLine = (ArrayList<Integer> line) ->
+  Consumer<List<Integer>> removeLine = (List<Integer> line) ->
   {
-    otherPlayer.removeLine(line);
+    otherPlayer.removeLines(line);
     otherPlayer.setNbLine(line.size());
   };
 
   /**
    * Send which line has been destroyed by the managed game to the server
    */
-  Consumer<ArrayList<Integer>> lineDestroyed = (ArrayList<Integer> lineDestroyed) -> {
+  Consumer<List<Integer>> lineDestroyed = (List<Integer> lineDestroyed) -> {
     if (client != null) {
       client.removeLine(lineDestroyed);
     }

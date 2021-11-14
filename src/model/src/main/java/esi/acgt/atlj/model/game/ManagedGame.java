@@ -41,7 +41,7 @@ public class ManagedGame extends AbstractGame {
   /**
    * All lines that have been destroyed by game in an array to send to server
    */
-  Consumer<ArrayList<Integer>> lineDestroyed;
+  Consumer<List<Integer>> lineDestroyed;
 
   /**
    * Lambda expression to ask client for next piece in bag.
@@ -154,7 +154,7 @@ public class ManagedGame extends AbstractGame {
     return moved;
   }
 
-  public void connectLineDestroyed(Consumer<ArrayList<Integer>> lineDestroyed) {
+  public void connectLineDestroyed(Consumer<List<Integer>> lineDestroyed) {
     this.lineDestroyed = lineDestroyed;
   }
 
@@ -330,6 +330,7 @@ public class ManagedGame extends AbstractGame {
     List<Integer> lines = getFullLines();
     if (lines.size() != 0) {
       removeLines(lines);
+      lineDestroyed.accept(lines);
       increaseScore(Action.getActionByFullLines(lines.size()));
     }
 

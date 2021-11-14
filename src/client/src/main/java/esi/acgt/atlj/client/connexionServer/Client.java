@@ -40,6 +40,7 @@ import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 
@@ -68,7 +69,7 @@ public class Client extends AbstractClient implements ClientInterface {
   /**
    * Method used when removeLine message comes from server.
    */
-  private Consumer<ArrayList<Integer>> removeLine;
+  private Consumer<List<Integer>> removeLine;
   /**
    * Method used when addTetrimino message comes from server.
    */
@@ -203,7 +204,7 @@ public class Client extends AbstractClient implements ClientInterface {
    * {@inheritDoc}
    */
   @Override
-  public void connectRemoveLine(Consumer<ArrayList<Integer>> removeLine) {
+  public void connectRemoveLine(Consumer<List<Integer>> removeLine) {
     this.removeLine = removeLine;
   }
 
@@ -314,7 +315,7 @@ public class Client extends AbstractClient implements ClientInterface {
   @Override
   public void sendName(String name) {
     try {
-      sendToServer(new AskPiece());
+      sendToServer(new SendName(name));
     } catch (IOException e) {
       System.err.println("Cannot send name to server");
     }
@@ -329,7 +330,7 @@ public class Client extends AbstractClient implements ClientInterface {
     try {
       sendToServer(new SendScore(score));
     } catch (IOException e) {
-      System.err.println("Cannot send name to server");
+      System.err.println("Cannot send score to server");
     }
   }
 
@@ -337,7 +338,7 @@ public class Client extends AbstractClient implements ClientInterface {
    * {@inheritDoc}
    */
   @Override
-  public void removeLine(ArrayList<Integer> lines) {
+  public void removeLine(List<Integer> lines) {
     try {
       sendToServer(new RemoveLine(lines));
     } catch (IOException e) {
