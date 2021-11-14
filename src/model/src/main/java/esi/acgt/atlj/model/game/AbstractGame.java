@@ -142,18 +142,22 @@ public abstract class AbstractGame implements GameInterface, Serializable {
     for (int i = 0; i < this.minos.length; i++) {
       copyBoard[i] = Arrays.copyOf(this.minos[i], this.minos[i].length);
     }
-    for (int x = 0; x < this.actualTetrimino.getMinos().length; x++) {
-      for (int y = 0; y < this.actualTetrimino.getMinos()[x].length; y++) {
-        if ((this.actualTetrimino.getMinos()[x][y] != null
-            && x + this.actualTetrimino.getY() >= 0)
-            && (x + this.actualTetrimino.getY() < this.minos.length)
-            && (y + this.actualTetrimino.getX() >= 0)
-            && (y + this.actualTetrimino.getX() < this.minos[x].length)) {
-          copyBoard[x + this.actualTetrimino.getY()][y
-              + this.actualTetrimino.getX()] = this.actualTetrimino.getMinos()[x][y];
+
+    if (actualTetrimino != null) {
+      for (int x = 0; x < this.actualTetrimino.getMinos().length; x++) {
+        for (int y = 0; y < this.actualTetrimino.getMinos()[x].length; y++) {
+          if ((this.actualTetrimino.getMinos()[x][y] != null
+              && x + this.actualTetrimino.getY() >= 0)
+              && (x + this.actualTetrimino.getY() < this.minos.length)
+              && (y + this.actualTetrimino.getX() >= 0)
+              && (y + this.actualTetrimino.getX() < this.minos[x].length)) {
+            copyBoard[x + this.actualTetrimino.getY()][y
+                + this.actualTetrimino.getX()] = this.actualTetrimino.getMinos()[x][y];
+          }
         }
       }
     }
+
     return copyBoard;
   }
 
@@ -211,7 +215,7 @@ public abstract class AbstractGame implements GameInterface, Serializable {
    * @param status  new Status to display
    * @param opacity opcaity of this new status
    */
-  public void playerStatus(String status, double opacity) {
+  public synchronized void playerStatus(String status, double opacity) {
     this.changeSupport.firePropertyChange("status", status, opacity);
   }
 
