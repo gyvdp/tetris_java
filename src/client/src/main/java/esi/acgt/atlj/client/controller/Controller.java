@@ -44,7 +44,8 @@ public class Controller {
    */
   public void disconnect() {
     model.closeConnection();
-    System.exit(0);
+    this.view.displayConnexion();
+    this.view.show();
   }
 
   /**

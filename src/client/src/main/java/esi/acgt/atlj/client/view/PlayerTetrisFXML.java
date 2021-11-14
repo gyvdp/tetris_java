@@ -51,6 +51,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 
 /**
@@ -149,6 +150,7 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
   public GridPane scene;
 
   private final Controller controller;
+  private final Stage stage;
 
   /**
    * Constructor of PlayerTetrisFXML
@@ -157,8 +159,9 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
    * @param controller Controller wich we interact with
    */
   public PlayerTetrisFXML(HBox motherbox,
-      Controller controller) {
+      Controller controller, Stage stage) {
     this.controller = controller;
+    this.stage = stage;
     // FXML loading
     FXMLLoader loader = new FXMLLoader(getClass().getResource(
         "/fxml/TetrisBoard.fxml"));
@@ -400,6 +403,7 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
     alert.setContentText(reason);
     alert.setTitle("Nous avons un vainqueur !");
     alert.showAndWait();
+    this.stage.close();
     controller.disconnect();
 
   }
