@@ -293,8 +293,14 @@ public class ManagedGame extends AbstractGame {
     this.status = status;
 
     switch (status) {
-      case TETRIMINO_FALLING -> timer.schedule(this.tickHandler, TickHandler.tickDelay(this.level));
-      case LOCK_DOWN -> this.timer.schedule(this.tickHandler, 500);
+      case TETRIMINO_FALLING -> {
+        timer.schedule(this.tickHandler, TickHandler.tickDelay(this.level));
+        this.playerStatus("", 0);
+      }
+      case LOCK_DOWN -> {
+        this.timer.schedule(this.tickHandler, 500);
+        this.playerStatus("LOCK DOWN", 0.2);
+      }
       case TETRIMINO_HARD_DROPPING,
           ROTATING_CLOCKWISE,
           ROTATING_ANTI_CLOCKWISE,
