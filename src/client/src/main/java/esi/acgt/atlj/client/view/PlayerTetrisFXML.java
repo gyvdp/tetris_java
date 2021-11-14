@@ -333,6 +333,11 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
 
   }
 
+  /**
+   * PropertyChange that will change the view on base of what he receive
+   *
+   * @param evt evt that has been fired
+   */
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
     Platform.runLater(() -> {
@@ -371,11 +376,23 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
     });
   }
 
+  /**
+   * update StatusLebel
+   *
+   * @param text    new Text
+   * @param opacity Opacity of new Text
+   */
   protected void updateStatusLabel(String text, double opacity) {
     lostLabel.setText(text);
     lostLabel.setOpacity(opacity);
   }
 
+  /**
+   * display a pop up of the Winner and why
+   *
+   * @param winnerName Username of the Winner
+   * @param reason     Reason why he won
+   */
   private void displayWinner(String winnerName, String reason) {
 
     Alert alert = new Alert(AlertType.INFORMATION);

@@ -36,5 +36,10 @@ public interface ViewInterface {
    */
   void displayBoard(String username);
 
+  /**
+   * Getter of Player1 and 2 casted in PropertyListener
+   *
+   * @return Listerners
+   */
   PropertyChangeListener[] getListeners();
 }

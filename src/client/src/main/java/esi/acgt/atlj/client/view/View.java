@@ -71,6 +71,9 @@ public class View implements ViewInterface {
     alert.showAndWait();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public PropertyChangeListener[] getListeners() {
     return new PropertyChangeListener[]{this.bothPlayerView.getPlayer1(),
