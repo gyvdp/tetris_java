@@ -339,6 +339,7 @@ public class ManagedGame extends AbstractGame {
     if (outOfBound()) {
       setActualTetrimino(null);
       setStatus(GameStatus.LOCK_OUT);
+      iLost.run();
     } else {
       setStatus(GameStatus.TETRIMINO_FALLING);
     }
