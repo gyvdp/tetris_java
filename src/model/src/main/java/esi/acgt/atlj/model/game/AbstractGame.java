@@ -246,6 +246,7 @@ public abstract class AbstractGame implements GameInterface, Serializable {
   }
 
   public void placeTetrimino(TetriminoInterface tetrimino) {
+    var oldBoard = getBoard();
     var tMinos = tetrimino.getMinos();
     for (var i = 0; i < tMinos.length; ++i) {
       for (var j = 0; j < tMinos[i].length; ++j) {
@@ -261,5 +262,6 @@ public abstract class AbstractGame implements GameInterface, Serializable {
 
       }
     }
+    this.changeSupport.firePropertyChange("board", oldBoard, getBoard());
   }
 }
