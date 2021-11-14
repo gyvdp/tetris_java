@@ -172,6 +172,8 @@ public class Server extends AbstractServer {
       members.get(client.getIdOfClient() == 0 ? 1 : 0)
           .sendMessage(new PlayerState(PlayerStatus.DISCONNECTED));
     }
+    members.remove(client.getIdOfClient());
+    clientId = 0;
   }
 
   /**

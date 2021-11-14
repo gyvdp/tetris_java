@@ -25,12 +25,10 @@
 package esi.acgt.atlj.server;
 
 
-import esi.acgt.atlj.message.Message;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractServer implements Runnable {
@@ -106,25 +104,6 @@ public abstract class AbstractServer implements Runnable {
   }
 
   /**
-   * Returns number of connected clients.
-   *
-   * @return Size of thread.
-   */
-  public int getNumberOfClients() {
-    return this.threads.size();
-  }
-
-  /**
-   * Getter for all the current connections to the server. New members with not figure in the list
-   * at all.
-   *
-   * @return List of all client threads.
-   */
-  synchronized public final List<Thread> getAllConnectedClients() {
-    return Collections.unmodifiableList(threads);
-  }
-
-  /**
    * Hook for when server has stopped. Defaults to nothing, needs to be overridden.
    */
   protected void serverStopped() {
@@ -152,7 +131,8 @@ public abstract class AbstractServer implements Runnable {
    *
    * @param client Client that has successfully disconnected form the server.
    */
-  protected void clientDisconnected(CustomClientThread client) {
+  synchronized protected void clientDisconnected(CustomClientThread client) {
+    threads.remove(client);
     System.out.println("Client " + client.getIdOfClient() + " has disconnected");
   }
 
@@ -232,17 +212,5 @@ public abstract class AbstractServer implements Runnable {
    */
   final synchronized void receiveMessageFromClient(Object msg, CustomClientThread client) {
     this.handleMessageClient(msg, client);
-  }
-
-
-  /**
-   * Sends a message to all clients
-   */
-  public void sendToAllClients(Object obj) throws IOException {
-    for (Thread clientThread : threads) {
-      if (obj instanceof Message) {
-        ((CustomClientThread) clientThread).sendMessage((Message) obj);
-      }
-    }
   }
 }

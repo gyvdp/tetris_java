@@ -72,7 +72,7 @@ public class ClientModel extends Model {
   };
 
   /**
-   * Reveive the name of the player
+   * Sets the name of the player given from the server
    */
   Consumer<String> receiveName = (String name) ->
   {
@@ -92,7 +92,9 @@ public class ClientModel extends Model {
    * Send which line has been destroyed by the managed game to the server
    */
   Consumer<ArrayList<Integer>> lineDestroyed = (ArrayList<Integer> lineDestroyed) -> {
-    client.removeLine(lineDestroyed);
+    if (client != null) {
+      client.removeLine(lineDestroyed);
+    }
   };
 
   /**
@@ -230,7 +232,6 @@ public class ClientModel extends Model {
     askNextMino.run();
     this.player.start();
     this.otherPlayer.playerStatus("", 0);
-
     if (client != null) {
       client.sendNameToServer(player.getUsername());
     }
