@@ -75,26 +75,34 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
    */
   @Override
   public void rotate(boolean clockwise, boolean[][] freeMask) {
-    Mino k;
-    int l = this.minos.length - 1;
-    int i, j;
-    for (i = 0; i < Math.floor(this.minos.length * 0.5); i++) {
-      for (j = i; j < l - i; j++) {
-        k = this.minos[i][j];
-        this.minos[i][j] = this.minos[l - j][i];
-        this.minos[l - j][i] = this.minos[l - i][l - j];
-        this.minos[l - i][l - j] = this.minos[j][l - i];
-        this.minos[j][l - i] = k;
-      }
-    }
 
-    for (i = 0; i < minos.length; i++) {
-      for (j = 0; j < minos[1].length; j++) {
-        if (!freeMask[i][j] && this.minos[i][j] != null) {
+    Mino[][] rotated = generateRotatedTetrimino(minos, clockwise);
+
+    for (int i = 0; i < minos.length; i++) {
+      for (int j = 0; j < minos[1].length; j++) {
+        if (!freeMask[i][j] && rotated[i][j] != null) {
           throw new IllegalArgumentException("Turn cannot be preformed");
         }
       }
     }
+
+    minos = rotated;
+  }
+
+  private static Mino[][] generateRotatedTetrimino(Mino[][] actual, boolean clockwise) {
+    Mino[][] rotated = new Mino[4][4];
+    int l = actual.length - 1;
+    for (int i = 0; i < Math.floor(actual.length * 0.5); i++) {
+      for (int j = i; j < l - i; j++) {
+        var k = actual[i][j];
+        rotated[i][j] = actual[l - j][i];
+        rotated[l - j][i] = actual[l - i][l - j];
+        rotated[l - i][l - j] = actual[j][l - i];
+        rotated[j][l - i] = k;
+      }
+    }
+
+    return rotated;
   }
 
   @Override
