@@ -71,6 +71,9 @@ public class ClientModel extends Model {
     player.setNextTetrimino(Tetrimino.createTetrimino(nextMino));
   };
 
+  /**
+   * Reveive the name of the player
+   */
   Consumer<String> receiveName = (String name) ->
   {
     otherPlayer.setUsername(name);
@@ -164,6 +167,7 @@ public class ClientModel extends Model {
    * Sends the score to the server to be updated in other board
    */
   Consumer<Integer> sendScoreServer = (Integer score) -> {
+
     this.client.sendScore(score);
   };
 
