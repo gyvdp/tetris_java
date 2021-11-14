@@ -62,15 +62,9 @@ public class Client extends AbstractClient implements ClientInterface {
   private Consumer<String> receiveName;
 
   /**
-   * Method used when setting number of lines of other player.
-   */
-  private Consumer<Integer> setNBLines;
-
-  /**
    * Method used when setting hold of other player.
    */
   private Consumer<Mino> hold;
-
   /**
    * Method used when removeLine message comes from server.
    */
@@ -279,14 +273,6 @@ public class Client extends AbstractClient implements ClientInterface {
     } catch (IOException e) {
       System.err.println("Cannot send hold piece");
     }
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void connectSetNbLines(Consumer<Integer> setNbLines) {
-    this.setNBLines = setNbLines;
   }
 
   /**

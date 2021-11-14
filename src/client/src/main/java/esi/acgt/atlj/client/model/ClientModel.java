@@ -82,6 +82,7 @@ public class ClientModel extends Model {
   Consumer<ArrayList<Integer>> removeLine = (ArrayList<Integer> line) ->
   {
     otherPlayer.removeLine(line);
+    otherPlayer.setNbLine(line.size());
   };
 
   /**
@@ -129,13 +130,6 @@ public class ClientModel extends Model {
     otherPlayer.setScore(score);
   };
 
-  /**
-   * Lambda expression to connect setNbLines with client
-   */
-  Consumer<Integer> setNbLines = (Integer lines) ->
-  {
-    this.otherPlayer.setNbLine(lines);
-  };
 
   /**
    * Lambda expression to connect hold with client
@@ -165,6 +159,13 @@ public class ClientModel extends Model {
   {
     //player2.hasLost()
     //this.start();  //TODO
+  };
+
+  /**
+   * Sends the score to the server to be updated in other board
+   */
+  Consumer<Integer> sendScoreServer = (Integer score) -> {
+    this.client.sendScore(score);
   };
 
   /**
@@ -198,12 +199,11 @@ public class ClientModel extends Model {
     client.connectAddTetrimino(this.addTetrimino);
     client.connectSendScore(this.sendScore);
     client.connectUpdateNextTetriminoOtherPlayer(this.updateNextTetriminoOtherPlayer);
-    client.connectPlayerReady(playerReady);
-    client.connectOtherPlayerLost(otherPlayerLost);
-    client.connectPlayerDisconnected(playerDisconnected);
+    client.connectPlayerReady(this.playerReady);
+    client.connectOtherPlayerLost(this.otherPlayerLost);
+    client.connectPlayerDisconnected(this.playerDisconnected);
     client.connectReceiveUserName(this.receiveName);
-    client.connectHold(hold);
-    client.connectSetNbLines(setNbLines);
+    client.connectHold(this.hold);
   }
 
   /**
@@ -248,6 +248,7 @@ public class ClientModel extends Model {
     player.connectAddTetrimino(addTetriminoToOtherPlayer);
     player.connectHoldMino(this.hold);
     player.connectLineDestroyed(this.lineDestroyed);
+    player.connectSendScoreServer(sendScoreServer);
   }
 
   /**

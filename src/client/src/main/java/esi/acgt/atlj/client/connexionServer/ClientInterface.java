@@ -39,116 +39,110 @@ public interface ClientInterface extends PropertyChangeListener {
   /**
    * Tries to establish a connexion with server.
    */
-  public void connect() throws ConnectException;
+  void connect() throws ConnectException;
 
   /**
    * Request the next color of Tetrimino.
    *
    * @return Next tetrimino in the bag of the server.
    */
-  public void requestNextMino();
+  void requestNextMino();
 
   /**
    * Sends the mino that has been put into hold by player to server
    */
-  public void sendHoldMino(Mino m);
+  void sendHoldMino(Mino m);
 
-  /**
-   * Connects setNbLines lambda to client
-   *
-   * @param setNbLines Lambda to connect.
-   */
-  public void connectSetNbLines(Consumer<Integer> setNbLines);
 
   /**
    * Connects hold to client
    *
    * @param hold Lambda to connect.
    */
-  public void connectHold(Consumer<Mino> hold);
+  void connectHold(Consumer<Mino> hold);
 
   /**
    * Connect player ready lambda to client
    *
    * @param playerReady Lambda to connect
    */
-  public void connectPlayerReady(Runnable playerReady);
+  void connectPlayerReady(Runnable playerReady);
 
   /**
    * Connects other player lost lambda to client
    *
    * @param otherPlayerLost Lambda to connect
    */
-  public void connectOtherPlayerLost(Runnable otherPlayerLost);
+  void connectOtherPlayerLost(Runnable otherPlayerLost);
 
   /**
    * Connects player disconnected to client
    *
    * @param playerDisconnected Lambda to connect
    */
-  public void connectPlayerDisconnected(Runnable playerDisconnected);
+  void connectPlayerDisconnected(Runnable playerDisconnected);
 
   /**
    * Connects a consumer of updateTetriminoOtherPlayer client to model.
    *
    * @param updateNextTetriminoOtherPlayer Lambda function to connect.
    */
-  public void connectUpdateNextTetriminoOtherPlayer(Consumer<Mino> updateNextTetriminoOtherPlayer);
+  void connectUpdateNextTetriminoOtherPlayer(Consumer<Mino> updateNextTetriminoOtherPlayer);
 
   /**
    * Sends your name to the server.
    *
    * @param name Name of the current player.
    */
-  public void sendName(String name);
+  void sendName(String name);
 
   /**
    * Connects a consumer of new mino of model to client.
    *
    * @param newMino Lambda function to connect.
    */
-  public void connectNewMinoFromServer(Consumer<Mino> newMino);
+  void connectNewMinoFromServer(Consumer<Mino> newMino);
 
   /**
    * Connect a consumer of  addTetrimino of model to client.
    *
    * @param addTetrimino Lambda function to connect.
    */
-  public void connectAddTetrimino(Consumer<TetriminoInterface> addTetrimino);
+  void connectAddTetrimino(Consumer<TetriminoInterface> addTetrimino);
 
   /**
    * Connect a consumer of sendScore of model to client.
    *
    * @param sendScore Lambda function to connect.
    */
-  public void connectSendScore(Consumer<Integer> sendScore);
+  void connectSendScore(Consumer<Integer> sendScore);
 
 
   /**
    * Closes the connection to server
    */
-  public void closeConnectionToServer();
+  void closeConnectionToServer();
 
   /**
    * Connects a receive user name to client
    *
    * @param receiveName Lambda function to connect
    */
-  public void connectReceiveUserName(Consumer<String> receiveName);
+  void connectReceiveUserName(Consumer<String> receiveName);
 
   /**
    * Sends your name to the server
    *
    * @param name Same to send
    */
-  public void sendNameToServer(String name);
+  void sendNameToServer(String name);
 
   /**
    * Connect a consumer of remove line of model to client.
    *
    * @param removeLine Lambda function to connect.
    */
-  public void connectRemoveLine(Consumer<ArrayList<Integer>> removeLine);
+  void connectRemoveLine(Consumer<ArrayList<Integer>> removeLine);
 
 
   /**
@@ -156,19 +150,19 @@ public interface ClientInterface extends PropertyChangeListener {
    *
    * @param tetriminoInterface Tetrimino to send
    */
-  public void sendTetriminoToOtherPlayer(TetriminoInterface tetriminoInterface);
+  void sendTetriminoToOtherPlayer(TetriminoInterface tetriminoInterface);
 
   /**
    * Sends your score to the server.
    *
    * @param Score Score of the current player.
    */
-  public void sendScore(int Score);
+  void sendScore(int Score);
 
   /**
    * Sends line that current player just destroyed.
    *
-   * @param line Line that current player just destroyed.
+   * @param linesDestroyed Line that current player just destroyed.
    */
-  public void removeLine(ArrayList<Integer> linesDestroyed);
+  void removeLine(ArrayList<Integer> linesDestroyed);
 }

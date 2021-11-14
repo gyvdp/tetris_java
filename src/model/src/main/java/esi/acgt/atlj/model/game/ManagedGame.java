@@ -54,6 +54,11 @@ public class ManagedGame extends AbstractGame {
    */
   Consumer<Mino> holdMino;
 
+  /**
+   * Sends current score to the server
+   */
+  Consumer<Integer> setScoreServer;
+
   private GameStatus status;
   private int level;
   private final Timer timer;
@@ -81,6 +86,15 @@ public class ManagedGame extends AbstractGame {
    */
   public void connectAskNewMino(Runnable askNextMino) {
     this.askNextMino = askNextMino;
+  }
+
+  /**
+   * Sends the score to the server via a Lambda
+   *
+   * @param setScoreServer Lambda to connect.
+   */
+  public void connectSendScoreServer(Consumer<Integer> setScoreServer) {
+    this.setScoreServer = setScoreServer;
   }
 
   /**
