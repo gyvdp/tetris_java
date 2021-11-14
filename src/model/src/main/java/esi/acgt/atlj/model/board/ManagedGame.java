@@ -30,6 +30,9 @@ import java.security.InvalidParameterException;
 import java.util.Timer;
 import java.util.function.Consumer;
 
+/**
+ * Game that is going to be played by the playing player.
+ */
 public class ManagedGame extends Game {
 
   /**
@@ -47,6 +50,11 @@ public class ManagedGame extends Game {
   private TickHandler tickHandler;
   private boolean hasAlreadyHolded;
 
+  /**
+   * Establishes a new managed game
+   *
+   * @param username Username of playe .
+   */
   public ManagedGame(String username) {
     super(username);
     hasAlreadyHolded = false;
@@ -65,16 +73,31 @@ public class ManagedGame extends Game {
     this.askNextMino = askNextMino;
   }
 
+  /**
+   * Connects lambda expression to add tetrimino to server
+   *
+   * @param addTetrimino Laùbda expression to connect
+   */
   public void connectAddTetrimino(Consumer<TetriminoInterface> addTetrimino) {
     this.addTetrimino = addTetrimino;
   }
 
+  /**
+   * Game starts making tetriminos fall
+   */
   public synchronized void start() {
     setStatus(GameStatus.TETRIMINO_FALLING);
   }
 
+  /**
+   * Moves a tetrimino in the direction.
+   *
+   * @param direction Direction in wich to move
+   * @return True if tetrimino is able to move
+   */
   public synchronized boolean move(Direction direction) {
-    if (isMoveValid(direction, generateFreeMask(6, 6, actualTetrimino.getX(), actualTetrimino.getY(), 1, 1))) {
+    if (isMoveValid(direction,
+        generateFreeMask(6, 6, actualTetrimino.getX(), actualTetrimino.getY(), 1, 1))) {
       Mino[][] oldBoard = this.getBoard();
       this.actualTetrimino.move(direction);
       this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
@@ -96,6 +119,9 @@ public class ManagedGame extends Game {
     this.changeSupport.firePropertyChange("next", null, this.getNextTetrimino());
   }
 
+  /**
+   * Adds a tetrimino to the hold case
+   */
   public void hold() {
     if (!hasAlreadyHolded) {
       if (hold == null) {
@@ -117,14 +143,21 @@ public class ManagedGame extends Game {
     this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
   }
 
+  /**
+   * Checks if a move is valid.
+   *
+   * @param direction Direction in which tetrimino wishes to move.
+   * @param mask      Surrouding area of tetrimino
+   * @return True if tetrimino can move
+   */
   private synchronized boolean isMoveValid(Direction direction, boolean[][] mask) {
     Mino[][] minos = actualTetrimino.getMinos();
-    for(int i = 0; i < minos.length; i++) {
+    for (int i = 0; i < minos.length; i++) {
       for (int j = 0; j < minos[i].length; j++) {
         int x = j + 1 + direction.getDeltaX();
         int y = i + 1 + direction.getDeltaY();
 
-        if(!mask[y][x] && minos[i][j] != null) {
+        if (!mask[y][x] && minos[i][j] != null) {
           return false;
         }
       }
@@ -133,18 +166,30 @@ public class ManagedGame extends Game {
     return true;
   }
 
+  /**
+   * Soft drops a tetrimino.
+   */
   public synchronized void softDrop() {
     this.move(Direction.DOWN);
   }
 
+  /**
+   * Makes a tetrimino hard drop automatically locking it in place.
+   */
   public synchronized void hardDrop() {
-    while (isMoveValid(Direction.DOWN, generateFreeMask(6, 6, actualTetrimino.getX(), actualTetrimino.getY(), 1, 1))) {
+    while (isMoveValid(Direction.DOWN,
+        generateFreeMask(6, 6, actualTetrimino.getX(), actualTetrimino.getY(), 1, 1))) {
       Mino[][] oldBoard = this.getBoard();
       this.actualTetrimino.move(Direction.DOWN);
       this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
     }
   }
 
+  /**
+   * Rotates a tetrimino clockwise or counter-clockwise
+   *
+   * @param clockwise True if tetrimino should rotate clockwise.
+   */
   public synchronized void rotate(boolean clockwise) {
     var oldBoard = this.getBoard();
     try {
@@ -159,22 +204,42 @@ public class ManagedGame extends Game {
     }
   }
 
+  /**
+   * Sets the score of the current player
+   *
+   * @param score Score to set to.
+   */
   public synchronized void setScore(int score) {
     int oldScore = this.score;
     this.score = score;
     this.changeSupport.firePropertyChange("score", oldScore, this.score);
   }
 
+  /**
+   * Sets the number of lines player has destroyed
+   *
+   * @param nbLine Number of lines to set
+   */
   public synchronized void setNbLine(int nbLine) {
     int oldNbLine = this.nbLine;
     this.nbLine = nbLine;
     this.changeSupport.firePropertyChange("line", oldNbLine, this.nbLine);
   }
 
+  /**
+   * Gets the status of the game
+   *
+   * @return Current status of the game
+   */
   public synchronized GameStatus getStatus() {
     return this.status;
   }
 
+  /**
+   * Sets the status of the game
+   *
+   * @param status Status to set game to.
+   */
   public synchronized void setStatus(GameStatus status) {
     this.tickHandler.cancel();
     this.tickHandler = new TickHandler(this);
@@ -189,6 +254,9 @@ public class ManagedGame extends Game {
     }
   }
 
+  /**
+   * Locks a tetrimino making it unable to move.
+   */
   public synchronized void lock() {
     var oldBoard = getBoard();
     var t = this.actualTetrimino;
@@ -214,6 +282,12 @@ public class ManagedGame extends Game {
     setStatus(GameStatus.TETRIMINO_FALLING);
   }
 
+  /**
+   * Update that the game has finished
+   *
+   * @param winnerName Name of the winner
+   * @param reason     Reason from player to have won, sometimes it's just skill :}
+   */
   public void fireEndGame(String winnerName, String reason) {
     this.changeSupport.firePropertyChange("winner", winnerName, reason);
   }

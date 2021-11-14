@@ -27,13 +27,24 @@ package esi.acgt.atlj.model.board;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
+/**
+ * Game that is going to be updated by server. Opponent.
+ */
 public class UnmanagedGame extends Game {
 
+  /**
+   * Initializes a unmanaged game
+   */
   public UnmanagedGame() {
     super(null);
     // TODO Constructor
   }
 
+  /**
+   * Places a tetrimino
+   *
+   * @param tetrimino Tetrimino to place
+   */
   public void placeTetrimino(TetriminoInterface tetrimino) {
     //TODO a faire en static via le lock.
     var oldBoard = getBoard();
@@ -52,35 +63,64 @@ public class UnmanagedGame extends Game {
         }
       }
     }
-
     this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
   }
 
+  /**
+   * Sets the current tetrimino
+   *
+   * @param tetrimino Tetrimino to set.
+   */
   public void setActualTetrimino(TetriminoInterface tetrimino) {
     Mino[][] oldBoard = this.getBoard();
     this.actualTetrimino = tetrimino;
     this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
   }
 
+  /**
+   * Removes a line from the board.
+   *
+   * @param line X coordinate of line to remove.
+   */
   public void removeLine(int line) {
     // TODO
   }
 
+  /**
+   * Sets the next upcoming tetrimino.
+   *
+   * @param tetrimino Tetrimino to set.
+   */
   public void setNextTetrimino(TetriminoInterface tetrimino) {
     this.nextTetrimino = tetrimino;
     this.changeSupport.firePropertyChange("next", null, this.getNextTetrimino());
   }
 
+  /**
+   * Sets the score of the player
+   *
+   * @param score Score to set
+   */
   public void setScore(int score) {
     this.score = score;
     this.changeSupport.firePropertyChange("score", null, this.score);
   }
 
+  /**
+   * Sets the username of the player.
+   *
+   * @param username username to set.
+   */
   public void setUsername(String username) {
     this.username = username;
     this.changeSupport.firePropertyChange("username", null, this.username);
   }
 
+  /**
+   * Sets the number of line the players has destroyed.
+   *
+   * @param nbLine Number of line to set to.
+   */
   public void setNbLine(int nbLine) {
     this.nbLine = nbLine;
     this.changeSupport.firePropertyChange("line", null, this.nbLine);

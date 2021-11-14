@@ -26,7 +26,7 @@ package esi.acgt.atlj.model.tetrimino;
 public class ITetrimino extends Tetrimino {
 
   /**
-   * Constructor for I tetrimino.
+   * Constructor for Itetrimino.
    */
   public ITetrimino() {
     super();

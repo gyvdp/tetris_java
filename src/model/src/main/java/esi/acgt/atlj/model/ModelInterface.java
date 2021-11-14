@@ -20,6 +20,11 @@ public interface ModelInterface {
    */
   GameInterface getBoard(String username);
 
+  /**
+   * Ads a player to the game.
+   *
+   * @param board Game to add player to.
+   */
   void addPlayer(GameInterface board);
 
   void addPropertyChangeListener(PropertyChangeListener[] listener);

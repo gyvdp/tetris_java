@@ -35,7 +35,5 @@ public enum MessageType {
   REMOVE_LINE, //Removes a line to the unmanaged board of the other player
   PLAYER_STATUS,
   UPDATE_PIECE_UNMANAGED,
-  SEND_NAME // Sends username of player to other player.
-
-
+  SEND_NAME,// Sends username of player to other player.
 }

@@ -25,6 +25,7 @@
 package esi.acgt.atlj.model.tetrimino;
 
 import esi.acgt.atlj.model.board.Direction;
+import java.io.Serializable;
 
 /**
  * The TetriminoInterface
@@ -68,6 +69,11 @@ public interface TetriminoInterface {
    */
   void rotate(boolean clockwise, boolean[][] surroundingArea);
 
+  /**
+   * Moves the tetrimino in a direction
+   *
+   * @param direction Direction to move tetrimino in.
+   */
   void move(Direction direction);
 
 }
