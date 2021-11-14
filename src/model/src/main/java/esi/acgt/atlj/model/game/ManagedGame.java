@@ -276,15 +276,14 @@ public class ManagedGame extends AbstractGame {
    */
   public synchronized void setStatus(GameStatus status) {
     this.tickHandler.cancel();
-    this.timer.purge();
     this.tickHandler = new TickHandler(this);
     this.status = status;
 
     switch (status) {
       case TETRIMINO_FALLING -> timer.schedule(this.tickHandler, TickHandler.tickDelay(this.level));
       case LOCK_DOWN -> this.timer.schedule(this.tickHandler, 500);
-      case TETRIMINO_HARD_DROPPING -> this.timer.schedule(this.tickHandler, 1);
-      case ROTATING_CLOCKWISE,
+      case TETRIMINO_HARD_DROPPING,
+          ROTATING_CLOCKWISE,
           ROTATING_ANTI_CLOCKWISE,
           SOFT_DROPPING -> this.timer.schedule(this.tickHandler, 1);
     }
@@ -323,7 +322,13 @@ public class ManagedGame extends AbstractGame {
       incrementNbLines(lines.size());
     }
 
-    setStatus(GameStatus.TETRIMINO_FALLING);
+    if (outOfBound()) {
+      setActualTetrimino(null);
+      setStatus(GameStatus.LOCK_OUT);
+    } else {
+      setStatus(GameStatus.TETRIMINO_FALLING);
+    }
+
   }
 
   /**
@@ -360,4 +365,15 @@ public class ManagedGame extends AbstractGame {
     return lines;
   }
 
+  boolean outOfBound() {
+    for (int i = 0; i < 2; ++i) {
+      for (int j = 0; j < minos[i].length; ++j) {
+        if (minos[i][j] != null) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
 }
