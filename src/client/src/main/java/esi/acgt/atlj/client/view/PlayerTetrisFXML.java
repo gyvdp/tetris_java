@@ -231,7 +231,7 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
    * @param newUsername new Username of this player
    */
   public void updateUsername(String newUsername) {
-    Platform.runLater(() -> this.usernameLabel.setText(newUsername));
+    this.usernameLabel.setText(newUsername);
   }
 
   /**
@@ -333,44 +333,46 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
 
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
-    switch (evt.getPropertyName()) {
-      case "board" -> {
-        updateBoard((Mino[][]) evt.getOldValue(), (Mino[][]) evt.getNewValue());
-      }
-      case "line" -> {
-        updateLine((int) evt.getNewValue());
-      }
+    Platform.runLater(() -> {
+      switch (evt.getPropertyName()) {
+        case "board" -> {
+          updateBoard((Mino[][]) evt.getOldValue(), (Mino[][]) evt.getNewValue());
+        }
+        case "line" -> {
+          updateLine((int) evt.getNewValue());
+        }
 
-      case "score" -> {
-        updateScore((int) evt.getNewValue());
-      }
+        case "score" -> {
+          updateScore((int) evt.getNewValue());
+        }
 
-      case "username" -> {
-        updateUsername(evt.getNewValue().toString());
-      }
+        case "username" -> {
+          updateUsername(evt.getNewValue().toString());
+        }
 
         case "hold" -> {
-        updateHold((TetriminoInterface) Tetrimino.createTetrimino((Mino) evt.getNewValue()));
-      }
+          updateHold((TetriminoInterface) Tetrimino.createTetrimino((Mino) evt.getNewValue()));
+        }
 
-      case "next" -> {
-        updateNextPiece((TetriminoInterface) evt.getNewValue());
-      }
+        case "next" -> {
+          updateNextPiece((TetriminoInterface) evt.getNewValue());
+        }
 
-      case "winner" -> {
-        displayWinner((String) evt.getOldValue(), (String) evt.getNewValue());
+        case "winner" -> {
+          displayWinner((String) evt.getOldValue(), (String) evt.getNewValue());
+        }
       }
-    }
+    });
   }
 
   private void displayWinner(String winnerName, String reason) {
-    Platform.runLater(() -> {
-      Alert alert = new Alert(AlertType.INFORMATION);
-      alert.setHeaderText("Le vainqueur est : " + winnerName);
-      alert.setContentText(reason);
-      alert.setTitle("Nous avons un vainqueur !");
-      alert.showAndWait();
-      controller.disconnect();
-    });
+
+    Alert alert = new Alert(AlertType.INFORMATION);
+    alert.setHeaderText("Le vainqueur est : " + winnerName);
+    alert.setContentText(reason);
+    alert.setTitle("Nous avons un vainqueur !");
+    alert.showAndWait();
+    controller.disconnect();
+
   }
 }
