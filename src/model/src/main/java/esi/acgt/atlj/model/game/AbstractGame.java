@@ -98,8 +98,8 @@ public abstract class AbstractGame implements GameInterface, Serializable {
   }
 
   @Override
-  public synchronized TetriminoInterface getHold() {
-    return Tetrimino.createTetrimino(this.hold);
+  public synchronized Mino getHold() {
+    return this.hold;
   }
 
   @Override
