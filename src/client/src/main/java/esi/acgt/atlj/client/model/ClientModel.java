@@ -36,7 +36,6 @@ import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
 import java.net.ConnectException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 

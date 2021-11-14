@@ -77,20 +77,21 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
    * {@inheritDoc}
    */
   @Override
-  public void rotate(boolean clockwise, boolean[][] freeMask) {
+  public boolean rotate(boolean clockwise, boolean[][] freeMask) {
     Orientation nextOrientation = Orientation.next(orientation, clockwise);
     Mino[][] rotated = rotatedShape(clockwise);
 
     for (int i = 0; i < minos.length; i++) {
       for (int j = 0; j < minos[1].length; j++) {
         if (!freeMask[i][j] && rotated[i][j] != null) {
-          throw new IllegalArgumentException("Turn cannot be preformed");
+          return false;
         }
       }
     }
 
     minos = rotated;
     orientation = nextOrientation;
+    return true;
   }
 
   @Override

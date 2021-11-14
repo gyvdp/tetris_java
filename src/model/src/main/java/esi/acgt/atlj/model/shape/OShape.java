@@ -29,7 +29,7 @@ import java.util.Map;
 
 public interface OShape {
 
-  static Map<Orientation, Mino[][]> shapes = Map.of(
+  Map<Orientation, Mino[][]> shapes = Map.of(
       Orientation.NORTH,
       new Mino[][]{
           {null, Mino.O_MINO, Mino.O_MINO, null},
