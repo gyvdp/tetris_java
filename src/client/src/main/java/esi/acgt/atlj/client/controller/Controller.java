@@ -2,8 +2,8 @@ package esi.acgt.atlj.client.controller;
 
 import esi.acgt.atlj.client.model.ClientModel;
 import esi.acgt.atlj.client.view.ViewInterface;
-import esi.acgt.atlj.model.game.GameStatus;
 import esi.acgt.atlj.model.game.Direction;
+import esi.acgt.atlj.model.game.GameStatus;
 import java.util.Objects;
 import javafx.scene.input.KeyCode;
 
@@ -78,7 +78,7 @@ public class Controller {
     try {
       this.model.initManagedBoard(username);
       this.view.displayBoard(username);
-      this.model.connect(6969, "localhost");
+      this.model.connect(port, ip);
       this.model.addPropertyChangeListener(this.view.getListeners());
     } catch (Exception e) {
       this.view.displayError(e);
