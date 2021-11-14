@@ -38,6 +38,10 @@ import java.util.function.Consumer;
 public class ManagedGame extends AbstractGame {
 
   /**
+   * All lines that have been destroyed by game in an array to send to server
+   */
+  Consumer<ArrayList<Integer>> lineDestroyed;
+  /**
    * Lambda expression to ask client for next piece in bag.
    */
   Runnable askNextMino;
@@ -127,8 +131,8 @@ public class ManagedGame extends AbstractGame {
     return moved;
   }
 
-  public void connectLineDestroyed(Consumer<Integer> lineDestroyed) {
-
+  public void connectLineDestroyed(Consumer<ArrayList<Integer>> lineDestroyed) {
+    this.lineDestroyed = lineDestroyed;
   }
 
   @Override

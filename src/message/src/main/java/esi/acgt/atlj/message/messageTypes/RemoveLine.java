@@ -26,6 +26,7 @@ package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.MessageType;
+import java.util.ArrayList;
 
 /**
  * Tells the server to remove a line in its unmanaged board.
@@ -35,14 +36,14 @@ public class RemoveLine extends Message {
   /**
    * Line to remove
    */
-  private final int line;
+  private ArrayList<Integer> lines;
 
   /**
    * Constructor for remove line type of message.
    */
-  public RemoveLine(int line) {
+  public RemoveLine(ArrayList<Integer> lines) {
     this.messageType = MessageType.REMOVE_LINE;
-    this.line = line;
+    this.lines = lines;
   }
 
   /**
@@ -50,7 +51,7 @@ public class RemoveLine extends Message {
    *
    * @return Line to send in message to be removed.
    */
-  public int getLine() {
-    return line;
+  public ArrayList<Integer> getLine() {
+    return this.lines;
   }
 }

@@ -39,7 +39,7 @@ import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.net.ConnectException;
-import java.util.Set;
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 
@@ -74,7 +74,7 @@ public class Client extends AbstractClient implements ClientInterface {
   /**
    * Method used when removeLine message comes from server.
    */
-  private Consumer<Integer> removeLine;
+  private Consumer<ArrayList<Integer>> removeLine;
   /**
    * Method used when addTetrimino message comes from server.
    */
@@ -209,7 +209,7 @@ public class Client extends AbstractClient implements ClientInterface {
    * {@inheritDoc}
    */
   @Override
-  public void connectRemoveLine(Consumer<Integer> removeLine) {
+  public void connectRemoveLine(Consumer<ArrayList<Integer>> removeLine) {
     this.removeLine = removeLine;
   }
 
@@ -351,9 +351,9 @@ public class Client extends AbstractClient implements ClientInterface {
    * {@inheritDoc}
    */
   @Override
-  public void removeLine(int line) {
+  public void removeLine(ArrayList<Integer> lines) {
     try {
-      sendToServer(new RemoveLine(line));
+      sendToServer(new RemoveLine(lines));
     } catch (IOException e) {
       System.err.println("Cannot send line to remove");
     }
