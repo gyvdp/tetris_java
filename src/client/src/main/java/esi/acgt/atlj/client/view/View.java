@@ -38,6 +38,7 @@ public class View implements ViewInterface {
    */
   @Override
   public void displayBoard(String username) {
+    this.primaryStage.close();
     this.primaryStage = new Stage();
     this.primaryStage.setOnCloseRequest(event -> this.controller.disconnect());
     this.bothPlayerView = new BothPlayerView(this.controller, this.primaryStage, username);
