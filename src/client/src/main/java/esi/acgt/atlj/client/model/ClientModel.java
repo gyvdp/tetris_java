@@ -259,6 +259,7 @@ public class ClientModel extends Model {
     player.connectLineDestroyed(this.lineDestroyed);
     player.connectSendScoreServer(sendScoreServer);
     player.connectLost(this.iLost);
+
   }
 
   /**
