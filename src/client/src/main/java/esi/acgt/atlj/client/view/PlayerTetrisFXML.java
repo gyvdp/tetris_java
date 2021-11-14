@@ -120,6 +120,8 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
   // Variable
   // Texts
   @FXML
+  public Label lostLabel;
+  @FXML
   public Label scoreLabel;
   @FXML
   public Label linesLabel;
@@ -230,7 +232,7 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
    *
    * @param newUsername new Username of this player
    */
-  public void updateUsername(String newUsername) {
+  protected void updateUsername(String newUsername) {
     this.usernameLabel.setText(newUsername);
   }
 
@@ -361,8 +363,17 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
         case "winner" -> {
           displayWinner((String) evt.getOldValue(), (String) evt.getNewValue());
         }
+
+        case "status" -> {
+          updateStatusLabel((String) evt.getOldValue(), (double) evt.getNewValue());
+        }
       }
     });
+  }
+
+  protected void updateStatusLabel(String text, double opacity) {
+    lostLabel.setText(text);
+    lostLabel.setOpacity(opacity);
   }
 
   private void displayWinner(String winnerName, String reason) {

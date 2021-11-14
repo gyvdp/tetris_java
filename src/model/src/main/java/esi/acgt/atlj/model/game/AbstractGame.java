@@ -56,7 +56,8 @@ public abstract class AbstractGame implements GameInterface, Serializable {
   }
 
   @Override
-  public synchronized boolean[][] generateFreeMask(int height, int width, int xStart, int yStart, int xMargin, int yMargin) {
+  public synchronized boolean[][] generateFreeMask(int height, int width, int xStart, int yStart,
+      int xMargin, int yMargin) {
     if (width < 1) {
       throw new IllegalArgumentException("The width of the area can be null");
     }
@@ -66,7 +67,7 @@ public abstract class AbstractGame implements GameInterface, Serializable {
     }
 
     boolean[][] mask = new boolean[height][width];
-    for(int i = 0; i < mask.length; i++) {
+    for (int i = 0; i < mask.length; i++) {
       for (int j = 0; j < mask[i].length; j++) {
         int x = xStart - xMargin + j;
         int y = yStart - yMargin + i;
@@ -74,10 +75,10 @@ public abstract class AbstractGame implements GameInterface, Serializable {
         boolean outOfBound = x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1;
         boolean notFree = !outOfBound && minos[y][x] != null;
         if (outOfBound || notFree) {
-          mask[i][j]=false;
+          mask[i][j] = false;
           continue;
         }
-        mask[i][j]=true;
+        mask[i][j] = true;
       }
     }
 
@@ -147,4 +148,8 @@ public abstract class AbstractGame implements GameInterface, Serializable {
   public abstract void setNextTetrimino(TetriminoInterface nextTetrimino);
 
   public abstract void setActualTetrimino(TetriminoInterface actualTetrimino);
+
+  public void playerStatus(String status, double opacity) {
+    this.changeSupport.firePropertyChange("status", status, opacity);
+  }
 }
