@@ -24,11 +24,12 @@
 
 package esi.acgt.atlj.client.view;
 
-import static esi.acgt.atlj.model.game.GameInterface.HEIGHT;
-import static esi.acgt.atlj.model.game.GameInterface.WIDTH;
+import static esi.acgt.atlj.model.board.BoardInterface.HEIGHT;
+import static esi.acgt.atlj.model.board.BoardInterface.WIDTH;
 
 import esi.acgt.atlj.client.controller.Controller;
 import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -50,6 +51,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 /**
  * Scene that contains a player's board and informations
@@ -331,36 +333,34 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
 
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
-    Platform.runLater(()->{
-      switch (evt.getPropertyName()) {
-        case "board" -> {
-          updateBoard((Mino[][]) evt.getOldValue(), (Mino[][]) evt.getNewValue());
-        }
-        case "line" -> {
-          updateLine((int) evt.getNewValue());
-        }
-
-        case "score" -> {
-          updateScore((int) evt.getNewValue());
-        }
-
-        case "username" -> {
-          updateUsername(evt.getNewValue().toString());
-        }
-
-        case "hold" -> {
-          updateHold((TetriminoInterface) evt.getNewValue());
-        }
-
-        case "next" -> {
-          updateNextPiece((TetriminoInterface) evt.getNewValue());
-        }
-
-        case "winner" -> {
-          displayWinner((String) evt.getNewValue(), (String) evt.getOldValue());
-        }
+    switch (evt.getPropertyName()) {
+      case "board" -> {
+        updateBoard((Mino[][]) evt.getOldValue(), (Mino[][]) evt.getNewValue());
       }
-    });
+      case "line" -> {
+        updateLine((int) evt.getNewValue());
+      }
+
+      case "score" -> {
+        updateScore((int) evt.getNewValue());
+      }
+
+      case "username" -> {
+        updateUsername(evt.getNewValue().toString());
+      }
+
+      case "hold" -> {
+        updateHold((TetriminoInterface) Tetrimino.createTetrimino((Mino) evt.getNewValue()));
+      }
+
+      case "next" -> {
+        updateNextPiece((TetriminoInterface) evt.getNewValue());
+      }
+
+      case "winner" -> {
+        displayWinner((String) evt.getNewValue(), (String) evt.getOldValue());
+      }
+    }
   }
 
   private void displayWinner(String winnerName, String reason) {
