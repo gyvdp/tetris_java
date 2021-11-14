@@ -29,6 +29,7 @@ import static esi.acgt.atlj.model.board.BoardInterface.WIDTH;
 
 import esi.acgt.atlj.client.controller.Controller;
 import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -349,7 +350,7 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
       }
 
       case "hold" -> {
-        updateHold((TetriminoInterface) evt.getNewValue());
+        updateHold((TetriminoInterface) Tetrimino.createTetrimino((Mino) evt.getNewValue()));
       }
 
       case "next" -> {
