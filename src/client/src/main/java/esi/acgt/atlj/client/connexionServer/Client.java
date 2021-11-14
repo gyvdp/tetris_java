@@ -27,6 +27,7 @@ package esi.acgt.atlj.client.connexionServer;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.AddTetrimino;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
+import esi.acgt.atlj.message.messageTypes.LockedTetrimino;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.RemoveLine;
 import esi.acgt.atlj.message.messageTypes.SendName;
@@ -98,6 +99,11 @@ public class Client extends AbstractClient implements ClientInterface {
   Runnable playerDisconnected;
 
   /**
+   * Lambda to run when a locked tetrimino has been sent.
+   */
+  Consumer<TetriminoInterface> locked;
+
+  /**
    * Constructor of a client.
    *
    * @param port Port client must look for.
@@ -140,6 +146,8 @@ public class Client extends AbstractClient implements ClientInterface {
       receiveName.accept(((SendName) information).getUsername());
     } else if (information instanceof SetHold) { // When hold tetrimino is sent from server
       hold.accept(((SetHold) information).getHold());
+    } else if (information instanceof LockedTetrimino) { //WHen locked tetrimino has been send from server.
+      locked.accept(((LockedTetrimino) information).getTetrimino());
     }
   }
 
@@ -315,6 +323,20 @@ public class Client extends AbstractClient implements ClientInterface {
   @Override
   public void connectOtherPlayerLost(Runnable otherPlayerLost) {
     this.otherPlayerLost = otherPlayerLost;
+  }
+
+  @Override
+  public void lockTetrimino(TetriminoInterface m) {
+    try {
+      sendToServer(new LockedTetrimino(m));
+    } catch (IOException e) {
+      System.err.println("Cannot send name to server");
+    }
+  }
+
+  @Override
+  public void connectlockTetrimino(Consumer<TetriminoInterface> tetriminoInterfaceConsumer) {
+    this.locked = tetriminoInterfaceConsumer;
   }
 
   /**

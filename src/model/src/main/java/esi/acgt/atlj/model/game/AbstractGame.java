@@ -259,7 +259,6 @@ public abstract class AbstractGame implements GameInterface, Serializable {
         if (!(line < 0 || col < 0) && line < minos.length && col < minos[line].length) {
           minos[line][col] = tMinos[i][j];
         }
-
       }
     }
     this.changeSupport.firePropertyChange("board", oldBoard, getBoard());

@@ -38,6 +38,11 @@ import java.util.function.Consumer;
 public class ManagedGame extends AbstractGame {
 
   /**
+   * Tells server to lock tetrimino
+   */
+  Consumer<TetriminoInterface> tetriminoLock;
+
+  /**
    * All lines that have been destroyed by game in an array to send to server
    */
   Consumer<List<Integer>> lineDestroyed;
@@ -103,6 +108,15 @@ public class ManagedGame extends AbstractGame {
     this.iLost = iLost;
   }
 
+  /**
+   * Connects lambda of locked tetrimino to client.
+   *
+   * @param myTT Lambda to connect
+   */
+  public void connectTetriminoLock(Consumer<TetriminoInterface> myTT) {
+    this.tetriminoLock = myTT;
+  }
+
 
   /**
    * Sends the score to the server via a Lambda
@@ -163,6 +177,7 @@ public class ManagedGame extends AbstractGame {
         increaseScore(2);
       }
     }
+    addTetrimino.accept(actualTetrimino);
     return moved;
   }
 
@@ -282,6 +297,7 @@ public class ManagedGame extends AbstractGame {
     return this.status;
   }
 
+
   /**
    * Sets the status of the game
    *
@@ -314,12 +330,12 @@ public class ManagedGame extends AbstractGame {
    */
   public synchronized void lock() {
     placeTetrimino(this.actualTetrimino);
-
+    tetriminoLock.accept(actualTetrimino);
     this.hasAlreadyHolded = false;
-    addTetrimino.accept(actualTetrimino);
     setActualTetrimino(this.nextTetrimino);
     askNextMino.run();
     List<Integer> lines = getFullLines();
+
     if (lines.size() != 0) {
       removeLines(lines);
       lineDestroyed.accept(lines);

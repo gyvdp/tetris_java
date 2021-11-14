@@ -84,6 +84,16 @@ public class ClientModel extends Model {
   };
 
   /**
+   * Lambda to execute when locking other player.
+   */
+  Consumer<TetriminoInterface> lockTetrimino = (TetriminoInterface tetriminoInterface) ->
+  {
+    System.out.println("I have a tetrimino to lock");
+    otherPlayer.placeTetrimino(tetriminoInterface);
+  };
+
+
+  /**
    * Send which line has been destroyed by the managed game to the server
    */
   Consumer<List<Integer>> lineDestroyed = (List<Integer> lineDestroyed) -> {
@@ -104,7 +114,7 @@ public class ClientModel extends Model {
    * player send you his placed pawn.
    */
   Consumer<TetriminoInterface> addTetrimino = (TetriminoInterface tetriminoInterface) ->
-      otherPlayer.placeTetrimino(tetriminoInterface);
+      otherPlayer.setActualTetrimino(tetriminoInterface);
 
   public void closeConnection() {
     if (client != null) {
@@ -151,6 +161,14 @@ public class ClientModel extends Model {
    */
   Consumer<Mino> updateNextTetriminoOtherPlayer = (Mino m) ->
       otherPlayer.setNextTetrimino(Tetrimino.createTetrimino(m));
+
+  /**
+   * Sends a tetrimino to lock to server.
+   */
+  Consumer<TetriminoInterface> lockMyTetrimino = (TetriminoInterface m) -> {
+    System.out.println("I have a tetrimino to send as lock");
+    client.lockTetrimino(m);
+  };
 
   /**
    * Lambda expression to connect game state from server to model.
@@ -209,6 +227,7 @@ public class ClientModel extends Model {
     client.connectPlayerDisconnected(this.playerDisconnected);
     client.connectReceiveUserName(this.receiveName);
     client.connectHold(this.hold);
+    client.connectlockTetrimino(this.lockTetrimino);
   }
 
   /**
@@ -255,6 +274,7 @@ public class ClientModel extends Model {
     player.connectLineDestroyed(this.lineDestroyed);
     player.connectSendScoreServer(sendScoreServer);
     player.connectLost(this.iLost);
+    player.connectTetriminoLock(this.lockMyTetrimino);
   }
 
   /**
