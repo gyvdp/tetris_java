@@ -35,8 +35,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" alignment="TOP_CENTER" maxHeight="-Infinity"
-  maxWidth="-Infinity"
-  minHeight="-Infinity" minWidth="-Infinity" spacing="10.0"
+  maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0"
   xmlns="http://javafx.com/javafx/11.0.2">
   <children>
     <GridPane>
@@ -92,11 +91,9 @@
       </rowConstraints>
     </GridPane>
     <HBox style="-fx-background-color: gray; -fx-border-color: black; -fx-border-width: 2px;"
-      alignment="CENTER" prefHeight="100.0"
-      prefWidth="200.0">
+      alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
       <children>
-        <Label alignment="CENTER" text="Tetris, serveur connection :" textAlignment="CENTER"
-          underline="true">
+        <Label alignment="CENTER" text="Tetris" textAlignment="CENTER" underline="true">
           <font>
             <Font size="30.0"/>
           </font>
