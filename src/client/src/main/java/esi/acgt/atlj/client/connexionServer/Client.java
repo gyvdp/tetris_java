@@ -32,12 +32,14 @@ import esi.acgt.atlj.message.messageTypes.RemoveLine;
 import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.SendScore;
+import esi.acgt.atlj.message.messageTypes.SetHold;
 import esi.acgt.atlj.message.messageTypes.UpdatePieceUnmanagedBoard;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.util.Set;
 import java.util.function.Consumer;
 
 
@@ -54,7 +56,21 @@ public class Client extends AbstractClient implements ClientInterface {
    */
   private Consumer<Mino> newMino;
 
+  /**
+   * Method used when a name is received
+   */
   private Consumer<String> receiveName;
+
+  /**
+   * Method used when setting number of lines of other player.
+   */
+  private Consumer<Integer> setNBLines;
+
+  /**
+   * Method used when setting hold of other player.
+   */
+  private Consumer<Mino> hold;
+
   /**
    * Method used when removeLine message comes from server.
    */
@@ -123,6 +139,8 @@ public class Client extends AbstractClient implements ClientInterface {
       }
     } else if (information instanceof SendName) {
       receiveName.accept(((SendName) information).getUsername());
+    } else if (information instanceof SetHold) {
+      hold.accept(((SetHold) information).getHold());
     }
   }
 
@@ -249,6 +267,34 @@ public class Client extends AbstractClient implements ClientInterface {
     } catch (IOException e) {
       System.err.println("cannot ask piece to server");
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void sendHoldMino(Mino m) {
+    try {
+      sendToServer(new SetHold(m));
+    } catch (IOException e) {
+      System.err.println("Cannot send hold piece");
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void connectSetNbLines(Consumer<Integer> setNbLines) {
+    this.setNBLines = setNbLines;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void connectHold(Consumer<Mino> hold) {
+    this.hold = hold;
   }
 
 

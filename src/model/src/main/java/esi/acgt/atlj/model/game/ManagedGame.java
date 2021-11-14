@@ -45,6 +45,10 @@ public class ManagedGame extends AbstractGame {
    * Locked tetrimino to send to server.
    */
   Consumer<TetriminoInterface> addTetrimino;
+  /**
+   * Hold tetrimino to send to server
+   */
+  Consumer<Mino> holdMino;
 
   private GameStatus status;
   private int level;
@@ -76,6 +80,15 @@ public class ManagedGame extends AbstractGame {
   }
 
   /**
+   * Connect lambda expression form ModelClient to indicate which mino has been held
+   *
+   * @param holdMino Lambda expression to connect
+   */
+  public void connectHoldMino(Consumer<Mino> holdMino) {
+    this.holdMino = holdMino;
+  }
+
+  /**
    * Connects lambda expression to add tetrimino to server
    *
    * @param addTetrimino Laùbda expression to connect
@@ -98,24 +111,30 @@ public class ManagedGame extends AbstractGame {
    * @return True if tetrimino is able to move
    */
   public synchronized boolean move(Direction direction) {
-      Mino[][] oldBoard = this.getBoard();
-      boolean moved = this.actualTetrimino.move(direction, generateFreeMask(6, 6, actualTetrimino.getX(), actualTetrimino.getY(), 1, 1));
-      this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
-      if (moved) {
-        if(status == GameStatus.LOCK_DOWN) {
-          setStatus(GameStatus.TETRIMINO_FALLING);
-        }
-
-        if (status == GameStatus.TETRIMINO_HARD_DROPPING) {
-          increaseScore(2);
-        }
+    Mino[][] oldBoard = this.getBoard();
+    boolean moved = this.actualTetrimino.move(direction,
+        generateFreeMask(6, 6, actualTetrimino.getX(), actualTetrimino.getY(), 1, 1));
+    this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
+    if (moved) {
+      if (status == GameStatus.LOCK_DOWN) {
+        setStatus(GameStatus.TETRIMINO_FALLING);
       }
+
+      if (status == GameStatus.TETRIMINO_HARD_DROPPING) {
+        increaseScore(2);
+      }
+    }
     return moved;
+  }
+
+  public void connectLineDestroyed(Consumer<Integer> lineDestroyed) {
+
   }
 
   @Override
   public synchronized void setHold(Mino hold) {
     this.hold = hold;
+    holdMino.accept(hold);
     this.changeSupport.firePropertyChange("hold", null, this.getHold());
   }
 
@@ -237,7 +256,7 @@ public class ManagedGame extends AbstractGame {
       this.timer.schedule(this.tickHandler, 500);
     }
 
-    if(status == GameStatus.TETRIMINO_HARD_DROPPING) {
+    if (status == GameStatus.TETRIMINO_HARD_DROPPING) {
       this.timer.schedule(this.tickHandler, 0, 1);
     }
   }
@@ -264,7 +283,6 @@ public class ManagedGame extends AbstractGame {
       }
     }
     this.hasAlreadyHolded = false;
-    addTetrimino.accept(actualTetrimino);
     setActualTetrimino(this.nextTetrimino);
     askNextMino.run();
     setStatus(GameStatus.TETRIMINO_FALLING);
@@ -280,6 +298,9 @@ public class ManagedGame extends AbstractGame {
     this.changeSupport.firePropertyChange("winner", winnerName, reason);
   }
 
+  /**
+   * @return
+   */
   private synchronized List<Integer> getFullLines() {
     List<Integer> lines = new ArrayList<>();
     for (int i = 0; i < minos.length; ++i) {

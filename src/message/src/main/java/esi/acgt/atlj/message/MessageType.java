@@ -36,4 +36,6 @@ public enum MessageType {
   PLAYER_STATUS, //Send the status to the player
   UPDATE_PIECE_UNMANAGED, //Updates piece of unmanaged board of other player
   SEND_NAME,// Sends username of player to other player.
+  NUMBER_LINES, // Send the number of line the player has destructed
+  HOLD // Sends the mino the player is holding
 }

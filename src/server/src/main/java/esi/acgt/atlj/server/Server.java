@@ -74,28 +74,12 @@ public class Server extends AbstractServer {
   protected void handleMessageClient(Object msg, CustomClientThread client) {
     if (client.getClientStatus().equals(PlayerStatus.READY)) {
       CustomClientThread opPlayer = members.get(0).equals(client) ? members.get(1) : members.get(0);
-      switch (msg.toString().toUpperCase()) {
-        case "ASK_PIECE":
-          Mino m = client.getTetrimino();
-          client.sendMessage(new SendPiece(m));
-          opPlayer.sendMessage(new UpdatePieceUnmanagedBoard(m));
-          break;
-        case "ADD_TETRIMINO":
-          if (msg instanceof AddTetrimino)
-            opPlayer.sendMessage(new AddTetrimino(
-                ((AddTetrimino) msg).getTetrimino()));
-          break;
-        case "REMOVE_LINE":
-          opPlayer.sendMessage(new RemoveLine(
-              ((RemoveLine) msg).getLine()));
-          break;
-        case "SEND_SCORE":
-          opPlayer.sendMessage(new SendScore(
-              ((SendScore) msg).getScore()));
-          break;
-        case "SEND_NAME":
-          if (msg instanceof SendName)
-            opPlayer.sendMessage(new SendName(((SendName) msg).getUsername()));
+      if (msg.toString().equalsIgnoreCase("ASK_PIECE")) {
+        Mino m = client.getTetrimino();
+        client.sendMessage(new SendPiece(m));
+        opPlayer.sendMessage(new UpdatePieceUnmanagedBoard(m));
+      } else {
+        opPlayer.sendMessage(msg);
       }
     }
   }
@@ -184,8 +168,10 @@ public class Server extends AbstractServer {
   @Override
   protected void clientDisconnected(CustomClientThread client) {
     super.clientDisconnected(client);
-    members.get(client.getIdOfClient() == 0 ? 1 : 0)
-        .sendMessage(new PlayerState(PlayerStatus.DISCONNECTED));
+    if (members.size() > 1) {
+      members.get(client.getIdOfClient() == 0 ? 1 : 0)
+          .sendMessage(new PlayerState(PlayerStatus.DISCONNECTED));
+    }
   }
 
   /**

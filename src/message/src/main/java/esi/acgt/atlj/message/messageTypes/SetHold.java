@@ -22,36 +22,39 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message;
+package esi.acgt.atlj.message.messageTypes;
 
-import java.io.Serializable;
+import static esi.acgt.atlj.message.MessageType.HOLD;
+
+import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.model.tetrimino.Mino;
 
 /**
- * Transporter of information. Each message has a type and is serializable to be sent between client
- * and server
+ * Sets the holding mino.
  */
-public abstract class Message implements Serializable {
+public class SetHold extends Message {
 
   /**
-   * Type of message to send.
+   * Mino that is being held
    */
-  public MessageType messageType;
+  private Mino hold;
 
   /**
-   * Gets the type of message.
+   * Constructor for hold
    *
-   * @return Type of message.
+   * @param hold Hold to set.
    */
-  public MessageType getType() {
-    return this.messageType;
+  public SetHold(Mino hold) {
+    this.messageType = HOLD;
+    this.hold = hold;
   }
 
   /**
-   * {@inheritDoc}
+   * Getter for hold mino
+   *
+   * @return Mino that is holding.
    */
-  @Override
-  public String toString() {
-    return messageType.toString();
+  public Mino getHold() {
+    return hold;
   }
-
 }

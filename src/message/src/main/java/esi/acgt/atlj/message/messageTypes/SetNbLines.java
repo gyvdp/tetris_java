@@ -22,36 +22,38 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message;
+package esi.acgt.atlj.message.messageTypes;
 
-import java.io.Serializable;
+import static esi.acgt.atlj.message.MessageType.NUMBER_LINES;
+
+import esi.acgt.atlj.message.Message;
 
 /**
- * Transporter of information. Each message has a type and is serializable to be sent between client
- * and server
+ * Sets the number of lines that have been removed by a player.
  */
-public abstract class Message implements Serializable {
+public class SetNbLines extends Message {
 
   /**
-   * Type of message to send.
+   * Number of lines that have been removed
    */
-  public MessageType messageType;
+  private final int numberOfLines;
 
   /**
-   * Gets the type of message.
+   * Constructor for set number of lines.
    *
-   * @return Type of message.
+   * @param numberOfLines Number of line that have been removed
    */
-  public MessageType getType() {
-    return this.messageType;
+  public SetNbLines(int numberOfLines) {
+    this.messageType = NUMBER_LINES;
+    this.numberOfLines = numberOfLines;
   }
 
   /**
-   * {@inheritDoc}
+   * Getter for the number of lines.
+   *
+   * @return Number of lines that have been removed.
    */
-  @Override
-  public String toString() {
-    return messageType.toString();
+  public int getNumberOfLines() {
+    return this.numberOfLines;
   }
-
 }

@@ -153,6 +153,7 @@ public abstract class AbstractServer implements Runnable {
    * @param client Client that has successfully disconnected form the server.
    */
   protected void clientDisconnected(CustomClientThread client) {
+    System.out.println("Client " + client.getIdOfClient() + " has disconnected");
   }
 
   /**
@@ -213,6 +214,7 @@ public abstract class AbstractServer implements Runnable {
             }
           }
         } catch (IOException e) {
+          //Other client is disconnected //TODO
         }
       }
     } finally {

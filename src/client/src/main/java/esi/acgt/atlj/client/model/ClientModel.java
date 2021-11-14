@@ -53,13 +53,13 @@ public class ClientModel extends Model {
    */
   Runnable askNextMino = () ->
   {
-    if(client != null) {
+    if (client != null) {
       this.client.requestNextMino();
     } else {
       var minos = Mino.values();
-      player.setNextTetrimino(Tetrimino.createTetrimino(minos[(int)(Math.random() * (minos.length))]));
+      player.setNextTetrimino(
+          Tetrimino.createTetrimino(minos[(int) (Math.random() * (minos.length))]));
     }
-
   };
 
   /**
@@ -84,6 +84,13 @@ public class ClientModel extends Model {
   };
 
   /**
+   * Send which line has been destroyed by the managed game to the server
+   */
+  Consumer<Integer> lineDestroyed = (Integer line) -> {
+    client.removeLine(line);
+  };
+
+  /**
    * Lambda expression to connect add tetrimino to update from unmanaged board. Behaviour for when a
    * player send you his placed pawn.
    */
@@ -93,7 +100,7 @@ public class ClientModel extends Model {
   };
 
   public void closeConnection() {
-    if(client != null) {
+    if (client != null) {
       this.client.closeConnectionToServer();
     }
   }
@@ -103,9 +110,14 @@ public class ClientModel extends Model {
    */
   Consumer<TetriminoInterface> addTetriminoToOtherPlayer = (TetriminoInterface tetriminoInterface) ->
   {
-    if(client != null) {
+    if (client != null) {
       this.client.sendTetriminoToOtherPlayer(tetriminoInterface);
     }
+  };
+
+  Consumer<Mino> setHold = (Mino m) ->
+  {
+    this.client.sendHoldMino(m);
   };
 
   /**
@@ -114,6 +126,22 @@ public class ClientModel extends Model {
   Consumer<Integer> sendScore = (Integer score) ->
   {
     otherPlayer.setScore(score);
+  };
+
+  /**
+   * Lambda expression to connect setNbLines with client
+   */
+  Consumer<Integer> setNbLines = (Integer lines) ->
+  {
+    this.otherPlayer.setNbLine(lines);
+  };
+
+  /**
+   * Lambda expression to connect hold with client
+   */
+  Consumer<Mino> hold = (Mino mino) ->
+  {
+    otherPlayer.setHold(mino);
   };
 
   /**
@@ -156,6 +184,14 @@ public class ClientModel extends Model {
    */
   public void connect(int port, String host) throws ConnectException {
     this.client = new Client(port, host);
+    connectLambdaClient();
+    this.client.connect();
+  }
+
+  /**
+   * All necessary lambda connection with client
+   */
+  private void connectLambdaClient() {
     client.connectNewMinoFromServer(this.newMinoFromServer);
     client.connectRemoveLine(this.removeLine);
     client.connectAddTetrimino(this.addTetrimino);
@@ -165,62 +201,116 @@ public class ClientModel extends Model {
     client.connectOtherPlayerLost(otherPlayerLost);
     client.connectPlayerDisconnected(playerDisconnected);
     client.connectReceiveUserName(this.receiveName);
-    this.client.connect();
-
+    client.connectHold(hold);
+    client.connectSetNbLines(setNbLines);
   }
 
+  /**
+   * Getter for client interface
+   *
+   * @return The current client.
+   */
   public ClientInterface getClient() {
     return client;
   }
 
+  /**
+   * Starts a new game.
+   */
   public void start() {
     askNextMino.run();
     this.player.start();
 
-    if(client != null) {
+    if (client != null) {
       client.sendNameToServer(player.getUsername());
     }
   }
 
+  /**
+   * Initializes a managed game.
+   *
+   * @param username Username of player.
+   */
   public void initManagedBoard(String username) {
     player = new ManagedGame(username);
     otherPlayer = new UnmanagedGame();
-    this.player.connectAskNewMino(askNextMino);
-    this.player.connectAddTetrimino(addTetriminoToOtherPlayer);
+    connectLambdaPlayer(this.player);
   }
 
+  /**
+   * All necessary connection with player
+   *
+   * @param player Player to connect lambdas too
+   */
+  public void connectLambdaPlayer(ManagedGame player) {
+    player.connectAskNewMino(askNextMino);
+    player.connectAddTetrimino(addTetriminoToOtherPlayer);
+    player.connectHoldMino(this.hold);
+    player.connectLineDestroyed(this.lineDestroyed);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void addPropertyChangeListener(PropertyChangeListener[] listener) {
     this.player.addPropertyChangeListener(listener[0]);
     this.otherPlayer.addPropertyChangeListener(listener[1]);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void removePropertyChangeListener(PropertyChangeListener listener) {
     this.player.removePropertyChangeListener(listener);
     this.otherPlayer.removePropertyChangeListener(listener);
   }
 
+  /**
+   * Moves a player mino
+   *
+   * @param direction Direction to move mino in.
+   */
   public void move(Direction direction) {
     this.player.move(direction);
   }
 
+  /**
+   * Holds a player's mino.
+   */
   public void hold() {
     this.player.hold();
   }
 
+  /**
+   * Hard drops a player's mino
+   */
   public void hardDrop() {
     this.player.hardDrop();
   }
 
+  /**
+   * Soft drops a players mino.
+   */
   public void softDrop() {
     this.player.softDrop();
   }
 
+  /**
+   * Rotates a players mino
+   *
+   * @param clockwise Direction of rotation
+   */
   public void rotate(boolean clockwise) {
     player.rotate(clockwise);
   }
 
+  /**
+   * Gets status of the game
+   *
+   * @return Current status of the game.
+   */
   public GameStatus getStatus() {
     return this.player.getStatus();
   }

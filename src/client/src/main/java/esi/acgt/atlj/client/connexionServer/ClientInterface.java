@@ -47,6 +47,24 @@ public interface ClientInterface extends PropertyChangeListener {
    */
   public void requestNextMino();
 
+  /**
+   * Sends the mino that has been put into hold by player to server
+   */
+  public void sendHoldMino(Mino m);
+
+  /**
+   * Connects setNbLines lambda to client
+   *
+   * @param setNbLines Lambda to connect.
+   */
+  public void connectSetNbLines(Consumer<Integer> setNbLines);
+
+  /**
+   * Connects hold to client
+   *
+   * @param hold Lambda to connect.
+   */
+  public void connectHold(Consumer<Mino> hold);
 
   /**
    * Connect player ready lambda to client
