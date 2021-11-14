@@ -313,22 +313,7 @@ public class ManagedGame extends AbstractGame {
    * Locks a tetrimino making it unable to move.
    */
   public synchronized void lock() {
-    var t = this.actualTetrimino;
-    var tMinos = this.actualTetrimino.getMinos();
-    for (var i = 0; i < tMinos.length; ++i) {
-      for (var j = 0; j < tMinos[i].length; ++j) {
-        if (tMinos[i][j] == null) {
-          continue;
-        }
-        var line = t.getY() + i;
-        var col = t.getX() + j;
-
-        if (!(line < 0 || col < 0) && line < minos.length && col < minos[line].length) {
-          minos[line][col] = tMinos[i][j];
-        }
-
-      }
-    }
+    placeTetrimino(this.actualTetrimino);
 
     this.hasAlreadyHolded = false;
     addTetrimino.accept(actualTetrimino);
