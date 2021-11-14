@@ -129,6 +129,7 @@ public class UnmanagedGame extends AbstractGame {
 
   @Override
   public void setHold(Mino hold) {
+    this.hold = hold;
     this.changeSupport.firePropertyChange("hold", null, this.hold);
   }
 

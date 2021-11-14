@@ -250,8 +250,8 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
    *
    * @param hold new hold Tetrimino of this player
    */
-  private void updateHold(TetriminoInterface hold) {
-    this.holdTetrimino.setImage(this.getTetriminoImage(hold.getType()));
+  private void updateHold(Mino hold) {
+    this.holdTetrimino.setImage(this.getTetriminoImage(hold));
   }
 
   /**
@@ -353,7 +353,7 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
         }
 
         case "hold" -> {
-          updateHold((TetriminoInterface) Tetrimino.createTetrimino((Mino) evt.getNewValue()));
+          updateHold(((Mino) evt.getNewValue()));
         }
 
         case "next" -> {
