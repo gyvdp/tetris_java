@@ -29,7 +29,7 @@ import java.util.Map;
 
 public interface TShape {
 
-  static Map<Orientation, Mino[][]> shapes = Map.of(
+  Map<Orientation, Mino[][]> shapes = Map.of(
       Orientation.NORTH,
       new Mino[][]{
           {null, Mino.T_MINO, null, null},

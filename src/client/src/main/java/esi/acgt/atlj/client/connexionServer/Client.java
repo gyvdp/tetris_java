@@ -36,10 +36,8 @@ import esi.acgt.atlj.message.messageTypes.SetHold;
 import esi.acgt.atlj.message.messageTypes.UpdatePieceUnmanagedBoard;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
-import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.net.ConnectException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
