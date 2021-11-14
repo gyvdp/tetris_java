@@ -28,10 +28,14 @@ public class App {
   /**
    * Main class to launch server.
    *
-   * @param args launch args
+   * @param args Port on which to launch server.
    */
   public static void main(String[] args) {
-    new Server(6969);
+    int port = 6969;
+    if (args.length > 0) {
+      port = Integer.parseInt(args[0]);
+    }
+    new Server(port);
   }
 
 }
