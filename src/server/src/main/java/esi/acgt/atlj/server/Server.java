@@ -118,7 +118,7 @@ public class Server extends AbstractServer {
    */
   private static void shuffle(Mino[] array) {
     int n = array.length;
-    Random random = new Random();
+    Random random = new Random(System.currentTimeMillis());
     for (int i = 0; i < array.length; i++) {
       int randomValue = i + random.nextInt(n - i);
       Mino randomElement = array[randomValue];

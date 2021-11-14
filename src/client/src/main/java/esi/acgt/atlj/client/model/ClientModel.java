@@ -87,10 +87,7 @@ public class ClientModel extends Model {
    * Lambda to execute when locking other player.
    */
   Consumer<TetriminoInterface> lockTetrimino = (TetriminoInterface tetriminoInterface) ->
-  {
-    System.out.println("I have a tetrimino to lock");
-    otherPlayer.placeTetrimino(tetriminoInterface);
-  };
+      otherPlayer.placeTetrimino(tetriminoInterface);
 
 
   /**
@@ -166,7 +163,6 @@ public class ClientModel extends Model {
    * Sends a tetrimino to lock to server.
    */
   Consumer<TetriminoInterface> lockMyTetrimino = (TetriminoInterface m) -> {
-    System.out.println("I have a tetrimino to send as lock");
     client.lockTetrimino(m);
   };
 
