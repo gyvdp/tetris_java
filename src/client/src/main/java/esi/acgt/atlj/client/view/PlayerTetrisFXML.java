@@ -331,34 +331,36 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
 
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
-    switch (evt.getPropertyName()) {
-      case "board" -> {
-        updateBoard((Mino[][]) evt.getOldValue(), (Mino[][]) evt.getNewValue());
-      }
-      case "line" -> {
-        updateLine((int) evt.getNewValue());
-      }
+    Platform.runLater(()->{
+      switch (evt.getPropertyName()) {
+        case "board" -> {
+          updateBoard((Mino[][]) evt.getOldValue(), (Mino[][]) evt.getNewValue());
+        }
+        case "line" -> {
+          updateLine((int) evt.getNewValue());
+        }
 
-      case "score" -> {
-        updateScore((int) evt.getNewValue());
-      }
+        case "score" -> {
+          updateScore((int) evt.getNewValue());
+        }
 
-      case "username" -> {
-        updateUsername(evt.getNewValue().toString());
-      }
+        case "username" -> {
+          updateUsername(evt.getNewValue().toString());
+        }
 
-      case "hold" -> {
-        updateHold((TetriminoInterface) evt.getNewValue());
-      }
+        case "hold" -> {
+          updateHold((TetriminoInterface) evt.getNewValue());
+        }
 
-      case "next" -> {
-        updateNextPiece((TetriminoInterface) evt.getNewValue());
-      }
+        case "next" -> {
+          updateNextPiece((TetriminoInterface) evt.getNewValue());
+        }
 
-      case "winner" -> {
-        displayWinner((String) evt.getNewValue(), (String) evt.getOldValue());
+        case "winner" -> {
+          displayWinner((String) evt.getNewValue(), (String) evt.getOldValue());
+        }
       }
-    }
+    });
   }
 
   private void displayWinner(String winnerName, String reason) {

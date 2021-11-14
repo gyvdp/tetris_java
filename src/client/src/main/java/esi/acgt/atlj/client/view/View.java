@@ -73,9 +73,8 @@ public class View implements ViewInterface {
 
   @Override
   public PropertyChangeListener[] getListeners() {
-    PropertyChangeListener[] listeners = {this.bothPlayerView.getPlayer1(),
+    return new PropertyChangeListener[]{this.bothPlayerView.getPlayer1(),
         this.bothPlayerView.getPlayer2()};
-    return listeners;
   }
 
 }

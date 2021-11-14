@@ -27,6 +27,8 @@ package esi.acgt.atlj.model.game;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.function.Consumer;
 
@@ -96,16 +98,19 @@ public class ManagedGame extends AbstractGame {
    * @return True if tetrimino is able to move
    */
   public synchronized boolean move(Direction direction) {
-    if (isMoveValid(direction,
-        generateFreeMask(6, 6, actualTetrimino.getX(), actualTetrimino.getY(), 1, 1))) {
       Mino[][] oldBoard = this.getBoard();
-      this.actualTetrimino.move(direction);
+      boolean moved = this.actualTetrimino.move(direction, generateFreeMask(6, 6, actualTetrimino.getX(), actualTetrimino.getY(), 1, 1));
       this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
-      return true;
-    }
+      if (moved) {
+        if(status == GameStatus.LOCK_DOWN) {
+          setStatus(GameStatus.TETRIMINO_FALLING);
+        }
 
-    setStatus(GameStatus.TETRIMINO_FALLING);
-    return false;
+        if (status == GameStatus.TETRIMINO_HARD_DROPPING) {
+          increaseScore(2);
+        }
+      }
+    return moved;
   }
 
   @Override
@@ -146,33 +151,11 @@ public class ManagedGame extends AbstractGame {
   }
 
   /**
-   * Checks if a move is valid.
-   *
-   * @param direction Direction in which tetrimino wishes to move.
-   * @param mask      Surrouding area of tetrimino
-   * @return True if tetrimino can move
-   */
-  private synchronized boolean isMoveValid(Direction direction, boolean[][] mask) {
-    Mino[][] minos = actualTetrimino.getMinos();
-    for (int i = 0; i < minos.length; i++) {
-      for (int j = 0; j < minos[i].length; j++) {
-        int x = j + 1 + direction.getDeltaX();
-        int y = i + 1 + direction.getDeltaY();
-
-        if (!mask[y][x] && minos[i][j] != null) {
-          return false;
-        }
-      }
-    }
-
-    return true;
-  }
-
-  /**
    * Soft drops a tetrimino.
    */
   public synchronized void softDrop() {
     this.move(Direction.DOWN);
+    increaseScore(1);
   }
 
   /**
@@ -210,6 +193,10 @@ public class ManagedGame extends AbstractGame {
     int oldScore = this.score;
     this.score = score;
     this.changeSupport.firePropertyChange("score", oldScore, this.score);
+  }
+
+  public synchronized void increaseScore(int increment) {
+    setScore(score + increment);
   }
 
   /**
@@ -291,6 +278,25 @@ public class ManagedGame extends AbstractGame {
    */
   public synchronized void fireEndGame(String winnerName, String reason) {
     this.changeSupport.firePropertyChange("winner", winnerName, reason);
+  }
+
+  private synchronized List<Integer> getFullLines() {
+    List<Integer> lines = new ArrayList<>();
+    for (int i = 0; i < minos.length; ++i) {
+      boolean full = true;
+      for (int j = 0; j < minos[i].length; ++j) {
+        if (minos[i][j] == null) {
+          full = false;
+          break;
+        }
+      }
+
+      if (full) {
+        lines.add(i);
+      }
+    }
+
+    return lines;
   }
 
 }

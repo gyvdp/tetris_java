@@ -118,9 +118,26 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
   }
 
   @Override
-  public void move(Direction direction) {
-    this.x += direction.getDeltaX();
-    this.y += direction.getDeltaY();
+  public boolean move(Direction direction, boolean[][] freeMask) {
+    Mino[][] minos = this.getMinos();
+    boolean movable = true;
+    for (int i = 0; i < minos.length; i++) {
+      for (int j = 0; j < minos[i].length; j++) {
+        int x = j + 1 + direction.getDeltaX();
+        int y = i + 1 + direction.getDeltaY();
+
+        if (!freeMask[y][x] && minos[i][j] != null) {
+          movable = false;
+        }
+      }
+    }
+
+    if (movable) {
+      this.x += direction.getDeltaX();
+      this.y += direction.getDeltaY();
+      return true;
+    }
+    return false;
   }
 
 

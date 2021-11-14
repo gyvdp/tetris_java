@@ -73,6 +73,6 @@ public interface TetriminoInterface {
    *
    * @param direction Direction to move tetrimino in.
    */
-  void move(Direction direction);
+  boolean move(Direction direction, boolean[][] freeMask);
 
 }
