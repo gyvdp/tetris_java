@@ -43,8 +43,6 @@ public interface ClientInterface extends PropertyChangeListener {
 
   /**
    * Request the next color of Tetrimino.
-   *
-   * @return Next tetrimino in the bag of the server.
    */
   void requestNextMino();
 
