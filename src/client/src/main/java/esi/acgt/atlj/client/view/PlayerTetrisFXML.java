@@ -29,7 +29,6 @@ import static esi.acgt.atlj.model.game.AbstractGame.HEIGHT;
 
 import esi.acgt.atlj.client.controller.Controller;
 import esi.acgt.atlj.model.tetrimino.Mino;
-import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -53,7 +52,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-
 /**
  * Scene that contains a player's board and informations
  */
@@ -76,7 +74,7 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
   private final static Image tetri_T;
   private ImageView[][] minosGrid;
 
-  /**
+  /*
    * load all Images
    */
   static {
@@ -155,10 +153,10 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
   /**
    * Constructor of PlayerTetrisFXML
    *
-   * @param motherbox  Box wich we will bind everything
+   * @param parent     Box wich we will bind everything
    * @param controller Controller wich we interact with
    */
-  public PlayerTetrisFXML(HBox motherbox,
+  public PlayerTetrisFXML(HBox parent,
       Controller controller, Stage stage) {
     this.controller = controller;
     this.stage = stage;
@@ -173,8 +171,8 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
     }
 
     // Bindings of this.scene
-    this.scene.prefWidthProperty().bind(motherbox.widthProperty().divide(2));
-    this.scene.prefHeightProperty().bind(motherbox.heightProperty());
+    this.scene.prefWidthProperty().bind(parent.widthProperty().divide(2));
+    this.scene.prefHeightProperty().bind(parent.heightProperty());
   }
 
   /**
@@ -292,7 +290,7 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
    */
   private Image cubeColor(Mino color) {
     if (color == null) {
-      return this.image_NOMino;
+      return image_NOMino;
     }
     return switch (color) {
       case S_MINO -> image_SMino;
@@ -345,36 +343,14 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
   public void propertyChange(PropertyChangeEvent evt) {
     Platform.runLater(() -> {
       switch (evt.getPropertyName()) {
-        case "board" -> {
-          updateBoard((Mino[][]) evt.getOldValue(), (Mino[][]) evt.getNewValue());
-        }
-        case "line" -> {
-          updateLine((int) evt.getNewValue());
-        }
-
-        case "score" -> {
-          updateScore((int) evt.getNewValue());
-        }
-
-        case "username" -> {
-          updateUsername(evt.getNewValue().toString());
-        }
-
-        case "hold" -> {
-          updateHold(((Mino) evt.getNewValue()));
-        }
-
-        case "next" -> {
-          updateNextPiece((TetriminoInterface) evt.getNewValue());
-        }
-
-        case "winner" -> {
-          displayWinner((String) evt.getOldValue(), (String) evt.getNewValue());
-        }
-
-        case "status" -> {
-          updateStatusLabel((String) evt.getOldValue(), (double) evt.getNewValue());
-        }
+        case "board" -> updateBoard((Mino[][]) evt.getOldValue(), (Mino[][]) evt.getNewValue());
+        case "line" -> updateLine((int) evt.getNewValue());
+        case "score" -> updateScore((int) evt.getNewValue());
+        case "username" -> updateUsername(evt.getNewValue().toString());
+        case "hold" -> updateHold(((Mino) evt.getNewValue()));
+        case "next" -> updateNextPiece((TetriminoInterface) evt.getNewValue());
+        case "winner" -> displayWinner((String) evt.getOldValue(), (String) evt.getNewValue());
+        case "status" -> updateStatusLabel((String) evt.getOldValue(), (double) evt.getNewValue());
       }
     });
   }

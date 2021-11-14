@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.model.tetrimino;
 
 import esi.acgt.atlj.model.game.Direction;
@@ -75,4 +74,5 @@ public interface TetriminoInterface {
    */
   boolean move(Direction direction, boolean[][] freeMask);
 
+  Mino[][] rotatedShape(boolean clockwise);
 }

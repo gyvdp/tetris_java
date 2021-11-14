@@ -42,14 +42,17 @@ public class ManagedGame extends AbstractGame {
    * All lines that have been destroyed by game in an array to send to server
    */
   Consumer<List<Integer>> lineDestroyed;
+
   /**
    * Lambda expression to ask client for next piece in bag.
    */
   Runnable askNextMino;
+
   /**
    * Locked tetrimino to send to server.
    */
   Consumer<TetriminoInterface> addTetrimino;
+
   /**
    * Hold tetrimino to send to server
    */
@@ -120,8 +123,8 @@ public class ManagedGame extends AbstractGame {
    * Game starts making tetriminos fall
    */
   public synchronized void start() {
-    Mino[][] emptyboard = new Mino[HEIGHT][WIDTH];
-    this.changeSupport.firePropertyChange("board", emptyboard, this.getBoard());
+    Mino[][] emptyBoard = new Mino[HEIGHT][WIDTH];
+    this.changeSupport.firePropertyChange("board", emptyBoard, this.getBoard());
     setStatus(GameStatus.TETRIMINO_FALLING);
   }
 
@@ -133,9 +136,12 @@ public class ManagedGame extends AbstractGame {
    */
   public synchronized boolean move(Direction direction) {
     Mino[][] oldBoard = this.getBoard();
+
     boolean moved = this.actualTetrimino.move(direction,
         generateFreeMask(6, 6, actualTetrimino.getX(), actualTetrimino.getY(), 1, 1));
+
     this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
+
     if (moved) {
       if (status == GameStatus.LOCK_DOWN) {
         setStatus(GameStatus.TETRIMINO_FALLING);
@@ -301,7 +307,6 @@ public class ManagedGame extends AbstractGame {
    * Locks a tetrimino making it unable to move.
    */
   public synchronized void lock() {
-    var oldBoard = getBoard();
     var t = this.actualTetrimino;
     var tMinos = this.actualTetrimino.getMinos();
     for (var i = 0; i < tMinos.length; ++i) {

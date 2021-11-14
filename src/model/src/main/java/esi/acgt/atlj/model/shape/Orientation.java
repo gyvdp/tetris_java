@@ -22,29 +22,24 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.tetrimino;
+package esi.acgt.atlj.model.shape;
 
-import esi.acgt.atlj.model.shape.JShape;
-import esi.acgt.atlj.model.shape.Orientation;
+public enum Orientation {
+  NORTH,
+  EAST,
+  SOUTH,
+  WEST;
 
-public class JTetrimino extends Tetrimino implements JShape {
+  public static Orientation next(Orientation actual, boolean clockwise) {
+    var values = Orientation.values();
+    var actualIndex = actual.ordinal();
+    int nextIndex = 0;
+    if (clockwise) {
+      nextIndex = (actualIndex + 1) % values.length;
+    } else {
+      nextIndex = !(actualIndex - 1 < 0) ? (actualIndex - 1) : (values.length - 1 - nextIndex);
+    }
 
-  /**
-   * Constructor for JTetrimino
-   */
-  public JTetrimino() {
-    super();
-    this.minos = new Mino[][]{
-        {Mino.J_MINO, null, null, null},
-        {Mino.J_MINO, Mino.J_MINO, Mino.J_MINO, null},
-        {null, null, null, null},
-        {null, null, null, null}
-    };
-    this.type = Mino.J_MINO;
-  }
-
-  @Override
-  public Mino[][] rotatedShape(boolean clockwise) {
-    return shapes.get(Orientation.next(orientation, clockwise));
+    return values[nextIndex];
   }
 }

@@ -32,7 +32,7 @@ public interface ViewInterface {
   /**
    * Display the board of your tetris game and opponent one
    *
-   * @param username
+   * @param username username
    */
   void displayBoard(String username);
 
