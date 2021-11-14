@@ -157,8 +157,7 @@ public class ClientModel extends Model {
    */
   Runnable otherPlayerLost = () ->
   {
-    //player2.hasLost()
-    //this.start();  //TODO
+    this.otherPlayer.playerStatus("Lost", 1);
   };
 
   /**
@@ -221,6 +220,7 @@ public class ClientModel extends Model {
   public void start() {
     askNextMino.run();
     this.player.start();
+    this.otherPlayer.playerStatus("", 0);
 
     if (client != null) {
       client.sendNameToServer(player.getUsername());

@@ -70,6 +70,8 @@ public class BothPlayerView {
     this.player2 = new PlayerTetrisFXML(scene, controller);
 
     this.player1.updateUsername(username);
+    this.player1.updateStatusLabel("", 0);
+    this.player2.updateStatusLabel("Recherche", 1);
 
     this.scene.getChildren().add(player1.scene);
     this.scene.getChildren().add(player2.scene);
