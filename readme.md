@@ -8,14 +8,14 @@ résultat est jeu ou 2 joueurs peuvent s'affronter dans une partie de Tetris.
 
 ## II. Règles et choix d'implementations.
 
-l'explication du jeu se trouve ici : https://fr.wikipedia.org/wiki/Tetris
+L'explication du jeu se trouve ici : https://fr.wikipedia.org/wiki/Tetris
 
 Nous nous sommes écarter des règles de bases sur plusieurs point pour limité l'étendue du
 dévelloppement.
 
 1. Pas de règle de malus à envoyer à l'adversaire.
 
-## II. Contrainte
+## III. Contrainte
 
 ### 1ère itération.
 
@@ -36,4 +36,4 @@ Nous avons implémenté les threads à 2 endroits dans notre code.
    part entière basé sur un timer.
 2. Les communications client/server sont géré dans un autre thread.
 
-## Bugs connus
+## IV. Bugs connus
