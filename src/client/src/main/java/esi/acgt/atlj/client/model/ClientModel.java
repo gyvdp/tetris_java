@@ -246,7 +246,7 @@ public class ClientModel extends Model {
   public void connectLambdaPlayer(ManagedGame player) {
     player.connectAskNewMino(askNextMino);
     player.connectAddTetrimino(addTetriminoToOtherPlayer);
-    player.connectHoldMino(this.hold);
+    player.connectHoldMino(this.setHold);
     player.connectLineDestroyed(this.lineDestroyed);
     player.connectSendScoreServer(sendScoreServer);
   }

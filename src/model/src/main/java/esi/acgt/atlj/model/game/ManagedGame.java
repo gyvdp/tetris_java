@@ -231,6 +231,7 @@ public class ManagedGame extends AbstractGame {
     int oldScore = this.score;
     this.score = score;
     this.changeSupport.firePropertyChange("score", oldScore, this.score);
+    this.setScoreServer.accept(this.score);
   }
 
   public synchronized void increaseScore(int increment) {
@@ -302,6 +303,7 @@ public class ManagedGame extends AbstractGame {
       }
     }
     this.hasAlreadyHolded = false;
+    addTetrimino.accept(actualTetrimino);
     setActualTetrimino(this.nextTetrimino);
     askNextMino.run();
     setStatus(GameStatus.TETRIMINO_FALLING);
