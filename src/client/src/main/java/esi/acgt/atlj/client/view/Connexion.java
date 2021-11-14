@@ -117,6 +117,11 @@ public class Connexion implements Initializable {
     this.stage.close();
   }
 
+  public void clientTest() {
+    this.controller.solo("Pacliclown");
+    this.stage.close();
+  }
+
   /**
    * Initiale of the Connexion.fxml
    */

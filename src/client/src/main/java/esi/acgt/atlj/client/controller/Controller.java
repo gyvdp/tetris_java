@@ -86,4 +86,17 @@ public class Controller {
     this.view.show();
   }
 
+  public void solo(String username) {
+    try {
+      this.model.initManagedBoard(username);
+      this.view.displayBoard(username);
+      this.model.addPropertyChangeListener(this.view.getListeners());
+      this.model.start();
+    } catch (Exception e) {
+      this.view.displayError(e);
+      this.view.displayConnexion();
+    }
+    this.view.show();
+  }
+
 }
