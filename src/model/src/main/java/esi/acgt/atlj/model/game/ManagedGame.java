@@ -68,7 +68,6 @@ public class ManagedGame extends AbstractGame {
   Consumer<Integer> setScoreServer;
 
   private GameStatus status;
-  private int level;
   private final Timer timer;
   private TickHandler tickHandler;
   private boolean hasAlreadyHolded;

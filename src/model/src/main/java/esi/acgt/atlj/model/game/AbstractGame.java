@@ -39,6 +39,7 @@ public abstract class AbstractGame implements GameInterface, Serializable {
 
   protected Mino[][] minos;
   protected int score;
+  protected int level;
   protected String username;
   protected int nbLine;
   protected Mino hold;
@@ -235,7 +236,12 @@ public abstract class AbstractGame implements GameInterface, Serializable {
       }
       removed++;
     }
+    setLevel((nbLine / 10) + 1);
 
     this.changeSupport.firePropertyChange("board", oldBoard, getBoard());
+  }
+
+  public void setLevel(int level) {
+    this.level = level;
   }
 }
