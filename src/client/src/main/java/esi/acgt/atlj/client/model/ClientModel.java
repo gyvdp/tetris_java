@@ -180,7 +180,7 @@ public class ClientModel extends Model {
    * disconnected
    */
   Runnable playerDisconnected = () ->
-      this.player.fireEndGame(this.player.getUsername(), "Le joueurs adverse s'est déconnecté.");
+      this.otherPlayer.playerStatus("Disconnected", 1);
 
   /**
    * Instantiates a new client with port and host to connect to. Connects all lambda methods in
