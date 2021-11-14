@@ -55,13 +55,13 @@ public class Controller {
     if (this.model.getStatus() != GameStatus.NOT_STARTED
         && this.model.getStatus() != GameStatus.LOCK_OUT) {
       switch (input) {
-        case LEFT -> this.model.move(Direction.LEFT);
-        case RIGHT -> this.model.move(Direction.RIGHT);
-        case DOWN -> this.model.softDrop();
-        case UP, X -> this.model.rotate(true);
-        case SHIFT, C -> this.model.hold();
-        case SPACE -> this.model.hardDrop();
-        case CONTROL -> this.model.rotate(false);
+        case LEFT, NUMPAD4 -> this.model.move(Direction.LEFT);
+        case RIGHT, NUMPAD6 -> this.model.move(Direction.RIGHT);
+        case DOWN, NUMPAD2 -> this.model.softDrop();
+        case UP, X, NUMPAD3, NUMPAD5 -> this.model.rotate(true);
+        case SHIFT, C, NUMPAD0 -> this.model.hold();
+        case SPACE, NUMPAD8 -> this.model.hardDrop();
+        case CONTROL, NUMPAD1, NUMPAD9 -> this.model.rotate(false);
       }
     }
 
