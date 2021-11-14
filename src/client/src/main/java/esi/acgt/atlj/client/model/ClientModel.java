@@ -229,7 +229,6 @@ public class ClientModel extends Model {
     askNextMino.run();
     this.player.start();
     this.otherPlayer.playerStatus("", 0);
-
     if (client != null) {
       client.sendNameToServer(player.getUsername());
     }
