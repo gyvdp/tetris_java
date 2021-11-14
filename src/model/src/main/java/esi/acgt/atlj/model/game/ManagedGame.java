@@ -27,7 +27,6 @@ package esi.acgt.atlj.model.game;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -191,8 +190,9 @@ public class ManagedGame extends AbstractGame {
         this.setActualTetrimino(temp);
       }
       hasAlreadyHolded = true;
+      setStatus(GameStatus.TETRIMINO_FALLING);
     }
-    setStatus(GameStatus.TETRIMINO_FALLING);
+
   }
 
   /**
@@ -209,8 +209,7 @@ public class ManagedGame extends AbstractGame {
    * Soft drops a tetrimino.
    */
   public synchronized void softDrop() {
-    this.move(Direction.DOWN);
-    increaseScore(1);
+    setStatus(GameStatus.SOFT_DROPPING);
   }
 
   /**
@@ -225,18 +224,15 @@ public class ManagedGame extends AbstractGame {
    *
    * @param clockwise True if tetrimino should rotate clockwise.
    */
-  public synchronized void rotate(boolean clockwise) {
-    var oldBoard = this.getBoard();
-    try {
-      actualTetrimino.rotate(clockwise, this.generateFreeMask(4, 4, actualTetrimino.getX(),
-          actualTetrimino.getY(), 0, 0));
-      this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
-    } catch (InvalidParameterException e) {
-      //Check if there is another block or if its wall
-      //If it is another block tetrimino must be placed If wall do nothing
-    } catch (Exception ignored) {
-
+  public synchronized boolean rotate(boolean clockwise) {
+    var oldBoard = getBoard();
+    boolean rotated = actualTetrimino.rotate(clockwise,
+        this.generateFreeMask(4, 4, actualTetrimino.getX(),
+            actualTetrimino.getY(), 0, 0));
+    if (rotated) {
+      this.changeSupport.firePropertyChange("board", oldBoard, getBoard());
     }
+    return rotated;
   }
 
   /**
@@ -280,19 +276,17 @@ public class ManagedGame extends AbstractGame {
    */
   public synchronized void setStatus(GameStatus status) {
     this.tickHandler.cancel();
+    this.timer.purge();
     this.tickHandler = new TickHandler(this);
     this.status = status;
 
-    if (status == GameStatus.TETRIMINO_FALLING) {
-      timer.schedule(this.tickHandler, 0, TickHandler.tickDelay(this.level));
-    }
-
-    if (status == GameStatus.LOCK_DOWN) {
-      this.timer.schedule(this.tickHandler, 500);
-    }
-
-    if (status == GameStatus.TETRIMINO_HARD_DROPPING) {
-      this.timer.schedule(this.tickHandler, 0, 1);
+    switch (status) {
+      case TETRIMINO_FALLING -> timer.schedule(this.tickHandler, TickHandler.tickDelay(this.level));
+      case LOCK_DOWN -> this.timer.schedule(this.tickHandler, 500);
+      case TETRIMINO_HARD_DROPPING -> this.timer.schedule(this.tickHandler, 1);
+      case ROTATING_CLOCKWISE,
+          ROTATING_ANTI_CLOCKWISE,
+          SOFT_DROPPING -> this.timer.schedule(this.tickHandler, 1);
     }
   }
 

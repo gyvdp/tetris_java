@@ -40,14 +40,33 @@ public class TickHandler extends TimerTask {
       case TETRIMINO_FALLING -> {
         if (!managedBoard.move(Direction.DOWN)) {
           managedBoard.setStatus(GameStatus.LOCK_DOWN);
+        } else {
+          managedBoard.setStatus(GameStatus.TETRIMINO_FALLING);
         }
       }
       case TETRIMINO_HARD_DROPPING -> {
         if (!managedBoard.move(Direction.DOWN)) {
           managedBoard.lock();
+        } else {
+          managedBoard.setStatus(GameStatus.TETRIMINO_HARD_DROPPING);
         }
       }
       case LOCK_DOWN -> managedBoard.lock();
+      case ROTATING_CLOCKWISE -> {
+        if (managedBoard.rotate(true)) {
+          managedBoard.setStatus(GameStatus.TETRIMINO_FALLING);
+        }
+      }
+      case ROTATING_ANTI_CLOCKWISE -> managedBoard.rotate(false);
+      case SOFT_DROPPING -> {
+        if (managedBoard.move(Direction.DOWN)) {
+          managedBoard.increaseScore(1);
+          managedBoard.setStatus(GameStatus.TETRIMINO_FALLING);
+        } else {
+          managedBoard.setStatus(GameStatus.LOCK_DOWN);
+        }
+
+      }
     }
   }
 

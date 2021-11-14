@@ -211,7 +211,7 @@ public abstract class AbstractGame implements GameInterface, Serializable {
    * @param status  new Status to display
    * @param opacity opcaity of this new status
    */
-  public void playerStatus(String status, double opacity) {
+  public synchronized void playerStatus(String status, double opacity) {
     this.changeSupport.firePropertyChange("status", status, opacity);
   }
 
