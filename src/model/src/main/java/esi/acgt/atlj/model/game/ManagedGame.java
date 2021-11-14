@@ -120,6 +120,8 @@ public class ManagedGame extends AbstractGame {
    * Game starts making tetriminos fall
    */
   public synchronized void start() {
+    Mino[][] emptyboard = new Mino[HEIGHT][WIDTH];
+    this.changeSupport.firePropertyChange("board", emptyboard, this.getBoard());
     setStatus(GameStatus.TETRIMINO_FALLING);
   }
 
