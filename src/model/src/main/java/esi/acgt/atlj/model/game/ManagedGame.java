@@ -260,15 +260,8 @@ public class ManagedGame extends AbstractGame {
     increaseScore(action.getScore() * multiplier);
   }
 
-  /**
-   * Sets the number of lines player has destroyed
-   *
-   * @param nbLine Number of lines to set
-   */
-  public synchronized void setNbLine(int nbLine) {
-    int oldNbLine = this.nbLine;
-    this.nbLine = nbLine;
-    this.changeSupport.firePropertyChange("line", oldNbLine, this.nbLine);
+  public synchronized void incrementNbLines(int increment) {
+    setNbLine(nbLine + increment);
   }
 
   /**
@@ -323,6 +316,7 @@ public class ManagedGame extends AbstractGame {
 
       }
     }
+
     this.hasAlreadyHolded = false;
     addTetrimino.accept(actualTetrimino);
     setActualTetrimino(this.nextTetrimino);
@@ -332,6 +326,7 @@ public class ManagedGame extends AbstractGame {
       removeLines(lines);
       lineDestroyed.accept(lines);
       increaseScore(Action.getActionByFullLines(lines.size()));
+      incrementNbLines(lines.size());
     }
 
     setStatus(GameStatus.TETRIMINO_FALLING);

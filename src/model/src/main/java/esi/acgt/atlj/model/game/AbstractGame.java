@@ -174,11 +174,15 @@ public abstract class AbstractGame implements GameInterface, Serializable {
   }
 
   /**
-   * Setter of nbLine
+   * Sets the number of lines player has destroyed
    *
-   * @param nbLine new NbLine
+   * @param nbLine Number of lines to set
    */
-  public abstract void setNbLine(int nbLine);
+  public synchronized void setNbLine(int nbLine) {
+    int oldNbLine = this.nbLine;
+    this.nbLine = nbLine;
+    this.changeSupport.firePropertyChange("line", oldNbLine, this.nbLine);
+  }
 
   /**
    * Setter of hold
