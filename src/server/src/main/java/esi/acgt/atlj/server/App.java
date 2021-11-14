@@ -23,6 +23,8 @@
  */
 package esi.acgt.atlj.server;
 
+import java.io.IOException;
+
 public class App {
 
   /**

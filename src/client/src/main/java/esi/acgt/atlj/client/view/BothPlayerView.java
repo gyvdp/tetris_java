@@ -66,8 +66,8 @@ public class BothPlayerView {
     this.doBindings(stage);
     stage.setScene(new Scene(this.scene));
 
-    this.player1 = new PlayerTetrisFXML(scene, controller);
-    this.player2 = new PlayerTetrisFXML(scene, controller);
+    this.player1 = new PlayerTetrisFXML(scene, controller, stage);
+    this.player2 = new PlayerTetrisFXML(scene, controller, stage);
 
     this.player1.updateUsername(username);
     this.player1.updateStatusLabel("", 0);

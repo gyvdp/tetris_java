@@ -133,6 +133,7 @@ public class Server extends AbstractServer {
   @Override
   protected void serverStopped() {
     super.serverStopped();
+    System.out.println("Bye bye... Server is closing");
     System.exit(0);
   }
 
