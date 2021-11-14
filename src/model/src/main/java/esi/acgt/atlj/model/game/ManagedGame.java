@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.board;
+package esi.acgt.atlj.model.game;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
@@ -33,7 +33,7 @@ import java.util.function.Consumer;
 /**
  * Game that is going to be played by the playing player.
  */
-public class ManagedGame extends Game {
+public class ManagedGame extends AbstractGame {
 
   /**
    * Lambda expression to ask client for next piece in bag.
@@ -59,7 +59,7 @@ public class ManagedGame extends Game {
     super(username);
     hasAlreadyHolded = false;
     this.status = GameStatus.NOT_STARTED;
-    this.level = 3;
+    this.level = 1;
     this.timer = new Timer(true);
     this.tickHandler = new TickHandler(this);
   }
@@ -104,6 +104,7 @@ public class ManagedGame extends Game {
       return true;
     }
 
+    setStatus(GameStatus.TETRIMINO_FALLING);
     return false;
   }
 
@@ -122,7 +123,7 @@ public class ManagedGame extends Game {
   /**
    * Adds a tetrimino to the hold case
    */
-  public void hold() {
+  public synchronized void hold() {
     if (!hasAlreadyHolded) {
       if (hold == null) {
         this.setHold(this.actualTetrimino.getType());
@@ -134,6 +135,7 @@ public class ManagedGame extends Game {
       }
       hasAlreadyHolded = true;
     }
+    setStatus(GameStatus.TETRIMINO_FALLING);
   }
 
   @Override
@@ -177,12 +179,7 @@ public class ManagedGame extends Game {
    * Makes a tetrimino hard drop automatically locking it in place.
    */
   public synchronized void hardDrop() {
-    while (isMoveValid(Direction.DOWN,
-        generateFreeMask(6, 6, actualTetrimino.getX(), actualTetrimino.getY(), 1, 1))) {
-      Mino[][] oldBoard = this.getBoard();
-      this.actualTetrimino.move(Direction.DOWN);
-      this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
-    }
+    setStatus(GameStatus.TETRIMINO_HARD_DROPPING);
   }
 
   /**
@@ -252,6 +249,10 @@ public class ManagedGame extends Game {
     if (status == GameStatus.LOCK_DOWN) {
       this.timer.schedule(this.tickHandler, 500);
     }
+
+    if(status == GameStatus.TETRIMINO_HARD_DROPPING) {
+      this.timer.schedule(this.tickHandler, 0, 1);
+    }
   }
 
   /**
@@ -288,7 +289,7 @@ public class ManagedGame extends Game {
    * @param winnerName Name of the winner
    * @param reason     Reason from player to have won, sometimes it's just skill :}
    */
-  public void fireEndGame(String winnerName, String reason) {
+  public synchronized void fireEndGame(String winnerName, String reason) {
     this.changeSupport.firePropertyChange("winner", winnerName, reason);
   }
 

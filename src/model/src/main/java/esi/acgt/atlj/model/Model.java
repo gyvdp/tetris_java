@@ -24,7 +24,7 @@
 
 package esi.acgt.atlj.model;
 
-import esi.acgt.atlj.model.board.GameInterface;
+import esi.acgt.atlj.model.game.GameInterface;
 import java.util.LinkedList;
 import java.util.List;
 

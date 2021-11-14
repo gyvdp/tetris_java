@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package esi.acgt.atlj.model.board;
+package esi.acgt.atlj.model.game;
 
 public enum Direction {
   RIGHT(1, 0),

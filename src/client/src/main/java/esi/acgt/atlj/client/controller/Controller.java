@@ -2,8 +2,8 @@ package esi.acgt.atlj.client.controller;
 
 import esi.acgt.atlj.client.model.ClientModel;
 import esi.acgt.atlj.client.view.ViewInterface;
-import esi.acgt.atlj.model.board.GameStatus;
-import esi.acgt.atlj.model.board.Direction;
+import esi.acgt.atlj.model.game.GameStatus;
+import esi.acgt.atlj.model.game.Direction;
 import java.util.Objects;
 import javafx.scene.input.KeyCode;
 

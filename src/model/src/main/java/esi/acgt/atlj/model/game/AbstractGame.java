@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.board;
+package esi.acgt.atlj.model.game;
 
 import esi.acgt.atlj.model.tetrimino.ITetrimino;
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -34,7 +34,7 @@ import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Arrays;
 
-public abstract class Game implements GameInterface, Serializable {
+public abstract class AbstractGame implements GameInterface, Serializable {
 
   protected Mino[][] minos;
   protected int score;
@@ -45,7 +45,7 @@ public abstract class Game implements GameInterface, Serializable {
   protected TetriminoInterface nextTetrimino;
   protected PropertyChangeSupport changeSupport;
 
-  public Game(String username) {
+  public AbstractGame(String username) {
     this.username = username;
     this.score = 0;
     this.nbLine = 0;

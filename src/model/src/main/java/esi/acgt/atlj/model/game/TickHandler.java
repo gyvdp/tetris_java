@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.board;
+package esi.acgt.atlj.model.game;
 
 import java.util.TimerTask;
 
@@ -36,12 +36,18 @@ public class TickHandler extends TimerTask {
 
   @Override
   public synchronized void run() {
-    if (managedBoard.getStatus() == GameStatus.TETRIMINO_FALLING) {
-      if (!managedBoard.move(Direction.DOWN)) {
-        managedBoard.setStatus(GameStatus.LOCK_DOWN);
+    switch (managedBoard.getStatus()) {
+      case TETRIMINO_FALLING -> {
+        if (!managedBoard.move(Direction.DOWN)) {
+          managedBoard.setStatus(GameStatus.LOCK_DOWN);
+        }
       }
-    } else if (managedBoard.getStatus() == GameStatus.LOCK_DOWN) {
-      managedBoard.lock();
+      case TETRIMINO_HARD_DROPPING -> {
+        if (!managedBoard.move(Direction.DOWN)) {
+          managedBoard.lock();
+        }
+      }
+      case LOCK_DOWN -> managedBoard.lock();
     }
   }
 

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.board;
+package esi.acgt.atlj.model.game;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
@@ -30,7 +30,7 @@ import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 /**
  * Game that is going to be updated by server. Opponent.
  */
-public class UnmanagedGame extends Game {
+public class UnmanagedGame extends AbstractGame {
 
   /**
    * Initializes a unmanaged game

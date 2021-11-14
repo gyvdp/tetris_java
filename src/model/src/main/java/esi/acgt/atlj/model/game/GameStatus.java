@@ -22,11 +22,12 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.board;
+package esi.acgt.atlj.model.game;
 
 public enum GameStatus {
   NOT_STARTED,
   TETRIMINO_FALLING,
+  TETRIMINO_HARD_DROPPING,
   TETRIMINO_LOCKED,
   LOCK_DOWN,
   LOCK_OUT

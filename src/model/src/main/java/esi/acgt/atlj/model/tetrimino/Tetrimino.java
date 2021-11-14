@@ -23,7 +23,7 @@
  */
 package esi.acgt.atlj.model.tetrimino;
 
-import esi.acgt.atlj.model.board.Direction;
+import esi.acgt.atlj.model.game.Direction;
 import java.io.Serializable;
 
 public abstract class Tetrimino implements TetriminoInterface, Serializable {

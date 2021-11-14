@@ -3,7 +3,7 @@
     <module name="atlj.model" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="esi.acgt.atlj.model.board.*" />
+        <option name="PATTERN" value="esi.acgt.atlj.model.game.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

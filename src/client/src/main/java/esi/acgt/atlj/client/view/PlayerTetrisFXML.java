@@ -24,8 +24,8 @@
 
 package esi.acgt.atlj.client.view;
 
-import static esi.acgt.atlj.model.board.GameInterface.HEIGHT;
-import static esi.acgt.atlj.model.board.GameInterface.WIDTH;
+import static esi.acgt.atlj.model.game.GameInterface.HEIGHT;
+import static esi.acgt.atlj.model.game.GameInterface.WIDTH;
 
 import esi.acgt.atlj.client.controller.Controller;
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -50,7 +50,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
 
 /**
  * Scene that contains a player's board and informations

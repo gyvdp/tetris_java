@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.board;
+package esi.acgt.atlj.model.game;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;

@@ -24,8 +24,7 @@
 
 package esi.acgt.atlj.model.tetrimino;
 
-import esi.acgt.atlj.model.board.Direction;
-import java.io.Serializable;
+import esi.acgt.atlj.model.game.Direction;
 
 /**
  * The TetriminoInterface
