@@ -86,8 +86,18 @@ public interface GameInterface {
    */
   TetriminoInterface getNextTetrimino();
 
+  /**
+   * Add a Listener
+   *
+   * @param listener Listerner to add
+   */
   void addPropertyChangeListener(PropertyChangeListener listener);
 
+  /**
+   * Remove a Listener
+   *
+   * @param listener Listerner to remove
+   */
   void removePropertyChangeListener(PropertyChangeListener listener);
 
 }

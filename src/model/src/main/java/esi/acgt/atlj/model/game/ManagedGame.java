@@ -120,6 +120,8 @@ public class ManagedGame extends AbstractGame {
    * Game starts making tetriminos fall
    */
   public synchronized void start() {
+    Mino[][] emptyboard = new Mino[HEIGHT][WIDTH];
+    this.changeSupport.firePropertyChange("board", emptyboard, this.getBoard());
     setStatus(GameStatus.TETRIMINO_FALLING);
   }
 
@@ -150,6 +152,9 @@ public class ManagedGame extends AbstractGame {
     this.lineDestroyed = lineDestroyed;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public synchronized void setHold(Mino hold) {
     this.hold = hold;
@@ -157,6 +162,9 @@ public class ManagedGame extends AbstractGame {
     this.changeSupport.firePropertyChange("hold", null, this.getHold());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public synchronized void setNextTetrimino(TetriminoInterface nextTetrimino) {
     this.nextTetrimino = nextTetrimino;
@@ -181,6 +189,9 @@ public class ManagedGame extends AbstractGame {
     setStatus(GameStatus.TETRIMINO_FALLING);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public synchronized void setActualTetrimino(TetriminoInterface actualTetrimino) {
     Mino[][] oldBoard = this.getBoard();
