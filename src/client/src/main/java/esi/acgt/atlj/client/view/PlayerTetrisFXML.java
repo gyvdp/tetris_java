@@ -24,8 +24,8 @@
 
 package esi.acgt.atlj.client.view;
 
-import static esi.acgt.atlj.model.board.BoardInterface.HEIGHT;
-import static esi.acgt.atlj.model.board.BoardInterface.WIDTH;
+import static esi.acgt.atlj.model.game.GameInterface.HEIGHT;
+import static esi.acgt.atlj.model.game.GameInterface.WIDTH;
 
 import esi.acgt.atlj.client.controller.Controller;
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -51,7 +51,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
 
 /**
  * Scene that contains a player's board and informations
@@ -333,7 +332,7 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
 
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
-    Platform.runLater(()->{
+    Platform.runLater(() -> {
       switch (evt.getPropertyName()) {
         case "board" -> {
           updateBoard((Mino[][]) evt.getOldValue(), (Mino[][]) evt.getNewValue());
@@ -350,16 +349,16 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
           updateUsername(evt.getNewValue().toString());
         }
 
-      case "hold" -> {
-        updateHold((TetriminoInterface) Tetrimino.createTetrimino((Mino) evt.getNewValue()));
-      }
+        case "hold" -> {
+          updateHold((TetriminoInterface) Tetrimino.createTetrimino((Mino) evt.getNewValue()));
+        }
 
         case "next" -> {
           updateNextPiece((TetriminoInterface) evt.getNewValue());
         }
 
         case "winner" -> {
-          displayWinner((String) evt.getNewValue(), (String) evt.getOldValue());
+          displayWinner((String) evt.getOldValue(), (String) evt.getNewValue());
         }
       }
     });
