@@ -26,11 +26,17 @@ package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.MessageType;
-import esi.acgt.atlj.model.tetrimino.Tetrimino;
+
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
+/**
+ * Client tell the server to add to its unmanaged board a tetrimino
+ */
 public class AddTetrimino extends Message {
 
+  /**
+   * Tetrimino to send
+   */
   private final TetriminoInterface tetrimino;
 
   /**

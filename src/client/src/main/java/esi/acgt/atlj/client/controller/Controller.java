@@ -17,7 +17,7 @@ public class Controller {
   private final ViewInterface view;
 
   /**
-   * Construtctor of Controller
+   * Constructor of Controller
    *
    * @param model Model of the Client
    * @param view  View of the Client
@@ -31,7 +31,7 @@ public class Controller {
 
 
   /**
-   * Launch the view
+   * Launches the view
    */
   public void start() {
     view.setController(this);

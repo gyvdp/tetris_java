@@ -47,10 +47,26 @@ public interface ClientInterface extends PropertyChangeListener {
    */
   public void requestNextMino();
 
+
+  /**
+   * Connect player ready lambda to client
+   *
+   * @param playerReady Lambda to connect
+   */
   public void connectPlayerReady(Runnable playerReady);
 
+  /**
+   * Connects other player lost lambda to client
+   *
+   * @param otherPlayerLost Lambda to connect
+   */
   public void connectOtherPlayerLost(Runnable otherPlayerLost);
 
+  /**
+   * Connects player disconnected to client
+   *
+   * @param playerDisconnected Lambda to connect
+   */
   public void connectPlayerDisconnected(Runnable playerDisconnected);
 
   /**
@@ -59,11 +75,6 @@ public interface ClientInterface extends PropertyChangeListener {
    * @param updateNextTetriminoOtherPlayer Lambda function to connect.
    */
   public void connectUpdateNextTetriminoOtherPlayer(Consumer<Mino> updateNextTetriminoOtherPlayer);
-
-  /**
-   * Syncs your board with the server.
-   */
-  public void syncBoardWithServer();
 
   /**
    * Sends your name to the server.
@@ -94,10 +105,23 @@ public interface ClientInterface extends PropertyChangeListener {
   public void connectSendScore(Consumer<Integer> sendScore);
 
 
+  /**
+   * Closes the connection to server
+   */
   public void closeConnectionToServer();
 
+  /**
+   * Connects a receive user name to client
+   *
+   * @param receiveName Lambda function to connect
+   */
   public void connectReceiveUserName(Consumer<String> receiveName);
 
+  /**
+   * Sends your name to the server
+   *
+   * @param name Same to send
+   */
   public void sendNameToServer(String name);
 
   /**
@@ -108,6 +132,11 @@ public interface ClientInterface extends PropertyChangeListener {
   public void connectRemoveLine(Consumer<Integer> removeLine);
 
 
+  /**
+   * Sends a tetrimino to the opposing player
+   *
+   * @param tetriminoInterface Tetrimino to send
+   */
   public void sendTetriminoToOtherPlayer(TetriminoInterface tetriminoInterface);
 
   /**

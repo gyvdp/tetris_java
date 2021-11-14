@@ -27,8 +27,14 @@ package esi.acgt.atlj.message.messageTypes;
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.MessageType;
 
+/**
+ * Sends score to server.
+ */
 public class SendScore extends Message {
 
+  /**
+   * Score to send.
+   */
   private final int score;
 
   /**

@@ -26,6 +26,10 @@ package esi.acgt.atlj.message;
 
 import java.io.Serializable;
 
+/**
+ * Transporter of information. Each message has a type and is serializable to be sent between client
+ * and server
+ */
 public abstract class Message implements Serializable {
 
   /**

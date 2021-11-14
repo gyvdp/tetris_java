@@ -28,12 +28,20 @@ import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.model.tetrimino.Mino;
 
+/**
+ * Sends a mino to a client
+ */
 public class SendPiece extends Message {
 
+  /**
+   * Mino to send
+   */
   private final Mino mino;
 
   /**
    * Constructor for send piece type of message.
+   *
+   * @param mino Mino to send
    */
   public SendPiece(Mino mino) {
     this.mino = mino;

@@ -27,8 +27,11 @@ package esi.acgt.atlj.message.messageTypes;
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.MessageType;
 
+/**
+ * Asks next tetrimino in bag
+ */
 public class AskPiece extends Message {
-  
+
   /**
    * Constructor for askPiece type of message.
    */

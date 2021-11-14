@@ -28,15 +28,31 @@ import static esi.acgt.atlj.message.MessageType.SEND_NAME;
 
 import esi.acgt.atlj.message.Message;
 
+/**
+ * Sends its name to the server
+ */
 public class SendName extends Message {
 
+  /**
+   * User name to send
+   */
   private String username;
 
+  /**
+   * Constructor for send username
+   *
+   * @param username Username to send
+   */
   public SendName(String username) {
     this.username = username;
     this.messageType = SEND_NAME;
   }
 
+  /**
+   * Getter for current name of user.
+   *
+   * @return Username of player.
+   */
   public String getUsername() {
     return this.username;
   }

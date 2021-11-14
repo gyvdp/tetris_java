@@ -27,8 +27,14 @@ package esi.acgt.atlj.message.messageTypes;
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.MessageType;
 
+/**
+ * Tells the server to remove a line in its unmanaged board.
+ */
 public class RemoveLine extends Message {
 
+  /**
+   * Line to remove
+   */
   private final int line;
 
   /**
@@ -39,8 +45,6 @@ public class RemoveLine extends Message {
     this.line = line;
   }
 
-  ;
-
   /**
    * Getter for line to remove
    *
@@ -49,4 +53,4 @@ public class RemoveLine extends Message {
   public int getLine() {
     return line;
   }
-};
+}

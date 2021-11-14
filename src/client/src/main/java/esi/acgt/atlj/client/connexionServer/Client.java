@@ -73,8 +73,19 @@ public class Client extends AbstractClient implements ClientInterface {
    */
   private Consumer<Mino> updateNextTetriminoOtherPlayer;
 
+  /**
+   * Lambda to run when players are ready
+   */
   Runnable playerReady;
+
+  /**
+   * Lambda to run when other player has lost
+   */
   Runnable otherPlayerLost;
+
+  /**
+   * Lambda to run when other player has disconnected
+   */
   Runnable playerDisconnected;
 
   /**
@@ -115,16 +126,25 @@ public class Client extends AbstractClient implements ClientInterface {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void closeConnectionToServer() {
     super.closeConnectionToServer();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void connectReceiveUserName(Consumer<String> receiveName) {
     this.receiveName = receiveName;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void sendNameToServer(String name) {
     try {
@@ -134,6 +154,9 @@ public class Client extends AbstractClient implements ClientInterface {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void connectUpdateNextTetriminoOtherPlayer(Consumer<Mino> updateNextTetriminoOtherPlayer) {
     this.updateNextTetriminoOtherPlayer = updateNextTetriminoOtherPlayer;
@@ -172,6 +195,9 @@ public class Client extends AbstractClient implements ClientInterface {
     this.removeLine = removeLine;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void sendTetriminoToOtherPlayer(TetriminoInterface tetriminoInterface) {
     try {
@@ -221,36 +247,33 @@ public class Client extends AbstractClient implements ClientInterface {
     try {
       sendToServer(new AskPiece());
     } catch (IOException e) {
-      //pop up to gui
+      System.err.println("cannot ask piece to server");
     }
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void connectPlayerReady(Runnable playerReady) {
     this.playerReady = playerReady;
-  }
-
-  @Override
-  public void connectOtherPlayerLost(Runnable otherPlayerLost) {
-    this.otherPlayerLost = otherPlayerLost;
-  }
-
-  @Override
-  public void connectPlayerDisconnected(Runnable playerDisconnected) {
-    this.playerDisconnected = playerDisconnected;
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public void syncBoardWithServer() {
-    try {
-      sendToServer(new AskPiece());
-    } catch (IOException e) {
-      //pop up to gui
-    }
+  public void connectOtherPlayerLost(Runnable otherPlayerLost) {
+    this.otherPlayerLost = otherPlayerLost;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void connectPlayerDisconnected(Runnable playerDisconnected) {
+    this.playerDisconnected = playerDisconnected;
   }
 
   /**
@@ -261,7 +284,7 @@ public class Client extends AbstractClient implements ClientInterface {
     try {
       sendToServer(new AskPiece());
     } catch (IOException e) {
-      //pop up to gui
+      System.err.println("Cannot send name to server");
     }
   }
 
@@ -274,7 +297,7 @@ public class Client extends AbstractClient implements ClientInterface {
     try {
       sendToServer(new SendScore(score));
     } catch (IOException e) {
-      //pop up to gui
+      System.err.println("Cannot send name to server");
     }
   }
 
@@ -286,7 +309,7 @@ public class Client extends AbstractClient implements ClientInterface {
     try {
       sendToServer(new RemoveLine(line));
     } catch (IOException e) {
-      //pop up to gui
+      System.err.println("Cannot send line to remove");
     }
   }
 
