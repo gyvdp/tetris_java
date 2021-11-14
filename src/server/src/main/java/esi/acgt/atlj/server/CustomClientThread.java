@@ -213,7 +213,7 @@ public class CustomClientThread extends Thread {
       }
     } catch (IOException e) {
       if (((Message) information).messageType != null) {
-        System.err.println("Could not send message" + information.toString());
+        System.err.println("Could not send message" + information);
       }
     }
   }

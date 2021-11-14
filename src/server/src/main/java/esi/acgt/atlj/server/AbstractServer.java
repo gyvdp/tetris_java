@@ -69,7 +69,7 @@ public abstract class AbstractServer implements Runnable {
    */
   public AbstractServer(int port) {
     this.port = port;
-    threads = new ArrayList<Thread>();
+    threads = new ArrayList<>();
   }
 
   /**

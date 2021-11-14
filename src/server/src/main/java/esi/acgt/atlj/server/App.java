@@ -23,17 +23,15 @@
  */
 package esi.acgt.atlj.server;
 
-import java.io.IOException;
-
 public class App {
 
   /**
    * Main class to launch server.
    *
-   * @param args
+   * @param args launch args
    */
   public static void main(String[] args) {
-    Server server = new Server(6969);
+    new Server(6969);
   }
 
 }

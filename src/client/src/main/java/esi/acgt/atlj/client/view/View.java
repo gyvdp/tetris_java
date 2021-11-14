@@ -26,7 +26,7 @@ public class View implements ViewInterface {
     this.primaryStage = new Stage();
     this.primaryStage.setTitle("Tetris connexion");
     // TODO Cest quoi cette connection?
-    Connexion connexion = new Connexion(this.controller, this.primaryStage);
+    new Connexion(this.controller, this.primaryStage);
     this.primaryStage.setResizable(false);
   }
 
@@ -38,9 +38,7 @@ public class View implements ViewInterface {
   @Override
   public void displayBoard(String username) {
     this.primaryStage = new Stage();
-    this.primaryStage.setOnCloseRequest(event -> {
-      this.controller.disconnect();
-    });
+    this.primaryStage.setOnCloseRequest(event -> this.controller.disconnect());
     this.bothPlayerView = new BothPlayerView(this.controller, this.primaryStage, username);
   }
 
