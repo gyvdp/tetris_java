@@ -24,10 +24,10 @@
 
 package esi.acgt.atlj.model.tetrimino;
 
-import esi.acgt.atlj.model.shape.IShape;
+import esi.acgt.atlj.model.shape.LShape;
 import esi.acgt.atlj.model.shape.Orientation;
 
-public class LTetrimino extends Tetrimino implements IShape {
+public class LTetrimino extends Tetrimino implements LShape {
 
   /**
    * Constructor for LTetrimino
