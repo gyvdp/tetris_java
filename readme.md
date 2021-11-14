@@ -1,5 +1,8 @@
 # Tetris
 
+Le port de connection par défaut au server est 6969. Il peut être modifier en fournissant en
+argument une valeur different en lançant le server.
+
 ## I. Introduction
 
 Nous avons implémenté une version à deux joueurs du jeu tetris. Pour se faire nous nous somme basé
