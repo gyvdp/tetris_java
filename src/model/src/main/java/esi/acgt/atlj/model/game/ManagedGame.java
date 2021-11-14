@@ -238,6 +238,11 @@ public class ManagedGame extends AbstractGame {
     setScore(score + increment);
   }
 
+  public synchronized void increaseScore(Action action) {
+    int multiplier = action.getMultiplyLevel() ? this.level : 1;
+    increaseScore(action.getScore() * multiplier);
+  }
+
   /**
    * Sets the number of lines player has destroyed
    *
@@ -306,6 +311,12 @@ public class ManagedGame extends AbstractGame {
     addTetrimino.accept(actualTetrimino);
     setActualTetrimino(this.nextTetrimino);
     askNextMino.run();
+    List<Integer> lines = getFullLines();
+    if (lines.size() != 0) {
+      removeLines(lines);
+      increaseScore(Action.getActionByFullLines(lines.size()));
+    }
+
     setStatus(GameStatus.TETRIMINO_FALLING);
   }
 

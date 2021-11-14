@@ -33,6 +33,8 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public abstract class AbstractGame implements GameInterface, Serializable {
 
@@ -148,6 +150,26 @@ public abstract class AbstractGame implements GameInterface, Serializable {
   public abstract void setNextTetrimino(TetriminoInterface nextTetrimino);
 
   public abstract void setActualTetrimino(TetriminoInterface actualTetrimino);
+
+  public synchronized void removeLines(List<Integer> lines) {
+    var oldBoard = getBoard();
+    lines.sort(Collections.reverseOrder());
+    int removed = 0;
+    for (var line : lines) {
+      if (line > minos.length - 1 || line < 0) {
+        throw new IllegalArgumentException("You cannot remove a line that is out of the game");
+      }
+
+      for (int i = line + removed; i >= 0; --i) {
+        for (int j = 0; j < minos[i].length; ++j) {
+          minos[i][j] = i != 0 ? minos[i - 1][j] : null;
+        }
+      }
+      removed++;
+    }
+
+    this.changeSupport.firePropertyChange("board", oldBoard, getBoard());
+  }
 
   public void playerStatus(String status, double opacity) {
     this.changeSupport.firePropertyChange("status", status, opacity);

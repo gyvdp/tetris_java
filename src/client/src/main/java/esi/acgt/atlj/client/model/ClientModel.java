@@ -122,7 +122,9 @@ public class ClientModel extends Model {
 
   Consumer<Mino> setHold = (Mino m) ->
   {
-    this.client.sendHoldMino(m);
+    if (client != null) {
+      this.client.sendHoldMino(m);
+    }
   };
 
   /**
@@ -130,7 +132,9 @@ public class ClientModel extends Model {
    */
   Consumer<Integer> sendScore = (Integer score) ->
   {
-    otherPlayer.setScore(score);
+    if (client != null) {
+      otherPlayer.setScore(score);
+    }
   };
 
 
@@ -167,8 +171,9 @@ public class ClientModel extends Model {
    * Sends the score to the server to be updated in other board
    */
   Consumer<Integer> sendScoreServer = (Integer score) -> {
-
-    this.client.sendScore(score);
+    if (client != null) {
+      this.client.sendScore(score);
+    }
   };
 
   /**
