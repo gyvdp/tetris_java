@@ -2,8 +2,8 @@ package esi.acgt.atlj.client.controller;
 
 import esi.acgt.atlj.client.model.ClientModel;
 import esi.acgt.atlj.client.view.ViewInterface;
-import esi.acgt.atlj.model.board.BoardStatus;
-import esi.acgt.atlj.model.board.Direction;
+import esi.acgt.atlj.model.game.GameStatus;
+import esi.acgt.atlj.model.game.Direction;
 import java.util.Objects;
 import javafx.scene.input.KeyCode;
 
@@ -53,12 +53,11 @@ public class Controller {
    * @param input keyboard input from the view
    */
   public void keyBoardInput(KeyCode input) {
-    if (this.model.getStatus() != BoardStatus.NOT_STARTED) {
+    if (this.model.getStatus() != GameStatus.NOT_STARTED) {
       switch (input) {
         case LEFT -> this.model.move(Direction.LEFT);
         case RIGHT -> this.model.move(Direction.RIGHT);
         case DOWN -> this.model.softDrop();
-        case UP -> this.model.move(Direction.UP);
         case SHIFT -> this.model.hold();
         case SPACE -> this.model.hardDrop();
         case CONTROL -> this.model.rotate(true);
@@ -80,6 +79,19 @@ public class Controller {
       this.view.displayBoard(username);
       this.model.connect(6969, "localhost");
       this.model.addPropertyChangeListener(this.view.getListeners());
+    } catch (Exception e) {
+      this.view.displayError(e);
+      this.view.displayConnexion();
+    }
+    this.view.show();
+  }
+
+  public void solo(String username) {
+    try {
+      this.model.initManagedBoard(username);
+      this.view.displayBoard(username);
+      this.model.addPropertyChangeListener(this.view.getListeners());
+      this.model.start();
     } catch (Exception e) {
       this.view.displayError(e);
       this.view.displayConnexion();

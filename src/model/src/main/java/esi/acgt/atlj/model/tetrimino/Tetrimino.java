@@ -23,7 +23,7 @@
  */
 package esi.acgt.atlj.model.tetrimino;
 
-import esi.acgt.atlj.model.board.Direction;
+import esi.acgt.atlj.model.game.Direction;
 import java.io.Serializable;
 
 public abstract class Tetrimino implements TetriminoInterface, Serializable {
@@ -52,8 +52,14 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
     this.x = 3;
   }
 
-  public static TetriminoInterface createTetrimino(Mino hold) {
-    return switch (hold) {
+  /**
+   * Create a tetrimino from a mino
+   *
+   * @param mino Mino to create into tetrimino
+   * @return New tetrimino created from mino
+   */
+  public static TetriminoInterface createTetrimino(Mino mino) {
+    return switch (mino) {
       case I_MINO -> new ITetrimino();
       case J_MINO -> new JTetrimino();
       case O_MINO -> new OTetrimino();
@@ -68,27 +74,39 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
    * {@inheritDoc}
    */
   @Override
-  public void rotate(boolean clockwise, boolean[][] surroundingArea) {
-    Mino k;
-    int l = this.minos.length - 1;
-    int i, j;
-    for (i = 0; i < Math.floor(this.minos.length * 0.5); i++) {
-      for (j = i; j < l - i; j++) {
-        k = this.minos[i][j];
-        this.minos[i][j] = this.minos[l - j][i];
-        this.minos[l - j][i] = this.minos[l - i][l - j];
-        this.minos[l - i][l - j] = this.minos[j][l - i];
-        this.minos[j][l - i] = k;
-      }
-    }
+  public void rotate(boolean clockwise, boolean[][] freeMask) {
 
-    for (i = 0; i < minos.length; i++) {
-      for (j = 0; j < minos[1].length; j++) {
-        if (surroundingArea[i][j] && this.minos[i][j] != null) {
+    Mino[][] rotated = generateRotatedTetrimino(minos, clockwise);
+
+    for (int i = 0; i < minos.length; i++) {
+      for (int j = 0; j < minos[1].length; j++) {
+        if (!freeMask[i][j] && rotated[i][j] != null) {
           throw new IllegalArgumentException("Turn cannot be preformed");
         }
       }
     }
+
+    minos = rotated;
+  }
+
+  private static Mino[][] generateRotatedTetrimino(Mino[][] actual, boolean clockwise) {
+    Mino[][] rotated = new Mino[4][4];
+
+    if (clockwise) {
+      for (int i = 0; i < actual.length; i++) {
+        for (int j = 0; j < actual[i].length; j++) {
+          rotated[i][j] = actual[3 - j][i];
+        }
+      }
+    } else {
+      for (int i = 0; i < actual.length; i++) {
+        for (int j = 0; j < actual[i].length; j++) {
+          rotated[i][j] = actual[j][3 - i];
+        }
+      }
+    }
+
+    return rotated;
   }
 
   @Override
@@ -112,9 +130,26 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
   }
 
   @Override
-  public void move(Direction direction) {
-    this.x += direction.getX();
-    this.y += direction.getY();
+  public boolean move(Direction direction, boolean[][] freeMask) {
+    Mino[][] minos = this.getMinos();
+    boolean movable = true;
+    for (int i = 0; i < minos.length; i++) {
+      for (int j = 0; j < minos[i].length; j++) {
+        int x = j + 1 + direction.getDeltaX();
+        int y = i + 1 + direction.getDeltaY();
+
+        if (!freeMask[y][x] && minos[i][j] != null) {
+          movable = false;
+        }
+      }
+    }
+
+    if (movable) {
+      this.x += direction.getDeltaX();
+      this.y += direction.getDeltaY();
+      return true;
+    }
+    return false;
   }
 
 

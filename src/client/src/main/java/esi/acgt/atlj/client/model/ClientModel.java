@@ -27,10 +27,10 @@ package esi.acgt.atlj.client.model;
 import esi.acgt.atlj.client.connexionServer.Client;
 import esi.acgt.atlj.client.connexionServer.ClientInterface;
 import esi.acgt.atlj.model.Model;
-import esi.acgt.atlj.model.board.BoardStatus;
-import esi.acgt.atlj.model.board.Direction;
-import esi.acgt.atlj.model.board.ManagedBoard;
-import esi.acgt.atlj.model.board.UnmanagedBoard;
+import esi.acgt.atlj.model.game.GameStatus;
+import esi.acgt.atlj.model.game.Direction;
+import esi.acgt.atlj.model.game.ManagedGame;
+import esi.acgt.atlj.model.game.UnmanagedGame;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
@@ -40,8 +40,8 @@ import java.util.function.Consumer;
 
 public class ClientModel extends Model {
 
-  private ManagedBoard player1;
-  private UnmanagedBoard player2;
+  private ManagedGame player;
+  private UnmanagedGame otherPlayer;
   private ClientInterface client;
 
   public ClientModel() {
@@ -53,7 +53,13 @@ public class ClientModel extends Model {
    */
   Runnable askNextMino = () ->
   {
-    this.client.requestNextMino();
+    if(client != null) {
+      this.client.requestNextMino();
+    } else {
+      var minos = Mino.values();
+      player.setNextTetrimino(Tetrimino.createTetrimino(minos[(int)(Math.random() * (minos.length))]));
+    }
+
   };
 
   /**
@@ -61,12 +67,12 @@ public class ClientModel extends Model {
    */
   Consumer<Mino> newMinoFromServer = (Mino nextMino) ->
   {
-    player1.setNextTetrimino(Tetrimino.createTetrimino(nextMino));
+    player.setNextTetrimino(Tetrimino.createTetrimino(nextMino));
   };
 
   Consumer<String> receiveName = (String name) ->
   {
-    player2.setUsername(name);
+    otherPlayer.setUsername(name);
   };
 
   /**
@@ -74,7 +80,7 @@ public class ClientModel extends Model {
    */
   Consumer<Integer> removeLine = (Integer line) ->
   {
-    player2.removeLine(line);
+    otherPlayer.removeLine(line);
   };
 
   /**
@@ -83,11 +89,13 @@ public class ClientModel extends Model {
    */
   Consumer<TetriminoInterface> addTetrimino = (TetriminoInterface tetriminoInterface) ->
   {
-    player2.placeTetrimino(tetriminoInterface);
+    otherPlayer.placeTetrimino(tetriminoInterface);
   };
 
   public void closeConnection() {
-    this.client.closeConnectionToServer();
+    if(client != null) {
+      this.client.closeConnectionToServer();
+    }
   }
 
   /**
@@ -95,7 +103,9 @@ public class ClientModel extends Model {
    */
   Consumer<TetriminoInterface> addTetriminoToOtherPlayer = (TetriminoInterface tetriminoInterface) ->
   {
-    this.client.sendTetriminoToOtherPlayer(tetriminoInterface);
+    if(client != null) {
+      this.client.sendTetriminoToOtherPlayer(tetriminoInterface);
+    }
   };
 
   /**
@@ -103,7 +113,7 @@ public class ClientModel extends Model {
    */
   Consumer<Integer> sendScore = (Integer score) ->
   {
-    player2.setScore(score);
+    otherPlayer.setScore(score);
   };
 
   /**
@@ -111,7 +121,7 @@ public class ClientModel extends Model {
    */
   Consumer<Mino> updateNextTetriminoOtherPlayer = (Mino m) ->
   {
-    player2.setNextTetrimino(Tetrimino.createTetrimino(m));
+    otherPlayer.setNextTetrimino(Tetrimino.createTetrimino(m));
   };
 
   /**
@@ -134,7 +144,7 @@ public class ClientModel extends Model {
    */
   Runnable playerDisconnected = () ->
   {
-    this.player1.fireEndGame(this.player1.getUsername(), "Le joueurs adverse s'est déconnecté.");
+    this.player.fireEndGame(this.player.getUsername(), "Le joueurs adverse s'est déconnecté.");
   };
 
   /**
@@ -165,51 +175,53 @@ public class ClientModel extends Model {
 
   public void start() {
     askNextMino.run();
-    this.player1.start();
-    client.sendNameToServer(player1.getUsername());
+    this.player.start();
 
+    if(client != null) {
+      client.sendNameToServer(player.getUsername());
+    }
   }
 
   public void initManagedBoard(String username) {
-    player1 = new ManagedBoard(username);
-    player2 = new UnmanagedBoard();
-    this.player1.connectAskNewMino(askNextMino);
-    this.player1.connectAddTetrimino(addTetriminoToOtherPlayer);
+    player = new ManagedGame(username);
+    otherPlayer = new UnmanagedGame();
+    this.player.connectAskNewMino(askNextMino);
+    this.player.connectAddTetrimino(addTetriminoToOtherPlayer);
   }
 
   @Override
   public void addPropertyChangeListener(PropertyChangeListener[] listener) {
-    this.player1.addPropertyChangeListener(listener[0]);
-    this.player2.addPropertyChangeListener(listener[1]);
+    this.player.addPropertyChangeListener(listener[0]);
+    this.otherPlayer.addPropertyChangeListener(listener[1]);
   }
 
   @Override
   public void removePropertyChangeListener(PropertyChangeListener listener) {
-    this.player1.removePropertyChangeListener(listener);
-    this.player2.removePropertyChangeListener(listener);
+    this.player.removePropertyChangeListener(listener);
+    this.otherPlayer.removePropertyChangeListener(listener);
   }
 
   public void move(Direction direction) {
-    this.player1.move(direction);
+    this.player.move(direction);
   }
 
   public void hold() {
-    this.player1.hold();
+    this.player.hold();
   }
 
   public void hardDrop() {
-    this.player1.hardDrop();
+    this.player.hardDrop();
   }
 
   public void softDrop() {
-    this.player1.softDrop();
+    this.player.softDrop();
   }
 
   public void rotate(boolean clockwise) {
-    player1.rotate(clockwise);
+    player.rotate(clockwise);
   }
 
-  public BoardStatus getStatus() {
-    return this.player1.getStatus();
+  public GameStatus getStatus() {
+    return this.player.getStatus();
   }
 }

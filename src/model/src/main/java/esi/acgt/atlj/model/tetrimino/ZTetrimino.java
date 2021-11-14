@@ -26,6 +26,9 @@ package esi.acgt.atlj.model.tetrimino;
 
 public class ZTetrimino extends Tetrimino {
 
+  /**
+   * Constructor for ZTetrimino
+   */
   public ZTetrimino() {
     super();
     this.minos = new Mino[][]{

@@ -24,6 +24,8 @@
 
 package esi.acgt.atlj.client.connexionServer;
 
+import esi.acgt.atlj.message.Message;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -115,7 +117,7 @@ public abstract class AbstractClient implements Runnable {
         closeConnection();
       }
     } catch (IOException e) {
-      System.out.println("Sorry the connection cannot close");
+      System.err.println("Sorry the connection cannot close");
       connexionException(e);
     }
   }
@@ -178,11 +180,11 @@ public abstract class AbstractClient implements Runnable {
   @Override
   public void run() {
     connectionEstablished();
-    Object information;
+    Message information;
     try {
       while (isActive) {
         try {
-          information = input.readObject();
+          information = (Message) input.readObject();
           if (isActive) {
             handleServerMessage(information);
           }
@@ -191,7 +193,6 @@ public abstract class AbstractClient implements Runnable {
       }
     } catch (Exception e) {
       if (isActive) {
-        System.out.println("j");
         closeConnectionToServer();
       }
       connexionException(e);

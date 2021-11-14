@@ -26,7 +26,7 @@ package esi.acgt.atlj.model.tetrimino;
 public class ITetrimino extends Tetrimino {
 
   /**
-   * Constructor for I tetrimino.
+   * Constructor for Itetrimino.
    */
   public ITetrimino() {
     super();
@@ -39,4 +39,37 @@ public class ITetrimino extends Tetrimino {
     this.type = Mino.I_MINO;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void rotate(boolean clockwise, boolean[][] freeMask) {
+
+    Mino[][] rotated = generateRotatedTetrimino(minos, clockwise);
+
+    for (int i = 0; i < minos.length; i++) {
+      for (int j = 0; j < minos[1].length; j++) {
+        if (!freeMask[i][j] && rotated[i][j] != null) {
+          throw new IllegalArgumentException("Turn cannot be preformed");
+        }
+      }
+    }
+
+    minos = rotated;
+  }
+
+  private static Mino[][] generateRotatedTetrimino(Mino[][] actual, boolean clockwise) {
+    Mino[][] rotated = new Mino[4][4];
+    if (clockwise) {
+
+    } else {
+      for (int i = 0; i < actual.length; i++) {
+        for (int j = 0; j < actual[i].length; j++) {
+          rotated[i][j] = actual[j][actual.length - 1 - i];
+        }
+      }
+    }
+
+    return rotated;
+  }
 }

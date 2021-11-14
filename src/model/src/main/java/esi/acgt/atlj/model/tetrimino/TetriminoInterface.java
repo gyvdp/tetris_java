@@ -24,7 +24,7 @@
 
 package esi.acgt.atlj.model.tetrimino;
 
-import esi.acgt.atlj.model.board.Direction;
+import esi.acgt.atlj.model.game.Direction;
 
 /**
  * The TetriminoInterface
@@ -68,6 +68,11 @@ public interface TetriminoInterface {
    */
   void rotate(boolean clockwise, boolean[][] surroundingArea);
 
-  void move(Direction direction);
+  /**
+   * Moves the tetrimino in a direction
+   *
+   * @param direction Direction to move tetrimino in.
+   */
+  boolean move(Direction direction, boolean[][] freeMask);
 
 }

@@ -67,10 +67,10 @@ class LTetriminoTest {
         Mino mino = Mino.L_MINO;
         LTetrimino tetrimino = new LTetrimino();
         boolean[][] area = {
-            {false, false, false, false},
-            {false, false, false, false},
-            {false, false, false, false},
-            {false, false, false, false}
+            {true, true, true, true},
+            {true, true, true, true},
+            {true, true, true, true},
+            {true, true, true, true}
         };
         tetrimino.rotate(true, area);
 
@@ -78,8 +78,8 @@ class LTetriminoTest {
         Mino[][] expectedMinos = {
             {null, mino, null, null},
             {null, mino, null, null},
-            {null, mino, null, null},
-            {null, mino, mino, null}
+            {null, mino, mino, null},
+            {null, null, null, null}
         };
         assertArrayEquals(expectedMinos, minos, "tetrimino shape");
       }
@@ -89,10 +89,10 @@ class LTetriminoTest {
         Mino mino = Mino.L_MINO;
         LTetrimino tetrimino = new LTetrimino();
         boolean[][] area = {
-            {false, false, false, false},
-            {false, false, false, false},
-            {false, false, false, false},
-            {false, false, false, false}
+            {true, true, true, true},
+            {true, true, true, true},
+            {true, true, true, true},
+            {true, true, true, true}
         };
         tetrimino.rotate(true, area);
         tetrimino.rotate(true, area);
@@ -100,9 +100,9 @@ class LTetriminoTest {
         Mino[][] minos = tetrimino.getMinos();
         Mino[][] expectedMinos = {
             {null, null, null, null},
-            {null, null, null, null},
-            {mino, mino, mino, mino},
-            {mino, null, null, null}
+            {mino, mino, mino, null},
+            {mino, null, null, null},
+            {null, null, null, null}
         };
         assertArrayEquals(expectedMinos, minos, "tetrimino shape");
       }
@@ -112,10 +112,10 @@ class LTetriminoTest {
         Mino mino = Mino.L_MINO;
         LTetrimino tetrimino = new LTetrimino();
         boolean[][] area = {
-            {false, false, false, false},
-            {false, false, false, false},
-            {false, false, false, false},
-            {false, false, false, false}
+            {true, true, true, true},
+            {true, true, true, true},
+            {true, true, true, true},
+            {true, true, true, true}
         };
         tetrimino.rotate(true, area);
         tetrimino.rotate(true, area);
@@ -126,7 +126,7 @@ class LTetriminoTest {
             {mino, mino, null, null},
             {null, mino, null, null},
             {null, mino, null, null},
-            {null, mino, null, null}
+            {null, null, null, null}
         };
         assertArrayEquals(expectedMinos, minos, "tetrimino shape");
       }
@@ -136,10 +136,10 @@ class LTetriminoTest {
         Mino mino = Mino.L_MINO;
         LTetrimino tetrimino = new LTetrimino();
         boolean[][] area = {
-            {false, false, false, false},
-            {false, false, false, false},
-            {false, false, false, false},
-            {false, false, false, false}
+            {true, true, true, true},
+            {true, true, true, true},
+            {true, true, true, true},
+            {true, true, true, true}
         };
         tetrimino.rotate(true, area);
         tetrimino.rotate(true, area);

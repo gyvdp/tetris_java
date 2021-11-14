@@ -21,26 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package esi.acgt.atlj.model.board;
 
-public enum Direction {
-  UP(0, -1),
-  RIGHT(1, 0),
-  DOWN(0, 1),
-  LEFT(-1, 0);
+package esi.acgt.atlj.model.game;
 
-  private int x, y;
+import java.util.TimerTask;
 
-  Direction(int x, int y) {
-    this.x = x;
-    this.y = y;
+public class TickHandler extends TimerTask {
+
+  private final ManagedGame managedBoard;
+
+  public TickHandler(ManagedGame managedBoard) {
+    this.managedBoard = managedBoard;
   }
 
-  public int getX() {
-    return x;
+  @Override
+  public synchronized void run() {
+    switch (managedBoard.getStatus()) {
+      case TETRIMINO_FALLING -> {
+        if (!managedBoard.move(Direction.DOWN)) {
+          managedBoard.setStatus(GameStatus.LOCK_DOWN);
+        }
+      }
+      case TETRIMINO_HARD_DROPPING -> {
+        if (!managedBoard.move(Direction.DOWN)) {
+          managedBoard.lock();
+        }
+      }
+      case LOCK_DOWN -> managedBoard.lock();
+    }
   }
 
-  public int getY() {
-    return y;
+  public static long tickDelay(int level) {
+    return (int) ((Math.pow(0.8 - ((level - 1) * 0.007), level - 1)) * 1000);
   }
 }

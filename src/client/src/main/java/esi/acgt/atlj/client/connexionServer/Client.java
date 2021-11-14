@@ -194,7 +194,7 @@ public class Client extends AbstractClient implements ClientInterface {
    */
   @Override
   protected void closeConnection() {
-    System.out.println("Connection to server has been suspended");
+    System.err.println("Connection to server has been suspended");
   }
 
   /**

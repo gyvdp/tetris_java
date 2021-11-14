@@ -22,13 +22,13 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.board;
+package esi.acgt.atlj.model.game;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
 
-public interface BoardInterface {
+public interface GameInterface {
 
   /**
    * The width of the board
@@ -54,12 +54,8 @@ public interface BoardInterface {
    */
   int getScore();
 
-  /**
-   * Gets a matrix of 6*6 of the surrounding area
-   *
-   * @return Matrix of surrounding area.
-   */
-  boolean[][] getSurroundingArea(int x, int y);
+
+  boolean[][] generateFreeMask (int height, int width, int xStart, int yStart, int xMargin, int yMargin);
 
   /**
    * Get the username of the Player

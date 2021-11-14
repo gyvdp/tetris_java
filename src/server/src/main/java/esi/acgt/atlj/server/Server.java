@@ -81,25 +81,24 @@ public class Server extends AbstractServer {
           opPlayer.sendMessage(new UpdatePieceUnmanagedBoard(m));
           break;
         case "ADD_TETRIMINO":
-          if (msg instanceof AddTetrimino) {
+          if (msg instanceof AddTetrimino)
             opPlayer.sendMessage(new AddTetrimino(
                 ((AddTetrimino) msg).getTetrimino()));
-          }
           break;
         case "REMOVE_LINE":
-          opPlayer.sendMessage(new RemoveLine(4)); //TODO Add correct line coming from other player
+          opPlayer.sendMessage(new RemoveLine(
+              ((RemoveLine) msg).getLine()));
           break;
         case "SEND_SCORE":
-          opPlayer.sendMessage(new SendScore(5)); // TODO add correct score coming from other player
+          opPlayer.sendMessage(new SendScore(
+              ((SendScore) msg).getScore()));
           break;
         case "SEND_NAME":
-          if (msg instanceof SendName) {
+          if (msg instanceof SendName)
             opPlayer.sendMessage(new SendName(((SendName) msg).getUsername()));
-          }
       }
     }
   }
-
 
   /**
    * {@inheritDoc}
@@ -150,6 +149,7 @@ public class Server extends AbstractServer {
   @Override
   protected void serverStopped() {
     super.serverStopped();
+    System.exit(0);
   }
 
   /**
@@ -174,6 +174,8 @@ public class Server extends AbstractServer {
     if (members.size() == 2) {
       updateAllPlayerState(PlayerStatus.READY);
     }
+    System.out.println(
+        "Client " + client.getIdOfClient() + " has connected successfully with " + client.getId());
   }
 
   /**

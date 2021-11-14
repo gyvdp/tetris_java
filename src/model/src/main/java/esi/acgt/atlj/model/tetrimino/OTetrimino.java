@@ -26,6 +26,9 @@ package esi.acgt.atlj.model.tetrimino;
 
 public class OTetrimino extends Tetrimino {
 
+  /**
+   * Constructor for OTetrimino
+   */
   public OTetrimino() {
     super();
     this.minos = new Mino[][]{
@@ -38,6 +41,6 @@ public class OTetrimino extends Tetrimino {
   }
 
   @Override
-  public void rotate(boolean clockwise, boolean[][] surroundingArea) {
+  public void rotate(boolean clockwise, boolean[][] freeMask) {
   }
 }

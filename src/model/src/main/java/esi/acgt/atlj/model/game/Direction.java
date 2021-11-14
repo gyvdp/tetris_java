@@ -21,9 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package esi.acgt.atlj.model;
+package esi.acgt.atlj.model.game;
 
-public enum GameStatus {
-  STARTED,
-  FINISHED
+public enum Direction {
+  RIGHT(1, 0),
+  DOWN(0, 1),
+  LEFT(-1, 0);
+
+  private final int deltaX;
+  private final int deltaY;
+
+  Direction(int x, int y) {
+    this.deltaX = x;
+    this.deltaY = y;
+  }
+
+  public int getDeltaX() {
+    return deltaX;
+  }
+
+  public int getDeltaY() {
+    return deltaY;
+  }
 }

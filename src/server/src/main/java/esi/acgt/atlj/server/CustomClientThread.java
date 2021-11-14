@@ -79,25 +79,24 @@ public class CustomClientThread extends Thread {
    */
   public CustomClientThread(Socket clientSocket, AbstractServer server, int id)
       throws SocketException {
-    clientStatus = PlayerStatus.WAITING;
+    this.clientStatus = PlayerStatus.WAITING;
     this.id = id;
-    System.out.println(id);
     this.clientSocket = clientSocket;
     this.myTetriminos = new LinkedBlockingQueue<>();
-    clientSocket.setSoTimeout(0);
+    this.clientSocket.setSoTimeout(0);
     this.server = server;
     try {
-      input = new ObjectInputStream(clientSocket.getInputStream());
-      output = new ObjectOutputStream(clientSocket.getOutputStream());
+      this.input = new ObjectInputStream(clientSocket.getInputStream());
+      this.output = new ObjectOutputStream(clientSocket.getOutputStream());
     } catch (IOException e) {
-      System.out.println("Cannot create input or output stream");
+      System.err.println("Cannot create input or output stream");
       try {
         closeSocket();
       } catch (IOException ioException) {
-        System.out.println("Cannot close the socket");
+        System.err.println("Cannot close the socket");
       }
     }
-    isActive = true;
+    this.isActive = true;
     start();
   }
 
@@ -116,7 +115,7 @@ public class CustomClientThread extends Thread {
    * @param tetrimino Tetrimino to add.
    */
   public void addTetrimino(Mino tetrimino) {
-    myTetriminos.add(tetrimino);
+    this.myTetriminos.add(tetrimino);
   }
 
   /**
@@ -125,7 +124,7 @@ public class CustomClientThread extends Thread {
    * @return Player state.
    */
   public PlayerStatus getClientStatus() {
-    return clientStatus;
+    return this.clientStatus;
   }
 
   /**
@@ -151,7 +150,7 @@ public class CustomClientThread extends Thread {
     try {
       tetriminoToSend = myTetriminos.take();
     } catch (InterruptedException e) {
-      System.out.println("Sorry have to wait to long for new piece");
+      System.err.println("Piece took to long cannot send");
     }
     return tetriminoToSend;
   }
@@ -192,7 +191,7 @@ public class CustomClientThread extends Thread {
         try {
           close();
         } catch (Exception ex) {
-          System.out.println("Cannot close socket");
+          System.err.println("Cannot close socket");
         }
       }
     } finally {
@@ -205,15 +204,17 @@ public class CustomClientThread extends Thread {
    */
   public void sendMessage(Object information) {
     if (clientSocket == null || output == null) {
-      System.out.println("Sorry stream does not exist");
+      System.err.println("Sorry stream does not exist");
     }
     try {
       if (information instanceof Message) {
-        output.writeObject((Message) information);
+        output.writeObject(information);
         output.flush();
       }
     } catch (IOException e) {
-      System.out.println("Could not send message" + information.toString());
+      if (((Message) information).messageType != null) {
+        System.err.println("Could not send message" + information.toString());
+      }
     }
   }
 
