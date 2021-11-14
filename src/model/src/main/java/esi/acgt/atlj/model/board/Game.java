@@ -34,7 +34,7 @@ import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Arrays;
 
-public abstract class Board implements BoardInterface, Serializable {
+public abstract class Game implements GameInterface, Serializable {
 
   protected Mino[][] minos;
   protected int score;
@@ -45,7 +45,7 @@ public abstract class Board implements BoardInterface, Serializable {
   protected TetriminoInterface nextTetrimino;
   protected PropertyChangeSupport changeSupport;
 
-  public Board(String username) {
+  public Game(String username) {
     this.username = username;
     this.score = 0;
     this.nbLine = 0;
@@ -56,14 +56,32 @@ public abstract class Board implements BoardInterface, Serializable {
   }
 
   @Override
-  public synchronized boolean[][] getSurroundingArea(int x, int y) {
-    boolean[][] surroundingArea = new boolean[4][4];
-    for (int i = x; i <= x + 4; i++) {
-      for (int j = y; j <= y + 4; j++) {
-        //this.minos[i][j]=
+  public synchronized boolean[][] generateFreeMask(int height, int width, int xStart, int yStart, int xMargin, int yMargin) {
+    if (width < 1) {
+      throw new IllegalArgumentException("The width of the area can be null");
+    }
+
+    if (height < 1) {
+      throw new IllegalArgumentException("The height of the area can be null");
+    }
+
+    boolean[][] mask = new boolean[height][width];
+    for(int i = 0; i < mask.length; i++) {
+      for (int j = 0; j < mask[i].length; j++) {
+        int x = xStart - xMargin + j;
+        int y = yStart - yMargin + i;
+
+        boolean outOfBound = x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1;
+        boolean notFree = !outOfBound && minos[y][x] != null;
+        if (outOfBound || notFree) {
+          mask[i][j]=false;
+          continue;
+        }
+        mask[i][j]=true;
       }
     }
-    return surroundingArea;
+
+    return mask;
   }
 
   @Override

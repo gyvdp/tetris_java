@@ -24,10 +24,28 @@
 
 package esi.acgt.atlj.model.board;
 
-public enum BoardStatus {
-  NOT_STARTED,
-  TETRIMINO_FALLING,
-  TETRIMINO_LOCKED,
-  LOCK_DOWN,
-  LOCK_OUT
+import java.util.TimerTask;
+
+public class TickHandler extends TimerTask {
+
+  private final ManagedGame managedBoard;
+
+  public TickHandler(ManagedGame managedBoard) {
+    this.managedBoard = managedBoard;
+  }
+
+  @Override
+  public synchronized void run() {
+    if (managedBoard.getStatus() == GameStatus.TETRIMINO_FALLING) {
+      if (!managedBoard.move(Direction.DOWN)) {
+        managedBoard.setStatus(GameStatus.LOCK_DOWN);
+      }
+    } else if (managedBoard.getStatus() == GameStatus.LOCK_DOWN) {
+      managedBoard.lock();
+    }
+  }
+
+  public static long tickDelay(int level) {
+    return (int) ((Math.pow(0.8 - ((level - 1) * 0.007), level - 1)) * 1000);
+  }
 }

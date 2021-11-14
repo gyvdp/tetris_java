@@ -24,8 +24,8 @@
 
 package esi.acgt.atlj.client.view;
 
-import static esi.acgt.atlj.model.board.BoardInterface.HEIGHT;
-import static esi.acgt.atlj.model.board.BoardInterface.WIDTH;
+import static esi.acgt.atlj.model.board.GameInterface.HEIGHT;
+import static esi.acgt.atlj.model.board.GameInterface.WIDTH;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
@@ -40,7 +40,6 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

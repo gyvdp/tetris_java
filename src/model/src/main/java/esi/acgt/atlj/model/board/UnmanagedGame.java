@@ -27,9 +27,9 @@ package esi.acgt.atlj.model.board;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
-public class UnmanagedBoard extends Board {
+public class UnmanagedGame extends Game {
 
-  public UnmanagedBoard() {
+  public UnmanagedGame() {
     super(null);
     // TODO Constructor
   }

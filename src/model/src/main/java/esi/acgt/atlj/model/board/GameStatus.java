@@ -24,28 +24,10 @@
 
 package esi.acgt.atlj.model.board;
 
-import java.util.TimerTask;
-
-public class Manager extends TimerTask {
-
-  private final ManagedBoard managedBoard;
-
-  public Manager(ManagedBoard managedBoard) {
-    this.managedBoard = managedBoard;
-  }
-
-  @Override
-  public synchronized void run() {
-    if (managedBoard.getStatus() == BoardStatus.TETRIMINO_FALLING) {
-      if (!managedBoard.move(Direction.DOWN)) {
-        managedBoard.setStatus(BoardStatus.LOCK_DOWN);
-      }
-    } else if (managedBoard.getStatus() == BoardStatus.LOCK_DOWN) {
-      managedBoard.lock();
-    }
-  }
-
-  public static long tickDelay(int level) {
-    return (int) ((Math.pow(0.8 - ((level - 1) * 0.007), level - 1)) * 1000);
-  }
+public enum GameStatus {
+  NOT_STARTED,
+  TETRIMINO_FALLING,
+  TETRIMINO_LOCKED,
+  LOCK_DOWN,
+  LOCK_OUT
 }

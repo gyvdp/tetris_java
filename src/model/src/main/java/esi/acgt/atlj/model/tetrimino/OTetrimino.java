@@ -38,6 +38,6 @@ public class OTetrimino extends Tetrimino {
   }
 
   @Override
-  public void rotate(boolean clockwise, boolean[][] surroundingArea) {
+  public void rotate(boolean clockwise, boolean[][] freeMask) {
   }
 }

@@ -2,7 +2,7 @@ package esi.acgt.atlj.client.controller;
 
 import esi.acgt.atlj.client.model.ClientModel;
 import esi.acgt.atlj.client.view.ViewInterface;
-import esi.acgt.atlj.model.board.BoardStatus;
+import esi.acgt.atlj.model.board.GameStatus;
 import esi.acgt.atlj.model.board.Direction;
 import java.util.Objects;
 import javafx.scene.input.KeyCode;
@@ -53,12 +53,11 @@ public class Controller {
    * @param input keyboard input from the view
    */
   public void keyBoardInput(KeyCode input) {
-    if (this.model.getStatus() != BoardStatus.NOT_STARTED) {
+    if (this.model.getStatus() != GameStatus.NOT_STARTED) {
       switch (input) {
         case LEFT -> this.model.move(Direction.LEFT);
         case RIGHT -> this.model.move(Direction.RIGHT);
         case DOWN -> this.model.softDrop();
-        case UP -> this.model.move(Direction.UP);
         case SHIFT -> this.model.hold();
         case SPACE -> this.model.hardDrop();
         case CONTROL -> this.model.rotate(true);

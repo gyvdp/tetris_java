@@ -27,10 +27,10 @@ package esi.acgt.atlj.client.model;
 import esi.acgt.atlj.client.connexionServer.Client;
 import esi.acgt.atlj.client.connexionServer.ClientInterface;
 import esi.acgt.atlj.model.Model;
-import esi.acgt.atlj.model.board.BoardStatus;
+import esi.acgt.atlj.model.board.GameStatus;
 import esi.acgt.atlj.model.board.Direction;
-import esi.acgt.atlj.model.board.ManagedBoard;
-import esi.acgt.atlj.model.board.UnmanagedBoard;
+import esi.acgt.atlj.model.board.ManagedGame;
+import esi.acgt.atlj.model.board.UnmanagedGame;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
@@ -40,8 +40,8 @@ import java.util.function.Consumer;
 
 public class ClientModel extends Model {
 
-  private ManagedBoard player1;
-  private UnmanagedBoard player2;
+  private ManagedGame player1;
+  private UnmanagedGame player2;
   private ClientInterface client;
 
   public ClientModel() {
@@ -171,8 +171,8 @@ public class ClientModel extends Model {
   }
 
   public void initManagedBoard(String username) {
-    player1 = new ManagedBoard(username);
-    player2 = new UnmanagedBoard();
+    player1 = new ManagedGame(username);
+    player2 = new UnmanagedGame();
     this.player1.connectAskNewMino(askNextMino);
     this.player1.connectAddTetrimino(addTetriminoToOtherPlayer);
   }
@@ -209,7 +209,7 @@ public class ClientModel extends Model {
     player1.rotate(clockwise);
   }
 
-  public BoardStatus getStatus() {
+  public GameStatus getStatus() {
     return this.player1.getStatus();
   }
 }

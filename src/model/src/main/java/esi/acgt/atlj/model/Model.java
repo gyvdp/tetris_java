@@ -24,13 +24,13 @@
 
 package esi.acgt.atlj.model;
 
-import esi.acgt.atlj.model.board.BoardInterface;
+import esi.acgt.atlj.model.board.GameInterface;
 import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Model implements ModelInterface {
 
-  protected List<BoardInterface> players;
+  protected List<GameInterface> players;
 
   protected Model() {
     this.players = new LinkedList<>();
@@ -46,8 +46,8 @@ public abstract class Model implements ModelInterface {
   }
 
   @Override
-  public BoardInterface getBoard(String username) {
-    for (BoardInterface player : this.players) {
+  public GameInterface getBoard(String username) {
+    for (GameInterface player : this.players) {
       if (player.getUsername().equals(username)) {
         return player;
       }
@@ -56,7 +56,7 @@ public abstract class Model implements ModelInterface {
   }
 
   @Override
-  public void addPlayer(BoardInterface board) {
+  public void addPlayer(GameInterface board) {
     this.players.add(board);
   }
 }

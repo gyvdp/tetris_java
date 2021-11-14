@@ -24,17 +24,13 @@
 
 package esi.acgt.atlj.model.board;
 
-import esi.acgt.atlj.model.tetrimino.JTetrimino;
-import esi.acgt.atlj.model.tetrimino.LTetrimino;
 import esi.acgt.atlj.model.tetrimino.Mino;
-import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
-import esi.acgt.atlj.model.tetrimino.ZTetrimino;
 import java.security.InvalidParameterException;
 import java.util.Timer;
 import java.util.function.Consumer;
 
-public class ManagedBoard extends Board {
+public class ManagedGame extends Game {
 
   /**
    * Lambda expression to ask client for next piece in bag.
@@ -45,19 +41,19 @@ public class ManagedBoard extends Board {
    */
   Consumer<TetriminoInterface> addTetrimino;
 
-  private BoardStatus status;
+  private GameStatus status;
   private int level;
   private final Timer timer;
-  private Manager manager;
+  private TickHandler tickHandler;
   private boolean hasAlreadyHolded;
 
-  public ManagedBoard(String username) {
+  public ManagedGame(String username) {
     super(username);
     hasAlreadyHolded = false;
-    this.status = BoardStatus.NOT_STARTED;
+    this.status = GameStatus.NOT_STARTED;
     this.level = 3;
     this.timer = new Timer(true);
-    this.manager = new Manager(this);
+    this.tickHandler = new TickHandler(this);
   }
 
   /**
@@ -74,11 +70,11 @@ public class ManagedBoard extends Board {
   }
 
   public synchronized void start() {
-    setStatus(BoardStatus.TETRIMINO_FALLING);
+    setStatus(GameStatus.TETRIMINO_FALLING);
   }
 
   public synchronized boolean move(Direction direction) {
-    if (isMoveValid(direction)) {
+    if (isMoveValid(direction, generateFreeMask(6, 6, actualTetrimino.getX(), actualTetrimino.getY(), 1, 1))) {
       Mino[][] oldBoard = this.getBoard();
       this.actualTetrimino.move(direction);
       this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
@@ -121,80 +117,19 @@ public class ManagedBoard extends Board {
     this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
   }
 
-  private synchronized boolean isMoveValid(Direction direction) {
-    switch (direction) {
-      case UP -> {
-        if (this.actualTetrimino.getY() <= 0) {
-          for (var mino : this.actualTetrimino.getMinos()[Math.abs(this.actualTetrimino.getY())]) {
-            if (mino != null) {
-              return false;
-            }
-          }
-        }
-      }
-      case RIGHT -> {
-        //colision mur droit
-        if (this.actualTetrimino.getX()
-            >= this.minos[0].length - this.actualTetrimino.getMinos().length) {
-          for (var mino : this.actualTetrimino.getMinos()) {
-            if (mino[this.minos[0].length - this.actualTetrimino.getX() - 1] != null) {
-              return false;
-            }
-          }
-        }
-        // colision piece à droite
-        //    if (this.actualTetrimino.getX() > this.minos[0].length - this.actualTetrimino.getMinos().length) {
-        for (int i = 0; i < this.actualTetrimino.getMinos().length; i++) {
-          for (int j = 0; j < this.actualTetrimino.getMinos()[i].length; j++) {
-            if (this.actualTetrimino.getMinos()[i][j] != null
-                && this.minos[this.actualTetrimino.getY() + i][this.actualTetrimino.getX() + j + 1]
-                != null) {
-              return false;
-            }
-          }
-        }
-      }
-      case DOWN -> {
-        if ((this.actualTetrimino.getY() + this.actualTetrimino.getMinos().length)
-            > this.minos.length) {
-          for (var mino : this.actualTetrimino.getMinos()[this.minos.length
-              - this.actualTetrimino.getY() - 1]) {
-            if (mino != null) {
-              return false;
-            }
-          }
-        }
+  private synchronized boolean isMoveValid(Direction direction, boolean[][] mask) {
+    Mino[][] minos = actualTetrimino.getMinos();
+    for(int i = 0; i < minos.length; i++) {
+      for (int j = 0; j < minos[i].length; j++) {
+        int x = j + 1 + direction.getDeltaX();
+        int y = i + 1 + direction.getDeltaY();
 
-        for (int i = 0; i < this.actualTetrimino.getMinos().length; i++) {
-          for (int j = 0; j < this.actualTetrimino.getMinos()[i].length; j++) {
-            if (this.actualTetrimino.getMinos()[i][j] != null
-                &&
-                this.minos[this.actualTetrimino.getY() + i + 1][this.actualTetrimino.getX() + j]
-                    != null) {
-              return false;
-            }
-          }
-        }
-      }
-      case LEFT -> {
-        if (this.actualTetrimino.getX() <= 0) {
-          for (var mino : this.actualTetrimino.getMinos()) {
-            if (mino[Math.abs(this.actualTetrimino.getX())] != null) {
-              return false;
-            }
-          }
-        }
-        for (int i = 0; i < this.actualTetrimino.getMinos().length; i++) {
-          for (int j = 0; j < this.actualTetrimino.getMinos()[i].length; j++) {
-            if (this.actualTetrimino.getMinos()[i][j] != null
-                && this.minos[this.actualTetrimino.getY() + i][this.actualTetrimino.getX() + j - 1]
-                != null) {
-              return false;
-            }
-          }
+        if(!mask[y][x] && minos[i][j] != null) {
+          return false;
         }
       }
     }
+
     return true;
   }
 
@@ -203,7 +138,7 @@ public class ManagedBoard extends Board {
   }
 
   public synchronized void hardDrop() {
-    while (isMoveValid(Direction.DOWN)) {
+    while (isMoveValid(Direction.DOWN, generateFreeMask(6, 6, actualTetrimino.getX(), actualTetrimino.getY(), 1, 1))) {
       Mino[][] oldBoard = this.getBoard();
       this.actualTetrimino.move(Direction.DOWN);
       this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
@@ -213,12 +148,14 @@ public class ManagedBoard extends Board {
   public synchronized void rotate(boolean clockwise) {
     var oldBoard = this.getBoard();
     try {
-      actualTetrimino.rotate(clockwise, this.getSurroundingArea(actualTetrimino.getX(),
-          actualTetrimino.getY()));
+      actualTetrimino.rotate(clockwise, this.generateFreeMask(4, 4, actualTetrimino.getX(),
+          actualTetrimino.getY(), 0, 0));
       this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
     } catch (InvalidParameterException e) {
       //Check if there is another block or if its wall
       //If it is another block tetrimino must be placed If wall do nothing
+    } catch (Exception ignored) {
+
     }
   }
 
@@ -234,21 +171,21 @@ public class ManagedBoard extends Board {
     this.changeSupport.firePropertyChange("line", oldNbLine, this.nbLine);
   }
 
-  public synchronized BoardStatus getStatus() {
+  public synchronized GameStatus getStatus() {
     return this.status;
   }
 
-  public synchronized void setStatus(BoardStatus status) {
-    this.manager.cancel();
-    this.manager = new Manager(this);
+  public synchronized void setStatus(GameStatus status) {
+    this.tickHandler.cancel();
+    this.tickHandler = new TickHandler(this);
     this.status = status;
 
-    if (status == BoardStatus.TETRIMINO_FALLING) {
-      timer.schedule(this.manager, 0, Manager.tickDelay(this.level));
+    if (status == GameStatus.TETRIMINO_FALLING) {
+      timer.schedule(this.tickHandler, 0, TickHandler.tickDelay(this.level));
     }
 
-    if (status == BoardStatus.LOCK_DOWN) {
-      this.timer.schedule(this.manager, 500);
+    if (status == GameStatus.LOCK_DOWN) {
+      this.timer.schedule(this.tickHandler, 500);
     }
   }
 
@@ -264,7 +201,7 @@ public class ManagedBoard extends Board {
         var line = t.getY() + i;
         var col = t.getX() + j;
 
-        if (line < minos.length && col < minos[line].length) {
+        if (!(line < 0 || col < 0) && line < minos.length && col < minos[line].length) {
           minos[line][col] = tMinos[i][j];
         }
 
@@ -274,7 +211,7 @@ public class ManagedBoard extends Board {
     addTetrimino.accept(actualTetrimino);
     setActualTetrimino(this.nextTetrimino);
     askNextMino.run();
-    setStatus(BoardStatus.TETRIMINO_FALLING);
+    setStatus(GameStatus.TETRIMINO_FALLING);
   }
 
 }

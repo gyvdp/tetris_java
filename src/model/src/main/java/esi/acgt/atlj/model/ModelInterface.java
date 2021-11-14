@@ -1,6 +1,6 @@
 package esi.acgt.atlj.model;
 
-import esi.acgt.atlj.model.board.BoardInterface;
+import esi.acgt.atlj.model.board.GameInterface;
 import java.beans.PropertyChangeListener;
 
 public interface ModelInterface {
@@ -18,9 +18,9 @@ public interface ModelInterface {
    * @param username username of the Player to get the board from
    * @return the board of the asked Player
    */
-  BoardInterface getBoard(String username);
+  GameInterface getBoard(String username);
 
-  void addPlayer(BoardInterface board);
+  void addPlayer(GameInterface board);
 
   void addPropertyChangeListener(PropertyChangeListener[] listener);
 

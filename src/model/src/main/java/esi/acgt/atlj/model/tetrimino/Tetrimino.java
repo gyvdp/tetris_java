@@ -68,7 +68,7 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
    * {@inheritDoc}
    */
   @Override
-  public void rotate(boolean clockwise, boolean[][] surroundingArea) {
+  public void rotate(boolean clockwise, boolean[][] freeMask) {
     Mino k;
     int l = this.minos.length - 1;
     int i, j;
@@ -84,7 +84,7 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
 
     for (i = 0; i < minos.length; i++) {
       for (j = 0; j < minos[1].length; j++) {
-        if (surroundingArea[i][j] && this.minos[i][j] != null) {
+        if (!freeMask[i][j] && this.minos[i][j] != null) {
           throw new IllegalArgumentException("Turn cannot be preformed");
         }
       }
@@ -113,8 +113,8 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
 
   @Override
   public void move(Direction direction) {
-    this.x += direction.getX();
-    this.y += direction.getY();
+    this.x += direction.getDeltaX();
+    this.y += direction.getDeltaY();
   }
 
 
