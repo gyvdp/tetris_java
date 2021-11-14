@@ -208,6 +208,7 @@ public class CustomClientThread extends Thread {
     }
     try {
       if (information instanceof Message) {
+        output.reset();
         output.writeObject(information);
         output.flush();
       }

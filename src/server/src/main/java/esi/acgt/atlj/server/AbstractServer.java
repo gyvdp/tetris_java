@@ -82,7 +82,7 @@ public abstract class AbstractServer implements Runnable {
     try {
       serverSocket.close();
     } catch (IOException e) {
-      e.printStackTrace();
+      System.err.println(e.getMessage());
     } finally {
       synchronized (this) {
         for (Thread clientSockets : threads) {

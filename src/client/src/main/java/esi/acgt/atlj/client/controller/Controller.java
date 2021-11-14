@@ -2,8 +2,8 @@ package esi.acgt.atlj.client.controller;
 
 import esi.acgt.atlj.client.model.ClientModel;
 import esi.acgt.atlj.client.view.ViewInterface;
-import esi.acgt.atlj.model.game.GameStatus;
 import esi.acgt.atlj.model.game.Direction;
+import esi.acgt.atlj.model.game.GameStatus;
 import java.util.Objects;
 import javafx.scene.input.KeyCode;
 
@@ -44,8 +44,6 @@ public class Controller {
    */
   public void disconnect() {
     model.closeConnection();
-    //this.view.displayConnexion();
-    //this.view.show();
   }
 
   /**
@@ -54,14 +52,16 @@ public class Controller {
    * @param input keyboard input from the view
    */
   public void keyBoardInput(KeyCode input) {
-    if (this.model.getStatus() != GameStatus.NOT_STARTED) {
+    if (this.model.getStatus() != GameStatus.NOT_STARTED
+        && this.model.getStatus() != GameStatus.LOCK_OUT) {
       switch (input) {
-        case LEFT -> this.model.move(Direction.LEFT);
-        case RIGHT -> this.model.move(Direction.RIGHT);
-        case DOWN -> this.model.softDrop();
-        case SHIFT -> this.model.hold();
-        case SPACE -> this.model.hardDrop();
-        case CONTROL -> this.model.rotate(true);
+        case LEFT, NUMPAD4 -> this.model.move(Direction.LEFT);
+        case RIGHT, NUMPAD6 -> this.model.move(Direction.RIGHT);
+        case DOWN, NUMPAD2 -> this.model.softDrop();
+        case UP, X, NUMPAD3, NUMPAD5 -> this.model.rotate(true);
+        case SHIFT, C, NUMPAD0 -> this.model.hold();
+        case SPACE, NUMPAD8 -> this.model.hardDrop();
+        case CONTROL, NUMPAD1, NUMPAD9 -> this.model.rotate(false);
       }
     }
 

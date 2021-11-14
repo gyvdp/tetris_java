@@ -1,7 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Client" type="Application" factoryName="Application" folderName="Client" singleton="false">
+  <configuration default="false" name="Client (solo)" type="Application" factoryName="Application" folderName="Client">
     <option name="MAIN_CLASS_NAME" value="esi.acgt.atlj.client.App" />
     <module name="atlj.client" />
+    <option name="PROGRAM_PARAMETERS" value="--client" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="esi.acgt.atlj.client.*" />

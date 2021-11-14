@@ -25,39 +25,23 @@
 package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.Message;
-import esi.acgt.atlj.message.MessageType;
-import esi.acgt.atlj.message.PlayerStatus;
 
-/**
- * Conveys the state of the player to the client.
- */
-public class PlayerState extends Message {
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
-  /**
-   * State of the player
-   */
-  private PlayerStatus playerState;
 
-  /**
-   * Constructor for player state.
-   *
-   * @param p PlayerState to set.
-   */
-  public PlayerState(PlayerStatus p) {
-    this.playerState = p;
+public class LockedTetrimino extends Message {
+
+  TetriminoInterface tetrimino;
+
+  public LockedTetrimino(TetriminoInterface myT) {
+    tetrimino = myT;
   }
 
-  /**
-   * Getter for player state
-   *
-   * @return current state of the player.
-   */
-  public PlayerStatus getPlayerState() {
-    this.messageType = MessageType.PLAYER_STATUS;
-    return this.playerState;
+  public TetriminoInterface getTetrimino() {
+    return this.tetrimino;
   }
 
   public String toString() {
-    return this.playerState.toString();
+    return "Locked_Tetrimino";
   }
 }

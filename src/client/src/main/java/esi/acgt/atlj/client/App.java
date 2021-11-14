@@ -13,12 +13,23 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
 
+  public static void main(String[] args) {
+    launch(args);
+  }
+
   @Override
   public void start(Stage stage) {
     ClientModel model = new ClientModel();
     ViewInterface view = new View();
     Controller controller = new Controller(model, view);
     controller.start();
+    final Parameters params = getParameters();
+    for (var param : params.getRaw()) {
+      switch (param) {
+        case "--localhost" -> controller.connexion("127.0.0.1", 6969, "Pacliclown");
+        case "--client" -> controller.solo("Andrew");
+      }
+    }
   }
 
 }

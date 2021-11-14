@@ -38,6 +38,11 @@ import java.util.function.Consumer;
 public class ManagedGame extends AbstractGame {
 
   /**
+   * Tells server to lock tetrimino
+   */
+  Consumer<TetriminoInterface> tetriminoLock;
+
+  /**
    * All lines that have been destroyed by game in an array to send to server
    */
   Consumer<List<Integer>> lineDestroyed;
@@ -103,6 +108,15 @@ public class ManagedGame extends AbstractGame {
     this.iLost = iLost;
   }
 
+  /**
+   * Connects lambda of locked tetrimino to client.
+   *
+   * @param myTT Lambda to connect
+   */
+  public void connectTetriminoLock(Consumer<TetriminoInterface> myTT) {
+    this.tetriminoLock = myTT;
+  }
+
 
   /**
    * Sends the score to the server via a Lambda
@@ -163,6 +177,7 @@ public class ManagedGame extends AbstractGame {
         increaseScore(2);
       }
     }
+    addTetrimino.accept(actualTetrimino);
     return moved;
   }
 
@@ -282,6 +297,7 @@ public class ManagedGame extends AbstractGame {
     return this.status;
   }
 
+
   /**
    * Sets the status of the game
    *
@@ -293,12 +309,19 @@ public class ManagedGame extends AbstractGame {
     this.status = status;
 
     switch (status) {
-      case TETRIMINO_FALLING -> timer.schedule(this.tickHandler, TickHandler.tickDelay(this.level));
-      case LOCK_DOWN -> this.timer.schedule(this.tickHandler, 500);
+      case TETRIMINO_FALLING -> {
+        timer.schedule(this.tickHandler, TickHandler.tickDelay(this.level));
+        this.playerStatus("", 0);
+      }
+      case LOCK_DOWN -> {
+        this.timer.schedule(this.tickHandler, 500);
+        this.playerStatus("LOCK DOWN", 0.2);
+      }
       case TETRIMINO_HARD_DROPPING,
           ROTATING_CLOCKWISE,
           ROTATING_ANTI_CLOCKWISE,
           SOFT_DROPPING -> this.timer.schedule(this.tickHandler, 1);
+      case LOCK_OUT -> this.playerStatus("LOCK OUT", 0.9);
     }
   }
 
@@ -306,28 +329,13 @@ public class ManagedGame extends AbstractGame {
    * Locks a tetrimino making it unable to move.
    */
   public synchronized void lock() {
-    var t = this.actualTetrimino;
-    var tMinos = this.actualTetrimino.getMinos();
-    for (var i = 0; i < tMinos.length; ++i) {
-      for (var j = 0; j < tMinos[i].length; ++j) {
-        if (tMinos[i][j] == null) {
-          continue;
-        }
-        var line = t.getY() + i;
-        var col = t.getX() + j;
-
-        if (!(line < 0 || col < 0) && line < minos.length && col < minos[line].length) {
-          minos[line][col] = tMinos[i][j];
-        }
-
-      }
-    }
-
+    placeTetrimino(this.actualTetrimino);
+    tetriminoLock.accept(actualTetrimino);
     this.hasAlreadyHolded = false;
-    addTetrimino.accept(actualTetrimino);
     setActualTetrimino(this.nextTetrimino);
     askNextMino.run();
     List<Integer> lines = getFullLines();
+
     if (lines.size() != 0) {
       removeLines(lines);
       lineDestroyed.accept(lines);

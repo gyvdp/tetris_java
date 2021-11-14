@@ -18,6 +18,7 @@ public class View implements ViewInterface {
    * Constructor of view.
    */
   public View() {
+
   }
 
   /**
@@ -42,6 +43,7 @@ public class View implements ViewInterface {
    */
   @Override
   public void displayBoard(String username) {
+    this.primaryStage.close();
     this.primaryStage = new Stage();
     this.primaryStage.getIcons()
         .add(new Image(Objects.requireNonNull(

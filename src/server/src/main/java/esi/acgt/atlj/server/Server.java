@@ -64,7 +64,7 @@ public class Server extends AbstractServer {
   @Override
   protected void exceptionHook(Exception e) {
     super.exceptionHook(e);
-    e.printStackTrace();
+    System.err.println(e.getMessage());
   }
 
   /**

@@ -99,6 +99,7 @@ public abstract class AbstractClient implements Runnable {
     if (clientSocket == null) {
       throw new SocketException("Socket is null");
     }
+    output.reset();
     output.writeObject(information);
     output.flush();
   }
@@ -113,7 +114,6 @@ public abstract class AbstractClient implements Runnable {
         clientSocket.close();
       }
       if (output != null) {
-        output.reset();
         output.close();
       }
       if (input != null) {

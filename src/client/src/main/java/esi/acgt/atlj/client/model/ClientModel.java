@@ -27,8 +27,8 @@ package esi.acgt.atlj.client.model;
 import esi.acgt.atlj.client.connexionServer.Client;
 import esi.acgt.atlj.client.connexionServer.ClientInterface;
 import esi.acgt.atlj.model.Model;
-import esi.acgt.atlj.model.game.GameStatus;
 import esi.acgt.atlj.model.game.Direction;
+import esi.acgt.atlj.model.game.GameStatus;
 import esi.acgt.atlj.model.game.ManagedGame;
 import esi.acgt.atlj.model.game.UnmanagedGame;
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -84,6 +84,16 @@ public class ClientModel extends Model {
   };
 
   /**
+   * Lambda to execute when locking other player.
+   */
+  Consumer<TetriminoInterface> lockTetrimino = (TetriminoInterface tetriminoInterface) ->
+  {
+    System.out.println("I have a tetrimino to lock");
+    otherPlayer.placeTetrimino(tetriminoInterface);
+  };
+
+
+  /**
    * Send which line has been destroyed by the managed game to the server
    */
   Consumer<List<Integer>> lineDestroyed = (List<Integer> lineDestroyed) -> {
@@ -96,10 +106,6 @@ public class ClientModel extends Model {
   {
     if (client != null) {
       this.client.notifyLoss();
-    } else {
-      var minos = Mino.values();
-      player.setNextTetrimino(
-          Tetrimino.createTetrimino(minos[(int) (Math.random() * (minos.length))]));
     }
   };
 
@@ -108,7 +114,7 @@ public class ClientModel extends Model {
    * player send you his placed pawn.
    */
   Consumer<TetriminoInterface> addTetrimino = (TetriminoInterface tetriminoInterface) ->
-      otherPlayer.placeTetrimino(tetriminoInterface);
+      otherPlayer.setActualTetrimino(tetriminoInterface);
 
   public void closeConnection() {
     if (client != null) {
@@ -157,6 +163,14 @@ public class ClientModel extends Model {
       otherPlayer.setNextTetrimino(Tetrimino.createTetrimino(m));
 
   /**
+   * Sends a tetrimino to lock to server.
+   */
+  Consumer<TetriminoInterface> lockMyTetrimino = (TetriminoInterface m) -> {
+    System.out.println("I have a tetrimino to send as lock");
+    client.lockTetrimino(m);
+  };
+
+  /**
    * Lambda expression to connect game state from server to model.
    */
   Runnable playerReady = this::start;
@@ -164,8 +178,9 @@ public class ClientModel extends Model {
   /**
    * Lambda expression to connect game state from server to model. Runs if other player has lost
    */
-  Runnable otherPlayerLost = () ->
-      this.otherPlayer.playerStatus("Lost", 1);
+  Runnable otherPlayerLost = () -> {
+    this.otherPlayer.playerStatus("LOCK OUT", 0.9);
+  };
 
   /**
    * Sends the score to the server to be updated in other board
@@ -183,7 +198,7 @@ public class ClientModel extends Model {
    * disconnected
    */
   Runnable playerDisconnected = () ->
-      this.player.fireEndGame(this.player.getUsername(), "Le joueurs adverse s'est déconnecté.");
+      this.otherPlayer.playerStatus("Disconnected", 1);
 
   /**
    * Instantiates a new client with port and host to connect to. Connects all lambda methods in
@@ -212,6 +227,7 @@ public class ClientModel extends Model {
     client.connectPlayerDisconnected(this.playerDisconnected);
     client.connectReceiveUserName(this.receiveName);
     client.connectHold(this.hold);
+    client.connectlockTetrimino(this.lockTetrimino);
   }
 
   /**
@@ -258,6 +274,7 @@ public class ClientModel extends Model {
     player.connectLineDestroyed(this.lineDestroyed);
     player.connectSendScoreServer(sendScoreServer);
     player.connectLost(this.iLost);
+    player.connectTetriminoLock(this.lockMyTetrimino);
   }
 
   /**
