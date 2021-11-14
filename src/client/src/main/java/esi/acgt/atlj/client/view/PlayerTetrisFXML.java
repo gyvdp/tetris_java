@@ -349,7 +349,7 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
         updateUsername(evt.getNewValue().toString());
       }
 
-      case "hold" -> {
+        case "hold" -> {
         updateHold((TetriminoInterface) Tetrimino.createTetrimino((Mino) evt.getNewValue()));
       }
 
@@ -358,7 +358,7 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
       }
 
       case "winner" -> {
-        displayWinner((String) evt.getNewValue(), (String) evt.getOldValue());
+        displayWinner((String) evt.getOldValue(), (String) evt.getNewValue());
       }
     }
   }
