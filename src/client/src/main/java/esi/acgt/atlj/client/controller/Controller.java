@@ -84,6 +84,7 @@ public class Controller {
       this.view.displayError(e);
       this.view.displayConnexion();
     }
+
     this.view.show();
   }
 
