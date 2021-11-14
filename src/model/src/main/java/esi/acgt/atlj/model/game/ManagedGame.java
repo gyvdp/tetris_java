@@ -25,6 +25,7 @@
 package esi.acgt.atlj.model.game;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -157,7 +158,7 @@ public class ManagedGame extends AbstractGame {
         this.setHold(this.actualTetrimino.getType());
         this.setActualTetrimino(this.nextTetrimino);
       } else {
-        TetriminoInterface temp = this.getHold();
+        TetriminoInterface temp = Tetrimino.createTetrimino(this.getHold());
         this.setHold(this.actualTetrimino.getType());
         this.setActualTetrimino(temp);
       }

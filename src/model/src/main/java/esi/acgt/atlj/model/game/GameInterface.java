@@ -55,7 +55,8 @@ public interface GameInterface {
   int getScore();
 
 
-  boolean[][] generateFreeMask (int height, int width, int xStart, int yStart, int xMargin, int yMargin);
+  boolean[][] generateFreeMask(int height, int width, int xStart, int yStart, int xMargin,
+      int yMargin);
 
   /**
    * Get the username of the Player
@@ -69,7 +70,7 @@ public interface GameInterface {
    *
    * @return the held piece or null if there is no piece
    */
-  TetriminoInterface getHold();
+  Mino getHold();
 
   /**
    * Get the actual falling tetrimino
