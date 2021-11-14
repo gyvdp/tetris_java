@@ -152,7 +152,7 @@ public abstract class AbstractServer implements Runnable {
    *
    * @param client Client that has successfully disconnected form the server.
    */
-  protected void clientDisconnected(CustomClientThread client) {
+  synchronized protected void clientDisconnected(CustomClientThread client) {
     System.out.println("Client " + client.getIdOfClient() + " has disconnected");
   }
 
