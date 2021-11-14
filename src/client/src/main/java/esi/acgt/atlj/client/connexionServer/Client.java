@@ -241,7 +241,7 @@ public class Client extends AbstractClient implements ClientInterface {
    */
   @Override
   protected void connexionException(Exception e) {
-    e.printStackTrace();
+    
   }
 
   /**
@@ -344,13 +344,5 @@ public class Client extends AbstractClient implements ClientInterface {
     } catch (IOException e) {
       System.err.println("Cannot send line to remove");
     }
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void propertyChange(PropertyChangeEvent evt) {
-
   }
 }

@@ -113,6 +113,7 @@ public abstract class AbstractClient implements Runnable {
         clientSocket.close();
       }
       if (output != null) {
+        output.reset();
         output.close();
       }
       if (input != null) {
@@ -120,7 +121,6 @@ public abstract class AbstractClient implements Runnable {
       }
       closeConnection();
     } catch (IOException e) {
-      System.err.println("Sorry the connection cannot close");
       connexionException(e);
     }
   }

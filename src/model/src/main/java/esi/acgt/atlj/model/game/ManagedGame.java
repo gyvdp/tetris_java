@@ -343,7 +343,9 @@ public class ManagedGame extends AbstractGame {
   }
 
   /**
-   * @return
+   * Gets all the line of the whole board
+   *
+   * @return All the line
    */
   private synchronized List<Integer> getFullLines() {
     List<Integer> lines = new ArrayList<>();
