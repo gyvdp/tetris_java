@@ -27,6 +27,7 @@ package esi.acgt.atlj.client.view;
 import static esi.acgt.atlj.model.board.GameInterface.HEIGHT;
 import static esi.acgt.atlj.model.board.GameInterface.WIDTH;
 
+import esi.acgt.atlj.client.controller.Controller;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeEvent;
@@ -40,6 +41,8 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -47,6 +50,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 /**
  * Scene that contains a player's board and informations
@@ -141,12 +145,17 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
   @FXML
   public GridPane scene;
 
+  private final Controller controller;
+
   /**
    * Constructor of PlayerTetrisFXML
    *
-   * @param motherbox Box wich we will bind everything
+   * @param motherbox  Box wich we will bind everything
+   * @param controller Controller wich we interact with
    */
-  public PlayerTetrisFXML(HBox motherbox) {
+  public PlayerTetrisFXML(HBox motherbox,
+      Controller controller) {
+    this.controller = controller;
     // FXML loading
     FXMLLoader loader = new FXMLLoader(getClass().getResource(
         "/fxml/TetrisBoard.fxml"));
@@ -196,7 +205,7 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
    * @param oldBoard oldBoard of this player
    * @param newBoard newBoard of this player
    */
-  public void updateBoard(Mino[][] oldBoard, Mino[][] newBoard) {
+  private void updateBoard(Mino[][] oldBoard, Mino[][] newBoard) {
     for (int i = 0; i < this.minosGrid.length; i++) {
       for (int j = 0; j < this.minosGrid[i].length; j++) {
         if (oldBoard[i][j] != newBoard[i][j]) {
@@ -211,7 +220,7 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
    *
    * @param newScore new Score of this player
    */
-  public void updateScore(int newScore) {
+  private void updateScore(int newScore) {
     this.scoreLabel.setText(Integer.toString(newScore));
   }
 
@@ -229,7 +238,7 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
    *
    * @param line new Line of this player
    */
-  public void updateLine(int line) {
+  private void updateLine(int line) {
     this.linesLabel.setText(Integer.toString(line));
   }
 
@@ -238,7 +247,7 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
    *
    * @param hold new hold Tetrimino of this player
    */
-  public void updateHold(TetriminoInterface hold) {
+  private void updateHold(TetriminoInterface hold) {
     this.holdTetrimino.setImage(this.getTetriminoImage(hold.getType()));
   }
 
@@ -247,7 +256,7 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
    *
    * @param tetrimino new next Tetrimino of this player
    */
-  public void updateNextPiece(TetriminoInterface tetrimino) {
+  private void updateNextPiece(TetriminoInterface tetrimino) {
     this.nextTetrimino.setImage(this.getTetriminoImage(tetrimino.getType()));
   }
 
@@ -346,6 +355,21 @@ public class PlayerTetrisFXML implements Initializable, PropertyChangeListener {
       case "next" -> {
         updateNextPiece((TetriminoInterface) evt.getNewValue());
       }
+
+      case "winner" -> {
+        displayWinner((String) evt.getNewValue(), (String) evt.getOldValue());
+      }
     }
+  }
+
+  private void displayWinner(String winnerName, String reason) {
+    Platform.runLater(() -> {
+      Alert alert = new Alert(AlertType.INFORMATION);
+      alert.setHeaderText("Le vainqueur est : " + winnerName);
+      alert.setContentText(reason);
+      alert.setTitle("Nous avons un vainqueur !");
+      alert.showAndWait();
+      controller.disconnect();
+    });
   }
 }

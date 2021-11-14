@@ -214,4 +214,8 @@ public class ManagedGame extends Game {
     setStatus(GameStatus.TETRIMINO_FALLING);
   }
 
+  public void fireEndGame(String winnerName, String reason) {
+    this.changeSupport.firePropertyChange("winner", winnerName, reason);
+  }
+
 }

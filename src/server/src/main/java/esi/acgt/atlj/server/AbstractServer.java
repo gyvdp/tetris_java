@@ -207,7 +207,8 @@ public abstract class AbstractServer implements Runnable {
           Socket clientSocket = serverSocket.accept();
           synchronized (this) {
             if (isActive) {
-              CustomClientThread customClientThread = new CustomClientThread(clientSocket, this);
+              CustomClientThread customClientThread = new CustomClientThread(clientSocket, this,
+                  threads.size());
               this.threads.add(customClientThread);
             }
           }
