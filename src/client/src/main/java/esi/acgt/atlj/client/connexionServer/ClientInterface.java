@@ -71,6 +71,22 @@ public interface ClientInterface {
    */
   void connectOtherPlayerLost(Runnable otherPlayerLost);
 
+
+  /**
+   * Sends a locked tetrimino message to server.
+   *
+   * @param m Tetrimino to lock.
+   */
+  void lockTetrimino(TetriminoInterface m);
+
+
+  /**
+   * Connect locked tetrimino lambda to client
+   *
+   * @param tetriminoInterfaceConsumer Lambda to connect.
+   */
+  void connectlockTetrimino(Consumer<TetriminoInterface> tetriminoInterfaceConsumer);
+
   /**
    * Connects player disconnected to client
    *

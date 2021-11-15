@@ -244,4 +244,23 @@ public abstract class AbstractGame implements GameInterface, Serializable {
   public void setLevel(int level) {
     this.level = level;
   }
+
+  public void placeTetrimino(TetriminoInterface tetrimino) {
+    var oldBoard = getBoard();
+    var tMinos = tetrimino.getMinos();
+    for (var i = 0; i < tMinos.length; ++i) {
+      for (var j = 0; j < tMinos[i].length; ++j) {
+        if (tMinos[i][j] == null) {
+          continue;
+        }
+        var line = tetrimino.getY() + i;
+        var col = tetrimino.getX() + j;
+
+        if (!(line < 0 || col < 0) && line < minos.length && col < minos[line].length) {
+          minos[line][col] = tMinos[i][j];
+        }
+      }
+    }
+    this.changeSupport.firePropertyChange("board", oldBoard, getBoard());
+  }
 }

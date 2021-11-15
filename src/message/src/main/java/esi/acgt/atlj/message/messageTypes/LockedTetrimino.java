@@ -21,21 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package esi.acgt.atlj.server;
 
-public class App {
+package esi.acgt.atlj.message.messageTypes;
 
-  /**
-   * Main class to launch server.
-   *
-   * @param args Port on which to launch server.
-   */
-  public static void main(String[] args) {
-    int port = 6969;
-    if (args.length > 0) {
-      port = Integer.parseInt(args[0]);
-    }
-    new Server(port);
+import esi.acgt.atlj.message.Message;
+
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+
+
+public class LockedTetrimino extends Message {
+
+  TetriminoInterface tetrimino;
+
+  public LockedTetrimino(TetriminoInterface myT) {
+    tetrimino = myT;
   }
 
+  public TetriminoInterface getTetrimino() {
+    return this.tetrimino;
+  }
+
+  public String toString() {
+    return "Locked_Tetrimino";
+  }
 }

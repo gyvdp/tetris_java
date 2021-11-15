@@ -24,95 +24,102 @@
   ~ SOFTWARE.
   -->
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+  minWidth="-Infinity" prefHeight="330.0" prefWidth="651.0" spacing="10.0"
+  xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: gray; -fx-border-color: black; -fx-border-width: 2px;">
+    <HBox alignment="CENTER" prefHeight="180.0" prefWidth="651.0"
+      style="-fx-border-color: black; -fx-border-width: 2px;">
       <children>
-        <Label alignment="CENTER" text="Tetris, serveur connection :" textAlignment="CENTER" underline="true">
-          <font>
-            <Font size="30.0" />
-          </font>
-        </Label>
+        <ImageView fitHeight="172.0" fitWidth="647.0">
+          <image>
+            <Image url="@../image/Tetris_background.png"/>
+          </image>
+        </ImageView>
       </children>
     </HBox>
     <GridPane>
-      <columnConstraints>
-        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="130.0" />
-        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="470.0" minWidth="10.0" prefWidth="266.0" />
-        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="470.0" minWidth="10.0" prefWidth="79.0" />
-        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="470.0" minWidth="10.0" prefWidth="116.0" />
-      </columnConstraints>
-      <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      </rowConstraints>
       <children>
         <Label alignment="CENTER" text="Serveur IP : ">
           <font>
-            <Font name="Century" size="16.0" />
+            <Font name="Century" size="16.0"/>
           </font>
         </Label>
-        <TextField fx:id="ip" promptText="Adresse ip (172.168.45.24)" GridPane.columnIndex="1">
-          <GridPane.margin>
-            <Insets left="25.0" />
-          </GridPane.margin>
-        </TextField>
         <Label alignment="CENTER" text="Port :" GridPane.columnIndex="2">
           <font>
-            <Font name="Century" size="16.0" />
+            <Font name="Century" size="16.0"/>
+          </font>
+        </Label>
+        <Label alignment="CENTER" text="Username : " GridPane.rowIndex="1">
+          <font>
+            <Font name="Century" size="16.0"/>
           </font>
         </Label>
         <TextField fx:id="port" promptText="Port (6545)" GridPane.columnIndex="3">
           <GridPane.margin>
-            <Insets right="25.0" />
+            <Insets right="25.0"/>
           </GridPane.margin>
         </TextField>
-        <Label alignment="CENTER" text="Username : " GridPane.rowIndex="1">
-          <font>
-            <Font name="Century" size="16.0" />
-          </font>
-        </Label>
-        <TextField fx:id="username" promptText="Username " GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
+        <TextField fx:id="ip" promptText="Adresse ip (172.168.45.24)" GridPane.columnIndex="1">
           <GridPane.margin>
-            <Insets left="25.0" right="25.0" />
+            <Insets left="25.0"/>
+          </GridPane.margin>
+        </TextField>
+        <TextField fx:id="username" promptText="Username " GridPane.columnIndex="1"
+          GridPane.columnSpan="3" GridPane.rowIndex="1">
+          <GridPane.margin>
+            <Insets left="25.0" right="25.0"/>
           </GridPane.margin>
         </TextField>
       </children>
+      <columnConstraints>
+        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0"
+          prefWidth="130.0"/>
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="470.0" minWidth="10.0"
+          prefWidth="266.0"/>
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="470.0" minWidth="10.0"
+          prefWidth="79.0"/>
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="470.0" minWidth="10.0"
+          prefWidth="116.0"/>
+      </columnConstraints>
       <padding>
-        <Insets left="30.0" right="30.0" top="20.0" />
+        <Insets left="30.0" right="30.0" top="20.0"/>
       </padding>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+      </rowConstraints>
     </GridPane>
+
     <HBox alignment="CENTER" prefHeight="47.0" prefWidth="444.0" spacing="75.0">
+      <VBox.margin>
+        <Insets bottom="15.0"/>
+      </VBox.margin>
       <children>
         <Button mnemonicParsing="false" onAction="#leavePressed" text="Quitter">
           <font>
-            <Font size="15.0" />
+            <Font size="15.0"/>
           </font>
         </Button>
         <Button mnemonicParsing="false" onAction="#connexionPressed" text="Connexion">
           <font>
-            <Font size="15.0" />
+            <Font size="15.0"/>
           </font>
         </Button>
-        <Button mnemonicParsing="false" onAction="#testPressed" text="Test Server">
-          <font>
-            <Font size="15.0" />
-          </font>
-        </Button>
-            <Button layoutX="469.0" layoutY="18.0" mnemonicParsing="false" onAction="#clientTest" text="Test Client">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Button>
       </children>
-      <VBox.margin>
-        <Insets bottom="15.0" />
-      </VBox.margin>
     </HBox>
   </children>
 </VBox>

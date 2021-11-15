@@ -37,6 +37,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -81,6 +82,8 @@ public class Connexion implements Initializable {
         this.connexionPressed();
       }
     });
+    this.stage.getIcons()
+        .add(new Image(Connexion.class.getResourceAsStream("/image/tetris-icon-32.png")));
   }
 
   /**
@@ -110,18 +113,7 @@ public class Connexion implements Initializable {
   public void leavePressed() {
     this.stage.close();
   }
-
-  //TODO retirer button test de la version finale
-  public void testPressed() {
-    this.controller.connexion("localhost", 6969, "Paclinio");
-    this.stage.close();
-  }
-
-  public void clientTest() {
-    this.controller.solo("Pacliclown");
-    this.stage.close();
-  }
-
+  
   /**
    * Initiale of the Connexion.fxml
    */
