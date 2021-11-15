@@ -26,46 +26,58 @@ package esi.acgt.atlj.server;
 
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractServer implements Runnable {
 
   /**
-   * Port on which server will listen to.
-   */
-  private final int port;
-  /**
-   * List of all client threads
-   */
-  private final List<Thread> threads;
-  /**
-   * Socket of server
+   * The server socket: listens for clients who want to connect.
    */
   private ServerSocket serverSocket = null;
-  /**
-   * Thread that will await for client to connect.
-   */
-  private Thread connectionThread;
-  /**
-   * True if server is active.
-   */
-  private boolean isActive = false;
-  /**
-   * Server timeout for accepting connexions. Defaults to half a second.
-   */
-  private final int timeout = 500;
-  /**
-   * Maximum number of clients that can be in the queue at the same time. Default to 10 clients.
-   */
-  private final int backlog = 10;
 
   /**
-   * Constructor for Abstract server
+   * The connection listener thread.
+   */
+  private Thread connectionListener = null;
+
+  /**
+   * The port number
+   */
+  private int port;
+
+  /**
+   * The server timeout while for accepting connections. After timing out, the server will check to
+   * see if a command to stop the server has been issued; it not it will resume accepting
+   * connections. Set to half a second by default.
+   */
+  private int timeout = 500;
+
+  /**
+   * The maximum queue length; i.e. the maximum number of clients that can be waiting to connect.
+   * Set to 10 by default.
+   */
+  private int backlog = 10;
+
+  /**
+   * The thread group associated with client threads. Each member of the thread group is a <code>
+   * ConnectionToClient </code>.
+   */
+  private final List<Thread> threads;
+
+  /**
+   * Indicates if the listening thread is ready to stop. Set to true by default.
+   */
+  private boolean readyToStop = true;
+
+  /**
+   * Constructs a new server.
    *
-   * @param port Port on which to listen to.
+   * @param port the port number on which to listen.
    */
   public AbstractServer(int port) {
     this.port = port;
@@ -73,146 +85,230 @@ public abstract class AbstractServer implements Runnable {
   }
 
   /**
-   * Stops the server from running.
+   * Closes the server socket and the connections with all clients. Any exception thrown while
+   * closing a client is ignored. If one wishes to catch these exceptions, then clients should be
+   * individually closed before calling this method. The method also stops listening if this thread
+   * is running. If the server is already closed, this call has no effect.
+   *
+   * @throws IOException if an I/O error occurs while closing the server socket.
    */
-  public void stopServer() throws IOException {
+  final public void close() throws IOException {
     if (serverSocket == null) {
       return;
     }
+    stopListening();
     try {
       serverSocket.close();
-    } catch (IOException e) {
-      System.err.println(e.getMessage());
     } finally {
       synchronized (this) {
-        for (Thread clientSockets : threads) {
-          ((CustomClientThread) clientSockets).close();
+        for (Thread clientThreadList1 : threads) {
+          try {
+            ((CustomClientThread) clientThreadList1).close();
+          } catch (Exception ex) {
+          }
         }
+        serverSocket = null;
       }
+      try {
+        connectionListener.join();
+      } catch (InterruptedException | NullPointerException ex) {
+      }
+      serverClosed();
     }
-    serverStopped();
   }
 
   /**
-   * Hook for when there is an exception in the server. Defaults to nothing, needs to be
-   * overridden.
+   * Returns the port number.
    *
-   * @param e Exception e.
+   * @return the port number.
    */
-  protected void exceptionHook(Exception e) {
-    System.err.println(e.getMessage());
+  final public int getPort() {
+    return port;
   }
 
   /**
-   * Hook for when server has stopped. Defaults to nothing, needs to be overridden.
+   * Asked by client if hist tetriminos list is empty. This method is synchronized to ensure that
+   * whatever effects it has does not conflict with work being done by another thread.
    */
-  protected void serverStopped() {
+  synchronized void refillTetriminoBag() {
+    refillBag();
   }
 
   /**
-   * Hook for when message from client is received. Defaults to nothing, needs to be overridden.
+   * Hook function for when upcoming tetriminos bag of a player needs to be refilled.
+   */
+  void refillBag() {
+  }
+
+
+  /**
+   * Returns true if the server is listening and therefore ready to accept new clients.
    *
-   * @param msg    Object that has been received.
-   * @param client Client that has sent the message.
+   * @return true if the server is listening.
    */
-  protected void handleMessageClient(Object msg, CustomClientThread client) {
+  final public boolean isListening() {
+    return connectionListener != null && connectionListener.isAlive(); // modified in version 2.31
   }
 
   /**
-   * Hook for when a client has connected.
+   * Begins the thread that waits for new clients. If the server is already in listening mode, this
+   * call has no effect.
    *
-   * @param client Client that has successfully connected to the server.
+   * @throws IOException if an I/O error occurs when creating the server socket.
+   */
+  final public void listen() throws IOException {
+    if (!isListening()) {
+      if (serverSocket == null) {
+        serverSocket = new ServerSocket(getPort(), backlog);
+      }
+      serverSocket.setSoTimeout(timeout);
+      connectionListener = new Thread(this);
+      connectionListener.start();
+    }
+  }
+
+  /**
+   * Causes the server to stop accepting new connections.
+   */
+  final public void stopListening() {
+    readyToStop = true;
+  }
+
+  /**
+   * Hook method called each time a new client connection is accepted. The default implementation
+   * does nothing. This method does not have to be synchronized since only one client can be
+   * accepted at a time.
+   *
+   * @param client the connection connected to the client.
    */
   protected void clientConnected(CustomClientThread client) {
   }
 
   /**
-   * Hook for when a client has disconnected from the server.
+   * Hook method called each time a client disconnects. The client is garantee to be disconnected
+   * but the thread is still active until it is asynchronously removed from the thread group. The
+   * default implementation does nothing. The method may be overridden by subclasses but should
+   * remains synchronized.
    *
-   * @param client Client that has successfully disconnected form the server.
+   * @param client the connection with the client.
    */
-  synchronized protected void clientDisconnected(CustomClientThread client) {
-    threads.remove(client);
-    System.out.println("Client " + client.getIdOfClient() + " has disconnected");
+  synchronized protected void clientDisconnected(
+      CustomClientThread client) {
   }
 
   /**
-   * Establishes server socket, create new listener thread and turns isActive to true.
-   */
-  public void startServer() {
-    try {
-      if (!isListening() && serverSocket == null) {
-        this.serverSocket = new ServerSocket(this.port, this.backlog);
-      }
-      serverSocket.setSoTimeout(timeout);
-    } catch (IOException e) {
-      exceptionHook(e);
-    } finally {
-      connectionThread = new Thread(this);
-      isActive = true;
-      connectionThread.start();
-    }
-  }
-
-  /**
-   * Asked by client if his tetriminos list if empty. This method is synchronized to ensure that
-   * whatever effects it has does not conflict with work being done by another thread.
-   */
-  public synchronized void refill() {
-    refillBag();
-  }
-
-  /**
-   * Hook function when bag needs to be refilled. Need to be overridden for specific behaviour.
-   */
-  void refillBag() {
-  }
-
-  /**
-   * Checks if the connection thread is declared and alive.
+   * Hook method called each time an exception is thrown in a ConnectionToClient thread. The method
+   * may be overridden by subclasses but should remains synchronized. Most exceptions will cause the
+   * end of the client's thread except for <code>ClassNotFoundException</code>s received when an
+   * object of unknown class is received and for the
+   * <code>RuntimeException</code>s that can be thrown by the message handling
+   * method implemented by the user.
    *
-   * @return True if connection thread is listening.
+   * @param client    the client that raised the exception.
+   * @param exception the exception thrown.
    */
-  public boolean isListening() {
-    return (connectionThread != null && connectionThread.isAlive());
+  synchronized protected void clientException(
+      CustomClientThread client, Throwable exception) {
   }
 
   /**
-   * {@inheritDoc}
+   * Hook method called when the server stops accepting connections because an exception has been
+   * raised. The default implementation does nothing. This method may be overriden by subclasses.
+   *
+   * @param exception the exception raised.
+   */
+  protected void listeningException(Throwable exception) {
+  }
+
+  /**
+   * Hook method called when the server starts listening for connections. The default implementation
+   * does nothing. The method may be overridden by subclasses.
+   */
+  protected void serverStarted() {
+  }
+
+  /**
+   * Hook method called when the server stops accepting connections. The default implementation does
+   * nothing. This method may be overriden by subclasses.
+   */
+  protected void serverStopped() {
+  }
+
+  /**
+   * Hook method called when the server is clased. The default implementation does nothing. This
+   * method may be overriden by subclasses. When the server is closed while still listening,
+   * serverStopped() will also be called.
+   */
+  protected void serverClosed() {
+  }
+
+  /**
+   * Handles a command sent from one client to the server. This MUST be implemented by subclasses,
+   * who should respond to messages. This method is called by a synchronized method so it is also
+   * implcitly synchronized.
+   *
+   * @param msg    the message sent.
+   * @param client the connection connected to the client that sent the message.
+   */
+  protected abstract void handleMessageFromClient(
+      Object msg, CustomClientThread client);
+
+
+  /**
+   * Receives a command sent from the client to the server. Called by the run method of
+   * <code>ConnectionToClient</code> instances that are watching for messages coming from the
+   * server This method is synchronized to ensure that whatever effects it has do not conflict with
+   * work being done by other threads. The method simply calls the
+   * <code>handleMessageFromClient</code> slot method.
+   *
+   * @param msg    the message sent.
+   * @param client the connection connected to the client that sent the message.
+   */
+  final synchronized void receiveMessageFromClient(
+      Object msg, CustomClientThread client) {
+    this.handleMessageFromClient(msg, client);
+  }
+
+  /**
+   * Runs the listening thread that allows clients to connect. Not to be called.
    */
   @Override
-  public void run() {
+  final public void run() {
+    readyToStop = false;
+    serverStarted();
+
     try {
-      while (isActive) {
+      // Repeatedly waits for a new client connection, accepts it, and
+      // starts a new thread to handle data exchange.
+      while (!readyToStop) {
         try {
+          // Wait here for new connection attempts, or a timeout
           Socket clientSocket = serverSocket.accept();
+          // When a client is accepted, create a thread to handle
+          // the data exchange, then add it to thread group
           synchronized (this) {
-            if (isActive) {
-              CustomClientThread customClientThread = new CustomClientThread(clientSocket, this,
-                  threads.size());
-              this.threads.add(customClientThread);
+            if (!readyToStop) {
+              CustomClientThread client = new CustomClientThread(
+                  clientSocket, this, threads.size());
+              this.threads.add(client);
             }
           }
-        } catch (IOException e) {
+        } catch (InterruptedIOException exception) {
+          // This will be thrown when a timeout occurs.
+          // The server will continue to listen if not ready to stop.
         }
       }
-    } finally {
-      this.isActive = false;
-      try {
-        stopServer();
-      } catch (IOException e) {
+    } catch (IOException exception) {
+      if (!readyToStop) {
+        // Closing the socket must have thrown a SocketException
+        listeningException(exception);
       }
+    } finally {
+      readyToStop = true;
+      connectionListener = null;
+      // call the hook method to notify that the server has stopped
+      serverStopped();
     }
   }
 
-  /**
-   * Receives a message sent form the client to the server. This method is synchronized to ensure
-   * that whatever effects it has does not conflict with work being done by another thread.
-   *
-   * @param msg    messageTypes.Message received form client.
-   * @param client Author of the message.
-   */
-  final synchronized void receiveMessageFromClient(Object msg, CustomClientThread client) {
-    this.handleMessageClient(msg, client);
-  }
 }

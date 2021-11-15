@@ -23,6 +23,8 @@
  */
 package esi.acgt.atlj.server;
 
+import java.io.IOException;
+
 public class App {
 
   /**
@@ -35,7 +37,10 @@ public class App {
     if (args.length > 0) {
       port = Integer.parseInt(args[0]);
     }
-    new Server(port);
+    try {
+      Server s = new Server(port);
+    } catch (IOException e) {
+      System.err.println("Cannot start server");
+    }
   }
-
 }
