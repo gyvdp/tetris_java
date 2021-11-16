@@ -39,7 +39,6 @@ public class App {
     }
     try {
       Server s = new Server(port);
-      System.out.println("Server is running on " + s.getIP() + ":" + port + "...");
     } catch (IOException e) {
       System.err.println("Cannot start server");
     }

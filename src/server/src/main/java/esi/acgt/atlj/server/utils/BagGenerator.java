@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.server.model;
+package esi.acgt.atlj.server.utils;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
 import java.util.Random;
@@ -38,7 +38,7 @@ public class BagGenerator {
   private final Mino[] firstBag;
 
   /**
-   * Contructor for server model.
+   * Constructor for server model.
    */
   public BagGenerator() {  //TODO get pair of players
     this.firstBag = regenBag();

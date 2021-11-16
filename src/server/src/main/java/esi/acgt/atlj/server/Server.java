@@ -24,7 +24,7 @@
 
 package esi.acgt.atlj.server;
 
-import esi.acgt.atlj.server.model.MatchUpGenerator;
+import esi.acgt.atlj.server.utils.MatchUpGenerator;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
@@ -78,6 +78,9 @@ public class Server extends AbstractServer {
     this.listen();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   protected synchronized void clientException(CustomClientThread client, Throwable exception) {
     super.clientException(client, exception);
@@ -95,6 +98,15 @@ public class Server extends AbstractServer {
   private int getNextMatchupId() {
     matchUpId++;
     return matchUpId;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected void serverStarted(int port) {
+    System.out.println("Server is running on " + getIP() + ":" + port + "...");
   }
 
   /**
@@ -116,17 +128,6 @@ public class Server extends AbstractServer {
       System.err.println("Error with network interface, cannot get local ip address");
     }
     return null;
-  }
-
-
-  /**
-   * Quits the server and closes all aspects of the connection to clients.
-   *
-   * @throws IOException If socket thread cannot close.
-   */
-  public void quit() throws IOException {
-    this.stopListening();
-    this.close();
   }
 
   /**

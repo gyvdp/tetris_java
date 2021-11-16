@@ -243,7 +243,6 @@ public class CustomClientThread extends Thread {
    * method perhaps after some kind of filtering is done.
    *
    * @param msg the message to be sent.
-   * @throws IOException if an I/O error occur when sending the message.
    */
   public void sendMessage(Object msg) {
     if (clientSocket == null || output == null) {

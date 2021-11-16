@@ -208,7 +208,8 @@ public abstract class AbstractServer implements Runnable {
    * Hook method called when the server starts listening for connections. The default implementation
    * does nothing. The method may be overridden by subclasses.
    */
-  protected void serverStarted() {
+  protected void serverStarted(int port) {
+
   }
 
   /**
@@ -232,17 +233,11 @@ public abstract class AbstractServer implements Runnable {
   @Override
   final public void run() {
     readyToStop = false;
-    serverStarted();
-
+    serverStarted(this.port);
     try {
-      // Repeatedly waits for a new client connection, accepts it, and
-      // starts a new thread to handle data exchange.
       while (!readyToStop) {
         try {
-          // Wait here for new connection attempts, or a timeout
           Socket clientSocket = serverSocket.accept();
-          // When a client is accepted, create a thread to handle
-          // the data exchange, then add it to thread group
           synchronized (this) {
             if (!readyToStop) {
               CustomClientThread client = new CustomClientThread(
@@ -251,19 +246,15 @@ public abstract class AbstractServer implements Runnable {
             }
           }
         } catch (InterruptedIOException exception) {
-          // This will be thrown when a timeout occurs.
-          // The server will continue to listen if not ready to stop.
         }
       }
     } catch (IOException exception) {
       if (!readyToStop) {
-        // Closing the socket must have thrown a SocketException
         listeningException(exception);
       }
     } finally {
       readyToStop = true;
       connectionListener = null;
-      // call the hook method to notify that the server has stopped
       serverStopped();
     }
   }
