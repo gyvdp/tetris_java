@@ -27,7 +27,6 @@ package esi.acgt.atlj.server;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.*;
 import esi.acgt.atlj.model.tetrimino.Mino;
-import esi.acgt.atlj.server.model.BagGenerator;
 import esi.acgt.atlj.server.model.MatchUpGenerator;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -157,18 +156,7 @@ public class Server extends AbstractServer {
 
   @Override
   protected void handleMessageFromClient(Object msg, CustomClientThread client) {
-    if (client.getClientStatus().equals(PlayerStatus.READY)) {
-      CustomClientThread opPlayer = members.get(0).equals(client) ? members.get(1) : members.get(0);
-      if (msg.toString().equalsIgnoreCase("ASK_PIECE")) {
-        Mino m = client.getMino();
-        client.sendMessage(new SendPiece(m));
-        opPlayer.sendMessage(new UpdatePieceUnmanagedBoard(m));
-      } else {
-        opPlayer.sendMessage(msg);
-      }
-    } else {
-      System.err.println("Message dropped " + msg.toString() + " from " + client.getInetAddress());
-    }
+
   }
 
   /**
@@ -188,13 +176,11 @@ public class Server extends AbstractServer {
     super.clientConnected(client);
     members.put(getNextId(), client);
     waitingList.add(client);
-    if (waitingList.size() % 2 == 0) {
+    if (waitingList.size() % 2 == 0)
       matchUps.put(getNextMatchupId(), new MatchUpGenerator(
           waitingList.stream().limit(2).collect(Collectors.toList()), this.matchUpId));
-    }
-    System.out.println(
-        "Client " + client.getIdOfClient() + " has connected successfully with "
-            + client.getInetAddress());
+    System.out.println("Client " + client.getIdOfClient() + " has connected successfully with "
+        + client.getInetAddress());
   }
 
   /**

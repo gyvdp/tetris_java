@@ -24,6 +24,7 @@
 
 package esi.acgt.atlj.server;
 
+import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -35,6 +36,8 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * Custom thread for each client of the server.
@@ -55,6 +58,16 @@ public class CustomClientThread extends Thread {
    * Unique id of client.
    */
   private final int id;
+
+  /**
+   * Handle message from client.
+   */
+  private BiConsumer<Message, CustomClientThread> handleMessage;
+
+  /**
+   * Sends disconnect message to other player.
+   */
+  private Consumer<CustomClientThread> disconnect;
 
   /**
    * Runs when need to refill bag
@@ -258,6 +271,10 @@ public class CustomClientThread extends Thread {
     }
   }
 
+  public void connectDisconnect(Consumer<CustomClientThread> disconnect) {
+    this.disconnect = disconnect;
+  }
+
   /**
    * Getter for status of client.
    *
@@ -297,9 +314,9 @@ public class CustomClientThread extends Thread {
       while (!readyToStop) {
         try {
           msg = input.readObject();
-          if (!readyToStop && handleMessageFromClient(msg)) {
-            server.receiveMessageFromClient(msg, this);
-          }
+          if (!readyToStop && handleMessageFromClient(msg))
+            if (msg instanceof Message m)
+              handleMessage.accept(m, this);
         } catch (ClassNotFoundException | RuntimeException ex) {
           server.clientException(this, ex);
         }
@@ -313,8 +330,17 @@ public class CustomClientThread extends Thread {
         server.clientException(this, exception);
       }
     } finally {
-      server.clientDisconnected(this);
+      disconnect.accept(this);
     }
+  }
+
+  /**
+   * Connect handle message to match-up generator.
+   *
+   * @param handleMessage Lambda function to connect.
+   */
+  public void connectHandleMessage(BiConsumer<Message, CustomClientThread> handleMessage) {
+    this.handleMessage = handleMessage;
   }
 
   /**
