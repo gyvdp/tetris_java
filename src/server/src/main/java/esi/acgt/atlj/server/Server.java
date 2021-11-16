@@ -90,6 +90,10 @@ public class Server extends AbstractServer {
     }
   }
 
+  Runnable decrementMatchUpId = () -> {
+    this.matchUpId--;
+  };
+
   /**
    * Returns the next match-up id.
    *
@@ -173,8 +177,10 @@ public class Server extends AbstractServer {
         "Client " + client.getIdOfClient() + " has connected successfully with "
             + client.getInetAddress() + " and is in the waiting list");
     if (waitingList.size() % 2 == 0) {
-      matchUps.put(getNextMatchupId(), new MatchUpGenerator(
-          waitingList.stream().limit(2).collect(Collectors.toList()), this.matchUpId));
+      MatchUpGenerator matchUp = new MatchUpGenerator(
+          waitingList.stream().limit(2).collect(Collectors.toList()), this.matchUpId);
+      matchUp.connectDecrementMatchUpId(this.decrementMatchUpId);
+      matchUps.put(getNextMatchupId(), matchUp);
       System.out.println("A new match-up has been created with id: " + this.matchUpId);
       try {
         waitingList.take();
