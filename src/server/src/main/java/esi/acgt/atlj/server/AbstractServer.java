@@ -127,21 +127,6 @@ public abstract class AbstractServer implements Runnable {
   }
 
   /**
-   * Asked by client if hist tetriminos list is empty. This method is synchronized to ensure that
-   * whatever effects it has does not conflict with work being done by another thread.
-   */
-  synchronized void refillTetriminoBag() {
-    refillBag();
-  }
-
-  /**
-   * Hook function for when upcoming tetriminos bag of a player needs to be refilled.
-   */
-  void refillBag() {
-  }
-
-
-  /**
    * Returns true if the server is listening and therefore ready to accept new clients.
    *
    * @return true if the server is listening.

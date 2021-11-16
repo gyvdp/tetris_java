@@ -55,6 +55,12 @@ public class CustomClientThread extends Thread {
    * Unique id of client.
    */
   private final int id;
+
+  /**
+   * Runs when need to refill bag
+   */
+  private Runnable refillBag;
+
   /**
    * A reference to the Server that created this instance.
    */
@@ -66,6 +72,11 @@ public class CustomClientThread extends Thread {
    * @see java.net.Socket
    */
   private Socket clientSocket;
+
+  /**
+   * Matchup of the current player.
+   */
+  private int currentMatchUpid;
 
   /**
    * Stream used to read from the client.
@@ -113,7 +124,7 @@ public class CustomClientThread extends Thread {
       throw ex;
     }
     readyToStop = false;
-    start(); // Start the thread waits for data from the socket
+    this.start(); // Start the thread waits for data from the socket
   }
 
   /**
@@ -124,6 +135,16 @@ public class CustomClientThread extends Thread {
   public int getIdOfClient() {
     return this.id;
   }
+
+  /**
+   * Assigns players current matchupId.
+   *
+   * @param idGeneratedMatchUp Match-up id of client.
+   */
+  public void assignMatchUpId(int idGeneratedMatchUp) {
+    this.currentMatchUpid = idGeneratedMatchUp;
+  }
+
 
   /**
    * Sets the status of the clients and sends it to all clients.
@@ -174,7 +195,7 @@ public class CustomClientThread extends Thread {
    */
   public Mino getMino() {
     if (this.myTetriminos.isEmpty()) {
-      server.refillBag();
+      refillBag.run();
     }
     try {
       return this.myTetriminos.take();
@@ -253,6 +274,15 @@ public class CustomClientThread extends Thread {
    */
   final public boolean isConnected() {
     return clientSocket != null && output != null;
+  }
+
+  /**
+   * Connects lambda to refill bag from match-up generator.
+   *
+   * @param refillBag RefillBag lambda to connect.
+   */
+  public void connectRefillBag(Runnable refillBag) {
+    this.refillBag = refillBag;
   }
 
   /**

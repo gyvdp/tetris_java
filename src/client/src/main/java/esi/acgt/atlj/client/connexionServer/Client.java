@@ -136,7 +136,6 @@ public class Client extends AbstractClient implements ClientInterface {
         playerReady.run();
       } else if (((PlayerState) information).getPlayerState()
           .equals(PlayerStatus.LOST)) {
-        System.out.println("hello");// When player state lost is sent from server
         otherPlayerLost.run();
       } else if (((PlayerState) information).getPlayerState().equals(
           PlayerStatus.DISCONNECTED)) { // When player state disconnected is sent from server
@@ -146,8 +145,8 @@ public class Client extends AbstractClient implements ClientInterface {
       receiveName.accept(((SendName) information).getUsername());
     } else if (information instanceof SetHold) { // When hold tetrimino is sent from server
       hold.accept(((SetHold) information).getHold());
-    } else if (information instanceof LockedTetrimino) { //WHen locked tetrimino has been send from server.
-      locked.accept(((LockedTetrimino) information).getTetrimino());
+    } else if (information instanceof LockedTetrimino l) { //When locked tetrimino has been send from server.
+      locked.accept(l.getTetrimino());
     }
   }
 

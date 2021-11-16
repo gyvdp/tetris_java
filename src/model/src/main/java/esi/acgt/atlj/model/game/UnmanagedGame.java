@@ -37,7 +37,7 @@ public class UnmanagedGame extends AbstractGame {
   public UnmanagedGame() {
     super(null);
   }
-  
+
   /**
    * Sets the current tetrimino
    *
@@ -85,7 +85,6 @@ public class UnmanagedGame extends AbstractGame {
    * @param nbLine Number of line to set to.
    */
   public void setNbLine(int nbLine) {
-    System.out.println("I have to update my lines");
     this.nbLine += nbLine;
     this.changeSupport.firePropertyChange("line", null, this.nbLine);
   }
