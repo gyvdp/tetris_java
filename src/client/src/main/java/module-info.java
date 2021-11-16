@@ -10,6 +10,8 @@ module atlj.client {
   exports esi.acgt.atlj.client;
   exports esi.acgt.atlj.client.model;
   exports esi.acgt.atlj.client.view;
+  exports esi.acgt.atlj.client.view.components;
   exports esi.acgt.atlj.client.controller;
   exports esi.acgt.atlj.client.connexionServer;
+  exports esi.acgt.atlj.client.controller.fxml;
 }
