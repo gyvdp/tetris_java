@@ -24,9 +24,6 @@
 
 package esi.acgt.atlj.server;
 
-import esi.acgt.atlj.message.PlayerStatus;
-import esi.acgt.atlj.message.messageTypes.*;
-import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.server.model.MatchUpGenerator;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -154,11 +151,6 @@ public class Server extends AbstractServer {
     System.exit(0);
   }
 
-  @Override
-  protected void handleMessageFromClient(Object msg, CustomClientThread client) {
-
-  }
-
   /**
    * Gets the next id.
    *
@@ -176,11 +168,19 @@ public class Server extends AbstractServer {
     super.clientConnected(client);
     members.put(getNextId(), client);
     waitingList.add(client);
-    if (waitingList.size() % 2 == 0)
+    System.out.println(
+        "Client " + client.getIdOfClient() + " has connected successfully with "
+            + client.getInetAddress() + " and is in the waiting list");
+    if (waitingList.size() % 2 == 0) {
       matchUps.put(getNextMatchupId(), new MatchUpGenerator(
           waitingList.stream().limit(2).collect(Collectors.toList()), this.matchUpId));
-    System.out.println("Client " + client.getIdOfClient() + " has connected successfully with "
-        + client.getInetAddress());
+      System.out.println("A new match-up has been created with id: " + this.matchUpId);
+      try {
+        waitingList.take();
+        waitingList.take();
+      } catch (InterruptedException ignored) {
+      }
+    }
   }
 
   /**
@@ -193,12 +193,8 @@ public class Server extends AbstractServer {
       waitingList.remove(client);
     } catch (NullPointerException ignored) {
     }
-    if (members.size() > 1) { //TODO send to only client in match up disconnection
-      members.get(client.getIdOfClient() == 0 ? 1 : 0)
-          .sendMessage(new PlayerState(PlayerStatus.DISCONNECTED));
-    }
     members.remove(client.getIdOfClient());
-    clientId = 0;
+    clientId--;
   }
 
 

@@ -87,11 +87,6 @@ public class CustomClientThread extends Thread {
   private Socket clientSocket;
 
   /**
-   * Matchup of the current player.
-   */
-  private int currentMatchUpid;
-
-  /**
    * Stream used to read from the client.
    */
   private ObjectInputStream input;
@@ -117,12 +112,12 @@ public class CustomClientThread extends Thread {
   protected CustomClientThread(Socket clientSocket, AbstractServer server, int id)
       throws IOException {
     this.clientSocket = clientSocket;
-    this.server = server;
     this.id = id;
+    this.server = server;
     this.clientStatus = PlayerStatus.WAITING;
     myTetriminos = new LinkedBlockingQueue<>();
     try {
-      clientSocket.setSoTimeout(0);// make sure timeout is infinite
+      clientSocket.setSoTimeout(0);
     } catch (SocketException e) {
       System.err.println("cannot set timeout to client");
     }
@@ -137,7 +132,7 @@ public class CustomClientThread extends Thread {
       throw ex;
     }
     readyToStop = false;
-    this.start(); // Start the thread waits for data from the socket
+    this.start();
   }
 
   /**
@@ -147,15 +142,6 @@ public class CustomClientThread extends Thread {
    */
   public int getIdOfClient() {
     return this.id;
-  }
-
-  /**
-   * Assigns players current matchupId.
-   *
-   * @param idGeneratedMatchUp Match-up id of client.
-   */
-  public void assignMatchUpId(int idGeneratedMatchUp) {
-    this.currentMatchUpid = idGeneratedMatchUp;
   }
 
 
@@ -261,13 +247,18 @@ public class CustomClientThread extends Thread {
    */
   public void sendMessage(Object msg) {
     if (clientSocket == null || output == null) {
-      System.err.println("Client socket does not exist");
-    }
-    try {
-      output.reset();
-      output.writeObject(msg);
-    } catch (IOException e) {
-      System.err.println("Error sending " + msg.toString() + " to client");
+      try {
+        closeAll();
+      } catch (IOException ignored) {
+      }
+    } else {
+      try {
+        output.reset();
+        output.writeObject(msg);
+      } catch (IOException e) {
+        System.err.println("Error sending " + msg.toString() + " to client");
+      } catch (NullPointerException ignored) {
+      }
     }
   }
 
@@ -314,9 +305,11 @@ public class CustomClientThread extends Thread {
       while (!readyToStop) {
         try {
           msg = input.readObject();
-          if (!readyToStop && handleMessageFromClient(msg))
-            if (msg instanceof Message m)
+          if (!readyToStop && handleMessageFromClient(msg)) {
+            if (msg instanceof Message m) {
               handleMessage.accept(m, this);
+            }
+          }
         } catch (ClassNotFoundException | RuntimeException ex) {
           server.clientException(this, ex);
         }
@@ -324,6 +317,8 @@ public class CustomClientThread extends Thread {
     } catch (Exception exception) {
       if (!readyToStop) {
         try {
+          System.out.println(
+              "Client " + this.getIdOfClient() + " has disconnected with" + this.getInetAddress());
           closeAll();
         } catch (Exception ex) {
         }

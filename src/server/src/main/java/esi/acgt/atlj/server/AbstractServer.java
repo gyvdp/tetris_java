@@ -30,7 +30,6 @@ import java.io.InterruptedIOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractServer implements Runnable {
@@ -104,7 +103,7 @@ public abstract class AbstractServer implements Runnable {
         for (Thread clientThreadList1 : threads) {
           try {
             ((CustomClientThread) clientThreadList1).close();
-          } catch (Exception ex) {
+          } catch (Exception ignored) {
           }
         }
         serverSocket = null;
@@ -170,10 +169,10 @@ public abstract class AbstractServer implements Runnable {
   }
 
   /**
-   * Hook method called each time a client disconnects. The client is garantee to be disconnected
+   * Hook method called each time a client disconnects. The client is guarantee to be disconnected
    * but the thread is still active until it is asynchronously removed from the thread group. The
    * default implementation does nothing. The method may be overridden by subclasses but should
-   * remains synchronized.
+   * remain synchronized.
    *
    * @param client the connection with the client.
    */
@@ -183,7 +182,7 @@ public abstract class AbstractServer implements Runnable {
 
   /**
    * Hook method called each time an exception is thrown in a ConnectionToClient thread. The method
-   * may be overridden by subclasses but should remains synchronized. Most exceptions will cause the
+   * may be overridden by subclasses but should remain synchronized. Most exceptions will cause the
    * end of the client's thread except for <code>ClassNotFoundException</code>s received when an
    * object of unknown class is received and for the
    * <code>RuntimeException</code>s that can be thrown by the message handling
@@ -198,7 +197,7 @@ public abstract class AbstractServer implements Runnable {
 
   /**
    * Hook method called when the server stops accepting connections because an exception has been
-   * raised. The default implementation does nothing. This method may be overriden by subclasses.
+   * raised. The default implementation does nothing. This method may be overridden by subclasses.
    *
    * @param exception the exception raised.
    */
@@ -214,44 +213,17 @@ public abstract class AbstractServer implements Runnable {
 
   /**
    * Hook method called when the server stops accepting connections. The default implementation does
-   * nothing. This method may be overriden by subclasses.
+   * nothing. This method may be overridden by subclasses.
    */
   protected void serverStopped() {
   }
 
   /**
-   * Hook method called when the server is clased. The default implementation does nothing. This
-   * method may be overriden by subclasses. When the server is closed while still listening,
+   * Hook method called when the server is classed. The default implementation does nothing. This
+   * method may be overridden by subclasses. When the server is closed while still listening,
    * serverStopped() will also be called.
    */
   protected void serverClosed() {
-  }
-
-  /**
-   * Handles a command sent from one client to the server. This MUST be implemented by subclasses,
-   * who should respond to messages. This method is called by a synchronized method so it is also
-   * implcitly synchronized.
-   *
-   * @param msg    the message sent.
-   * @param client the connection connected to the client that sent the message.
-   */
-  protected abstract void handleMessageFromClient(
-      Object msg, CustomClientThread client);
-
-
-  /**
-   * Receives a command sent from the client to the server. Called by the run method of
-   * <code>ConnectionToClient</code> instances that are watching for messages coming from the
-   * server This method is synchronized to ensure that whatever effects it has do not conflict with
-   * work being done by other threads. The method simply calls the
-   * <code>handleMessageFromClient</code> slot method.
-   *
-   * @param msg    the message sent.
-   * @param client the connection connected to the client that sent the message.
-   */
-  final synchronized void receiveMessageFromClient(
-      Object msg, CustomClientThread client) {
-    this.handleMessageFromClient(msg, client);
   }
 
   /**
