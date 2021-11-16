@@ -244,7 +244,7 @@ public class CustomClientThread extends Thread {
    *
    * @param msg the message to be sent.
    */
-  public void sendMessage(Object msg) {
+  public synchronized void sendMessage(Object msg) {
     if (clientSocket == null || output == null) {
       try {
         closeAll();
@@ -261,7 +261,7 @@ public class CustomClientThread extends Thread {
     }
   }
 
-  public void connectDisconnect(Consumer<CustomClientThread> disconnect) {
+  public synchronized void connectDisconnect(Consumer<CustomClientThread> disconnect) {
     this.disconnect = disconnect;
   }
 
@@ -279,7 +279,7 @@ public class CustomClientThread extends Thread {
    *
    * @return true if the client is connected.
    */
-  final public boolean isConnected() {
+  final public synchronized boolean isConnected() {
     return clientSocket != null && output != null;
   }
 
@@ -288,7 +288,7 @@ public class CustomClientThread extends Thread {
    *
    * @param refillBag RefillBag lambda to connect.
    */
-  public void connectRefillBag(Runnable refillBag) {
+  public synchronized void connectRefillBag(Runnable refillBag) {
     this.refillBag = refillBag;
   }
 

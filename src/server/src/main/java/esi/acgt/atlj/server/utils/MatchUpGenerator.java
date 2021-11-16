@@ -32,6 +32,7 @@ import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.UpdatePieceUnmanagedBoard;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.server.CustomClientThread;
+import esi.acgt.atlj.server.model.ServerModel;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -43,6 +44,10 @@ import java.util.function.Consumer;
 public class MatchUpGenerator extends Thread {
 
 
+  /**
+   * Game server side
+   */
+  private ServerModel model;
   /**
    * Decrements the id of match-up in server when this closes.
    */
@@ -71,6 +76,7 @@ public class MatchUpGenerator extends Thread {
    */
   public MatchUpGenerator(List<CustomClientThread> clients, int idGeneratedMatchUp) {
     this.clients = clients;
+    this.model = new ServerModel(clients);
     this.bagGenerator = new BagGenerator();
     this.id = idGeneratedMatchUp;
     for (CustomClientThread client : clients) {
@@ -115,13 +121,14 @@ public class MatchUpGenerator extends Thread {
     this.decrementMatchUpId = dec;
   }
 
-
   /**
    * Lambda expression to handle message from client.
    */
   BiConsumer<Message, CustomClientThread> handleMessage = (Message m, CustomClientThread client) ->
   {
+
     if (client.getClientStatus().equals(PlayerStatus.READY)) {
+      sendMessageToModel(m, client);
       CustomClientThread opPlayer = getOpposingClient(client);
       if (opPlayer != null) {
         if (m instanceof AskPiece) {
@@ -136,6 +143,16 @@ public class MatchUpGenerator extends Thread {
       System.err.println("Message dropped " + m.toString() + " from " + client.getInetAddress());
     }
   };
+
+  /**
+   * Sends a received message to the model to be treated.
+   *
+   * @param m Message that needs to be sent.
+   * @param c Client that sent the message.
+   */
+  public void sendMessageToModel(Message m, CustomClientThread c) {
+    model.receiveMessage(m, c);
+  }
 
   /**
    * Gets the opposing client of the given client.
