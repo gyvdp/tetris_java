@@ -32,6 +32,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * All necessary definition to run a server.
+ */
 public abstract class AbstractServer implements Runnable {
 
   /**
