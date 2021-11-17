@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ MIT License
+  ~
+  ~ Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM, Thomas LEUTSCHER
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<StackPane xmlns:fx="http://javafx.com/fxml/1" style="-fx-border-color: red; -fx-border-width: 1;"
+  id="infobox" maxHeight="219" maxWidth="850"
+  minHeight="48" minWidth="186"
+  stylesheets="@../css/info.css" xmlns="http://javafx.com/javafx/17"
+  fx:controller="esi.acgt.atlj.client.controller.fxml.InfoBoxController" fx:id="container">
+  <ImageView StackPane.alignment="BOTTOM_CENTER" fitHeight="48" fitWidth="186" preserveRatio="true"
+    smooth="false" fx:id="background">
+    <Image url="@../image/bg/infobox.png"/>
+  </ImageView>
+  <Label StackPane.alignment="BOTTOM_CENTER" alignment="CENTER" contentDisplay="CENTER"
+    id="infoBoxText"
+    maxHeight="219" maxWidth="850" minHeight="48" minWidth="186" text="LINE - 000"
+    textAlignment="CENTER" textFill="WHITE" fx:id="infoBoxText">
+  </Label>
+</StackPane>
+
