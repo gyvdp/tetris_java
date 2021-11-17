@@ -22,8 +22,33 @@
  * SOFTWARE.
  */
 
-#container {
-  /*-fx-background-image: url("../image/bg/board.png");*/
-  /*-fx-background-repeat: no-repeat;*/
-  /*-fx-background-size: contain;*/
+package esi.acgt.atlj.client.controller.fxml;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+
+public class InfoBoxController implements Initializable {
+
+  public final static int H = 24;
+  public final static int W = 93;
+  public final static int P = 6;
+
+
+  public Label infoBoxText;
+  public ImageView background;
+  public Pane container;
+
+  @Override
+  public void initialize(URL url, ResourceBundle resourceBundle) {
+    infoBoxText.prefHeightProperty().bind(container.heightProperty());
+    infoBoxText.prefWidthProperty().bind(infoBoxText.heightProperty().divide(H).multiply(W));
+
+    background.fitHeightProperty().bind(container.heightProperty());
+    background.fitWidthProperty().bind(background.fitHeightProperty().divide(H).multiply(W));
+
+  }
 }

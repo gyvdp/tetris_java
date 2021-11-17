@@ -22,8 +22,50 @@
  * SOFTWARE.
  */
 
-#container {
-  /*-fx-background-image: url("../image/bg/board.png");*/
-  /*-fx-background-repeat: no-repeat;*/
-  /*-fx-background-size: contain;*/
+package esi.acgt.atlj.client.controller.fxml;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+
+public class BoardMainController implements Initializable {
+
+  public final static int H = (InfoBoxController.H * 2) + MatrixController.H;
+  public final static int L = MatrixController.H;
+
+  @FXML
+  public VBox container;
+
+  @FXML
+  public Pane topBox;
+
+  @FXML
+  public InfoBoxController topBoxController;
+
+  @FXML
+  public Pane matrix;
+
+  @FXML
+  public MatrixController matrixController;
+
+  @FXML
+  public Pane bottomBox;
+
+  @FXML
+  public InfoBoxController bottomBoxController;
+
+  @Override
+  public void initialize(URL url, ResourceBundle resourceBundle) {
+    matrix.prefHeightProperty()
+        .bind(container.heightProperty().divide(H).multiply(MatrixController.H));
+
+    topBox.prefHeightProperty()
+        .bind(container.heightProperty().divide(H).multiply(InfoBoxController.H));
+
+    bottomBox.prefHeightProperty()
+        .bind(container.heightProperty().divide(H).multiply(InfoBoxController.H));
+  }
 }

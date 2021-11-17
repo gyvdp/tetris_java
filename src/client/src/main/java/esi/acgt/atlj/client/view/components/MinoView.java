@@ -51,7 +51,7 @@ public class MinoView extends Pane {
   private ImageView image;
 
   public MinoView() {
-    image = new ImageView();
+    image = new ImageView(A1);
     this.getChildren().add(image);
     image.fitHeightProperty().bind(this.heightProperty());
     image.fitWidthProperty().bind(this.widthProperty());

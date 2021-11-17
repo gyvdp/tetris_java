@@ -32,6 +32,7 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
@@ -49,20 +50,24 @@ public class MatrixController implements Initializable {
 
   public MinoView[][] minos;
 
+  public ImageView background;
+
   public MatrixController() {
     minos = new MinoView[20][10];
   }
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    container.prefHeightProperty().bind(container.widthProperty().multiply(H / L));
-    container.prefWidthProperty().bind(container.heightProperty().multiply(L / H));
+    grid.prefHeightProperty().bind(container.heightProperty());
+    grid.prefWidthProperty().bind(grid.heightProperty().divide(H).multiply(L));
+
+    background.fitHeightProperty().bind(grid.heightProperty());
+    background.fitWidthProperty().bind(grid.widthProperty());
 
     grid.paddingProperty().bind(Bindings.createObjectBinding(
-        () -> new Insets(container.widthProperty().divide(L).multiply(P).doubleValue()),
-        container.widthProperty()));
-    grid.prefWidthProperty().bind(container.widthProperty());
-    grid.prefHeightProperty().bind(container.heightProperty());
+        () -> new Insets(grid.widthProperty().divide(L).multiply(P).doubleValue()),
+        grid.widthProperty()));
+
     grid.hgapProperty().bind(grid.widthProperty().divide(L));
     grid.vgapProperty().bind(grid.heightProperty().divide(H));
 

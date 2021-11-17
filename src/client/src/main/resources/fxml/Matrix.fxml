@@ -24,50 +24,69 @@
   ~ SOFTWARE.
   -->
 
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
-<Pane xmlns:fx="http://javafx.com/fxml/1" maxHeight="Infinity" maxWidth="Infinity" minHeight="0"
-  minWidth="0"
-  stylesheets="@../css/matrix.css" xmlns="http://javafx.com/javafx/11.0.2"
-  fx:id="container">
-  <GridPane alignment="CENTER" hgap="2.0" maxHeight="-Infinity"
+<?import javafx.scene.layout.StackPane?>
+<StackPane
+  xmlns:fx="http://javafx.com/fxml/1"
+  style="-fx-border-color: red; -fx-border-width: 1;"
+  maxHeight="Infinity"
+  maxWidth="Infinity"
+  minHeight="174"
+  minWidth="93"
+  stylesheets="@../css/matrix.css"
+  xmlns="http://javafx.com/javafx/11.0.2"
+  fx:controller="esi.acgt.atlj.client.controller.fxml.MatrixController"
+  fx:id="container"
+>
+  <GridPane
+    style="-fx-border-color: yellow; -fx-border-width: 1;"
+    alignment="CENTER"
+    gridLinesVisible="true"
     maxWidth="-Infinity"
-    minHeight="-Infinity" minWidth="-Infinity" vgap="2.0" fx:id="grid">
+    hgap="2.0"
+    maxHeight="-Infinity"
+    minHeight="174"
+    minWidth="93" vgap="2.0" fx:id="grid">
     <columnConstraints>
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="10"/>
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="10"/>
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="10"/>
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="10"/>
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="10"/>
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="10"/>
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="10"/>
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="10"/>
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="10"/>
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
     </columnConstraints>
     <rowConstraints>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
-      <RowConstraints percentHeight="5" valignment="CENTER" vgrow="ALWAYS"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
     </rowConstraints>
   </GridPane>
-</Pane>
+  <ImageView StackPane.alignment="CENTER" fitHeight="174" fitWidth="93" fx:id="background">
+    <Image url="@../image/bg/board.png"/>
+  </ImageView>
+</StackPane>
