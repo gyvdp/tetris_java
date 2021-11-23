@@ -24,12 +24,15 @@
 
 package esi.acgt.atlj.server;
 
+import esi.acgt.atlj.server.database.DataBase;
+import esi.acgt.atlj.server.database.DataBaseInterface;
 import esi.acgt.atlj.server.utils.MatchUpGenerator;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.HashMap;
 
@@ -46,6 +49,7 @@ public class Server extends AbstractServer {
    * current number of match-ups;
    */
   private int matchUpId = 0;
+
 
   /**
    * Hash map of all members in function of their clientId.

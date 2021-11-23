@@ -27,6 +27,7 @@ package esi.acgt.atlj.server;
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
+import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -44,6 +45,11 @@ import java.util.function.Consumer;
  */
 public class CustomClientThread extends Thread {
 
+
+  /**
+   * Name of player.
+   */
+  private String name = "noname";
 
   /**
    * State of current player.
@@ -144,6 +150,23 @@ public class CustomClientThread extends Thread {
     return this.id;
   }
 
+  /**
+   * Sets the name of the client
+   *
+   * @param name Name of client.
+   */
+  public void setNameOfClient(String name) {
+    this.name = name;
+  }
+
+  /**
+   * Getter for the name of the client.
+   *
+   * @return Name of client. Null if player has not sent his name yet
+   */
+  public String getNameOfClient() {
+    return this.name;
+  }
 
   /**
    * Sets the status of the clients and sends it to all clients.
@@ -233,7 +256,9 @@ public class CustomClientThread extends Thread {
    * @return True if the message needs to be handled by server.
    */
   protected boolean handleMessageFromClient(Object message) {
-    //TODO when server has a model
+    if (message instanceof SendName s) {
+      setNameOfClient(s.getUsername());
+    }
     return true;
   }
 

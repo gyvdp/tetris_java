@@ -28,6 +28,7 @@ import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
+import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.UpdatePieceUnmanagedBoard;
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -47,7 +48,7 @@ public class MatchUpGenerator extends Thread {
   /**
    * Game server side
    */
-  private ServerModel model;
+  private final ServerModel model;
   /**
    * Decrements the id of match-up in server when this closes.
    */
@@ -59,12 +60,12 @@ public class MatchUpGenerator extends Thread {
   private final BagGenerator bagGenerator;
 
   /**
-   * List of clients
+   * List of clients.
    */
   List<CustomClientThread> clients;
 
   /**
-   * Unique id of generated match-up
+   * Unique id of generated match-up.
    */
   int id;
 
@@ -88,7 +89,7 @@ public class MatchUpGenerator extends Thread {
   }
 
   /**
-   * Lambda expression to refill bags
+   * Lambda expression to refill bags.
    */
   Runnable refillBag = this::refillBags;
 
@@ -97,6 +98,7 @@ public class MatchUpGenerator extends Thread {
    * thread.
    */
   Consumer<CustomClientThread> disconnect = (CustomClientThread clientThread) -> {
+    //todo check why bag stops generating when a players disconnects
     int notPlaying = 0;
     getOpposingClient(clientThread).sendMessage(new PlayerState(PlayerStatus.DISCONNECTED));
     for (CustomClientThread customClientThread : clients) {

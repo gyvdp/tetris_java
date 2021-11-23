@@ -25,17 +25,14 @@
 package esi.acgt.atlj.server.model;
 
 import esi.acgt.atlj.message.Message;
-import esi.acgt.atlj.message.PlayerStatus;
-
 import esi.acgt.atlj.message.messageTypes.LockedTetrimino;
-import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.RemoveLine;
-import esi.acgt.atlj.message.messageTypes.SendName;
-
 import esi.acgt.atlj.message.messageTypes.SendScore;
 import esi.acgt.atlj.model.Model;
 import esi.acgt.atlj.model.game.ManagedGame;
 import esi.acgt.atlj.server.CustomClientThread;
+import esi.acgt.atlj.server.database.DataBase;
+import esi.acgt.atlj.server.database.DataBaseInterface;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +43,11 @@ public class ServerModel extends Model {
    * First players.
    */
   ManagedGame playerOne;
+
+  /**
+   * DataBase connexion
+   */
+  DataBaseInterface dataBase;
 
   /**
    * Seconds player.
@@ -63,6 +65,7 @@ public class ServerModel extends Model {
   public ServerModel(List<CustomClientThread> clients) {
     this.playerTwo = new ManagedGame("two");
     this.playerOne = new ManagedGame("one");
+    dataBase = new DataBase();
     gameHashMap = new HashMap<>();
     gameHashMap.put(clients.get(0), playerOne);
     gameHashMap.put(clients.get(1), playerTwo);
@@ -84,6 +87,14 @@ public class ServerModel extends Model {
       game.placeTetrimino(message.getTetrimino());
     }
   }
+
+  /**
+   * Sends all necessary information to database.
+   */
+  private void sendToDataBase() {
+    //todo get all info from model
+  }
+
 
   @Override
   public void addPropertyChangeListener(PropertyChangeListener[] listener) {
