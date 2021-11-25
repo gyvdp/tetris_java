@@ -231,6 +231,22 @@ public abstract class AbstractServer implements Runnable {
   }
 
   /**
+   * Adds a client to the spectator list when player has chosen that action.
+   *
+   * @param e Client to add to list.
+   */
+  protected synchronized void addSpectator(CustomClientThread e, int matchId) {
+  }
+
+  /**
+   * Adds a player to a client to a match-up when player has chosen that action.
+   *
+   * @param client Client to add to match-up
+   */
+  protected synchronized void addPlayer(CustomClientThread client, int matchId) {
+  }
+
+  /**
    * Runs the listening thread that allows clients to connect. Not to be called.
    */
   @Override

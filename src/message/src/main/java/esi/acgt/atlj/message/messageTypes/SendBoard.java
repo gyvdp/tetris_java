@@ -22,15 +22,17 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message;
+package esi.acgt.atlj.message.messageTypes;
 
-/**
- * Status of player for the servers point of view.
- */
-public enum PlayerStatus {
-  READY, // Status when both players are connected
-  WAITING, // Players
-  LOST, // Player has lost
-  DISCONNECTED, //Player is disconnected
-  NOT_FOUND // If id of player is not found
+import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.MessageType;
+import esi.acgt.atlj.model.tetrimino.Mino;
+
+public class SendBoard extends Message {
+
+  private Mino[][] board;
+
+  public SendBoard(Mino[][] board) {
+    this.messageType = MessageType.SEND_BOARD;
+  }
 }

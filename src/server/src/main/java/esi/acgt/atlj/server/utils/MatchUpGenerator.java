@@ -28,12 +28,13 @@ import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
-import esi.acgt.atlj.message.messageTypes.SendName;
+import esi.acgt.atlj.message.messageTypes.SendBoard;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.UpdatePieceUnmanagedBoard;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.server.CustomClientThread;
 import esi.acgt.atlj.server.model.ServerModel;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -44,11 +45,10 @@ import java.util.function.Consumer;
  */
 public class MatchUpGenerator extends Thread {
 
-
   /**
    * Game server side
    */
-  private final ServerModel model;
+  private ServerModel model = null;
   /**
    * Decrements the id of match-up in server when this closes.
    */
@@ -65,6 +65,11 @@ public class MatchUpGenerator extends Thread {
   List<CustomClientThread> clients;
 
   /**
+   * List of spectators
+   */
+  List<CustomClientThread> spectators;
+
+  /**
    * Unique id of generated match-up.
    */
   int id;
@@ -77,6 +82,7 @@ public class MatchUpGenerator extends Thread {
    */
   public MatchUpGenerator(List<CustomClientThread> clients, int idGeneratedMatchUp) {
     this.clients = clients;
+    this.spectators = new ArrayList<>();
     this.model = new ServerModel(clients);
     this.bagGenerator = new BagGenerator();
     this.id = idGeneratedMatchUp;
@@ -84,6 +90,7 @@ public class MatchUpGenerator extends Thread {
       client.connectRefillBag(this.refillBag);
       client.connectHandleMessage(this.handleMessage);
       client.connectDisconnect(this.disconnect);
+      client.connectCheckNameDB(this.checkNameDb);
     }
     this.start();
   }
@@ -93,12 +100,15 @@ public class MatchUpGenerator extends Thread {
    */
   Runnable refillBag = this::refillBags;
 
+  Consumer<CustomClientThread> checkNameDb = (CustomClientThread client) ->
+      model.checkNameInDB(client.getNameOfClient());
+
   /**
    * Handles disconnection of player from match-up. If both players have disconnected, kills
    * thread.
    */
   Consumer<CustomClientThread> disconnect = (CustomClientThread clientThread) -> {
-    //todo check why bag stops generating when a players disconnects
+    //TODO check why bag stops generating when a players disconnects
     int notPlaying = 0;
     getOpposingClient(clientThread).sendMessage(new PlayerState(PlayerStatus.DISCONNECTED));
     for (CustomClientThread customClientThread : clients) {
@@ -114,6 +124,12 @@ public class MatchUpGenerator extends Thread {
     }
   };
 
+  public synchronized void addSpectator(CustomClientThread client) {
+    this.spectators.add(client);
+    //client.sendMessage(new SendBoard(model.receiveBoard(client), client.getNameOfClient());
+    //todo sent current status of the whole game.
+  }
+
   /**
    * Connects decrement match up id from server
    *
@@ -123,6 +139,7 @@ public class MatchUpGenerator extends Thread {
     this.decrementMatchUpId = dec;
   }
 
+
   /**
    * Lambda expression to handle message from client.
    */
@@ -131,6 +148,7 @@ public class MatchUpGenerator extends Thread {
 
     if (client.getClientStatus().equals(PlayerStatus.READY)) {
       sendMessageToModel(m, client);
+      //sendMessageToSpectator(m, client);
       CustomClientThread opPlayer = getOpposingClient(client);
       if (opPlayer != null) {
         if (m instanceof AskPiece) {
@@ -154,6 +172,10 @@ public class MatchUpGenerator extends Thread {
    */
   public void sendMessageToModel(Message m, CustomClientThread c) {
     model.receiveMessage(m, c);
+  }
+
+  public void sendMessageToSpectator(Message m, CustomClientThread c) {
+    c.sendMessage(m); //todo specific spectator message with name of player sending it.
   }
 
   /**

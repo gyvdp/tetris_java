@@ -2,6 +2,8 @@ package esi.acgt.atlj.client.controller;
 
 import esi.acgt.atlj.client.model.ClientModel;
 import esi.acgt.atlj.client.view.ViewInterface;
+import esi.acgt.atlj.message.PlayerAction;
+import esi.acgt.atlj.message.messageTypes.SendAction;
 import esi.acgt.atlj.model.game.Direction;
 import esi.acgt.atlj.model.game.GameStatus;
 import java.util.Objects;
@@ -80,11 +82,13 @@ public class Controller {
       this.view.displayBoard(username);
       this.model.connect(port, ip);
       this.model.addPropertyChangeListener(this.view.getListeners());
+      //send name before action
+      this.model.sendAction(PlayerAction.PLAY_ONLINE);
+      //this.model.sendAction(PlayerAction.SPECTATE);
     } catch (Exception e) {
       this.view.displayError(e);
       this.view.displayConnexion();
     }
-
     this.view.show();
   }
 

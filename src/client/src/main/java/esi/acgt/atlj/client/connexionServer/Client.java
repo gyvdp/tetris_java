@@ -24,12 +24,14 @@
 
 package esi.acgt.atlj.client.connexionServer;
 
+import esi.acgt.atlj.message.PlayerAction;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.AddTetrimino;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.LockedTetrimino;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.RemoveLine;
+import esi.acgt.atlj.message.messageTypes.SendAction;
 import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.SendScore;
@@ -283,6 +285,22 @@ public class Client extends AbstractClient implements ClientInterface {
       sendToServer(new AskPiece());
     } catch (IOException e) {
       System.err.println("cannot ask piece to server");
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @param a Action to send.
+   */
+  @Override
+  public void sendAction(PlayerAction a) {
+    try {
+      SendAction action = new SendAction();
+      action.setAction(a);
+      sendToServer(action);
+    } catch (IOException e) {
+      System.err.println("Cannot send action to server");
     }
   }
 

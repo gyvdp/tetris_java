@@ -66,12 +66,15 @@ public class DataBase implements DataBaseInterface {
    * Executes an sql query.
    *
    * @param sql query to execute.
+   * @return Number of row altered.
    */
-  private void executeSql(String sql) throws SQLException {
-    Statement stm = connection.createStatement();
-    int numberOfRowsAffected = stm.executeUpdate(sql);
-    System.out.println(GREEN + "There have been " + GREEN + numberOfRowsAffected +
-        GREEN + " affected in the database" + RESET);
+  private int executeSql(String sql) {
+    try {
+      Statement stm = connection.createStatement();
+      return stm.executeUpdate(sql);
+    } catch (SQLException e) {
+    }
+    return 0;
   }
 
   /**
@@ -79,12 +82,14 @@ public class DataBase implements DataBaseInterface {
    */
   @Override
   public void checkUserInDb(String username) {
-    String query = "SELECT * FROM Login WHERE USERNAME=?";
+    String query = "SELECT * FROM main.User WHERE USERNAME=?";
     try {
       PreparedStatement preparedStatement = connection.prepareStatement(query);
       preparedStatement.setString(1, username);
       if (!preparedStatement.execute()) {
-        executeSql("INSERT INTO main.User(Username) VALUES (" + username + ");");
+        executeSql("INSERT INTO main.User(USERNAME) VALUES('" + username + "');");
+        executeSql("INSERT INTO main.Game_History(PLAYER_USERNAME) VALUES('" + username + "');");
+        executeSql("INSERT INTO main.Tetriminos(PLAYER_USERNAME)VALUES('" + username + "');");
       }
     } catch (SQLException e) {
       System.err.println("Cannot find " + username + "or create new username");
@@ -96,7 +101,8 @@ public class DataBase implements DataBaseInterface {
    */
   @Override
   public void score(int score, String username) {
-
+    String query = "ALTER HIGH_SCORE FROM Game_History WHERE PLAYER_ID is ('" + username + "');";
+    executeSql(query);
   }
 
   /**

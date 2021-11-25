@@ -26,6 +26,7 @@ package esi.acgt.atlj.client.model;
 
 import esi.acgt.atlj.client.connexionServer.Client;
 import esi.acgt.atlj.client.connexionServer.ClientInterface;
+import esi.acgt.atlj.message.PlayerAction;
 import esi.acgt.atlj.model.Model;
 import esi.acgt.atlj.model.game.Direction;
 import esi.acgt.atlj.model.game.GameStatus;
@@ -47,6 +48,15 @@ public class ClientModel extends Model {
 
   public ClientModel() {
     super();
+  }
+
+  /**
+   * Sends action to server.
+   *
+   * @param a Action to send to server.
+   */
+  public void sendAction(PlayerAction a) {
+    this.client.sendAction(a);
   }
 
   /**

@@ -24,18 +24,16 @@
 
 package esi.acgt.atlj.server;
 
-import esi.acgt.atlj.server.database.DataBase;
-import esi.acgt.atlj.server.database.DataBaseInterface;
+import esi.acgt.atlj.message.PlayerStatus;
+import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.server.utils.MatchUpGenerator;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.HashMap;
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
@@ -65,6 +63,12 @@ public class Server extends AbstractServer {
    * All match-ups with their id.
    */
   private final HashMap<Integer, MatchUpGenerator> matchUps;
+
+  /**
+   * Waiting list for spectators. Player is placed in list if all current match-up are
+   */
+  private final BlockingQueue<CustomClientThread> waitingListForSpectators;
+
   /**
    * current tally of client id.
    */
@@ -81,6 +85,7 @@ public class Server extends AbstractServer {
     clientId = 0;
     members = new HashMap<>();
     matchUps = new HashMap<>();
+    waitingListForSpectators = new LinkedBlockingQueue<>();
     this.listen();
   }
 
@@ -178,10 +183,34 @@ public class Server extends AbstractServer {
   protected void clientConnected(CustomClientThread client) {
     super.clientConnected(client);
     members.put(getNextId(), client);
-    waitingList.add(client);
     System.out.println(
         "Client " + client.getIdOfClient() + " has connected successfully with "
             + client.getInetAddress() + " and is in the waiting list");
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public synchronized void addSpectator(CustomClientThread e, int matchId) {
+    this.waitingListForSpectators.add(e);
+    if (matchId != 0) {
+      MatchUpGenerator match = matchUps.get(matchId);
+      if (match != null) {
+        System.out.println("spectator added");
+        match.addSpectator(e);
+      } else {
+        e.sendMessage(new PlayerState(PlayerStatus.NOT_FOUND));
+      }
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public synchronized void addPlayer(CustomClientThread client, int matchId) {
+    waitingList.add(client);
     if (waitingList.size() % 2 == 0) {
       MatchUpGenerator matchUp = new MatchUpGenerator(
           waitingList.stream().limit(2).collect(Collectors.toList()), this.matchUpId);
@@ -195,6 +224,7 @@ public class Server extends AbstractServer {
       }
     }
   }
+
 
   /**
    * {@inheritDoc}

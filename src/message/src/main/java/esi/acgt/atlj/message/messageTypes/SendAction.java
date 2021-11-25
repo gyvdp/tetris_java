@@ -22,15 +22,49 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message;
+package esi.acgt.atlj.message.messageTypes;
 
-/**
- * Status of player for the servers point of view.
- */
-public enum PlayerStatus {
-  READY, // Status when both players are connected
-  WAITING, // Players
-  LOST, // Player has lost
-  DISCONNECTED, //Player is disconnected
-  NOT_FOUND // If id of player is not found
+import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.MessageType;
+import esi.acgt.atlj.message.PlayerAction;
+
+public class SendAction extends Message {
+
+  PlayerAction action;
+  int matchUpID;
+
+  public SendAction() {
+    this.messageType = MessageType.ACTION;
+  }
+
+  public void setAction(PlayerAction e) {
+    this.action = e;
+  }
+
+  /**
+   * Gets the action of the message
+   *
+   * @return Action of message
+   */
+  public PlayerAction getAction() {
+    return this.action;
+  }
+
+  /**
+   * Returns the match-up id of action of player
+   *
+   * @return
+   */
+  public int getMatchUpID() {
+    return matchUpID;
+  }
+
+  /**
+   * Sets the
+   *
+   * @param matchUpID
+   */
+  public void setMatchUpID(int matchUpID) {
+    this.matchUpID = matchUpID;
+  }
 }

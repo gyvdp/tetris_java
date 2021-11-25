@@ -22,15 +22,29 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message;
+package esi.acgt.atlj.server.model;
 
-/**
- * Status of player for the servers point of view.
- */
-public enum PlayerStatus {
-  READY, // Status when both players are connected
-  WAITING, // Players
-  LOST, // Player has lost
-  DISCONNECTED, //Player is disconnected
-  NOT_FOUND // If id of player is not found
+public class StatisticCounter extends Thread {
+
+  private int score = 0;
+  private final int n = 0;
+  private final int z = 0;
+  private final int f = 0;
+  private final int c = 0;
+  private final int t = 0;
+  private final int x = 0;
+
+  public StatisticCounter() {
+
+  }
+
+  public void addScore(int score) {
+    this.score += score;
+  }
+
+  public int getScore() {
+    return this.score;
+  }
+
+
 }

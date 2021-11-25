@@ -55,7 +55,7 @@
 											"font": "Arial;13;1",
 											"left": 712,
 											"top": 389,
-											"width": 197.55908203125,
+											"width": 197.5654296875,
 											"height": 13,
 											"text": "User"
 										},
@@ -81,7 +81,7 @@
 													"font": "Arial;13;0",
 													"left": 717,
 													"top": 412,
-													"width": 187.55908203125,
+													"width": 187.5654296875,
 													"height": 13
 												},
 												{
@@ -96,21 +96,21 @@
 													"font": "Arial;13;0",
 													"left": 717,
 													"top": 427,
-													"width": 187.55908203125,
+													"width": 187.5654296875,
 													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 712,
 											"top": 407,
-											"width": 197.55908203125,
+											"width": 197.5654296875,
 											"height": 38
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 712,
 									"top": 384,
-									"width": 197.55908203125,
+									"width": 197.5654296875,
 									"height": 65,
 									"nameLabel": {
 										"$ref": "AAAAAAF9TM+J4nwZR3s="
@@ -332,7 +332,7 @@
 											"font": "Arial;13;1",
 											"left": 680,
 											"top": 557,
-											"width": 281.595703125,
+											"width": 287.39111328125,
 											"height": 13,
 											"text": "Tetriminos"
 										},
@@ -358,7 +358,7 @@
 													"font": "Arial;13;0",
 													"left": 685,
 													"top": 580,
-													"width": 271.595703125,
+													"width": 277.39111328125,
 													"height": 13
 												},
 												{
@@ -373,7 +373,7 @@
 													"font": "Arial;13;0",
 													"left": 685,
 													"top": 595,
-													"width": 271.595703125,
+													"width": 277.39111328125,
 													"height": 13
 												},
 												{
@@ -388,22 +388,37 @@
 													"font": "Arial;13;0",
 													"left": 685,
 													"top": 610,
-													"width": 271.595703125,
+													"width": 277.39111328125,
+													"height": 13
+												},
+												{
+													"_type": "ERDColumnView",
+													"_id": "AAAAAAF9TcTcuN/44aU=",
+													"_parent": {
+														"$ref": "AAAAAAF9TNn2znzC+jw="
+													},
+													"model": {
+														"$ref": "AAAAAAF9TcTcq9/1Zhs="
+													},
+													"font": "Arial;13;0",
+													"left": 685,
+													"top": 625,
+													"width": 277.39111328125,
 													"height": 13
 												}
 											],
 											"font": "Arial;13;0",
 											"left": 680,
 											"top": 575,
-											"width": 281.595703125,
-											"height": 53
+											"width": 287.39111328125,
+											"height": 68
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 680,
 									"top": 552,
-									"width": 281.595703125,
-									"height": 76,
+									"width": 287.39111328125,
+									"height": 91,
 									"nameLabel": {
 										"$ref": "AAAAAAF9TNn2znzBX6c="
 									},
@@ -710,6 +725,16 @@
 									"type": "INTEGER",
 									"length": 0,
 									"nullable": true
+								},
+								{
+									"_type": "ERDColumn",
+									"_id": "AAAAAAF9TcTcq9/1Zhs=",
+									"_parent": {
+										"$ref": "AAAAAAF9TNn2zny+gSE="
+									},
+									"name": "TOTAL_TETRIS",
+									"type": "INTEGER",
+									"length": 0
 								}
 							]
 						},

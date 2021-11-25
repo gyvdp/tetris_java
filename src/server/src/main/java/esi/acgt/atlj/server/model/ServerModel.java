@@ -25,19 +25,21 @@
 package esi.acgt.atlj.server.model;
 
 import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.messageTypes.AddTetrimino;
 import esi.acgt.atlj.message.messageTypes.LockedTetrimino;
 import esi.acgt.atlj.message.messageTypes.RemoveLine;
+import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.SendScore;
-import esi.acgt.atlj.model.Model;
+import esi.acgt.atlj.message.messageTypes.SetHold;
 import esi.acgt.atlj.model.game.ManagedGame;
+import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.server.CustomClientThread;
 import esi.acgt.atlj.server.database.DataBase;
 import esi.acgt.atlj.server.database.DataBaseInterface;
-import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.List;
 
-public class ServerModel extends Model {
+public class ServerModel {
 
   /**
    * First players.
@@ -54,6 +56,8 @@ public class ServerModel extends Model {
    */
   ManagedGame playerTwo;
 
+  StatisticCounter statistics;
+
   /**
    * Map to define with players manages which game.
    */
@@ -66,44 +70,55 @@ public class ServerModel extends Model {
     this.playerTwo = new ManagedGame("two");
     this.playerOne = new ManagedGame("one");
     dataBase = new DataBase();
+
     gameHashMap = new HashMap<>();
     gameHashMap.put(clients.get(0), playerOne);
     gameHashMap.put(clients.get(1), playerTwo);
+    statistics = new StatisticCounter();
+    statistics.start();
   }
 
   /**
    * Receives a message and handles it.
    *
-   * @param m      Message that he needs to handle.
-   * @param client Client that sent the message.
+   * @param information Message that he needs to handle.
+   * @param client      Client that sent the message.
    */
-  public void receiveMessage(Message m, CustomClientThread client) {
+  public void receiveMessage(Message information, CustomClientThread client) {
     var game = gameHashMap.get(client);
-    if (m instanceof RemoveLine message) { //When remove line is send from server
+    if (information instanceof SendPiece message) { //When next tetrimino is sent from server
+      game.setNextTetrimino(Tetrimino.createTetrimino(message.getMino()));
+    }
+    if (information instanceof RemoveLine message) { //When remove line is send from server
       game.removeLines(message.getLine());
-    } else if (m instanceof SendScore message) { // When send score is sent from server
+    }
+    if (information instanceof AddTetrimino message) { //When add tetrimino is sent from server
+      game.setActualTetrimino(message.getTetrimino());
+    }
+    if (information instanceof SendScore message) { // When send score is sent from server
       game.setScore(message.getScore());
-    } else if (m instanceof LockedTetrimino message) { //When locked tetrimino has been sent from server.
+      statistics.addScore(message.getScore());
+    }
+    if (information instanceof SetHold message) { // When hold tetrimino is sent from server
+      game.setHold(message.getHold());
+    }
+    if (information instanceof LockedTetrimino message) { //When locked tetrimino has been send from server.
       game.placeTetrimino(message.getTetrimino());
     }
   }
+
 
   /**
    * Sends all necessary information to database.
    */
   private void sendToDataBase() {
+    dataBase.score(statistics.getScore(), "noname");
     //todo get all info from model
   }
 
-
-  @Override
-  public void addPropertyChangeListener(PropertyChangeListener[] listener) {
-
-  }
-
-  @Override
-  public void removePropertyChangeListener(PropertyChangeListener listener) {
-
+  public void checkNameInDB(String username) {
+    dataBase.connectToDb();
+    dataBase.checkUserInDb(username);
   }
 }
 

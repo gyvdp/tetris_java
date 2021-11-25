@@ -25,8 +25,10 @@
 package esi.acgt.atlj.server;
 
 import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.PlayerAction;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
+import esi.acgt.atlj.message.messageTypes.SendAction;
 import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import java.io.IOException;
@@ -75,6 +77,8 @@ public class CustomClientThread extends Thread {
    */
   private Consumer<CustomClientThread> disconnect;
 
+  private Consumer<CustomClientThread> nameDB;
+
   /**
    * Runs when need to refill bag
    */
@@ -108,6 +112,7 @@ public class CustomClientThread extends Thread {
    */
   private boolean readyToStop;
 
+
   /**
    * Constructs a new connection to a client.
    *
@@ -133,7 +138,7 @@ public class CustomClientThread extends Thread {
     } catch (IOException ex) {
       try {
         closeAll();
-      } catch (Exception exc) {
+      } catch (Exception ignored) {
       }
       throw ex;
     }
@@ -151,7 +156,7 @@ public class CustomClientThread extends Thread {
   }
 
   /**
-   * Sets the name of the client
+   * Sets the name of the client.
    *
    * @param name Name of client.
    */
@@ -176,6 +181,7 @@ public class CustomClientThread extends Thread {
   public void setClientStatus(PlayerStatus cs) {
     this.clientStatus = cs;
     this.sendMessage(new PlayerState(PlayerStatus.READY));
+    nameDB.accept(this);
   }
 
   /**
@@ -259,6 +265,16 @@ public class CustomClientThread extends Thread {
     if (message instanceof SendName s) {
       setNameOfClient(s.getUsername());
     }
+    if (message instanceof SendAction e) {
+      if (e.getAction() == PlayerAction.SPECTATE) {
+        server.addSpectator(this, 2);
+      }
+      if (e.getAction() == PlayerAction.PLAY_ONLINE) {
+        server.addPlayer(this, 0);
+      }
+      return false;
+    }
+
     return true;
   }
 
@@ -288,6 +304,10 @@ public class CustomClientThread extends Thread {
 
   public synchronized void connectDisconnect(Consumer<CustomClientThread> disconnect) {
     this.disconnect = disconnect;
+  }
+
+  public synchronized void connectCheckNameDB(Consumer<CustomClientThread> nameDB) {
+    this.nameDB = nameDB;
   }
 
   /**

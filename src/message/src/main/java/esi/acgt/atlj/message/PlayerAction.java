@@ -24,13 +24,9 @@
 
 package esi.acgt.atlj.message;
 
-/**
- * Status of player for the servers point of view.
- */
-public enum PlayerStatus {
-  READY, // Status when both players are connected
-  WAITING, // Players
-  LOST, // Player has lost
-  DISCONNECTED, //Player is disconnected
-  NOT_FOUND // If id of player is not found
+public enum PlayerAction {
+  SPECTATE, // Spectate a match-up.
+  PLAY_ONLINE, // Play versus another player in the waiting list.
+  PLAY_SOLO, // Player solo on server.
+  GET_STATS // Ask database for player stats
 }
