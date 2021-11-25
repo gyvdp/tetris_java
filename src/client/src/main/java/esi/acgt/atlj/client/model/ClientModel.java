@@ -173,7 +173,9 @@ public class ClientModel extends Model {
    * Sends a tetrimino to lock to server.
    */
   Consumer<TetriminoInterface> lockMyTetrimino = (TetriminoInterface m) -> {
-    client.lockTetrimino(m);
+    if (client != null) {
+      client.lockTetrimino(m);
+    }
   };
 
   /**

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ MIT License
+  ~
+  ~ Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM, Thomas LEUTSCHER
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<StackPane
+  xmlns:fx="http://javafx.com/fxml/1"
+  style="-fx-border-color: red; -fx-border-width: 1;"
+  maxHeight="Infinity"
+  maxWidth="Infinity"
+  minHeight="174"
+  minWidth="93"
+  stylesheets="@../css/matrix.css"
+  xmlns="http://javafx.com/javafx/11.0.2"
+  fx:controller="esi.acgt.atlj.client.controller.fxml.MatrixController"
+  fx:id="container"
+>
+  <GridPane
+    style="-fx-border-color: yellow; -fx-border-width: 1;"
+    alignment="CENTER"
+    gridLinesVisible="true"
+    maxWidth="-Infinity"
+    hgap="2.0"
+    maxHeight="-Infinity"
+    minHeight="174"
+    minWidth="93" vgap="2.0" fx:id="grid">
+    <columnConstraints>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+      <ColumnConstraints halignment="CENTER" percentWidth="10"/>
+    </columnConstraints>
+    <rowConstraints>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+      <RowConstraints percentHeight="5" valignment="CENTER"/>
+    </rowConstraints>
+  </GridPane>
+  <ImageView StackPane.alignment="CENTER" fitHeight="174" fitWidth="93" fx:id="background">
+    <Image url="@../image/bg/board.png"/>
+  </ImageView>
+</StackPane>
