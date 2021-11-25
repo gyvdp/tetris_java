@@ -18,7 +18,8 @@ public class View implements ViewInterface {
    * Constructor of view.
    */
   public View() {
-
+    this.controller = null;
+    this.bothPlayerView = null;
   }
 
   /**
@@ -38,8 +39,6 @@ public class View implements ViewInterface {
 
   /**
    * {@inheritDoc}
-   *
-   * @param username
    */
   @Override
   public void displayBoard(String username) {
@@ -49,7 +48,10 @@ public class View implements ViewInterface {
         .add(new Image(Objects.requireNonNull(
             Connexion.class.getResourceAsStream("/image/tetris-icon-32.png"))));
     this.primaryStage.setTitle("Tetris");
-    this.primaryStage.setOnCloseRequest(event -> this.controller.disconnect());
+    this.primaryStage.setOnCloseRequest(event -> {
+      this.controller.disconnect();
+      this.bothPlayerView = null;
+    });
     this.bothPlayerView = new BothPlayerView(this.controller, this.primaryStage, username);
   }
 
@@ -89,6 +91,18 @@ public class View implements ViewInterface {
   public PropertyChangeListener[] getListeners() {
     return new PropertyChangeListener[]{this.bothPlayerView.getPlayer1(),
         this.bothPlayerView.getPlayer2()};
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void displayStatitics() {
+    this.primaryStage = new Stage();
+    this.primaryStage.setTitle("Statistique");
+    this.primaryStage.setOnCloseRequest(event -> this.controller.disconnect());
+    new Statistics(this.primaryStage);
+    this.primaryStage.setResizable(false);
   }
 
 }

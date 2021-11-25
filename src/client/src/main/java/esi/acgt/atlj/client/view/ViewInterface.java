@@ -32,7 +32,7 @@ public interface ViewInterface {
   /**
    * Display the board of your tetris game and opponent one
    *
-   * @param username username
+   * @param username username name of the player
    */
   void displayBoard(String username);
 
@@ -42,4 +42,9 @@ public interface ViewInterface {
    * @return Listerners
    */
   PropertyChangeListener[] getListeners();
+
+  /**
+   * Display the window of statics
+   */
+  void displayStatitics();
 }
