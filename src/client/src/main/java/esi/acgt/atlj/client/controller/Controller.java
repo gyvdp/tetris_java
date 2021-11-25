@@ -79,24 +79,21 @@ public class Controller {
    */
   public void connexion(String ip, int port, String username, UserMode mode) {
     try {
-      this.model.initManagedBoard(username);
-
-      // TODO INIT LE BOARD APRES DIT SON TYPE DE JOUER
-      if (mode == UserMode.PLAYER || mode == UserMode.SPECTATOR) {
+      this.model.initManagedBoard(username); // todo factory class
+      this.model.connect(port, ip);
+      if (mode == UserMode.SPECTATOR) { //Spectate
+        this.view.displayBoard(username);
+        this.model.sendAction(PlayerAction.SPECTATE);
+        this.model.addPropertyChangeListener(this.view.getListeners());
+      } else if (mode == UserMode.PLAYER) { //Play
         this.view.displayBoard(username);
         this.model.addPropertyChangeListener(this.view.getListeners());
-      }
-      if (mode == UserMode.STATISTICS) {
+        //todo send name before starting to play.
+        this.model.sendAction(PlayerAction.PLAY_ONLINE);
+      } else {
         //TODO faire un system pour se co au statitique.
         this.view.displayStatitics(); //TODO BESOIN D'UN OBJETS PLAYER AVEC LES INFOS
       }
-      this.model.connect(port, ip);
-      this.view.displayBoard(username);
-      this.model.connect(port, ip);
-      this.model.addPropertyChangeListener(this.view.getListeners());
-      //send name before action
-      this.model.sendAction(PlayerAction.PLAY_ONLINE);
-      //this.model.sendAction(PlayerAction.SPECTATE);
     } catch (Exception e) {
       this.view.displayError(e);
       this.view.displayConnexion();
