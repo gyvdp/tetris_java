@@ -4,6 +4,7 @@ import esi.acgt.atlj.client.model.ClientModel;
 import esi.acgt.atlj.client.view.ViewInterface;
 import esi.acgt.atlj.message.PlayerAction;
 import esi.acgt.atlj.message.messageTypes.SendAction;
+import esi.acgt.atlj.model.UserMode;
 import esi.acgt.atlj.model.game.Direction;
 import esi.acgt.atlj.model.game.GameStatus;
 import java.util.Objects;
@@ -76,9 +77,20 @@ public class Controller {
    * @param port     port of the server to connect to
    * @param username username of the player
    */
-  public void connexion(String ip, int port, String username) {
+  public void connexion(String ip, int port, String username, UserMode mode) {
     try {
       this.model.initManagedBoard(username);
+
+      // TODO INIT LE BOARD APRES DIT SON TYPE DE JOUER
+      if (mode == UserMode.PLAYER || mode == UserMode.SPECTATOR) {
+        this.view.displayBoard(username);
+        this.model.addPropertyChangeListener(this.view.getListeners());
+      }
+      if (mode == UserMode.STATISTICS) {
+        //TODO faire un system pour se co au statitique.
+        this.view.displayStatitics(); //TODO BESOIN D'UN OBJETS PLAYER AVEC LES INFOS
+      }
+      this.model.connect(port, ip);
       this.view.displayBoard(username);
       this.model.connect(port, ip);
       this.model.addPropertyChangeListener(this.view.getListeners());
