@@ -27,14 +27,6 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <dependencies>
-    <dependency>
-      <groupId>esi.acgt</groupId>
-      <artifactId>atlj.model</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-  </dependencies>
 
   <parent>
     <groupId>esi.acgt</groupId>
@@ -44,8 +36,17 @@
   </parent>
 
   <artifactId>atlj.message</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <dependencies>
+    <dependency>
+      <artifactId>atlj.model</artifactId>
+      <groupId>esi.acgt</groupId>
+      <version>1.0</version>
+    </dependency>
+  </dependencies>
   <packaging>jar</packaging>
+
+  <version>1.0</version>
+
 
   <build>
     <plugins>
