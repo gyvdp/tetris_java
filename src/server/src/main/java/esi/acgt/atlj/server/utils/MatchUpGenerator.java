@@ -28,7 +28,6 @@ import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
-import esi.acgt.atlj.message.messageTypes.SendBoard;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.UpdatePieceUnmanagedBoard;
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -117,6 +116,7 @@ public class MatchUpGenerator extends Thread {
       }
     }
     if (notPlaying == 2) {
+      model.sendToDataBase();
       System.out.println("Match-up " + this.id + " has ended");
       decrementMatchUpId.run();
       this.interrupt();

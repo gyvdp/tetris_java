@@ -27,8 +27,10 @@ package esi.acgt.atlj.server.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.plaf.nimbus.State;
 
 public class DataBase implements DataBaseInterface {
 
@@ -68,13 +70,22 @@ public class DataBase implements DataBaseInterface {
    * @param sql query to execute.
    * @return Number of row altered.
    */
-  private int executeSql(String sql) {
+  private ResultSet executeSql(String sql) {
     try {
       Statement stm = connection.createStatement();
-      return stm.executeUpdate(sql);
+      return stm.executeQuery(sql);
     } catch (SQLException e) {
     }
-    return 0;
+    return null;
+  }
+
+  private void executeUpdate(String sql) {
+    try {
+      Statement stm = connection.createStatement();
+      stm.executeUpdate(sql);
+    } catch (SQLException e) {
+      System.out.println("h");
+    }
   }
 
   /**
@@ -82,17 +93,16 @@ public class DataBase implements DataBaseInterface {
    */
   @Override
   public void checkUserInDb(String username) {
-    String query = "SELECT * FROM main.User WHERE USERNAME=?";
+    String query =
+        "SELECT * FROM main.User WHERE USERNAME='" + username + "';"; //todo sql injections
     try {
-      PreparedStatement preparedStatement = connection.prepareStatement(query);
-      preparedStatement.setString(1, username);
-      if (!preparedStatement.execute()) {
+      if (!(executeSql(query).first())) {
         executeSql("INSERT INTO main.User(USERNAME) VALUES('" + username + "');");
         executeSql("INSERT INTO main.Game_History(PLAYER_USERNAME) VALUES('" + username + "');");
         executeSql("INSERT INTO main.Tetriminos(PLAYER_USERNAME)VALUES('" + username + "');");
       }
     } catch (SQLException e) {
-      System.err.println("Cannot find " + username + "or create new username");
+
     }
   }
 
@@ -101,8 +111,13 @@ public class DataBase implements DataBaseInterface {
    */
   @Override
   public void score(int score, String username) {
-    String query = "ALTER HIGH_SCORE FROM Game_History WHERE PLAYER_ID is ('" + username + "');";
-    executeSql(query);
+    System.out.println(score);
+    System.out.println(username);
+    String query =
+        "UPDATE main.Game_History set HIGH_SCORE = " + score + " WHERE PLAYER_USERNAME = '"
+            + username + "';";
+    executeUpdate(query);
+
   }
 
   /**

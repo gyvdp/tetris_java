@@ -272,7 +272,9 @@ public class ManagedGame extends AbstractGame {
     int oldScore = this.score;
     this.score = score;
     this.changeSupport.firePropertyChange("score", oldScore, this.score);
-    this.setScoreServer.accept(this.score);
+    if (setScoreServer != null) {
+      this.setScoreServer.accept(this.score);
+    }
   }
 
   public synchronized void increaseScore(int increment) {

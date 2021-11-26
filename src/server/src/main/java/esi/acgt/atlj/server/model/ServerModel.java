@@ -111,9 +111,8 @@ public class ServerModel {
   /**
    * Sends all necessary information to database.
    */
-  private void sendToDataBase() {
-    dataBase.score(statistics.getScore(), "noname");
-    //todo get all info from model
+  public void sendToDataBase() {
+    dataBase.score(statistics.getScore(), "Gregory");
   }
 
   public void checkNameInDB(String username) {

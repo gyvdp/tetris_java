@@ -79,8 +79,8 @@ public class Controller {
    */
   public void connexion(String ip, int port, String username, UserMode mode) {
     try {
-      this.model.initManagedBoard(username); // todo factory class
       this.model.connect(port, ip);
+      this.model.initManagedBoard(username); // todo factory class
       if (mode == UserMode.SPECTATOR) { //Spectate
         this.view.displayBoard(username);
         this.model.sendAction(PlayerAction.SPECTATE);
@@ -88,10 +88,10 @@ public class Controller {
       } else if (mode == UserMode.PLAYER) { //Play
         this.view.displayBoard(username);
         this.model.addPropertyChangeListener(this.view.getListeners());
-        //todo send name before starting to play.
+        //todo send name
         this.model.sendAction(PlayerAction.PLAY_ONLINE);
       } else {
-        //TODO faire un system pour se co au statitique.
+        //TODO faire un system pour se co au statistique.
         this.view.displayStatitics(); //TODO BESOIN D'UN OBJETS PLAYER AVEC LES INFOS
       }
     } catch (Exception e) {

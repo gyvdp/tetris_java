@@ -252,9 +252,9 @@ public class ClientModel extends Model {
     askNextMino.run();
     this.player.start();
     this.otherPlayer.playerStatus("", 0);
-    if (client != null) {
-      client.sendNameToServer(player.getUsername());
-    }
+    //if (client != null) {
+    //  client.sendNameToServer(player.getUsername());
+    //} //todo rebase
   }
 
   /**
@@ -266,6 +266,7 @@ public class ClientModel extends Model {
     player = new ManagedGame(username);
     otherPlayer = new UnmanagedGame();
     connectLambdaPlayer(this.player);
+    client.sendNameToServer(player.getUsername());
   }
 
   /**

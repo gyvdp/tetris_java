@@ -180,7 +180,7 @@ public class CustomClientThread extends Thread {
    */
   public void setClientStatus(PlayerStatus cs) {
     this.clientStatus = cs;
-    this.sendMessage(new PlayerState(PlayerStatus.READY));
+    this.sendMessage(new PlayerState(cs));
     nameDB.accept(this);
   }
 
