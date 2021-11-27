@@ -89,7 +89,6 @@ public class MatchUpGenerator extends Thread {
       client.connectRefillBag(this.refillBag);
       client.connectHandleMessage(this.handleMessage);
       client.connectDisconnect(this.disconnect);
-      client.connectCheckNameDB(this.checkNameDb);
     }
     this.start();
   }
@@ -99,8 +98,6 @@ public class MatchUpGenerator extends Thread {
    */
   Runnable refillBag = this::refillBags;
 
-  Consumer<CustomClientThread> checkNameDb = (CustomClientThread client) ->
-      model.checkNameInDB(client.getNameOfClient());
 
   /**
    * Handles disconnection of player from match-up. If both players have disconnected, kills
@@ -116,7 +113,6 @@ public class MatchUpGenerator extends Thread {
       }
     }
     if (notPlaying == 2) {
-      model.sendToDataBase();
       System.out.println("Match-up " + this.id + " has ended");
       decrementMatchUpId.run();
       this.interrupt();

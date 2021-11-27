@@ -22,55 +22,54 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.server.database;
+package esi.acgt.atlj.database.dto;
 
-/**
- * Interface to communicate with database.
- */
-public interface DataBaseInterface {
+public abstract class EntityDto<T> {
 
   /**
-   * Connects to tetris database.
+   * Primary key of persistent object.
    */
-  void connectToDb();
-
+  protected T id;
+  
   /**
-   * Creates a new username is the database.
+   * Checks whether object T is persistent or not.
    *
-   * @param username Username of player.
+   * @return True if object is persistent.
    */
-  void checkUserInDb(String username);
+  public boolean isPersistant() {
+    return (id != null);
+  }
 
   /**
-   * Sets the score in the database of the user. If high-score becomes new high-score.
+   * Returns primary key.
    *
-   * @param score    Score to set .
-   * @param username Username to set score to.
+   * @return Value of primary key, null for all non-persistent objects.
    */
-  void score(int score, String username);
+  public T getId() {
+    return id;
+  }
 
   /**
-   * Adds to the number of tetrises in the database of the user.
-   *
-   * @param nbTetris Number of tetrises to add.
-   * @param username Username to add tertises too.
+   * {@inheritDoc}
    */
-  void numberOfTetris(int nbTetris, String username);
+  @Override
+  public boolean equals(Object dto) {
+    if (dto == null || dto.getClass() != getClass()
+        || ((EntityDto) dto).isPersistant() != isPersistant()) {
+      return false;
+    }
+    return ((EntityDto) dto).getId().equals(getId());
+  }
 
   /**
-   * Adds to the number of lines destroyed in the database of the user.
-   *
-   * @param lines    Number of lines destroyed to add.
-   * @param username Username to add number to.
+   * {@inheritDoc}
    */
-  void numberOfLinesDestroyed(int lines, String username);
+  @Override
+  public int hashCode() {
+    int hash = 7;
+    hash = 73 * hash + (this.id != null ? this.id.hashCode() : 0);
+    return hash;
+  }
 
-  /**
-   * Adds to the number of minos placed in the database of the user.
-   *
-   * @param numberOfMinos Number of minos to add.
-   * @param username      Username to add number to.
-   */
-  void numberOfMinosPlaced(int numberOfMinos, String username);
 }
 

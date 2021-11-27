@@ -22,29 +22,16 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.server.model;
+package esi.acgt.atlj.database.exceptions;
 
-public class StatisticCounter extends Thread {
+public class DtoException extends Exception {
 
-  private int score = 0;
-  private final int n = 0;
-  private final int z = 0;
-  private final int f = 0;
-  private final int c = 0;
-  private final int t = 0;
-  private final int x = 0;
-
-  public StatisticCounter() {
+  public DtoException() {
 
   }
 
-  public void addScore(int score) {
-    this.score += score;
+  public DtoException(String message) {
+    super(message);
   }
-
-  public int getScore() {
-    return this.score;
-  }
-
 
 }
