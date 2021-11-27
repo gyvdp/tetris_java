@@ -22,55 +22,51 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.client.controller.fxml;
+package esi.acgt.atlj.client.view.components;
 
-import esi.acgt.atlj.model.tetrimino.Mino;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 
-public class BoardMainController implements Initializable {
+public class Matrix implements Initializable {
 
-  public final static int H = (InfoBoxController.H * 2) + MatrixController.H;
-  public final static int L = MatrixController.H;
+  public final static int H = 174;
 
-  @FXML
-  public VBox container;
+  public final static int L = 93;
 
-  @FXML
-  public Pane topBox;
+  public final static int P = 7;
 
   @FXML
-  public InfoBoxController topBoxController;
+  public Pane container;
 
   @FXML
-  public Pane matrix;
+  public GridPane grid;
 
-  @FXML
-  public MatrixController matrixController;
-
-  @FXML
-  public Pane bottomBox;
-
-  @FXML
-  public InfoBoxController bottomBoxController;
+  public Matrix() {
+  }
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    matrix.prefHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(MatrixController.H));
+    container.prefHeightProperty().bind(container.widthProperty().multiply(H / L));
+    container.prefWidthProperty().bind(container.heightProperty().multiply(L / H));
 
-    topBox.prefHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(InfoBoxController.H));
+    grid.paddingProperty().bind(Bindings.createObjectBinding(
+        () -> new Insets(container.widthProperty().divide(93).multiply(6).doubleValue()),
+        container.widthProperty()));
+    grid.prefWidthProperty().bind(container.widthProperty().divide(93).multiply(81));
+    grid.prefHeightProperty().bind(container.heightProperty().divide(174).multiply(162));
 
-    bottomBox.prefHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(InfoBoxController.H));
-  }
-
-  public void setMatrix(Mino[][] minos) {
-    matrixController.set(minos);
+    for (int i = 0; i < 10; ++i) {
+      for (int j = 0; j < 20; ++j) {
+        var mino = new Mino();
+        grid.add(new Mino(), i, j);
+        mino.fitHeightProperty().bind(grid.heightProperty().divide(10));
+      }
+    }
   }
 }

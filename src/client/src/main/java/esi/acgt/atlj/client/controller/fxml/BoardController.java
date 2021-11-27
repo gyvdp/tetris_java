@@ -25,17 +25,20 @@
 package esi.acgt.atlj.client.controller.fxml;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class BoardController implements Initializable {
+public class BoardController implements Initializable, PropertyChangeListener {
 
   public final static int H = BoardMainController.H;
-  public final static int L = BoardMainController.L;
+  public final static int L = BoardMainController.L + BoardAsideController.L;
 
 
   @FXML
@@ -47,29 +50,43 @@ public class BoardController implements Initializable {
   @FXML
   public BoardMainController boardMainController;
 
+  public VBox aside;
+
+  @FXML
+  public BoardAsideController asideController;
+
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-//    container.minHeightProperty().bind(container.widthProperty().multiply(H / L));
-//    container.maxHeightProperty().bind(container.widthProperty().multiply(H / L));
-//    container.minWidthProperty().bind(container.heightProperty().multiply(L / H));
-//    container.maxWidthProperty().bind(container.heightProperty().multiply(L / H));
-//    boardMain.prefHeightProperty().bind(container.heightProperty());
-//    boardMain.prefWidthProperty().bind(container.widthProperty());
+    boardMain.prefWidthProperty()
+        .bind(container.widthProperty().divide(L).multiply(BoardMainController.L));
 
-//    System.out.printf("BoardController: containerWidth = %f%n",
-//        container.minWidthProperty().doubleValue());
-//    System.out.printf("BoardController: containerHeight = %f%n",
-//        container.minHeightProperty().doubleValue());
-//
-//    System.out.printf("BoardController: boardMainWidth = %f%n",
-//        boardMain.minWidthProperty().doubleValue());
-//    System.out.printf("BoardController: boardMainHeight = %f%n",
-//        boardMain.minHeightProperty().doubleValue());
-
+    aside.prefWidthProperty()
+        .bind(container.widthProperty().divide(L).multiply(BoardAsideController.L));
   }
 
   public void setMatrix(Mino[][] minos) {
+    boardMainController.setMatrix(minos);
+  }
 
+  /**
+   * PropertyChange that will change the view on base of what he receive
+   *
+   * @param evt evt that has been fired
+   */
+  @Override
+  public void propertyChange(PropertyChangeEvent evt) {
+    Platform.runLater(() -> {
+      switch (evt.getPropertyName()) {
+        case "board" -> setMatrix((Mino[][]) evt.getNewValue());
+//        case "line" -> updateLine((int) evt.getNewValue());
+//        case "score" -> updateScore((int) evt.getNewValue());
+//        case "username" -> updateUsername(evt.getNewValue().toString());
+//        case "hold" -> updateHold(((Mino) evt.getNewValue()));
+//        case "next" -> updateNextPiece((TetriminoInterface) evt.getNewValue());
+//        case "winner" -> displayWinner((String) evt.getOldValue(), (String) evt.getNewValue());
+//        case "status" -> updateStatusLabel((String) evt.getOldValue(), (double) evt.getNewValue());
+      }
+    });
   }
 }

@@ -24,53 +24,39 @@
 
 package esi.acgt.atlj.client.controller.fxml;
 
-import esi.acgt.atlj.model.tetrimino.Mino;
+import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 
-public class BoardMainController implements Initializable {
+public class MultiplayerGameController implements Initializable {
 
-  public final static int H = (InfoBoxController.H * 2) + MatrixController.H;
-  public final static int L = MatrixController.H;
+  public static final int H = BoardController.H;
+  public static final int L = BoardMainController.L * 2;
 
-  @FXML
-  public VBox container;
-
-  @FXML
-  public Pane topBox;
-
-  @FXML
-  public InfoBoxController topBoxController;
-
-  @FXML
-  public Pane matrix;
-
-  @FXML
-  public MatrixController matrixController;
-
-  @FXML
-  public Pane bottomBox;
-
-  @FXML
-  public InfoBoxController bottomBoxController;
+  public HBox left;
+  public BoardController leftController;
+  public HBox right;
+  public BoardController rightController;
+  public HBox container;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    matrix.prefHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(MatrixController.H));
+    left.prefWidthProperty().bind(container.widthProperty().divide(2));
+    left.prefHeightProperty()
+        .bind(left.prefWidthProperty().divide(BoardMainController.L).multiply(H));
 
-    topBox.prefHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(InfoBoxController.H));
-
-    bottomBox.prefHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(InfoBoxController.H));
+    right.prefWidthProperty().bind(container.widthProperty().divide(2));
+    right.prefHeightProperty()
+        .bind(right.prefWidthProperty().divide(BoardMainController.L).multiply(H));
   }
 
-  public void setMatrix(Mino[][] minos) {
-    matrixController.set(minos);
+  public PropertyChangeListener getPlayer1() {
+    return leftController;
+  }
+
+  public PropertyChangeListener getPlayer2() {
+    return rightController;
   }
 }

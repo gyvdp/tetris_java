@@ -26,13 +26,7 @@
   src: url("../fonts/Pixel_NES.otf");
 }
 
-#infobox {
-  /*-fx-background-image: url("../image/bg/infobox.png");*/
-  /*-fx-background-repeat: no-repeat;*/
-  /*-fx-background-size: contain;*/
-}
-
-#infoBoxText {
+.nes-text {
   -fx-color: #fff;
   -fx-font-family: "Pixel NES";
 }

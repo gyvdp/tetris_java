@@ -24,53 +24,29 @@
 
 package esi.acgt.atlj.client.controller.fxml;
 
-import esi.acgt.atlj.model.tetrimino.Mino;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 
-public class BoardMainController implements Initializable {
+public class TetriminoHolderController implements Initializable {
 
-  public final static int H = (InfoBoxController.H * 2) + MatrixController.H;
-  public final static int L = MatrixController.H;
+  public static final int W = 45;
+  public static final int H = 54;
+  public static final int P = 7;
 
-  @FXML
-  public VBox container;
-
-  @FXML
-  public Pane topBox;
-
-  @FXML
-  public InfoBoxController topBoxController;
-
-  @FXML
-  public Pane matrix;
-
-  @FXML
-  public MatrixController matrixController;
-
-  @FXML
-  public Pane bottomBox;
-
-  @FXML
-  public InfoBoxController bottomBoxController;
+  public StackPane container;
+  public ImageView background;
+  public Label typeText;
+  public ImageView tetrimino;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    matrix.prefHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(MatrixController.H));
+    background.fitWidthProperty().bind(container.widthProperty());
+    background.fitHeightProperty().bind(background.fitWidthProperty().divide(W).multiply(H));
 
-    topBox.prefHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(InfoBoxController.H));
-
-    bottomBox.prefHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(InfoBoxController.H));
-  }
-
-  public void setMatrix(Mino[][] minos) {
-    matrixController.set(minos);
+    background.fitWidthProperty().bind(container.widthProperty());
   }
 }

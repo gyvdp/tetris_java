@@ -22,17 +22,29 @@
  * SOFTWARE.
  */
 
-@font-face {
-  src: url("../fonts/Pixel_NES.otf");
-}
+package esi.acgt.atlj.client.view.components;
 
-#infobox {
-  /*-fx-background-image: url("../image/bg/infobox.png");*/
-  /*-fx-background-repeat: no-repeat;*/
-  /*-fx-background-size: contain;*/
-}
+import java.util.Objects;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
-#infoBoxText {
-  -fx-color: #fff;
-  -fx-font-family: "Pixel NES";
+public class Mino extends ImageView {
+
+  private final static Image A1;
+  private final static Image B1;
+  private final static Image C1;
+
+  static {
+    A1 = new Image(
+        Objects.requireNonNull(Mino.class.getResourceAsStream("/image/mino/A1.png")));
+    B1 = new Image(
+        Objects.requireNonNull(Mino.class.getResourceAsStream("/image/mino/B1.png")));
+    C1 = new Image(
+        Objects.requireNonNull(Mino.class.getResourceAsStream("/image/mino/C1.png")));
+  }
+
+  public Mino() {
+    super(A1);
+    this.setPreserveRatio(true);
+  }
 }

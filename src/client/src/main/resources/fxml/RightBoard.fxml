@@ -24,24 +24,16 @@
   ~ SOFTWARE.
   -->
 
-
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.StackPane?>
-<StackPane xmlns:fx="http://javafx.com/fxml/1" style="-fx-border-color: red; -fx-border-width: 1; "
-  id="infobox" maxHeight="219" maxWidth="850"
-  minHeight="48" minWidth="186"
-  stylesheets="@../css/info.css" xmlns="http://javafx.com/javafx/16"
-  fx:controller="esi.acgt.atlj.client.controller.fxml.InfoBoxController" fx:id="container">
-  <ImageView StackPane.alignment="BOTTOM_CENTER" fitHeight="48" fitWidth="186" preserveRatio="true"
-    smooth="false" fx:id="background">
-    <Image url="@../image/bg/infobox.png"/>
-  </ImageView>
-  <Label StackPane.alignment="BOTTOM_CENTER" alignment="CENTER" contentDisplay="CENTER"
-    id="infoBoxText"
-    maxHeight="219" maxWidth="850" minHeight="48" minWidth="186" text="LINE - 000"
-    textAlignment="CENTER" textFill="WHITE" fx:id="infoBoxText">
-  </Label>
-</StackPane>
+<?import javafx.scene.layout.HBox?>
+<HBox xmlns:fx="http://javafx.com/fxml/1" style="-fx-border-color: blue; -fx-border-width: 1;"
+  maxHeight="-Infinity" maxWidth="-Infinity"
+  minHeight="222"
+  minWidth="157"
+  xmlns="http://javafx.com/javafx/16"
+  fx:controller="esi.acgt.atlj.client.controller.fxml.BoardController"
+  fx:id="container"
+>
+  <fx:include HBox.hgrow="NEVER" source="BoardMain.fxml" fx:id="boardMain"/>
+  <fx:include HBox.hgrow="NEVER" source="BoardAside.fxml" fx:id='aside'/>
+</HBox>
 

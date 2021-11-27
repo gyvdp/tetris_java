@@ -42,6 +42,9 @@
   fx:controller="esi.acgt.atlj.client.controller.fxml.MatrixController"
   fx:id="container"
 >
+  <ImageView StackPane.alignment="CENTER" fitHeight="174" fitWidth="93" fx:id="background">
+    <Image url="@../image/bg/board.png"/>
+  </ImageView>
   <GridPane
     style="-fx-border-color: yellow; -fx-border-width: 1;"
     alignment="CENTER"
@@ -86,7 +89,4 @@
       <RowConstraints percentHeight="5" valignment="CENTER"/>
     </rowConstraints>
   </GridPane>
-  <ImageView StackPane.alignment="CENTER" fitHeight="174" fitWidth="93" fx:id="background">
-    <Image url="@../image/bg/board.png"/>
-  </ImageView>
 </StackPane>

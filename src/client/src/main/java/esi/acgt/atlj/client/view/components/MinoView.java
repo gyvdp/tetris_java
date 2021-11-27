@@ -24,7 +24,6 @@
 
 package esi.acgt.atlj.client.view.components;
 
-import esi.acgt.atlj.client.view.PlayerTetrisFXML;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import java.util.Objects;
 import javafx.scene.image.Image;
@@ -41,11 +40,11 @@ public class MinoView extends Pane {
 
   static {
     A1 = new Image(
-        Objects.requireNonNull(PlayerTetrisFXML.class.getResourceAsStream("/image/mino/A1.png")));
+        Objects.requireNonNull(MinoView.class.getResourceAsStream("/image/mino/A1.png")));
     B1 = new Image(
-        Objects.requireNonNull(PlayerTetrisFXML.class.getResourceAsStream("/image/mino/B1.png")));
+        Objects.requireNonNull(MinoView.class.getResourceAsStream("/image/mino/B1.png")));
     C1 = new Image(
-        Objects.requireNonNull(PlayerTetrisFXML.class.getResourceAsStream("/image/mino/C1.png")));
+        Objects.requireNonNull(MinoView.class.getResourceAsStream("/image/mino/C1.png")));
   }
 
   private ImageView image;

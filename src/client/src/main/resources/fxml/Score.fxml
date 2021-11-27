@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ MIT License
+  ~
+  ~ Copyright (c) 2021 Andrew SASSOYE, Constantin GUNDUZ, Gregory VAN DER PLUIJM, Thomas LEUTSCHER
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<StackPane fx:id="container" minHeight="72.0" minWidth="64.0" styleClass="score"
+  stylesheets="@../css/score.css" xmlns="http://javafx.com/javafx/11.0.2"
+  xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="esi.acgt.atlj.client.controller.fxml.ScoreController">
+  <ImageView fx:id="background" fitHeight="72.0" fitWidth="64.0" pickOnBounds="true"
+    preserveRatio="true">
+    <Image url="@../image/bg/score.png"/>
+  </ImageView>
+  <Label fx:id="topTitle" alignment="CENTER" contentDisplay="CENTER" minHeight="7.0" minWidth="64.0"
+    styleClass="nes-text" text="TOP" textAlignment="CENTER" textFill="WHITE"
+    StackPane.alignment="TOP_CENTER">
+    <StackPane.margin>
+      <Insets top="16.0"/>
+    </StackPane.margin>
+    <font>
+      <Font size="7.0"/>
+    </font>
+    <padding>
+      <Insets left="6.0" right="6.0"/>
+    </padding>
+  </Label>
+  <Label fx:id="topValue" alignment="CENTER" contentDisplay="CENTER" minHeight="7.0" minWidth="64.0"
+    styleClass="nes-text" text="000000" textAlignment="CENTER" textFill="WHITE"
+    StackPane.alignment="TOP_CENTER">
+    <StackPane.margin>
+      <Insets top="24.0"/>
+    </StackPane.margin>
+    <font>
+      <Font size="7.0"/>
+    </font>
+    <padding>
+      <Insets left="6.0" right="6.0"/>
+    </padding>
+  </Label>
+
+  <Label fx:id="scoreTitle" alignment="CENTER" contentDisplay="CENTER" minHeight="7.0"
+    minWidth="64.0" styleClass="nes-text" text="SCORE" textAlignment="CENTER" textFill="WHITE"
+    StackPane.alignment="TOP_CENTER">
+    <StackPane.margin>
+      <Insets top="40.0"/>
+    </StackPane.margin>
+    <font>
+      <Font size="7.0"/>
+    </font>
+    <padding>
+      <Insets left="6.0" right="6.0"/>
+    </padding>
+  </Label>
+
+  <Label fx:id="scoreValue" alignment="CENTER" contentDisplay="CENTER" minHeight="7.0"
+    minWidth="64.0" styleClass="nes-text" text="000000" textAlignment="CENTER" textFill="WHITE"
+    StackPane.alignment="TOP_CENTER">
+    <StackPane.margin>
+      <Insets top="48.0"/>
+    </StackPane.margin>
+    <font>
+      <Font size="7.0"/>
+    </font>
+    <padding>
+      <Insets left="6.0" right="6.0"/>
+    </padding>
+  </Label>
+
+</StackPane>

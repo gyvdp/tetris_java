@@ -24,53 +24,29 @@
 
 package esi.acgt.atlj.client.controller.fxml;
 
-import esi.acgt.atlj.model.tetrimino.Mino;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-public class BoardMainController implements Initializable {
+public class BoardAsideController implements Initializable {
 
-  public final static int H = (InfoBoxController.H * 2) + MatrixController.H;
-  public final static int L = MatrixController.H;
+  public final static int H = BoardMainController.H;
+  public final static int L = ScoreController.W;
 
   @FXML
   public VBox container;
+  public StackPane next;
+  public StackPane hold;
+  public StackPane score;
 
-  @FXML
-  public Pane topBox;
-
-  @FXML
-  public InfoBoxController topBoxController;
-
-  @FXML
-  public Pane matrix;
-
-  @FXML
-  public MatrixController matrixController;
-
-  @FXML
-  public Pane bottomBox;
-
-  @FXML
-  public InfoBoxController bottomBoxController;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    matrix.prefHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(MatrixController.H));
-
-    topBox.prefHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(InfoBoxController.H));
-
-    bottomBox.prefHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(InfoBoxController.H));
-  }
-
-  public void setMatrix(Mino[][] minos) {
-    matrixController.set(minos);
+    score.prefWidthProperty().bind(container.widthProperty());
+    next.prefWidthProperty().bind(container.widthProperty());
+    hold.prefWidthProperty().bind(container.widthProperty());
   }
 }

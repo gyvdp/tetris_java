@@ -24,24 +24,13 @@
   ~ SOFTWARE.
   -->
 
-
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.StackPane?>
-<StackPane xmlns:fx="http://javafx.com/fxml/1" style="-fx-border-color: red; -fx-border-width: 1; "
-  id="infobox" maxHeight="219" maxWidth="850"
-  minHeight="48" minWidth="186"
-  stylesheets="@../css/info.css" xmlns="http://javafx.com/javafx/16"
-  fx:controller="esi.acgt.atlj.client.controller.fxml.InfoBoxController" fx:id="container">
-  <ImageView StackPane.alignment="BOTTOM_CENTER" fitHeight="48" fitWidth="186" preserveRatio="true"
-    smooth="false" fx:id="background">
-    <Image url="@../image/bg/infobox.png"/>
-  </ImageView>
-  <Label StackPane.alignment="BOTTOM_CENTER" alignment="CENTER" contentDisplay="CENTER"
-    id="infoBoxText"
-    maxHeight="219" maxWidth="850" minHeight="48" minWidth="186" text="LINE - 000"
-    textAlignment="CENTER" textFill="WHITE" fx:id="infoBoxText">
-  </Label>
-</StackPane>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" style="-fx-border-color: purple; -fx-border-width: 1;"
+  xmlns="http://javafx.com/javafx/16"
+  fx:controller="esi.acgt.atlj.client.controller.fxml.BoardAsideController"
+  fx:id="container">
+  <fx:include VBox.vgrow="NEVER" source="Score.fxml" fx:id="score"/>
+  <fx:include VBox.vgrow="NEVER" source="TetriminoHolder.fxml" fx:id="next"/>
+  <fx:include VBox.vgrow="NEVER" source="TetriminoHolder.fxml" fx:id="hold"/>
+</VBox>
 

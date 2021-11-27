@@ -26,7 +26,7 @@
 
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" style="-fx-border-color: purple; -fx-border-width: 1;"
-  xmlns="http://javafx.com/javafx/17"
+  xmlns="http://javafx.com/javafx/16"
   fx:controller="esi.acgt.atlj.client.controller.fxml.BoardMainController"
   fx:id="container">
   <fx:include VBox.vgrow="NEVER" source="InfoBox.fxml" fx:id="topBox"/>
