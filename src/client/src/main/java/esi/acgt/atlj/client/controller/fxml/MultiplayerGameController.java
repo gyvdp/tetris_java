@@ -35,21 +35,29 @@ public class MultiplayerGameController implements Initializable {
   public static final int H = BoardController.H;
   public static final int L = BoardMainController.L * 2;
 
+  public HBox container;
+
   public HBox left;
   public BoardController leftController;
+
   public HBox right;
   public BoardController rightController;
-  public HBox container;
+
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    left.prefWidthProperty().bind(container.widthProperty().divide(2));
-    left.prefHeightProperty()
-        .bind(left.prefWidthProperty().divide(BoardMainController.L).multiply(H));
+    container.prefWidthProperty().bind(container.heightProperty().divide(H).multiply(L));
+    container.prefHeightProperty().bind(container.widthProperty().divide(L).multiply(H));
 
-    right.prefWidthProperty().bind(container.widthProperty().divide(2));
-    right.prefHeightProperty()
-        .bind(right.prefWidthProperty().divide(BoardMainController.L).multiply(H));
+    left.maxWidthProperty().bind(container.widthProperty().divide(2));
+    left.maxHeightProperty().bind(container.heightProperty());
+
+    right.maxWidthProperty().bind(container.widthProperty().divide(2));
+    right.maxHeightProperty().bind(container.heightProperty());
+  }
+
+  public void setMainPlayerUsername(String username) {
+    leftController.setUsername(username);
   }
 
   public PropertyChangeListener getPlayer1() {

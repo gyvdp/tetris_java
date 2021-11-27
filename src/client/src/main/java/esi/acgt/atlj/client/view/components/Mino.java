@@ -33,6 +33,7 @@ public class Mino extends ImageView {
   private final static Image A1;
   private final static Image B1;
   private final static Image C1;
+  private final static Image D1;
 
   static {
     A1 = new Image(
@@ -41,10 +42,13 @@ public class Mino extends ImageView {
         Objects.requireNonNull(Mino.class.getResourceAsStream("/image/mino/B1.png")));
     C1 = new Image(
         Objects.requireNonNull(Mino.class.getResourceAsStream("/image/mino/C1.png")));
+
+    D1 = new Image(
+        Objects.requireNonNull(Mino.class.getResourceAsStream("/image/mino/D1.png")));
   }
 
   public Mino() {
-    super(A1);
+    super(D1);
     this.setPreserveRatio(true);
   }
 }

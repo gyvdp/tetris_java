@@ -35,7 +35,7 @@ public class InfoBoxController implements Initializable {
 
   public final static int H = 24;
   public final static int W = 93;
-  public final static int P = 6;
+  public final static int P = 8;
 
 
   public Label infoBoxText;
@@ -44,11 +44,14 @@ public class InfoBoxController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    infoBoxText.prefHeightProperty().bind(container.heightProperty());
-    infoBoxText.prefWidthProperty().bind(infoBoxText.heightProperty().divide(H).multiply(W));
+    background.fitWidthProperty().bind(container.widthProperty());
+    background.fitHeightProperty().bind(background.fitWidthProperty().divide(W).multiply(H));
 
-    background.fitHeightProperty().bind(container.heightProperty());
-    background.fitWidthProperty().bind(background.fitHeightProperty().divide(H).multiply(W));
+    infoBoxText.prefWidthProperty().bind(container.widthProperty());
+    infoBoxText.prefHeightProperty().bind(infoBoxText.widthProperty().divide(W).multiply(H));
+  }
 
+  public void setText(String text) {
+    infoBoxText.setText(text);
   }
 }

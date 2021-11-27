@@ -45,9 +45,23 @@ public class ScoreController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
+    container.prefWidthProperty().bind(container.heightProperty().divide(H).multiply(W));
+    container.prefHeightProperty().bind(container.widthProperty().divide(W).multiply(H));
 
     background.fitWidthProperty().bind(container.widthProperty());
     background.fitHeightProperty().bind(background.fitWidthProperty().divide(W).multiply(H));
 
+  }
+
+  public void setScore(int score) {
+    scoreValue.setText(scoreToText(score));
+  }
+
+  public static String scoreToText(int score) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("0".repeat(6));
+
+    var a = Integer.toString(score < 1000000 ? score : 999999);
+    return sb.substring(a.length()) + a;
   }
 }

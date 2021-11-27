@@ -30,66 +30,66 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
-<StackPane fx:id="container" minHeight="72.0" minWidth="64.0" styleClass="score"
+<StackPane fx:id="container" minHeight="144" minWidth="128" styleClass="score"
   stylesheets="@../css/score.css" xmlns="http://javafx.com/javafx/11.0.2"
   xmlns:fx="http://javafx.com/fxml/1"
   fx:controller="esi.acgt.atlj.client.controller.fxml.ScoreController">
-  <ImageView fx:id="background" fitHeight="72.0" fitWidth="64.0" pickOnBounds="true"
+  <ImageView fx:id="background" fitHeight="144" fitWidth="128" pickOnBounds="true"
     preserveRatio="true">
     <Image url="@../image/bg/score.png"/>
   </ImageView>
-  <Label fx:id="topTitle" alignment="CENTER" contentDisplay="CENTER" minHeight="7.0" minWidth="64.0"
+  <Label fx:id="topTitle" alignment="CENTER" contentDisplay="CENTER" minHeight="14" minWidth="128"
     styleClass="nes-text" text="TOP" textAlignment="CENTER" textFill="WHITE"
     StackPane.alignment="TOP_CENTER">
     <StackPane.margin>
-      <Insets top="16.0"/>
+      <Insets top="32"/>
     </StackPane.margin>
     <font>
-      <Font size="7.0"/>
+      <Font size="14"/>
     </font>
     <padding>
-      <Insets left="6.0" right="6.0"/>
+      <Insets left="16" right="16"/>
     </padding>
   </Label>
-  <Label fx:id="topValue" alignment="CENTER" contentDisplay="CENTER" minHeight="7.0" minWidth="64.0"
+  <Label fx:id="topValue" alignment="CENTER" contentDisplay="CENTER" minHeight="14" minWidth="128"
     styleClass="nes-text" text="000000" textAlignment="CENTER" textFill="WHITE"
     StackPane.alignment="TOP_CENTER">
     <StackPane.margin>
-      <Insets top="24.0"/>
+      <Insets top="48"/>
     </StackPane.margin>
     <font>
-      <Font size="7.0"/>
+      <Font size="14"/>
     </font>
     <padding>
-      <Insets left="6.0" right="6.0"/>
+      <Insets left="16" right="16"/>
     </padding>
   </Label>
 
-  <Label fx:id="scoreTitle" alignment="CENTER" contentDisplay="CENTER" minHeight="7.0"
-    minWidth="64.0" styleClass="nes-text" text="SCORE" textAlignment="CENTER" textFill="WHITE"
+  <Label fx:id="scoreTitle" alignment="CENTER" contentDisplay="CENTER" minHeight="14"
+    minWidth="128" styleClass="nes-text" text="SCORE" textAlignment="CENTER" textFill="WHITE"
     StackPane.alignment="TOP_CENTER">
     <StackPane.margin>
-      <Insets top="40.0"/>
+      <Insets top="80"/>
     </StackPane.margin>
     <font>
-      <Font size="7.0"/>
+      <Font size="14"/>
     </font>
     <padding>
-      <Insets left="6.0" right="6.0"/>
+      <Insets left="18" right="18"/>
     </padding>
   </Label>
 
-  <Label fx:id="scoreValue" alignment="CENTER" contentDisplay="CENTER" minHeight="7.0"
-    minWidth="64.0" styleClass="nes-text" text="000000" textAlignment="CENTER" textFill="WHITE"
+  <Label fx:id="scoreValue" alignment="CENTER" contentDisplay="CENTER" minHeight="14"
+    minWidth="128" styleClass="nes-text" text="000000" textAlignment="CENTER" textFill="WHITE"
     StackPane.alignment="TOP_CENTER">
     <StackPane.margin>
-      <Insets top="48.0"/>
+      <Insets top="96"/>
     </StackPane.margin>
     <font>
-      <Font size="7.0"/>
+      <Font size="14"/>
     </font>
     <padding>
-      <Insets left="6.0" right="6.0"/>
+      <Insets left="18" right="18"/>
     </padding>
   </Label>
 

@@ -25,12 +25,13 @@
   -->
 
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" style="-fx-border-color: purple; -fx-border-width: 1;"
-  xmlns="http://javafx.com/javafx/16"
-  fx:controller="esi.acgt.atlj.client.controller.fxml.BoardMainController"
-  fx:id="container">
-  <fx:include VBox.vgrow="NEVER" source="InfoBox.fxml" fx:id="topBox"/>
-  <fx:include VBox.vgrow="NEVER" source="Matrix.fxml" fx:id="matrix"/>
-  <fx:include VBox.vgrow="NEVER" source="InfoBox.fxml" fx:id="bottomBox"/>
+<VBox fx:id="container" minHeight="444.0" minWidth="186.0" spacing="2.0"
+  xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="esi.acgt.atlj.client.controller.fxml.BoardMainController">
+  <fx:include fx:id="topBox" minHeight="48.0" minWidth="186.0" source="InfoBox.fxml"
+    VBox.vgrow="NEVER"/>
+  <fx:include fx:id="matrix" minHeight="348.0" minWidth="186.0" source="Matrix.fxml"
+    VBox.vgrow="NEVER"/>
+  <fx:include fx:id="bottomBox" minHeight="48.0" minWidth="186.0" source="InfoBox.fxml"
+    VBox.vgrow="NEVER"/>
 </VBox>
-

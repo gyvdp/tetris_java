@@ -24,11 +24,17 @@
   ~ SOFTWARE.
   -->
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.HBox?>
-<HBox xmlns:fx="http://javafx.com/fxml/1" style="-fx-background-color: black;" prefHeight="400.0"
-  prefWidth="600.0" xmlns="http://javafx.com/javafx/16"
-  fx:controller="esi.acgt.atlj.client.controller.fxml.MultiplayerGameController" fx:id="container">
-  <fx:include HBox.hgrow="NEVER" source="LeftBoard.fxml" fx:id="left"/>
-  <fx:include HBox.hgrow="NEVER" source="RightBoard.fxml" fx:id="right"/>
+<HBox fx:id="container" alignment="CENTER" minHeight="572.0" minWidth="884.0"
+  style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/11.0.2"
+  xmlns:fx="http://javafx.com/fxml/1" spacing="2.0"
+  fx:controller="esi.acgt.atlj.client.controller.fxml.MultiplayerGameController">
+  <fx:include fx:id="left" minHeight="444.0" minWidth="250.0" source="LeftBoard.fxml"
+    HBox.hgrow="NEVER"/>
+  <fx:include fx:id="right" minHeight="444.0" minWidth="250.0" source="RightBoard.fxml"
+    HBox.hgrow="NEVER"/>
+  <padding>
+    <Insets bottom="128.0" left="128.0" right="128.0" top="128.0"/>
+  </padding>
 </HBox>
-

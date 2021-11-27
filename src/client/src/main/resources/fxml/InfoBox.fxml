@@ -24,24 +24,24 @@
   ~ SOFTWARE.
   -->
 
-
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.StackPane?>
-<StackPane xmlns:fx="http://javafx.com/fxml/1" style="-fx-border-color: red; -fx-border-width: 1; "
-  id="infobox" maxHeight="219" maxWidth="850"
-  minHeight="48" minWidth="186"
-  stylesheets="@../css/info.css" xmlns="http://javafx.com/javafx/16"
-  fx:controller="esi.acgt.atlj.client.controller.fxml.InfoBoxController" fx:id="container">
-  <ImageView StackPane.alignment="BOTTOM_CENTER" fitHeight="48" fitWidth="186" preserveRatio="true"
-    smooth="false" fx:id="background">
+<?import javafx.scene.text.Font?>
+<StackPane id="infobox" fx:id="container" maxHeight="219" maxWidth="850" minHeight="48"
+  minWidth="186" stylesheets="@../css/info.css" xmlns="http://javafx.com/javafx/11.0.2"
+  xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="esi.acgt.atlj.client.controller.fxml.InfoBoxController">
+  <ImageView fx:id="background" fitHeight="48" fitWidth="186" preserveRatio="true" smooth="false"
+    StackPane.alignment="BOTTOM_CENTER">
     <Image url="@../image/bg/infobox.png"/>
   </ImageView>
-  <Label StackPane.alignment="BOTTOM_CENTER" alignment="CENTER" contentDisplay="CENTER"
-    id="infoBoxText"
+  <Label id="infoBoxText" fx:id="infoBoxText" alignment="CENTER" contentDisplay="CENTER"
     maxHeight="219" maxWidth="850" minHeight="48" minWidth="186" text="LINE - 000"
-    textAlignment="CENTER" textFill="WHITE" fx:id="infoBoxText">
+    textAlignment="CENTER" textFill="WHITE" StackPane.alignment="BOTTOM_CENTER">
+    <font>
+      <Font size="14.0"/>
+    </font>
   </Label>
 </StackPane>
-

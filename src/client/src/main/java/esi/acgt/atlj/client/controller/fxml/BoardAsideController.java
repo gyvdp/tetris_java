@@ -41,12 +41,29 @@ public class BoardAsideController implements Initializable {
   public StackPane next;
   public StackPane hold;
   public StackPane score;
+  public ScoreController scoreController;
 
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    score.prefWidthProperty().bind(container.widthProperty());
-    next.prefWidthProperty().bind(container.widthProperty());
-    hold.prefWidthProperty().bind(container.widthProperty());
+    container.prefWidthProperty().bind(container.heightProperty().divide(H).multiply(L));
+    container.prefHeightProperty().bind(container.widthProperty().divide(L).multiply(H));
+
+    score.maxWidthProperty().bind(container.widthProperty());
+    score.maxHeightProperty()
+        .bind(container.heightProperty().divide(H).multiply(ScoreController.H));
+
+    next.maxWidthProperty().bind(container.widthProperty().divide(L).multiply(45));
+    next.maxHeightProperty()
+        .bind(container.heightProperty().divide(H).multiply(TetriminoHolderController.H));
+
+    hold.maxWidthProperty().bind(container.widthProperty().divide(L).multiply(45));
+    hold.maxHeightProperty()
+        .bind(container.heightProperty().divide(H).multiply(TetriminoHolderController.H));
+
+  }
+
+  public void setScore(int score) {
+    scoreController.setScore(score);
   }
 }

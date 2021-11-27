@@ -86,6 +86,7 @@ public class View implements ViewInterface {
     try {
       this.layout = loader.load();
       this.mpgController = loader.getController();
+      this.mpgController.setMainPlayerUsername(username);
     } catch (IOException e) {
       e.printStackTrace();
     }

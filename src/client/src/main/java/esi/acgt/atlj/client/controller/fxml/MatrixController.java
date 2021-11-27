@@ -34,7 +34,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 public class MatrixController implements Initializable {
 
@@ -43,7 +43,7 @@ public class MatrixController implements Initializable {
   public final static int P = 7;
 
   @FXML
-  public Pane container;
+  public StackPane container;
 
   @FXML
   public GridPane grid;
@@ -58,8 +58,8 @@ public class MatrixController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    grid.prefHeightProperty().bind(container.heightProperty());
-    grid.prefWidthProperty().bind(grid.heightProperty().divide(H).multiply(L));
+    grid.prefHeightProperty().bind(grid.widthProperty().divide(L).multiply(H));
+    grid.prefWidthProperty().bind(container.widthProperty());
 
     background.fitHeightProperty().bind(grid.heightProperty());
     background.fitWidthProperty().bind(grid.widthProperty());

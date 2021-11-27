@@ -29,28 +29,32 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.StackPane?>
-<StackPane fx:id="container" minHeight="54.0" minWidth="45.0"
-  xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+<?import javafx.scene.text.Font?>
+<StackPane fx:id="container" minHeight="108" minWidth="90" xmlns="http://javafx.com/javafx/11.0.2"
+  xmlns:fx="http://javafx.com/fxml/1"
   fx:controller="esi.acgt.atlj.client.controller.fxml.TetriminoHolderController">
-  <ImageView fx:id="background" fitHeight="54.0" fitWidth="45.0" pickOnBounds="true"
+  <ImageView fx:id="background" fitHeight="108" fitWidth="90" pickOnBounds="true"
     preserveRatio="true">
     <Image url="@../image/bg/tetriminoholder.png"/>
   </ImageView>
-  <ImageView fx:id="tetrimino" fitHeight="33.0" fitWidth="45.0" pickOnBounds="true"
-    preserveRatio="true" StackPane.alignment="BOTTOM_CENTER">
+  <ImageView fx:id="tetrimino" fitHeight="62" fitWidth="90" pickOnBounds="true" preserveRatio="true"
+    StackPane.alignment="BOTTOM_CENTER">
     <Image url="@../image/O.png"/>
     <StackPane.margin>
-      <Insets bottom="7.0"/>
+      <Insets bottom="14"/>
     </StackPane.margin>
   </ImageView>
-  <Label fx:id="typeText" alignment="CENTER" contentDisplay="CENTER" minHeight="7.0" minWidth="45.0"
+  <Label fx:id="typeText" alignment="CENTER" contentDisplay="CENTER" minHeight="14" minWidth="90"
     styleClass="nes-text" text="NEXT" textAlignment="CENTER" textFill="WHITE"
     StackPane.alignment="TOP_CENTER">
     <StackPane.margin>
-      <Insets top="7.0"/>
+      <Insets top="14"/>
     </StackPane.margin>
     <padding>
-      <Insets left="7.0" right="7.0"/>
+      <Insets left="14" right="14"/>
     </padding>
+    <font>
+      <Font size="14.0"/>
+    </font>
   </Label>
 </StackPane>

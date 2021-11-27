@@ -38,7 +38,7 @@ import javafx.scene.layout.VBox;
 public class BoardController implements Initializable, PropertyChangeListener {
 
   public final static int H = BoardMainController.H;
-  public final static int L = BoardMainController.L + BoardAsideController.L;
+  public final static int W = BoardMainController.L + BoardAsideController.L;
 
 
   @FXML
@@ -58,15 +58,30 @@ public class BoardController implements Initializable, PropertyChangeListener {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    boardMain.prefWidthProperty()
-        .bind(container.widthProperty().divide(L).multiply(BoardMainController.L));
+    container.prefWidthProperty().bind(container.heightProperty().divide(H).multiply(W));
+    container.prefHeightProperty().bind(container.widthProperty().divide(W).multiply(H));
 
-    aside.prefWidthProperty()
-        .bind(container.widthProperty().divide(L).multiply(BoardAsideController.L));
+    boardMain.maxWidthProperty()
+        .bind(container.widthProperty().divide(W).multiply(BoardMainController.L));
+
+    aside.maxWidthProperty()
+        .bind(container.widthProperty().divide(W).multiply(BoardAsideController.L));
   }
 
   public void setMatrix(Mino[][] minos) {
     boardMainController.setMatrix(minos);
+  }
+
+  public void setUsername(String username) {
+    boardMainController.setUsername(username);
+  }
+
+  public void setLines(int i) {
+    boardMainController.setLines(i);
+  }
+
+  public void setScore(int score) {
+    asideController.setScore(score);
   }
 
   /**
@@ -79,9 +94,9 @@ public class BoardController implements Initializable, PropertyChangeListener {
     Platform.runLater(() -> {
       switch (evt.getPropertyName()) {
         case "board" -> setMatrix((Mino[][]) evt.getNewValue());
-//        case "line" -> updateLine((int) evt.getNewValue());
-//        case "score" -> updateScore((int) evt.getNewValue());
-//        case "username" -> updateUsername(evt.getNewValue().toString());
+        case "line" -> setLines((int) evt.getNewValue());
+        case "score" -> setScore((int) evt.getNewValue());
+        case "username" -> setUsername(evt.getNewValue().toString());
 //        case "hold" -> updateHold(((Mino) evt.getNewValue()));
 //        case "next" -> updateNextPiece((TetriminoInterface) evt.getNewValue());
 //        case "winner" -> displayWinner((String) evt.getOldValue(), (String) evt.getNewValue());

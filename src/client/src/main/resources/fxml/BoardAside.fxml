@@ -25,12 +25,10 @@
   -->
 
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" style="-fx-border-color: purple; -fx-border-width: 1;"
-  xmlns="http://javafx.com/javafx/16"
-  fx:controller="esi.acgt.atlj.client.controller.fxml.BoardAsideController"
-  fx:id="container">
-  <fx:include VBox.vgrow="NEVER" source="Score.fxml" fx:id="score"/>
-  <fx:include VBox.vgrow="NEVER" source="TetriminoHolder.fxml" fx:id="next"/>
-  <fx:include VBox.vgrow="NEVER" source="TetriminoHolder.fxml" fx:id="hold"/>
+<VBox fx:id="container" alignment="TOP_RIGHT" spacing="2.0" xmlns="http://javafx.com/javafx/11.0.2"
+  xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="esi.acgt.atlj.client.controller.fxml.BoardAsideController">
+  <fx:include fx:id="score" source="Score.fxml" VBox.vgrow="NEVER"/>
+  <fx:include fx:id="next" source="TetriminoHolder.fxml" VBox.vgrow="NEVER"/>
+  <fx:include fx:id="hold" source="TetriminoHolder.fxml" VBox.vgrow="NEVER"/>
 </VBox>
-

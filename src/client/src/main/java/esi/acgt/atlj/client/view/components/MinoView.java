@@ -37,6 +37,7 @@ public class MinoView extends Pane {
   private final static Image A1;
   private final static Image B1;
   private final static Image C1;
+  private final static Image D1;
 
   static {
     A1 = new Image(
@@ -45,12 +46,15 @@ public class MinoView extends Pane {
         Objects.requireNonNull(MinoView.class.getResourceAsStream("/image/mino/B1.png")));
     C1 = new Image(
         Objects.requireNonNull(MinoView.class.getResourceAsStream("/image/mino/C1.png")));
+    D1 = new Image(
+        Objects.requireNonNull(esi.acgt.atlj.client.view.components.Mino.class.getResourceAsStream(
+            "/image/mino/D1.png")));
   }
 
   private ImageView image;
 
   public MinoView() {
-    image = new ImageView(A1);
+    image = new ImageView();
     this.getChildren().add(image);
     image.fitHeightProperty().bind(this.heightProperty());
     image.fitWidthProperty().bind(this.widthProperty());

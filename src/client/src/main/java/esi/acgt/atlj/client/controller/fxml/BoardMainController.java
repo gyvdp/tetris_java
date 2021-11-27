@@ -35,7 +35,7 @@ import javafx.scene.layout.VBox;
 public class BoardMainController implements Initializable {
 
   public final static int H = (InfoBoxController.H * 2) + MatrixController.H;
-  public final static int L = MatrixController.H;
+  public final static int L = MatrixController.L;
 
   @FXML
   public VBox container;
@@ -58,19 +58,50 @@ public class BoardMainController implements Initializable {
   @FXML
   public InfoBoxController bottomBoxController;
 
+  private int lines;
+
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    matrix.prefHeightProperty()
+    container.prefWidthProperty().bind(container.heightProperty().divide(H).multiply(L));
+    container.prefHeightProperty().bind(container.widthProperty().divide(L).multiply(H));
+
+    topBox.maxWidthProperty().bind(container.widthProperty());
+    topBox.maxHeightProperty()
+        .bind(container.heightProperty().divide(H).multiply(InfoBoxController.H));
+
+    matrix.maxWidthProperty().bind(container.widthProperty());
+    matrix.maxHeightProperty()
         .bind(container.heightProperty().divide(H).multiply(MatrixController.H));
 
-    topBox.prefHeightProperty()
+    bottomBox.maxWidthProperty().bind(container.widthProperty());
+    bottomBox.maxHeightProperty()
         .bind(container.heightProperty().divide(H).multiply(InfoBoxController.H));
 
-    bottomBox.prefHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(InfoBoxController.H));
+    setUsername("Recherche");
+    setLines(0);
+  }
+
+  public void setUsername(String username) {
+    if (username.length() > 12) {
+      throw new IllegalArgumentException("Username must be maximum 12 char long.");
+    }
+    bottomBoxController.setText(username);
+  }
+
+  public void setLines(int i) {
+    lines = i;
+    topBoxController.setText(String.format("lines - %s", linesToText(i)));
   }
 
   public void setMatrix(Mino[][] minos) {
     matrixController.set(minos);
+  }
+
+  public static String linesToText(int lines) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("0".repeat(3));
+
+    var a = Integer.toString(lines < 1000 ? lines : 999);
+    return sb.substring(a.length()) + a;
   }
 }

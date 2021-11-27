@@ -30,30 +30,15 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
-<StackPane
+<StackPane fx:id="container" maxHeight="Infinity" maxWidth="Infinity" minHeight="174" minWidth="93"
+  stylesheets="@../css/matrix.css" xmlns="http://javafx.com/javafx/11.0.2"
   xmlns:fx="http://javafx.com/fxml/1"
-  style="-fx-border-color: red; -fx-border-width: 1;"
-  maxHeight="Infinity"
-  maxWidth="Infinity"
-  minHeight="174"
-  minWidth="93"
-  stylesheets="@../css/matrix.css"
-  xmlns="http://javafx.com/javafx/11.0.2"
-  fx:controller="esi.acgt.atlj.client.controller.fxml.MatrixController"
-  fx:id="container"
->
-  <ImageView StackPane.alignment="CENTER" fitHeight="174" fitWidth="93" fx:id="background">
+  fx:controller="esi.acgt.atlj.client.controller.fxml.MatrixController">
+  <ImageView fx:id="background" fitHeight="174" fitWidth="93" StackPane.alignment="CENTER">
     <Image url="@../image/bg/board.png"/>
   </ImageView>
-  <GridPane
-    style="-fx-border-color: yellow; -fx-border-width: 1;"
-    alignment="CENTER"
-    gridLinesVisible="true"
-    maxWidth="-Infinity"
-    hgap="2.0"
-    maxHeight="-Infinity"
-    minHeight="174"
-    minWidth="93" vgap="2.0" fx:id="grid">
+  <GridPane fx:id="grid" alignment="CENTER" hgap="2.0" maxHeight="-Infinity" maxWidth="-Infinity"
+    minHeight="174" minWidth="93" vgap="2.0">
     <columnConstraints>
       <ColumnConstraints halignment="CENTER" percentWidth="10"/>
       <ColumnConstraints halignment="CENTER" percentWidth="10"/>
