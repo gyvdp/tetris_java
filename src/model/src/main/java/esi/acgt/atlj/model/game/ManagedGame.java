@@ -139,7 +139,7 @@ public class ManagedGame extends AbstractGame {
   /**
    * Connects lambda expression to add tetrimino to server
    *
-   * @param addTetrimino Laùbda expression to connect
+   * @param addTetrimino Lambda expression to connect
    */
   public void connectAddTetrimino(Consumer<TetriminoInterface> addTetrimino) {
     this.addTetrimino = addTetrimino;
@@ -149,6 +149,7 @@ public class ManagedGame extends AbstractGame {
    * Game starts making tetriminos fall
    */
   public synchronized void start() {
+    this.askNextMino.run();
     Mino[][] emptyBoard = new Mino[HEIGHT][WIDTH];
     this.changeSupport.firePropertyChange("board", emptyBoard, this.getBoard());
     setStatus(GameStatus.TETRIMINO_FALLING);

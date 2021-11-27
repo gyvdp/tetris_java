@@ -37,7 +37,7 @@ import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.SendScore;
 import esi.acgt.atlj.message.messageTypes.SetHold;
-import esi.acgt.atlj.message.messageTypes.UpdatePieceUnmanagedBoard;
+import esi.acgt.atlj.message.messageTypes.UpdateNextPieceOther;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.io.IOException;
@@ -130,7 +130,7 @@ public class Client extends AbstractClient implements ClientInterface {
     } else if (information instanceof SendScore message) { // When send score is sent from server
       sendScore.accept(message.getScore());
     } else if (information instanceof
-        UpdatePieceUnmanagedBoard message) {//When update next tetrimino is sent from server
+        UpdateNextPieceOther message) {//When update next tetrimino is sent from server
       updateNextTetriminoOtherPlayer.accept(message.getPiece());
     } else if (information instanceof PlayerState message) {
       if (message.getPlayerState().equals

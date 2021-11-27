@@ -31,7 +31,7 @@ import esi.acgt.atlj.model.tetrimino.Mino;
 /**
  * Updates a piece in the unmanaged board of the player it is sent to.
  */
-public class UpdatePieceUnmanagedBoard extends Message {
+public class UpdateNextPieceOther extends Message {
 
   /**
    * Piece to update in unmanaged board.
@@ -43,7 +43,7 @@ public class UpdatePieceUnmanagedBoard extends Message {
    *
    * @param piece Piece to update
    */
-  public UpdatePieceUnmanagedBoard(Mino piece) {
+  public UpdateNextPieceOther(Mino piece) {
     this.messageType = MessageType.UPDATE_PIECE_UNMANAGED;
     this.piece = piece;
   }

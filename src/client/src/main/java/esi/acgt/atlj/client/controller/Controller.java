@@ -49,6 +49,7 @@ public class Controller {
     model.closeConnection();
   }
 
+
   /**
    * Forward inputs from the view to the model
    *

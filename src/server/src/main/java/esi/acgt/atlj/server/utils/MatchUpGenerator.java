@@ -33,7 +33,7 @@ import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.SendHighScore;
 import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
-import esi.acgt.atlj.message.messageTypes.UpdatePieceUnmanagedBoard;
+import esi.acgt.atlj.message.messageTypes.UpdateNextPieceOther;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.server.CustomClientThread;
 import java.util.ArrayList;
@@ -168,7 +168,7 @@ public class MatchUpGenerator extends Thread {
         if (m instanceof AskPiece) {
           Mino mino = client.getMino();
           client.sendMessage(new SendPiece(mino));
-          opPlayer.sendMessage(new UpdatePieceUnmanagedBoard(mino));
+          opPlayer.sendMessage(new UpdateNextPieceOther(mino));
         } else {
           opPlayer.sendMessage(m);
         }
