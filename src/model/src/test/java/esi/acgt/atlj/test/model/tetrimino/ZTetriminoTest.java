@@ -22,32 +22,34 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.tetrimino;
+package esi.acgt.atlj.test.model.tetrimino;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.ZTetrimino;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-class ITetriminoTest {
+class ZTetriminoTest {
 
   @Nested
   class Constructor {
 
     @Test
     public void ok() {
-      ITetrimino tetrimino = new ITetrimino();
-      Mino mino = Mino.I_MINO;
+      ZTetrimino tetrimino = new ZTetrimino();
+      Mino mino = Mino.Z_MINO;
 
-      assertEquals(mino, tetrimino.type, "mino type");
-      assertEquals(3, tetrimino.x, "initial x value");
-      assertEquals(0, tetrimino.y, "initial y value");
+      assertEquals(mino, tetrimino.getType(), "mino type");
+      assertEquals(3, tetrimino.getX(), "initial x value");
+      assertEquals(0, tetrimino.getY(), "initial y value");
 
       Mino[][] minos = tetrimino.getMinos();
       Mino[][] expectedMinos = {
-          {null, null, null, null},
-          {mino, mino, mino, mino},
+          {mino, mino, null, null},
+          {null, mino, mino, null},
           {null, null, null, null},
           {null, null, null, null}
       };
@@ -64,8 +66,8 @@ class ITetriminoTest {
 
       @Test
       public void NorthToEast() {
-        Mino mino = Mino.I_MINO;
-        var tetrimino = new ITetrimino();
+        Mino mino = Mino.Z_MINO;
+        ZTetrimino tetrimino = new ZTetrimino();
         boolean[][] area = {
             {true, true, true, true},
             {true, true, true, true},
@@ -77,17 +79,17 @@ class ITetriminoTest {
         Mino[][] minos = tetrimino.getMinos();
         Mino[][] expectedMinos = {
             {null, null, mino, null},
-            {null, null, mino, null},
-            {null, null, mino, null},
-            {null, null, mino, null}
+            {null, mino, mino, null},
+            {null, mino, null, null},
+            {null, null, null, null}
         };
         assertArrayEquals(expectedMinos, minos, "tetrimino shape");
       }
 
       @Test
       public void EastToSouth() {
-        Mino mino = Mino.I_MINO;
-        var tetrimino = new ITetrimino();
+        Mino mino = Mino.Z_MINO;
+        ZTetrimino tetrimino = new ZTetrimino();
         boolean[][] area = {
             {true, true, true, true},
             {true, true, true, true},
@@ -100,8 +102,8 @@ class ITetriminoTest {
         Mino[][] minos = tetrimino.getMinos();
         Mino[][] expectedMinos = {
             {null, null, null, null},
-            {null, null, null, null},
-            {mino, mino, mino, mino},
+            {mino, mino, null, null},
+            {null, mino, mino, null},
             {null, null, null, null}
         };
         assertArrayEquals(expectedMinos, minos, "tetrimino shape");
@@ -109,8 +111,8 @@ class ITetriminoTest {
 
       @Test
       public void SouthToWest() {
-        Mino mino = Mino.I_MINO;
-        var tetrimino = new ITetrimino();
+        Mino mino = Mino.Z_MINO;
+        ZTetrimino tetrimino = new ZTetrimino();
         boolean[][] area = {
             {true, true, true, true},
             {true, true, true, true},
@@ -124,17 +126,17 @@ class ITetriminoTest {
         Mino[][] minos = tetrimino.getMinos();
         Mino[][] expectedMinos = {
             {null, mino, null, null},
-            {null, mino, null, null},
-            {null, mino, null, null},
-            {null, mino, null, null}
+            {mino, mino, null, null},
+            {mino, null, null, null},
+            {null, null, null, null}
         };
         assertArrayEquals(expectedMinos, minos, "tetrimino shape");
       }
 
       @Test
       public void WestToNorth() {
-        Mino mino = Mino.I_MINO;
-        var tetrimino = new ITetrimino();
+        Mino mino = Mino.Z_MINO;
+        ZTetrimino tetrimino = new ZTetrimino();
         boolean[][] area = {
             {true, true, true, true},
             {true, true, true, true},
@@ -148,8 +150,8 @@ class ITetriminoTest {
 
         Mino[][] minos = tetrimino.getMinos();
         Mino[][] expectedMinos = {
-            {null, null, null, null},
-            {mino, mino, mino, mino},
+            {mino, mino, null, null},
+            {null, mino, mino, null},
             {null, null, null, null},
             {null, null, null, null}
         };

@@ -22,11 +22,15 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.tetrimino;
+package esi.acgt.atlj.test.model.tetrimino;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import esi.acgt.atlj.model.shape.JShape;
+import esi.acgt.atlj.model.shape.Orientation;
+import esi.acgt.atlj.model.tetrimino.JTetrimino;
+import esi.acgt.atlj.model.tetrimino.Mino;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -40,9 +44,9 @@ class JTetriminoTest {
       JTetrimino tetrimino = new JTetrimino();
       Mino mino = Mino.J_MINO;
 
-      assertEquals(mino, tetrimino.type, "mino type");
-      assertEquals(3, tetrimino.x, "initial x value");
-      assertEquals(0, tetrimino.y, "initial y value");
+      assertEquals(mino, tetrimino.getType(), "mino type");
+      assertEquals(3, tetrimino.getX(), "initial x value");
+      assertEquals(0, tetrimino.getY(), "initial y value");
 
       Mino[][] minos = tetrimino.getMinos();
       Mino[][] expectedMinos = {
@@ -75,12 +79,7 @@ class JTetriminoTest {
         tetrimino.rotate(true, area);
 
         Mino[][] minos = tetrimino.getMinos();
-        Mino[][] expectedMinos = {
-            {null, mino, mino, null},
-            {null, mino, null, null},
-            {null, mino, null, null},
-            {null, mino, null, null}
-        };
+        Mino[][] expectedMinos = JShape.shapes.get(Orientation.EAST);
         assertArrayEquals(expectedMinos, minos, "tetrimino shape");
       }
 
@@ -98,12 +97,7 @@ class JTetriminoTest {
         tetrimino.rotate(true, area);
 
         Mino[][] minos = tetrimino.getMinos();
-        Mino[][] expectedMinos = {
-            {null, null, null, null},
-            {null, null, null, null},
-            {mino, mino, mino, mino},
-            {null, null, null, mino}
-        };
+        Mino[][] expectedMinos = JShape.shapes.get(Orientation.SOUTH);
         assertArrayEquals(expectedMinos, minos, "tetrimino shape");
       }
 
@@ -122,12 +116,7 @@ class JTetriminoTest {
         tetrimino.rotate(true, area);
 
         Mino[][] minos = tetrimino.getMinos();
-        Mino[][] expectedMinos = {
-            {null, mino, null, null},
-            {null, mino, null, null},
-            {null, mino, null, null},
-            {mino, mino, null, null}
-        };
+        Mino[][] expectedMinos = JShape.shapes.get(Orientation.WEST);
         assertArrayEquals(expectedMinos, minos, "tetrimino shape");
       }
 
@@ -147,12 +136,7 @@ class JTetriminoTest {
         tetrimino.rotate(true, area);
 
         Mino[][] minos = tetrimino.getMinos();
-        Mino[][] expectedMinos = {
-            {mino, null, null, null},
-            {mino, mino, mino, null},
-            {null, null, null, null},
-            {null, null, null, null}
-        };
+        Mino[][] expectedMinos = JShape.shapes.get(Orientation.NORTH);
         assertArrayEquals(expectedMinos, minos, "tetrimino shape");
       }
     }
