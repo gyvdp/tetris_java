@@ -139,21 +139,22 @@ public abstract class AbstractGame implements GameInterface, Serializable {
    */
   @Override
   public synchronized Mino[][] getBoard() {
-    Mino[][] copyBoard = new Mino[this.minos.length][];
-    for (int i = 0; i < this.minos.length; i++) {
-      copyBoard[i] = Arrays.copyOf(this.minos[i], this.minos[i].length);
+    Mino[][] copyBoard = new Mino[this.minos.length - 2][];
+    for (int i = 0; i < copyBoard.length; i++) {
+      var y = i + 2;
+      copyBoard[i] = Arrays.copyOf(this.minos[y], this.minos[y].length);
     }
 
     if (actualTetrimino != null) {
-      for (int x = 0; x < this.actualTetrimino.getMinos().length; x++) {
-        for (int y = 0; y < this.actualTetrimino.getMinos()[x].length; y++) {
-          if ((this.actualTetrimino.getMinos()[x][y] != null
-              && x + this.actualTetrimino.getY() >= 0)
-              && (x + this.actualTetrimino.getY() < this.minos.length)
-              && (y + this.actualTetrimino.getX() >= 0)
-              && (y + this.actualTetrimino.getX() < this.minos[x].length)) {
-            copyBoard[x + this.actualTetrimino.getY()][y
-                + this.actualTetrimino.getX()] = this.actualTetrimino.getMinos()[x][y];
+      var minos = actualTetrimino.getMinos();
+      for (int i = 0; i < minos.length; ++i) {
+        for (int j = 0; j < minos[i].length; ++j) {
+          var x = actualTetrimino.getX() + j;
+          var y = actualTetrimino.getY() + i - 2;
+          if (y >= 0 && y < copyBoard.length && x >= 0 && x < copyBoard[y].length) {
+            if (minos[i][j] != null) {
+              copyBoard[y][x] = minos[i][j];
+            }
           }
         }
       }
