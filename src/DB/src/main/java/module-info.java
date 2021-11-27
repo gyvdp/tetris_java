@@ -4,6 +4,7 @@ module atlj.DB {
 
   exports esi.acgt.atlj.database.db;
   exports esi.acgt.atlj.database.dto;
-  exports esi.acgt.atlj.database.buisness;
+  exports esi.acgt.atlj.database.business;
+  exports esi.acgt.atlj.database.exceptions;
 
 }

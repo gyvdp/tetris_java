@@ -24,13 +24,18 @@
 
 package esi.acgt.atlj.database.dto;
 
+/**
+ * Abstract reference to a database object.
+ *
+ * @param <T> Type of primary key of database object.
+ */
 public abstract class EntityDto<T> {
 
   /**
    * Primary key of persistent object.
    */
   protected T id;
-  
+
   /**
    * Checks whether object T is persistent or not.
    *

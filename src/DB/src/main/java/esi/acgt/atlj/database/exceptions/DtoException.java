@@ -26,10 +26,18 @@ package esi.acgt.atlj.database.exceptions;
 
 public class DtoException extends Exception {
 
+  /**
+   * Default constructor for database object exception.
+   */
   public DtoException() {
 
   }
 
+  /**
+   * Constructor for database object exception with specific message.
+   *
+   * @param message Message to specify
+   */
   public DtoException(String message) {
     super(message);
   }

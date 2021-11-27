@@ -43,7 +43,7 @@ public class DataBaseManager {
    * DataBase url location.
    */
   private final static String databaseUrl =
-      "jbdc:sqlite:" + "/src/database/src/main/resources/Tetris.db";
+      "jdbc:sqlite:tetrisDb";
 
   /**
    * Attempts to connect to database.

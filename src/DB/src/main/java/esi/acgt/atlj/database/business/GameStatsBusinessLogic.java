@@ -22,60 +22,57 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.database.dto;
+package esi.acgt.atlj.database.business;
 
-import esi.acgt.atlj.database.exceptions.DtoException;
-import java.util.Objects;
+import esi.acgt.atlj.database.db.GameStatsTable;
+import esi.acgt.atlj.database.dto.User;
 
-public class User extends EntityDto<Integer> {
-
-  private String username;
+class GameStatsBusinessLogic {
 
 
   /**
-   * Constructor of persistent user.
+   * Gets the high score of the given user.
    *
-   * @param id       Id of persistent user.
-   * @param username Username of persistent user.
-   * @throws DtoException If user is null.
+   * @param user User to get high score from.
+   * @return High score of the user.
    */
-  public User(Integer id, String username) throws DtoException {
-    this(username);
-    this.id = id;
-  }
-
-  /**
-   * Constructor for non-persistent user.
-   *
-   * @param username Username of non-persistent user.
-   * @throws DtoException If user is null.
-   */
-  public User(String username) throws DtoException {
-    if (username == null) {
-      throw new DtoException("username cannot be null");
+  static int getHighScore(User user) {
+    try {
+      return GameStatsTable.getHighScore(user);
+    } catch (Exception e) {
+      System.err.println("Cannot get high score from database \n" + e.getMessage());
     }
-    this.username = username;
-  }
-
-  public void set(User user) {
-    this.id = user.getId();
-    this.username = user.getUsername();
+    return -1;
   }
 
   /**
-   * Getter for username of player.
+   * Gets the number of games won of the given user.
    *
-   * @return Username of player.
+   * @param user User to get number of games won.
+   * @return Number of games won by the user.
    */
-  public String getUsername() {
-    return username;
+  static int getNbGamesWon(User user) {
+    try {
+      return GameStatsTable.getNbGameWon(user);
+    } catch (Exception e) {
+      System.err.println("Cannot get number of games won \n" + e.getMessage());
+    }
+    return -1;
   }
 
   /**
-   * {@inheritDoc}
+   * Gets the number of games won of the given user.
+   *
+   * @param user User to get number of games won.
+   * @return Number of games won by the user.
    */
-  @Override
-  public String toString() {
-    return "[User]" + "(" + getId() + ", " + getUsername() + " )";
+  static int getNbGamesLost(User user) {
+    try {
+      return GameStatsTable.getNbGameLost(user);
+    } catch (Exception e) {
+      System.err.println("Cannot get number of games won \n" + e.getMessage());
+    }
+    return -1;
   }
+
 }

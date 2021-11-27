@@ -22,54 +22,87 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.database.buisness;
+package esi.acgt.atlj.database.business;
 
 import esi.acgt.atlj.database.dto.User;
-import esi.acgt.atlj.database.exceptions.BuisnessException;
+import esi.acgt.atlj.database.exceptions.BusinessException;
 
-public interface BuisnessInterface {
+/**
+ * Interface to interact with database.
+ */
+public interface BusinessInterface {
 
   /**
    * Gets a specific user in the database.
    *
    * @param id Id of user.
    * @return User of the given id.
-   * @throws BuisnessException If the query for getting the user has failed.
+   * @throws BusinessException If the query for getting the user has failed.
    */
-  User getUser(int id) throws BuisnessException;
+  User getUser(int id) throws BusinessException;
 
   /**
    * Gets a specific user in the database.
    *
    * @param username Username of the user.
    * @return User of the given username.
-   * @throws BuisnessException If the query for getting the user has failed.
+   * @throws BusinessException If the query for getting the user has failed.
    */
-  User getUser(String username) throws BuisnessException;
+  User getUser(String username) throws BusinessException;
 
   /**
    * Adds a user to the database.
    *
    * @param username Username of user to add.
    * @return Id of added user.
-   * @throws BuisnessException If query to create user has failed.
+   * @throws BusinessException If query to create user has failed.
    */
-  int addUser(String username) throws BuisnessException;
+  int addUser(String username) throws BusinessException;
+
+
+  /**
+   * Gets the high score of a user.
+   *
+   * @param user User to get high score from.
+   * @return High score of user, -1 if user does not exist.
+   * @throws BusinessException If query from high score failed.
+   */
+  int getUserHighScore(User user) throws BusinessException;
+
+
+  /**
+   * Gets the number of game lost by the user.
+   *
+   * @param user User to get number of lost games from.
+   * @return Number of lost games, -1 if user does not exist.
+   * @throws BusinessException If query from number of lost game failed.
+   */
+  int getNumberOfGamesLost(User user) throws BusinessException;
+
+  /**
+   * Gets the number of games won by the user.
+   *
+   * @param user User to get number of games won by.
+   * @return Number of games won by the user, -1 if user does not exist.
+   * @throws BusinessException If query from number of games failed.
+   */
+  int getNumberOfGamesWon(User user) throws BusinessException;
 
   /**
    * Removes user from the database.
    *
    * @param user Persistent user to remove from database.
-   * @throws BuisnessException If query to remove user has failed.
+   * @throws BusinessException If query to remove user has failed.
    */
-  void removeUser(User user) throws BuisnessException;
+  void removeUser(User user) throws BusinessException;
 
   /**
    * Updates user in the database.
    *
    * @param user User to update in database.
-   * @throws BuisnessException If query for updating user has failed.
+   * @throws BusinessException If query for updating user has failed.
    */
-  void updateUser(User user) throws BuisnessException;
+  void updateUser(User user) throws BusinessException;
+
 
 }

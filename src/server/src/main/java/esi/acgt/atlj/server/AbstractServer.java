@@ -25,6 +25,7 @@
 package esi.acgt.atlj.server;
 
 
+import esi.acgt.atlj.database.dto.User;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.ServerSocket;
@@ -181,6 +182,14 @@ public abstract class AbstractServer implements Runnable {
    */
   synchronized protected void clientDisconnected(
       CustomClientThread client) {
+  }
+
+  /**
+   * Checks if a user exists in the database if not, creates it.
+   *
+   * @param user User to check or create.
+   */
+  synchronized protected void checkUser(User user) {
   }
 
   /**

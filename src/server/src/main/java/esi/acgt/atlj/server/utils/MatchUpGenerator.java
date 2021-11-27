@@ -24,15 +24,18 @@
 
 package esi.acgt.atlj.server.utils;
 
+import esi.acgt.atlj.database.business.BusinessInterface;
+import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
+import esi.acgt.atlj.message.messageTypes.SendHighScore;
+import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.UpdatePieceUnmanagedBoard;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.server.CustomClientThread;
-import esi.acgt.atlj.server.model.ServerModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -47,7 +50,7 @@ public class MatchUpGenerator extends Thread {
   /**
    * Game server side
    */
-  private ServerModel model = null;
+  private MatchUpModel model = null;
   /**
    * Decrements the id of match-up in server when this closes.
    */
@@ -56,7 +59,7 @@ public class MatchUpGenerator extends Thread {
   /**
    * Generator for new bags of tetriminos.
    */
-  private final BagGenerator bagGenerator;
+  private BagGenerator bagGenerator;
 
   /**
    * List of clients.
@@ -74,21 +77,36 @@ public class MatchUpGenerator extends Thread {
   int id;
 
   /**
+   * Interaction with database
+   */
+  private BusinessInterface interactDatabase;
+
+  /**
    * Constructor for match-up generator. Assigns its current id to both clients and launches the
    * game in a new thread.
    *
-   * @param clients Client that are going head to head in match-up.
+   * @param clients            Client that are going head to head in match-up.
+   * @param idGeneratedMatchUp Id of generated match-up.
+   * @param interactDatabase   Interface to interact with database.
    */
-  public MatchUpGenerator(List<CustomClientThread> clients, int idGeneratedMatchUp) {
+  public MatchUpGenerator(List<CustomClientThread> clients, int idGeneratedMatchUp,
+      BusinessInterface interactDatabase) {
     this.clients = clients;
+    this.interactDatabase = interactDatabase;
     this.spectators = new ArrayList<>();
-    this.model = new ServerModel(clients);
+    this.model = new MatchUpModel(clients);
     this.bagGenerator = new BagGenerator();
     this.id = idGeneratedMatchUp;
     for (CustomClientThread client : clients) {
+      getOpposingClient(client).sendMessage(new SendName(client.getUsername()));
       client.connectRefillBag(this.refillBag);
       client.connectHandleMessage(this.handleMessage);
       client.connectDisconnect(this.disconnect);
+      try {
+        client.sendMessage(new SendHighScore(interactDatabase.getUserHighScore(client.getUser())));
+      } catch (BusinessException e) {
+        System.err.println("Cannot get user high score");
+      }
     }
     this.start();
   }
@@ -170,6 +188,12 @@ public class MatchUpGenerator extends Thread {
     model.receiveMessage(m, c);
   }
 
+  /**
+   * Sends a message to the spectator.
+   *
+   * @param m Message to send to spectator.
+   * @param c Client to send message to.
+   */
   public void sendMessageToSpectator(Message m, CustomClientThread c) {
     c.sendMessage(m); //todo specific spectator message with name of player sending it.
   }

@@ -22,31 +22,25 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.database.buisness;
+package esi.acgt.atlj.database.exceptions;
 
-import esi.acgt.atlj.database.db.UserTable;
-import esi.acgt.atlj.database.dto.User;
-import esi.acgt.atlj.database.exceptions.DbException;
 
-public class UserBuisnessLogic {
+public class BusinessException extends Exception {
 
-  static int add(User user) throws DbException {
-    return UserTable.insertDb(user);
+  /**
+   * Default constructor for business exception.
+   */
+  public BusinessException() {
+
   }
 
-  static void remove(User user) {
-    UserTable.delete(user);
+  /**
+   * Constructor for business exception with specific message.
+   *
+   * @param message Message to specify
+   */
+  public BusinessException(String message) {
+    super(message);
   }
 
-  static void update(User user) {
-    UserTable.update(user);
-  }
-
-  static User findById(int id) {
-    return UserTable.findId(id);
-  }
-
-  static User findByUsername(String username) {
-    return UserTable.findUsername(username);
-  }
 }

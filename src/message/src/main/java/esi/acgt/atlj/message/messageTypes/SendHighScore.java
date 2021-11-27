@@ -22,16 +22,30 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.database.exceptions;
+package esi.acgt.atlj.message.messageTypes;
 
-public class BuisnessException extends Exception {
+import esi.acgt.atlj.message.Message;
 
-  public BuisnessException() {
+public class SendHighScore extends Message {
 
+  private int highScore;
+
+  /**
+   * High score of the current player.
+   *
+   * @param score High score to send.
+   */
+  public SendHighScore(int score) {
+    this.highScore = score;
   }
 
-  public BuisnessException(String message) {
-    super(message);
+  /**
+   * Getter for high-score of player.
+   *
+   * @return High score of player.
+   */
+  public int getHighScore() {
+    return this.highScore;
   }
 
 }

@@ -24,6 +24,11 @@
 
 package esi.acgt.atlj.server;
 
+import esi.acgt.atlj.database.business.BusinessInterface;
+import esi.acgt.atlj.database.business.BusinessModel;
+import esi.acgt.atlj.database.dto.User;
+import esi.acgt.atlj.database.exceptions.BusinessException;
+import esi.acgt.atlj.database.exceptions.DbException;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.server.utils.MatchUpGenerator;
@@ -34,6 +39,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Locale.Builder;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
@@ -48,6 +54,10 @@ public class Server extends AbstractServer {
    */
   private int matchUpId = 0;
 
+  /**
+   * Database interaction
+   */
+  BusinessInterface interactDatabase;
 
   /**
    * Hash map of all members in function of their clientId.
@@ -83,6 +93,7 @@ public class Server extends AbstractServer {
     super(port);
     waitingList = new LinkedBlockingQueue<>();
     clientId = 0;
+    interactDatabase = new BusinessModel();
     members = new HashMap<>();
     matchUps = new HashMap<>();
     waitingListForSpectators = new LinkedBlockingQueue<>();
@@ -209,11 +220,29 @@ public class Server extends AbstractServer {
    * {@inheritDoc}
    */
   @Override
+  protected synchronized void checkUser(User user) {
+    try {
+      User persistentUser = interactDatabase.getUser(user.getUsername());
+      if (persistentUser != null) {
+        user.set(persistentUser);
+      } else {
+        interactDatabase.addUser(user.getUsername());
+      }
+    } catch (BusinessException e) {
+      System.err.println("error creating or adding user");
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public synchronized void addPlayer(CustomClientThread client, int matchId) {
     waitingList.add(client);
     if (waitingList.size() % 2 == 0) {
       MatchUpGenerator matchUp = new MatchUpGenerator(
-          waitingList.stream().limit(2).collect(Collectors.toList()), this.matchUpId);
+          waitingList.stream().limit(2).collect(Collectors.toList()), this.matchUpId,
+          interactDatabase);
       matchUp.connectDecrementMatchUpId(this.decrementMatchUpId);
       matchUps.put(getNextMatchupId(), matchUp);
       System.out.println("A new match-up has been created with id: " + this.matchUpId);

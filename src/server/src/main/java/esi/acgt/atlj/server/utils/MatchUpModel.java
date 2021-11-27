@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.server.model;
+package esi.acgt.atlj.server.utils;
 
-import esi.acgt.atlj.database.buisness.BuisnessModel;
+import esi.acgt.atlj.database.business.BusinessInterface;
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.messageTypes.AddTetrimino;
 import esi.acgt.atlj.message.messageTypes.LockedTetrimino;
@@ -39,7 +39,7 @@ import esi.acgt.atlj.server.CustomClientThread;
 import java.util.HashMap;
 import java.util.List;
 
-public class ServerModel {
+public class MatchUpModel {
 
   /**
    * First players.
@@ -59,10 +59,9 @@ public class ServerModel {
   /**
    * Constructor for server model.
    */
-  public ServerModel(List<CustomClientThread> clients) {
+  public MatchUpModel(List<CustomClientThread> clients) {
     this.playerTwo = new ManagedGame("two");
     this.playerOne = new ManagedGame("one");
-
     gameHashMap = new HashMap<>();
     gameHashMap.put(clients.get(0), playerOne);
     gameHashMap.put(clients.get(1), playerTwo);

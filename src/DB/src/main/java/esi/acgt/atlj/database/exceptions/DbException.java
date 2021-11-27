@@ -26,10 +26,18 @@ package esi.acgt.atlj.database.exceptions;
 
 public class DbException extends Exception {
 
+  /**
+   * Default constructor for database exception.
+   */
   public DbException() {
 
   }
 
+  /**
+   * Constructor for database exception with specific message.
+   *
+   * @param message Message to specify
+   */
   public DbException(String message) {
     super(message);
   }
