@@ -32,6 +32,7 @@ import esi.acgt.atlj.message.messageTypes.LockedTetrimino;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.RemoveLine;
 import esi.acgt.atlj.message.messageTypes.SendAction;
+import esi.acgt.atlj.message.messageTypes.SendHighScore;
 import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.SendScore;
@@ -148,6 +149,8 @@ public class Client extends AbstractClient implements ClientInterface {
       hold.accept(message.getHold());
     } else if (information instanceof LockedTetrimino message) { //When locked tetrimino has been send from server.
       locked.accept(message.getTetrimino());
+    } else if (information instanceof SendHighScore message) {
+      System.out.println(message.getHighScore()); //todo interpret command
     }
   }
 

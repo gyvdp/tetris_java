@@ -51,7 +51,7 @@ public class GameStatsTable {
       java.sql.Connection connection = DataBaseManager.getConnection();
       java.sql.PreparedStatement highScore;
       highScore = connection.prepareStatement(
-          "SELECT high_score FROM game_stats WHERE id = ? LIMIT 1");
+          "SELECT high_score FROM game_stats WHERE user_id = ? LIMIT 1");
       highScore.setInt(1, user.getId());
       ResultSet rs = highScore.executeQuery();
       return rs.next() ?
@@ -74,7 +74,7 @@ public class GameStatsTable {
       java.sql.Connection connection = DataBaseManager.getConnection();
       java.sql.PreparedStatement nbGames;
       nbGames = connection.prepareStatement(
-          "SELECT nb_won FROM game_stats WHERE id = ? LIMIT 1");
+          "SELECT nb_won FROM game_stats WHERE user_id = ? LIMIT 1");
       nbGames.setInt(1, user.getId());
       ResultSet rs = nbGames.executeQuery();
       return rs.next() ?
@@ -97,7 +97,7 @@ public class GameStatsTable {
       java.sql.Connection connection = DataBaseManager.getConnection();
       java.sql.PreparedStatement nbLost;
       nbLost = connection.prepareStatement(
-          "SELECT nb_lost FROM game_stats WHERE id = ? LIMIT 1");
+          "SELECT nb_lost FROM game_stats WHERE user_id = ? LIMIT 1");
       nbLost.setInt(1, user.getId());
       ResultSet rs = nbLost.executeQuery();
       return rs.next() ?
