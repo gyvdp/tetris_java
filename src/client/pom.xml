@@ -37,6 +37,18 @@
 
   <artifactId>atlj.client</artifactId>
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.otf</include>
+          <include>**/*.fxml</include>
+          <include>**/*.css</include>
+          <include>**/*.png</include>
+        </includes>
+        <targetPath>${project.build.outputDirectory}</targetPath>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.openjfx</groupId>
@@ -118,4 +130,5 @@
   </properties>
 
   <version>1.0</version>
+
 </project>
