@@ -50,7 +50,7 @@ public class MatchUpGenerator extends Thread {
   /**
    * Game server side
    */
-  private MatchUpModel model = null;
+  private final MatchUpModel model;
   /**
    * Decrements the id of match-up in server when this closes.
    */
@@ -59,7 +59,7 @@ public class MatchUpGenerator extends Thread {
   /**
    * Generator for new bags of tetriminos.
    */
-  private BagGenerator bagGenerator;
+  private final BagGenerator bagGenerator;
 
   /**
    * List of clients.
@@ -79,7 +79,7 @@ public class MatchUpGenerator extends Thread {
   /**
    * Interaction with database
    */
-  private BusinessInterface interactDatabase;
+  private final BusinessInterface interactDatabase;
 
   /**
    * Constructor for match-up generator. Assigns its current id to both clients and launches the
@@ -122,7 +122,6 @@ public class MatchUpGenerator extends Thread {
    * thread.
    */
   Consumer<CustomClientThread> disconnect = (CustomClientThread clientThread) -> {
-    //TODO check why bag stops generating when a players disconnects
     int notPlaying = 0;
     getOpposingClient(clientThread).sendMessage(new PlayerState(PlayerStatus.DISCONNECTED));
     for (CustomClientThread customClientThread : clients) {
@@ -130,7 +129,7 @@ public class MatchUpGenerator extends Thread {
         notPlaying++;
       }
     }
-    if (notPlaying == 2) {
+    if (notPlaying == 2) { //If both players are not playing match-up should end.
       updateDb();
       System.out.println("Match-up " + this.id + " has ended");
       decrementMatchUpId.run();
@@ -143,9 +142,14 @@ public class MatchUpGenerator extends Thread {
    * Updates the database with specific values of the game
    */
   public void updateDb() {
+    CustomClientThread loser = model.getLoser(clients);
+    try {
+      interactDatabase.addLostGame(loser.getUser());
+      interactDatabase.addWonGame(getOpposingClient(loser).getUser());
+    } catch (BusinessException e) {
+      System.err.println("Cannot send won and lost games to database \n" + e.getMessage());
+    }
     for (CustomClientThread client : clients) {
-      System.out.println(model.getGameScore(client));
-      System.out.println(client.getUser().getId());
       try {
         interactDatabase.setUserHighScore(client.getUser(), model.getGameScore(client));
       } catch (BusinessException e) {
@@ -158,7 +162,7 @@ public class MatchUpGenerator extends Thread {
   public synchronized void addSpectator(CustomClientThread client) {
     this.spectators.add(client);
     //client.sendMessage(new SendBoard(model.receiveBoard(client), client.getNameOfClient());
-    //todo sent current status of the whole game.
+    //todo add spectator??.
   }
 
   /**
@@ -179,7 +183,7 @@ public class MatchUpGenerator extends Thread {
 
     if (client.getClientStatus().equals(PlayerStatus.READY)) {
       sendMessageToModel(m, client);
-      //sendMessageToSpectator(m, client);
+      //todo sendMessageToSpectator(m, client);
       CustomClientThread opPlayer = getOpposingClient(client);
       if (opPlayer != null) {
         if (m instanceof AskPiece) {

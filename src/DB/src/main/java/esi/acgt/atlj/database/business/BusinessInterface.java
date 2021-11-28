@@ -105,4 +105,8 @@ public interface BusinessInterface {
   void updateUser(User user) throws BusinessException;
 
   void setUserHighScore(User user, int newHighScore) throws BusinessException;
+
+  void addLostGame(User user) throws BusinessException;
+
+  void addWonGame(User user) throws BusinessException;
 }

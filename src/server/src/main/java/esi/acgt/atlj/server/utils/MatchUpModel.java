@@ -104,5 +104,16 @@ public class MatchUpModel {
   public int getGameScore(CustomClientThread client) {
     return gameHashMap.get(client).getScore();
   }
+
+  /**
+   * Returns the player that lost in a list of players.
+   *
+   * @param clients List of players in which to determine loser.
+   * @return Player that lost in the list of players.
+   */
+  public CustomClientThread getLoser(List<CustomClientThread> clients) {
+    return getGameScore(clients.get(1)) > getGameScore(clients.get(0)) ? clients.get(0)
+        : clients.get(1);
+  }
 }
 
