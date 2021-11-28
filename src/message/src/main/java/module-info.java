@@ -1,4 +1,4 @@
-module atlj.message {
+open module atlj.message {
   requires atlj.model;
 
   exports esi.acgt.atlj.message;

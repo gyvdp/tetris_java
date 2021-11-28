@@ -52,14 +52,14 @@ public class Connexion implements Initializable {
    * Pattern of a adress IP
    */
   private static final Pattern regex = Pattern.compile("^(?:[0-9]{1,3}.){3}[0-9]{1,3}$");
+  private final Controller controller;
+  private final Stage stage;
   @FXML
   public TextField ip;
   @FXML
   public TextField username;
   @FXML
   public TextField port;
-  private final Controller controller;
-  private final Stage stage;
 
   /**
    * Constructor of Connexion

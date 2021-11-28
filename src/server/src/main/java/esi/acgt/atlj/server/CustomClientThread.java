@@ -50,44 +50,37 @@ import java.util.function.Consumer;
 public class CustomClientThread extends Thread {
 
   /**
-   * State of current player.
-   */
-  private PlayerStatus clientStatus;
-  /**
    * List of next tetriminos of player.
    */
   private final BlockingQueue<Mino> myTetriminos;
-
   /**
    * Unique id of client.
    */
   private final int id;
-
-  /**
-   * User object of player current player for database.
-   */
-  private User user;
-
-  /**
-   * Handle message from client.
-   */
-  private BiConsumer<Message, CustomClientThread> handleMessage;
-
-  /**
-   * Sends disconnect message to other player.
-   */
-  private Consumer<CustomClientThread> disconnect;
-
-  /**
-   * Runs when need to refill bag
-   */
-  private Runnable refillBag;
-
   /**
    * A reference to the Server that created this instance.
    */
   private final AbstractServer server;
-
+  /**
+   * State of current player.
+   */
+  private PlayerStatus clientStatus;
+  /**
+   * User object of player current player for database.
+   */
+  private User user;
+  /**
+   * Handle message from client.
+   */
+  private BiConsumer<Message, CustomClientThread> handleMessage;
+  /**
+   * Sends disconnect message to other player.
+   */
+  private Consumer<CustomClientThread> disconnect;
+  /**
+   * Runs when need to refill bag
+   */
+  private Runnable refillBag;
   /**
    * Sockets are used in the operating system as channels of communication between two processes.
    *
@@ -152,17 +145,6 @@ public class CustomClientThread extends Thread {
    */
   public int getIdOfClient() {
     return this.id;
-  }
-
-
-  /**
-   * Sets the status of the clients and sends it to all clients.
-   *
-   * @param cs Status of the client to set and send.
-   */
-  public void setClientStatus(PlayerStatus cs) {
-    this.clientStatus = cs;
-    this.sendMessage(new PlayerState(cs));
   }
 
   /**
@@ -315,7 +297,6 @@ public class CustomClientThread extends Thread {
     this.disconnect = disconnect;
   }
 
-
   /**
    * Getter for status of client.
    *
@@ -323,6 +304,16 @@ public class CustomClientThread extends Thread {
    */
   public PlayerStatus getClientStatus() {
     return this.clientStatus;
+  }
+
+  /**
+   * Sets the status of the clients and sends it to all clients.
+   *
+   * @param cs Status of the client to set and send.
+   */
+  public void setClientStatus(PlayerStatus cs) {
+    this.clientStatus = cs;
+    this.sendMessage(new PlayerState(cs));
   }
 
   /**

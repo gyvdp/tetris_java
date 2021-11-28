@@ -28,7 +28,6 @@ import esi.acgt.atlj.database.business.BusinessInterface;
 import esi.acgt.atlj.database.business.BusinessModel;
 import esi.acgt.atlj.database.dto.User;
 import esi.acgt.atlj.database.exceptions.BusinessException;
-import esi.acgt.atlj.database.exceptions.DbException;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.server.utils.MatchUpGenerator;
@@ -39,7 +38,6 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Locale.Builder;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
@@ -50,35 +48,32 @@ import java.util.stream.Collectors;
 public class Server extends AbstractServer {
 
   /**
-   * current number of match-ups;
-   */
-  private int matchUpId = 0;
-
-  /**
-   * Database interaction
-   */
-  BusinessInterface interactDatabase;
-
-  /**
    * Hash map of all members in function of their clientId.
    */
   private final HashMap<Integer, CustomClientThread> members;
-
   /**
    * All the clients that are currently waiting to play
    */
   private final BlockingQueue<CustomClientThread> waitingList;
-
   /**
    * All match-ups with their id.
    */
   private final HashMap<Integer, MatchUpGenerator> matchUps;
-
   /**
    * Waiting list for spectators. Player is placed in list if all current match-up are
    */
   private final BlockingQueue<CustomClientThread> waitingListForSpectators;
-
+  /**
+   * Database interaction
+   */
+  BusinessInterface interactDatabase;
+  /**
+   * current number of match-ups;
+   */
+  private int matchUpId = 0;
+  Runnable decrementMatchUpId = () -> {
+    this.matchUpId--;
+  };
   /**
    * current tally of client id.
    */
@@ -101,41 +96,6 @@ public class Server extends AbstractServer {
   }
 
   /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected synchronized void clientException(CustomClientThread client, Throwable exception) {
-    super.clientException(client, exception);
-    if (client.isConnected()) {
-      client.sendMessage(
-          new IllegalArgumentException("Cannot parse message " + exception.getMessage()));
-    }
-  }
-
-  Runnable decrementMatchUpId = () -> {
-    this.matchUpId--;
-  };
-
-  /**
-   * Returns the next match-up id.
-   *
-   * @return Id for creation of next match-up.
-   */
-  private int getNextMatchupId() {
-    matchUpId++;
-    return matchUpId;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void serverStarted(int port) {
-    System.out.println("Server is running on " + getIP() + ":" + port + "...");
-  }
-
-  /**
    * Gets the local address of the server.
    *
    * @return Local address of server.
@@ -154,6 +114,36 @@ public class Server extends AbstractServer {
       System.err.println("Error with network interface, cannot get local ip address");
     }
     return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected synchronized void clientException(CustomClientThread client, Throwable exception) {
+    super.clientException(client, exception);
+    if (client.isConnected()) {
+      client.sendMessage(
+          new IllegalArgumentException("Cannot parse message " + exception.getMessage()));
+    }
+  }
+
+  /**
+   * Returns the next match-up id.
+   *
+   * @return Id for creation of next match-up.
+   */
+  private int getNextMatchupId() {
+    matchUpId++;
+    return matchUpId;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected void serverStarted(int port) {
+    System.out.println("Server is running on " + getIP() + ":" + port + "...");
   }
 
   /**

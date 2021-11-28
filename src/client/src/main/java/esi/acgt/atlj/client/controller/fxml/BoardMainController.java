@@ -60,6 +60,14 @@ public class BoardMainController implements Initializable {
 
   private int lines;
 
+  public static String linesToText(int lines) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("0".repeat(3));
+
+    var a = Integer.toString(lines < 1000 ? lines : 999);
+    return sb.substring(a.length()) + a;
+  }
+
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     container.prefWidthProperty().bind(container.heightProperty().divide(H).multiply(L));
@@ -95,13 +103,5 @@ public class BoardMainController implements Initializable {
 
   public void setMatrix(Mino[][] minos) {
     matrixController.set(minos);
-  }
-
-  public static String linesToText(int lines) {
-    StringBuilder sb = new StringBuilder();
-    sb.append("0".repeat(3));
-
-    var a = Integer.toString(lines < 1000 ? lines : 999);
-    return sb.substring(a.length()) + a;
   }
 }

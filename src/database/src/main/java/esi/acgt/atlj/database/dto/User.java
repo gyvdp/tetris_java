@@ -25,7 +25,6 @@
 package esi.acgt.atlj.database.dto;
 
 import esi.acgt.atlj.database.exceptions.DtoException;
-import java.util.Objects;
 
 public class User extends EntityDto<Integer> {
 

@@ -24,7 +24,6 @@
 
 package esi.acgt.atlj.client.view;
 
-import esi.acgt.atlj.client.controller.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;

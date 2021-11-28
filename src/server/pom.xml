@@ -49,19 +49,18 @@
     </dependency>
     <dependency>
       <groupId>esi.acgt</groupId>
-      <artifactId>atlj.DB</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>compile</scope>
+      <artifactId>atlj.database</artifactId>
+      <version>1.0</version>
     </dependency>
 
   </dependencies>
+  <version>1.0</version>
   <packaging>jar</packaging>
 
   <properties>
     <mainClass>esi.acgt.atlj.server.App</mainClass>
   </properties>
 
-  <version>1.0</version>
 
   <build>
     <plugins>

@@ -37,10 +37,6 @@ public class SendAction extends Message {
     this.messageType = MessageType.ACTION;
   }
 
-  public void setAction(PlayerAction e) {
-    this.action = e;
-  }
-
   /**
    * Gets the action of the message
    *
@@ -48,6 +44,10 @@ public class SendAction extends Message {
    */
   public PlayerAction getAction() {
     return this.action;
+  }
+
+  public void setAction(PlayerAction e) {
+    this.action = e;
   }
 
   /**

@@ -26,7 +26,6 @@ package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.MessageType;
-
 import java.util.List;
 
 /**

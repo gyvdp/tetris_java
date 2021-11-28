@@ -45,21 +45,6 @@ public class BagGenerator {
   }
 
   /**
-   * Regenerates a new bag of seven mino that has been shuffled. The reason to them being minos and
-   * not tetriminos is that we only need the color.
-   *
-   * @return Array of shuffled minos.
-   */
-  public Mino[] regenBag() {
-    Mino[] bag = new Mino[]{
-        Mino.S_MINO, Mino.Z_MINO, Mino.O_MINO, Mino.J_MINO, Mino.T_MINO,
-        Mino.I_MINO, Mino.L_MINO
-    };
-    shuffleTetriminos(bag);
-    return bag;
-  }
-
-  /**
    * Shuffles an array with the Fisher-Yates algorithm.
    *
    * @param array Shuffled array.
@@ -73,6 +58,21 @@ public class BagGenerator {
       array[randomValue] = array[i];
       array[i] = randomElement;
     }
+  }
+
+  /**
+   * Regenerates a new bag of seven mino that has been shuffled. The reason to them being minos and
+   * not tetriminos is that we only need the color.
+   *
+   * @return Array of shuffled minos.
+   */
+  public Mino[] regenBag() {
+    Mino[] bag = new Mino[]{
+        Mino.S_MINO, Mino.Z_MINO, Mino.O_MINO, Mino.J_MINO, Mino.T_MINO,
+        Mino.I_MINO, Mino.L_MINO
+    };
+    shuffleTetriminos(bag);
+    return bag;
   }
 
 }

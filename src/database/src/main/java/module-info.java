@@ -1,4 +1,4 @@
-module atlj.DB {
+open module atlj.database {
   requires java.sql;
   requires org.xerial.sqlitejdbc;
 

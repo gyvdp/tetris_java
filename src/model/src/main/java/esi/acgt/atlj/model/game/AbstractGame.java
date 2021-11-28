@@ -119,6 +119,13 @@ public abstract class AbstractGame implements GameInterface, Serializable {
   }
 
   /**
+   * Setter of hold
+   *
+   * @param hold new mino that you hold
+   */
+  public abstract void setHold(Mino hold);
+
+  /**
    * {@inheritDoc}
    */
   @Override
@@ -127,12 +134,26 @@ public abstract class AbstractGame implements GameInterface, Serializable {
   }
 
   /**
+   * Setter of actualTetrimino
+   *
+   * @param actualTetrimino new actualTetrimino
+   */
+  public abstract void setActualTetrimino(TetriminoInterface actualTetrimino);
+
+  /**
    * {@inheritDoc}
    */
   @Override
   public synchronized TetriminoInterface getNextTetrimino() {
     return nextTetrimino;
   }
+
+  /**
+   * Setter of nextTetrimino
+   *
+   * @param nextTetrimino new nextTetrimino
+   */
+  public abstract void setNextTetrimino(TetriminoInterface nextTetrimino);
 
   /**
    * {@inheritDoc}
@@ -189,27 +210,6 @@ public abstract class AbstractGame implements GameInterface, Serializable {
     this.nbLine = nbLine;
     this.changeSupport.firePropertyChange("line", oldNbLine, this.nbLine);
   }
-
-  /**
-   * Setter of hold
-   *
-   * @param hold new mino that you hold
-   */
-  public abstract void setHold(Mino hold);
-
-  /**
-   * Setter of nextTetrimino
-   *
-   * @param nextTetrimino new nextTetrimino
-   */
-  public abstract void setNextTetrimino(TetriminoInterface nextTetrimino);
-
-  /**
-   * Setter of actualTetrimino
-   *
-   * @param actualTetrimino new actualTetrimino
-   */
-  public abstract void setActualTetrimino(TetriminoInterface actualTetrimino);
 
   /**
    * Fire a propertChange on the status to the view

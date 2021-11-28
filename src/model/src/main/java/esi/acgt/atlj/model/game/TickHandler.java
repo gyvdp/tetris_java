@@ -34,6 +34,10 @@ public class TickHandler extends TimerTask {
     this.managedBoard = managedBoard;
   }
 
+  public static long tickDelay(int level) {
+    return (int) ((Math.pow(0.8 - ((level - 1) * 0.007), level - 1)) * 1000);
+  }
+
   @Override
   public synchronized void run() {
     switch (managedBoard.getStatus()) {
@@ -68,9 +72,5 @@ public class TickHandler extends TimerTask {
 
       }
     }
-  }
-
-  public static long tickDelay(int level) {
-    return (int) ((Math.pow(0.8 - ((level - 1) * 0.007), level - 1)) * 1000);
   }
 }

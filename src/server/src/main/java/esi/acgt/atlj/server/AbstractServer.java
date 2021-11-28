@@ -39,39 +39,33 @@ import java.util.List;
 public abstract class AbstractServer implements Runnable {
 
   /**
+   * The thread group associated with client threads. Each member of the thread group is a <code>
+   * ConnectionToClient </code>.
+   */
+  private final List<Thread> threads;
+  /**
    * The server socket: listens for clients who want to connect.
    */
   private ServerSocket serverSocket = null;
-
   /**
    * The connection listener thread.
    */
   private Thread connectionListener = null;
-
   /**
    * The port number
    */
   private int port;
-
   /**
    * The server timeout while for accepting connections. After timing out, the server will check to
    * see if a command to stop the server has been issued; it not it will resume accepting
    * connections. Set to half a second by default.
    */
   private int timeout = 500;
-
   /**
    * The maximum queue length; i.e. the maximum number of clients that can be waiting to connect.
    * Set to 10 by default.
    */
   private int backlog = 10;
-
-  /**
-   * The thread group associated with client threads. Each member of the thread group is a <code>
-   * ConnectionToClient </code>.
-   */
-  private final List<Thread> threads;
-
   /**
    * Indicates if the listening thread is ready to stop. Set to true by default.
    */

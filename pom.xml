@@ -35,10 +35,10 @@
 
   <modules>
     <module>src/model</module>
-    <module>src/client</module>
-    <module>src/server</module>
+    <module>src/database</module>
     <module>src/message</module>
-    <module>src/DB</module>
+    <module>src/server</module>
+    <module>src/client</module>
   </modules>
 
   <build>

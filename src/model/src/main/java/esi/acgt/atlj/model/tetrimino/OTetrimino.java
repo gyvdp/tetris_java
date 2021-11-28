@@ -42,7 +42,7 @@ public class OTetrimino extends Tetrimino implements OShape {
     };
     this.type = Mino.O_MINO;
   }
-  
+
   @Override
   public Mino[][] rotatedShape(boolean clockwise) {
     return shapes.get(Orientation.next(orientation, clockwise));

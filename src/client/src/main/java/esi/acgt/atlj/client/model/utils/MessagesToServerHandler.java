@@ -46,6 +46,70 @@ public class MessagesToServerHandler {
    * Client sending player messages to server.
    */
   private ClientInterface client;
+  /**
+   * Request a next tetrimino to the server.
+   */
+  Runnable requestNextMinoToServer = () ->
+  {
+    if (client != null) {
+      this.client.requestNextMino();
+    } else {
+      var minos = Mino.values();
+      player.setNextTetrimino(
+          Tetrimino.createTetrimino(minos[(int) (Math.random() * (minos.length))]));
+    }
+  };
+  /**
+   * Sends falling tetrimino to server.
+   */
+  Consumer<TetriminoInterface> sendFallingTetriminoToServer = (TetriminoInterface tetriminoInterface) ->
+  {
+    if (client != null) {
+      this.client.sendTetriminoToOtherPlayer(tetriminoInterface);
+    }
+  };
+  /**
+   * Sends current hold piece to server.
+   */
+  Consumer<Mino> sendHoldPieceToServer = (Mino m) ->
+  {
+    if (client != null) {
+      this.client.sendHoldMino(m);
+    }
+  };
+  /**
+   * Sends score to server.
+   */
+  Consumer<Integer> sendScoreToServer = (Integer score) -> {
+    if (client != null) {
+      this.client.sendScore(score);
+    }
+  };
+  /**
+   * Sends destroyed lines to server.
+   */
+  Consumer<List<Integer>> sendDestroyedLinesToServer = (List<Integer> lineDestroyed) -> {
+    if (client != null) {
+      client.removeLine(lineDestroyed);
+    }
+  };
+  /**
+   * Sends to server that player lost.
+   */
+  Runnable sendLostStatusToServer = () ->
+  {
+    if (client != null) {
+      this.client.notifyLoss();
+    }
+  };
+  /**
+   * Sends locked tetrimino to server.
+   */
+  Consumer<TetriminoInterface> sendLockedTetriminoToServer = (TetriminoInterface m) -> {
+    if (client != null) {
+      client.lockTetrimino(m);
+    }
+  };
 
 
   /**
@@ -72,77 +136,6 @@ public class MessagesToServerHandler {
     player.connectLost(this.sendLostStatusToServer);
     player.connectTetriminoLock(this.sendLockedTetriminoToServer);
   }
-
-  /**
-   * Request a next tetrimino to the server.
-   */
-  Runnable requestNextMinoToServer = () ->
-  {
-    if (client != null) {
-      this.client.requestNextMino();
-    } else {
-      var minos = Mino.values();
-      player.setNextTetrimino(
-          Tetrimino.createTetrimino(minos[(int) (Math.random() * (minos.length))]));
-    }
-  };
-
-  /**
-   * Sends falling tetrimino to server.
-   */
-  Consumer<TetriminoInterface> sendFallingTetriminoToServer = (TetriminoInterface tetriminoInterface) ->
-  {
-    if (client != null) {
-      this.client.sendTetriminoToOtherPlayer(tetriminoInterface);
-    }
-  };
-
-  /**
-   * Sends current hold piece to server.
-   */
-  Consumer<Mino> sendHoldPieceToServer = (Mino m) ->
-  {
-    if (client != null) {
-      this.client.sendHoldMino(m);
-    }
-  };
-
-  /**
-   * Sends score to server.
-   */
-  Consumer<Integer> sendScoreToServer = (Integer score) -> {
-    if (client != null) {
-      this.client.sendScore(score);
-    }
-  };
-
-
-  /**
-   * Sends destroyed lines to server.
-   */
-  Consumer<List<Integer>> sendDestroyedLinesToServer = (List<Integer> lineDestroyed) -> {
-    if (client != null) {
-      client.removeLine(lineDestroyed);
-    }
-  };
-
-
-  /**
-   * Sends to server that player lost.
-   */
-  Runnable sendLostStatusToServer = () ->
-  {
-    if (client != null) {
-      this.client.notifyLoss();
-    }
-  };
-
-  /**
-   * Sends locked tetrimino to server.
-   */
-  Consumer<TetriminoInterface> sendLockedTetriminoToServer = (TetriminoInterface m) -> {
-    client.lockTetrimino(m);
-  };
 
 
 }

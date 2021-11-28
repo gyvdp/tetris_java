@@ -96,7 +96,9 @@ public class ClientModel extends Model {
   public void initManagedBoard(String username) {
     player = new ManagedGame(username);
     otherPlayer = new UnmanagedGame();
-    client.sendNameToServer(player.getUsername());
+    if (client != null) {
+      client.sendNameToServer(player.getUsername());
+    }
     new MessagesToServerHandler(player, client);
     new MessagesFromServerHandler(otherPlayer, player, client);
   }

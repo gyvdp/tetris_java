@@ -8,16 +8,10 @@
         <outputRelativeToContentRoot value="true" />
         <module name="atlj.model" />
         <module name="atlj.message" />
-        <module name="atlj.DB" />
         <module name="atlj.server" />
         <module name="atlj.client" />
+        <module name="atlj.database" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="atlj-project" target="17" />
-      <module name="atlj.database" target="17" />
-      <module name="atlj.db" target="17" />
-      <module name="atlj.server (1)" target="17" />
-    </bytecodeTargetLevel>
   </component>
 </project>

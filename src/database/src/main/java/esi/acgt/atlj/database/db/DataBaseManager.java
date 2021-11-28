@@ -35,15 +35,14 @@ import java.sql.SQLException;
 public class DataBaseManager {
 
   /**
-   * Connection to database.
-   */
-  private static Connection connection;
-
-  /**
    * DataBase url location.
    */
   private final static String databaseUrl =
       "jdbc:sqlite:tetrisDb";
+  /**
+   * Connection to database.
+   */
+  private static Connection connection;
 
   /**
    * Attempts to connect to database.

@@ -43,6 +43,14 @@ public class ScoreController implements Initializable {
   public Label scoreTitle;
   public Label scoreValue;
 
+  public static String scoreToText(int score) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("0".repeat(6));
+
+    var a = Integer.toString(score < 1000000 ? score : 999999);
+    return sb.substring(a.length()) + a;
+  }
+
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     container.prefWidthProperty().bind(container.heightProperty().divide(H).multiply(W));
@@ -55,13 +63,5 @@ public class ScoreController implements Initializable {
 
   public void setScore(int score) {
     scoreValue.setText(scoreToText(score));
-  }
-
-  public static String scoreToText(int score) {
-    StringBuilder sb = new StringBuilder();
-    sb.append("0".repeat(6));
-
-    var a = Integer.toString(score < 1000000 ? score : 999999);
-    return sb.substring(a.length()) + a;
   }
 }

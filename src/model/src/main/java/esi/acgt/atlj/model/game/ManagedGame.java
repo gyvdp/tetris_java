@@ -37,43 +37,36 @@ import java.util.function.Consumer;
  */
 public class ManagedGame extends AbstractGame {
 
+  private final Timer timer;
   /**
    * Tells server to lock tetrimino
    */
   Consumer<TetriminoInterface> tetriminoLock;
-
   /**
    * All lines that have been destroyed by game in an array to send to server
    */
   Consumer<List<Integer>> lineDestroyed;
-
   /**
    * Lambda expression to ask client for next piece in bag.
    */
   Runnable askNextMino;
-
   /**
    * Sends to server that you lost.
    */
   Runnable iLost;
-
   /**
    * Locked tetrimino to send to server.
    */
   Consumer<TetriminoInterface> addTetrimino;
-
   /**
    * Hold tetrimino to send to server
    */
   Consumer<Mino> holdMino;
-
   /**
    * Sends current score to the server
    */
   Consumer<Integer> setScoreServer;
-
   private GameStatus status;
-  private final Timer timer;
   private TickHandler tickHandler;
   private boolean hasAlreadyHolded;
 

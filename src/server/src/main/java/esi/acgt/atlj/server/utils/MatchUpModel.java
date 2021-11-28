@@ -24,7 +24,6 @@
 
 package esi.acgt.atlj.server.utils;
 
-import esi.acgt.atlj.database.business.BusinessInterface;
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.messageTypes.AddTetrimino;
 import esi.acgt.atlj.message.messageTypes.LockedTetrimino;
@@ -35,7 +34,6 @@ import esi.acgt.atlj.message.messageTypes.SetHold;
 import esi.acgt.atlj.model.game.ManagedGame;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.server.CustomClientThread;
-
 import java.util.HashMap;
 import java.util.List;
 

@@ -42,16 +42,75 @@ public class MessagesFromServerHandler {
    * Current playing player.
    */
   private ManagedGame player;
-
+  /**
+   * Updates players next mino.
+   */
+  Consumer<Mino> nextMinoSentFromServer = (Mino nextMino) ->
+      player.setNextTetrimino(Tetrimino.createTetrimino(nextMino));
   /**
    * Other player that is playing.
    */
   private UnmanagedGame otherPlayer;
-
+  /**
+   * Sets the name of the other player.
+   */
+  Consumer<String> nameSentFromServer = (String name) -> otherPlayer.setUsername(name);
+  /**
+   * Removes lines from other player.
+   */
+  Consumer<List<Integer>> removeLineSentFromServer = (List<Integer> line) ->
+  {
+    otherPlayer.removeLines(line);
+    otherPlayer.setNbLine(line.size());
+  };
+  /**
+   * Lockes the other players tetrimino.
+   */
+  Consumer<TetriminoInterface> lockedTetriminoSentFromServer = (TetriminoInterface tetriminoInterface) ->
+      otherPlayer.placeTetrimino(tetriminoInterface);
+  /**
+   * Updates the other players falling tetrimino.
+   */
+  Consumer<TetriminoInterface> fallingTetriminoSentFromServer = (TetriminoInterface tetriminoInterface) ->
+      otherPlayer.setActualTetrimino(tetriminoInterface);
+  /**
+   * Updates the hold tetrimino from the other player sent from the server.
+   */
+  Consumer<Mino> holdReceivedFromServer = (Mino mino) ->
+      otherPlayer.setHold(mino);
+  /**
+   * Updates the next tetrimino from the other player sent from the server.
+   */
+  Consumer<Mino> updateNextTetriminoOtherPlayer = (Mino m) ->
+      otherPlayer.setNextTetrimino(Tetrimino.createTetrimino(m));
+  /**
+   * Starts a game when server sent green light.
+   */
+  Runnable playerReady = this::start;
+  /**
+   * Sets other player to lost.
+   */
+  Runnable playerLostSentFromServer = () -> {
+    this.otherPlayer.playerStatus("LOCK OUT", 0.9);
+  };
+  /**
+   * Sets other player to disconnected.
+   */
+  Runnable playerDisconnectedSentFromServer = () ->
+      this.otherPlayer.playerStatus("Disconnected", 1);
   /**
    * Client that will received message from server.
    */
   private ClientInterface client;
+  /**
+   * Updates the score from the other player.
+   */
+  Consumer<Integer> scoreReceivedFromServer = (Integer score) ->
+  {
+    if (client != null) {
+      otherPlayer.setScore(score);
+    }
+  };
 
   /**
    * Constructor for message from server.
@@ -72,96 +131,20 @@ public class MessagesFromServerHandler {
    * All necessary lambda connection with client
    */
   private void connectLambdaClient() {
-    client.connectNewMinoFromServer(this.nextMinoSentFromServer);
-    client.connectRemoveLine(this.removeLineSentFromServer);
-    client.connectAddTetrimino(this.fallingTetriminoSentFromServer);
-    client.connectSendScore(this.scoreReceivedFromServer);
-    client.connectUpdateNextTetriminoOtherPlayer(this.updateNextTetriminoOtherPlayer);
-    client.connectPlayerReady(this.playerReady);
-    client.connectOtherPlayerLost(this.playerLostSentFromServer);
-    client.connectPlayerDisconnected(this.playerDisconnectedSentFromServer);
-    client.connectReceiveUserName(this.nameSentFromServer);
-    client.connectHold(this.holdReceivedFromServer);
-    client.connectlockTetrimino(this.lockedTetriminoSentFromServer);
-  }
-
-
-  /**
-   * Updates players next mino.
-   */
-  Consumer<Mino> nextMinoSentFromServer = (Mino nextMino) ->
-      player.setNextTetrimino(Tetrimino.createTetrimino(nextMino));
-
-  /**
-   * Sets the name of the other player.
-   */
-  Consumer<String> nameSentFromServer = (String name) -> otherPlayer.setUsername(name);
-
-  /**
-   * Removes lines from other player.
-   */
-  Consumer<List<Integer>> removeLineSentFromServer = (List<Integer> line) ->
-  {
-    otherPlayer.removeLines(line);
-    otherPlayer.setNbLine(line.size());
-  };
-
-  /**
-   * Lockes the other players tetrimino.
-   */
-  Consumer<TetriminoInterface> lockedTetriminoSentFromServer = (TetriminoInterface tetriminoInterface) ->
-      otherPlayer.placeTetrimino(tetriminoInterface);
-
-
-  /**
-   * Updates the other players falling tetrimino.
-   */
-  Consumer<TetriminoInterface> fallingTetriminoSentFromServer = (TetriminoInterface tetriminoInterface) ->
-      otherPlayer.setActualTetrimino(tetriminoInterface);
-
-
-  /**
-   * Updates the score from the other player.
-   */
-  Consumer<Integer> scoreReceivedFromServer = (Integer score) ->
-  {
     if (client != null) {
-      otherPlayer.setScore(score);
+      client.connectNewMinoFromServer(this.nextMinoSentFromServer);
+      client.connectRemoveLine(this.removeLineSentFromServer);
+      client.connectAddTetrimino(this.fallingTetriminoSentFromServer);
+      client.connectSendScore(this.scoreReceivedFromServer);
+      client.connectUpdateNextTetriminoOtherPlayer(this.updateNextTetriminoOtherPlayer);
+      client.connectPlayerReady(this.playerReady);
+      client.connectOtherPlayerLost(this.playerLostSentFromServer);
+      client.connectPlayerDisconnected(this.playerDisconnectedSentFromServer);
+      client.connectReceiveUserName(this.nameSentFromServer);
+      client.connectHold(this.holdReceivedFromServer);
+      client.connectlockTetrimino(this.lockedTetriminoSentFromServer);
     }
-  };
-
-
-  /**
-   * Updates the hold tetrimino from the other player sent from the server.
-   */
-  Consumer<Mino> holdReceivedFromServer = (Mino mino) ->
-      otherPlayer.setHold(mino);
-
-  /**
-   * Updates the next tetrimino from the other player sent from the server.
-   */
-  Consumer<Mino> updateNextTetriminoOtherPlayer = (Mino m) ->
-      otherPlayer.setNextTetrimino(Tetrimino.createTetrimino(m));
-
-
-  /**
-   * Starts a game when server sent green light.
-   */
-  Runnable playerReady = this::start;
-
-  /**
-   * Sets other player to lost.
-   */
-  Runnable playerLostSentFromServer = () -> {
-    this.otherPlayer.playerStatus("LOCK OUT", 0.9);
-  };
-
-
-  /**
-   * Sets other player to disconnected.
-   */
-  Runnable playerDisconnectedSentFromServer = () ->
-      this.otherPlayer.playerStatus("Disconnected", 1);
+  }
 
   /**
    * Starts a new game.

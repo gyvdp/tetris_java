@@ -52,15 +52,13 @@ public class MatchUpGenerator extends Thread {
    */
   private final MatchUpModel model;
   /**
-   * Decrements the id of match-up in server when this closes.
-   */
-  private Runnable decrementMatchUpId;
-
-  /**
    * Generator for new bags of tetriminos.
    */
   private final BagGenerator bagGenerator;
-
+  /**
+   * Interaction with database
+   */
+  private final BusinessInterface interactDatabase;
   /**
    * List of clients.
    */
@@ -75,11 +73,57 @@ public class MatchUpGenerator extends Thread {
    * Unique id of generated match-up.
    */
   int id;
-
   /**
-   * Interaction with database
+   * Lambda expression to refill bags.
    */
-  private final BusinessInterface interactDatabase;
+  Runnable refillBag = this::refillBags;
+  /**
+   * Lambda expression to handle message from client.
+   */
+  BiConsumer<Message, CustomClientThread> handleMessage = (Message m, CustomClientThread client) ->
+  {
+
+    if (client.getClientStatus().equals(PlayerStatus.READY)) {
+      sendMessageToModel(m, client);
+      //todo sendMessageToSpectator(m, client);
+      CustomClientThread opPlayer = getOpposingClient(client);
+      if (opPlayer != null) {
+        if (m instanceof AskPiece) {
+          Mino mino = client.getMino();
+          client.sendMessage(new SendPiece(mino));
+          opPlayer.sendMessage(new UpdateNextPieceOther(mino));
+        } else {
+          opPlayer.sendMessage(m);
+        }
+      }
+    } else {
+      System.err.println("Message dropped " + m.toString() + " from " + client.getInetAddress());
+    }
+  };
+  /**
+   * Decrements the id of match-up in server when this closes.
+   */
+  private Runnable decrementMatchUpId;
+  /**
+   * Handles disconnection of player from match-up. If both players have disconnected, kills
+   * thread.
+   */
+  Consumer<CustomClientThread> disconnect = (CustomClientThread clientThread) -> {
+    int notPlaying = 0;
+    getOpposingClient(clientThread).sendMessage(new PlayerState(PlayerStatus.DISCONNECTED));
+    for (CustomClientThread customClientThread : clients) {
+      if (!(customClientThread.isConnected())) {
+        notPlaying++;
+      }
+    }
+    if (notPlaying == 2) { //If both players are not playing match-up should end.
+      updateDb();
+      System.out.println("Match-up " + this.id + " has ended");
+      decrementMatchUpId.run();
+      this.interrupt();
+      this.stop();
+    }
+  };
 
   /**
    * Constructor for match-up generator. Assigns its current id to both clients and launches the
@@ -108,33 +152,6 @@ public class MatchUpGenerator extends Thread {
     }
     this.start();
   }
-
-  /**
-   * Lambda expression to refill bags.
-   */
-  Runnable refillBag = this::refillBags;
-
-
-  /**
-   * Handles disconnection of player from match-up. If both players have disconnected, kills
-   * thread.
-   */
-  Consumer<CustomClientThread> disconnect = (CustomClientThread clientThread) -> {
-    int notPlaying = 0;
-    getOpposingClient(clientThread).sendMessage(new PlayerState(PlayerStatus.DISCONNECTED));
-    for (CustomClientThread customClientThread : clients) {
-      if (!(customClientThread.isConnected())) {
-        notPlaying++;
-      }
-    }
-    if (notPlaying == 2) { //If both players are not playing match-up should end.
-      updateDb();
-      System.out.println("Match-up " + this.id + " has ended");
-      decrementMatchUpId.run();
-      this.interrupt();
-      this.stop();
-    }
-  };
 
   /**
    * Updates the database with specific values of the game
@@ -182,31 +199,6 @@ public class MatchUpGenerator extends Thread {
   public void connectDecrementMatchUpId(Runnable dec) {
     this.decrementMatchUpId = dec;
   }
-
-
-  /**
-   * Lambda expression to handle message from client.
-   */
-  BiConsumer<Message, CustomClientThread> handleMessage = (Message m, CustomClientThread client) ->
-  {
-
-    if (client.getClientStatus().equals(PlayerStatus.READY)) {
-      sendMessageToModel(m, client);
-      //todo sendMessageToSpectator(m, client);
-      CustomClientThread opPlayer = getOpposingClient(client);
-      if (opPlayer != null) {
-        if (m instanceof AskPiece) {
-          Mino mino = client.getMino();
-          client.sendMessage(new SendPiece(mino));
-          opPlayer.sendMessage(new UpdateNextPieceOther(mino));
-        } else {
-          opPlayer.sendMessage(m);
-        }
-      }
-    } else {
-      System.err.println("Message dropped " + m.toString() + " from " + client.getInetAddress());
-    }
-  };
 
   /**
    * Sends a received message to the model to be treated.

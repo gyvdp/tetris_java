@@ -55,15 +55,29 @@ import java.util.function.Consumer;
 public class Client extends AbstractClient implements ClientInterface {
 
   /**
+   * Lambda to run when players are ready
+   */
+  Runnable playerReady;
+  /**
+   * Lambda to run when other player has lost
+   */
+  Runnable otherPlayerLost;
+  /**
+   * Lambda to run when other player has disconnected
+   */
+  Runnable playerDisconnected;
+  /**
+   * Lambda to run when a locked tetrimino has been sent.
+   */
+  Consumer<TetriminoInterface> locked;
+  /**
    * Method used when sendPiece message comes from server.
    */
   private Consumer<Mino> newMino;
-
   /**
    * Method used when a name is received
    */
   private Consumer<String> receiveName;
-
   /**
    * Method used when setting hold of other player.
    */
@@ -80,31 +94,10 @@ public class Client extends AbstractClient implements ClientInterface {
    * Method used when sendScore message comes from server.
    */
   private Consumer<Integer> sendScore;
-
   /**
    * Method used when updating next mino of other player
    */
   private Consumer<Mino> updateNextTetriminoOtherPlayer;
-
-  /**
-   * Lambda to run when players are ready
-   */
-  Runnable playerReady;
-
-  /**
-   * Lambda to run when other player has lost
-   */
-  Runnable otherPlayerLost;
-
-  /**
-   * Lambda to run when other player has disconnected
-   */
-  Runnable playerDisconnected;
-
-  /**
-   * Lambda to run when a locked tetrimino has been sent.
-   */
-  Consumer<TetriminoInterface> locked;
 
   /**
    * Constructor of a client.

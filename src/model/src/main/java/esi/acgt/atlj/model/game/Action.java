@@ -44,14 +44,6 @@ public enum Action {
     this.multiplyLevel = multiplyLevel;
   }
 
-  int getScore() {
-    return score;
-  }
-
-  boolean getMultiplyLevel() {
-    return multiplyLevel;
-  }
-
   static Action getActionByFullLines(int lines) {
     return switch (lines) {
       case 1 -> SINGLE;
@@ -60,6 +52,14 @@ public enum Action {
       case 4 -> TETRIS;
       default -> null;
     };
+  }
+
+  int getScore() {
+    return score;
+  }
+
+  boolean getMultiplyLevel() {
+    return multiplyLevel;
   }
 
 }
