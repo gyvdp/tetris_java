@@ -46,6 +46,19 @@ class GameStatsBusinessLogic {
   }
 
   /**
+   * Sets the high score of the given user.
+   *
+   * @param user User to set high score from.
+   */
+  static void setHighScore(User user, int newHighScore) {
+    try {
+      GameStatsTable.setHighScore(user, newHighScore);
+    } catch (Exception e) {
+      System.err.println("Cannot set high score \n" + e.getMessage());
+    }
+  }
+
+  /**
    * Gets the number of games won of the given user.
    *
    * @param user User to get number of games won.

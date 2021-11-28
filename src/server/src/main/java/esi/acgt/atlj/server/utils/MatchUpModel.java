@@ -94,5 +94,15 @@ public class MatchUpModel {
       game.placeTetrimino(message.getTetrimino());
     }
   }
+
+  /**
+   * Returns score of game of client.
+   *
+   * @param client Client to get game score for
+   * @return Score of the client
+   */
+  public int getGameScore(CustomClientThread client) {
+    return gameHashMap.get(client).getScore();
+  }
 }
 

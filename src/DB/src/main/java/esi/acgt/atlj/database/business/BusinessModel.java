@@ -168,6 +168,30 @@ public class BusinessModel implements BusinessInterface {
   }
 
   /**
+   * Tries to set a new high score to the user.
+   *
+   * @param user         User to set new high score to.
+   * @param newHighScore New high score of the user.
+   * @throws BusinessException If query to set new high score has failed
+   */
+  public void setUserHighScore(User user, int newHighScore) throws BusinessException {
+    try {
+      DataBaseManager.startTransaction();
+      GameStatsBusinessLogic.setHighScore(user, newHighScore);
+      DataBaseManager.validateTransacation();
+    } catch (DbException e) {
+      String msg = e.getMessage();
+      try {
+        DataBaseManager.cancelTransaction();
+      } catch (DbException ex) {
+        msg = ex.getMessage() + e.getMessage();
+      } finally {
+        throw new BusinessException("Setting high score of user has failed \n" + msg);
+      }
+    }
+  }
+
+  /**
    * {@inheritDoc}
    */
   @Override

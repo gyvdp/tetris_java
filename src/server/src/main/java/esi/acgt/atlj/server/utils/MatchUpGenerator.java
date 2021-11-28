@@ -131,12 +131,29 @@ public class MatchUpGenerator extends Thread {
       }
     }
     if (notPlaying == 2) {
+      updateDb();
       System.out.println("Match-up " + this.id + " has ended");
       decrementMatchUpId.run();
       this.interrupt();
       this.stop();
     }
   };
+
+  /**
+   * Updates the database with specific values of the game
+   */
+  public void updateDb() {
+    for (CustomClientThread client : clients) {
+      System.out.println(model.getGameScore(client));
+      System.out.println(client.getUser().getId());
+      try {
+        interactDatabase.setUserHighScore(client.getUser(), model.getGameScore(client));
+      } catch (BusinessException e) {
+        System.err.println("Cannot send high score to database \n" + e.getMessage());
+      }
+    }
+
+  }
 
   public synchronized void addSpectator(CustomClientThread client) {
     this.spectators.add(client);

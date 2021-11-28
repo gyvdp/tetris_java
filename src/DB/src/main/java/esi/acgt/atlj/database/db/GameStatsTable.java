@@ -73,9 +73,12 @@ public class GameStatsTable {
     try {
       java.sql.Connection connection = DataBaseManager.getConnection();
       java.sql.PreparedStatement highScore;
+      System.out.println(user.getId());
       highScore = connection.prepareStatement(
-          "UPDATE FROM game_stats SET high_score =" + newHighScore + "WHERE user_id = ?");
+          "UPDATE main.game_stats SET high_score =" + newHighScore + " WHERE user_id = ?");
       highScore.setInt(1, user.getId());
+      System.out.println("updates");
+      highScore.executeUpdate();
     } catch (Exception e) {
       throw new DbException(
           tableName + ": Impossible to set high score for the user\n" + e.getMessage());
