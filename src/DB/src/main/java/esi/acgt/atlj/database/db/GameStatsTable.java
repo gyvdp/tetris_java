@@ -63,6 +63,26 @@ public class GameStatsTable {
   }
 
   /**
+   * Sets the new high score of the user.
+   *
+   * @param user         User to set new high score to.
+   * @param newHighScore New high score to set.
+   * @throws DbException If query for setting high score from user has failed.
+   */
+  public static void setHighScore(User user, int newHighScore) throws DbException {
+    try {
+      java.sql.Connection connection = DataBaseManager.getConnection();
+      java.sql.PreparedStatement highScore;
+      highScore = connection.prepareStatement(
+          "UPDATE FROM game_stats SET high_score =" + newHighScore + "WHERE user_id = ?");
+      highScore.setInt(1, user.getId());
+    } catch (Exception e) {
+      throw new DbException(
+          tableName + ": Impossible to set high score for the user\n" + e.getMessage());
+    }
+  }
+
+  /**
    * Gets the number of game won by the user.
    *
    * @param user User to get number of game from.
