@@ -25,6 +25,7 @@
 package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
+import esi.acgt.atlj.model.UserMode;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -79,7 +80,7 @@ public class Connexion implements Initializable {
     }
     this.stage.getScene().addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
       if (key.getCode() == KeyCode.ENTER) {
-        this.connexionPressed();
+        this.playPressed();
       }
     });
     this.stage.getIcons()
@@ -87,23 +88,32 @@ public class Connexion implements Initializable {
   }
 
   /**
-   * Action when you press on the button for connexion
+   * Verify if the information of the connection are complete and if it's correct information
+   *
+   * @return true if all information are complete and if the ip is in good format. False otherwise.
    */
-  public void connexionPressed() {
-    try {
-      Matcher m = regex.matcher(this.ip.getText());
-      if (m.matches()) {
-        this.controller.connexion(ip.getText(), Integer.parseInt(port.getText()),
-            username.getText());
-      } else {
-        throw new IllegalArgumentException();
-      }
-      this.stage.close();
-    } catch (Exception e) {
+  private boolean informationComplete() {
+    Matcher m = regex.matcher(this.ip.getText());
+    if (!(!m.matches() || this.username.getText().isEmpty() || this.port.getText()
+        .isEmpty())) {
+      return true;
+    } else {
       Alert alert = new Alert(AlertType.ERROR);
       alert.setContentText("Les informations entrées sont incorrects.");
       alert.setHeaderText("Information Erroné");
       alert.showAndWait();
+      return false;
+    }
+  }
+
+  /**
+   * Action when you press on the button for connexion
+   */
+  public void playPressed() {
+    if (informationComplete()) {
+      this.controller.connexion(ip.getText(), Integer.parseInt(port.getText()),
+          username.getText(), UserMode.PLAYER);
+      this.stage.close();
     }
   }
 
@@ -113,7 +123,29 @@ public class Connexion implements Initializable {
   public void leavePressed() {
     this.stage.close();
   }
-  
+
+  /**
+   * Action when you press on the button to spectate a game
+   */
+  public void spectatePressed() {
+    if (informationComplete()) {
+      this.controller.connexion(ip.getText(), Integer.parseInt(port.getText()),
+          username.getText(), UserMode.SPECTATOR);
+      this.stage.close();
+    }
+  }
+
+  /**
+   * Action when you press on the button to watch statistics
+   */
+  public void watchStatistic() {
+    if (informationComplete()) {
+      this.controller.connexion(ip.getText(), Integer.parseInt(port.getText()),
+          username.getText(), UserMode.STATISTICS);
+      this.stage.close();
+    }
+  }
+
   /**
    * Initiale of the Connexion.fxml
    */

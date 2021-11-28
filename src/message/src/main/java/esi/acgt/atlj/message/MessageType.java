@@ -37,5 +37,7 @@ public enum MessageType {
   UPDATE_PIECE_UNMANAGED, //Updates piece of unmanaged board of other player
   SEND_NAME,// Sends username of player to other player.
   NUMBER_LINES, // Send the number of line the player has destructed
-  HOLD // Sends the mino the player is holding
+  HOLD, // Sends the mino the player is holding
+  ACTION, //Action player would like to do
+  SEND_BOARD // Sends board to spectator
 }

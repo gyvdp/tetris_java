@@ -24,17 +24,20 @@
 
 package esi.acgt.atlj.client.connexionServer;
 
+import esi.acgt.atlj.message.PlayerAction;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.AddTetrimino;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.LockedTetrimino;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.RemoveLine;
+import esi.acgt.atlj.message.messageTypes.SendAction;
+import esi.acgt.atlj.message.messageTypes.SendHighScore;
 import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.SendScore;
 import esi.acgt.atlj.message.messageTypes.SetHold;
-import esi.acgt.atlj.message.messageTypes.UpdatePieceUnmanagedBoard;
+import esi.acgt.atlj.message.messageTypes.UpdateNextPieceOther;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.io.IOException;
@@ -118,36 +121,36 @@ public class Client extends AbstractClient implements ClientInterface {
    */
   @Override
   protected void handleServerMessage(Object information) {
-    if (information instanceof SendPiece) { //When next tetrimino is sent from server
-      newMino.accept(((SendPiece) information).getMino());
-    } else if (information instanceof RemoveLine) { //When remove line is send from server
-      removeLine.accept(((RemoveLine) information).getLine());
-    } else if (information instanceof AddTetrimino) { //When add tetrimino is sent from server
-      addTetrimino.accept(
-          ((AddTetrimino) information).getTetrimino());
-    } else if (information instanceof SendScore) { // When send score is sent from server
-      sendScore.accept(((SendScore) information).getScore());
+    if (information instanceof SendPiece message) { //When next tetrimino is sent from server
+      newMino.accept(message.getMino());
+    } else if (information instanceof RemoveLine message) { //When remove line is send from server
+      removeLine.accept(message.getLine());
+    } else if (information instanceof AddTetrimino message) { //When add tetrimino is sent from server
+      addTetrimino.accept(message.getTetrimino());
+    } else if (information instanceof SendScore message) { // When send score is sent from server
+      sendScore.accept(message.getScore());
     } else if (information instanceof
-        UpdatePieceUnmanagedBoard) {//When update next tetrimino is// sent from server
-      updateNextTetriminoOtherPlayer.accept(((UpdatePieceUnmanagedBoard) information).getPiece());
-    } else if (information instanceof PlayerState) {
-      if (((PlayerState) information).getPlayerState()
-          .equals(PlayerStatus.READY)) { // When player state ready is sent from server
+        UpdateNextPieceOther message) {//When update next tetrimino is sent from server
+      updateNextTetriminoOtherPlayer.accept(message.getPiece());
+    } else if (information instanceof PlayerState message) {
+      if (message.getPlayerState().equals
+          (PlayerStatus.READY)) { // When player state ready is sent from server
         playerReady.run();
-      } else if (((PlayerState) information).getPlayerState()
-          .equals(PlayerStatus.LOST)) {
-        System.out.println("hello");// When player state lost is sent from server
+      } else if (message.getPlayerState().equals
+          (PlayerStatus.LOST)) { // When player state lost in sent from server
         otherPlayerLost.run();
-      } else if (((PlayerState) information).getPlayerState().equals(
-          PlayerStatus.DISCONNECTED)) { // When player state disconnected is sent from server
+      } else if (message.getPlayerState().equals
+          (PlayerStatus.DISCONNECTED)) { // When player state disconnected is sent from server
         playerDisconnected.run();
       }
-    } else if (information instanceof SendName) { // When send name is sent from server
-      receiveName.accept(((SendName) information).getUsername());
-    } else if (information instanceof SetHold) { // When hold tetrimino is sent from server
-      hold.accept(((SetHold) information).getHold());
-    } else if (information instanceof LockedTetrimino) { //WHen locked tetrimino has been send from server.
-      locked.accept(((LockedTetrimino) information).getTetrimino());
+    } else if (information instanceof SendName message) { // When send name is sent from server
+      receiveName.accept(message.getUsername());
+    } else if (information instanceof SetHold message) { // When hold tetrimino is sent from server
+      hold.accept(message.getHold());
+    } else if (information instanceof LockedTetrimino message) { //When locked tetrimino has been send from server.
+      locked.accept(message.getTetrimino());
+    } else if (information instanceof SendHighScore message) {
+      System.out.println(message.getHighScore()); //todo interpret command
     }
   }
 
@@ -285,6 +288,22 @@ public class Client extends AbstractClient implements ClientInterface {
       sendToServer(new AskPiece());
     } catch (IOException e) {
       System.err.println("cannot ask piece to server");
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @param a Action to send.
+   */
+  @Override
+  public void sendAction(PlayerAction a) {
+    try {
+      SendAction action = new SendAction();
+      action.setAction(a);
+      sendToServer(action);
+    } catch (IOException e) {
+      System.err.println("Cannot send action to server");
     }
   }
 

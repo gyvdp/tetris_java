@@ -31,5 +31,6 @@ public enum PlayerStatus {
   READY, // Status when both players are connected
   WAITING, // Players
   LOST, // Player has lost
-  DISCONNECTED //Player is disconnected
+  DISCONNECTED, //Player is disconnected
+  NOT_FOUND // If id of player is not found
 }

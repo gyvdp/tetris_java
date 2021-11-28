@@ -36,7 +36,7 @@ public class SendName extends Message {
   /**
    * User name to send
    */
-  private String username;
+  private final String username;
 
   /**
    * Constructor for send username

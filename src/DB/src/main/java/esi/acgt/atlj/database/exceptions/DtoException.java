@@ -22,38 +22,24 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message.messageTypes;
+package esi.acgt.atlj.database.exceptions;
 
-import esi.acgt.atlj.message.Message;
-import esi.acgt.atlj.message.MessageType;
-import esi.acgt.atlj.model.tetrimino.Mino;
-
-/**
- * Updates a piece in the unmanaged board of the player it is sent to.
- */
-public class UpdatePieceUnmanagedBoard extends Message {
+public class DtoException extends Exception {
 
   /**
-   * Piece to update in unmanaged board.
+   * Default constructor for database object exception.
    */
-  private Mino piece;
+  public DtoException() {
 
-  /**
-   * Constructor for updating player piece in unmanaged board of other player.
-   *
-   * @param piece Piece to update
-   */
-  public UpdatePieceUnmanagedBoard(Mino piece) {
-    this.messageType = MessageType.UPDATE_PIECE_UNMANAGED;
-    this.piece = piece;
   }
 
   /**
-   * Getter for piece to update.
+   * Constructor for database object exception with specific message.
    *
-   * @return Piece that needs to be updated.
+   * @param message Message to specify
    */
-  public Mino getPiece() {
-    return piece;
+  public DtoException(String message) {
+    super(message);
   }
+
 }

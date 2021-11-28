@@ -26,6 +26,9 @@ package esi.acgt.atlj.client.controller;
 
 import esi.acgt.atlj.client.model.ClientModel;
 import esi.acgt.atlj.client.view.ViewInterface;
+import esi.acgt.atlj.message.PlayerAction;
+import esi.acgt.atlj.message.messageTypes.SendAction;
+import esi.acgt.atlj.model.UserMode;
 import esi.acgt.atlj.model.game.Direction;
 import esi.acgt.atlj.model.game.GameStatus;
 import java.util.Objects;
@@ -70,6 +73,7 @@ public class Controller {
     model.closeConnection();
   }
 
+
   /**
    * Forward inputs from the view to the model
    *
@@ -98,12 +102,23 @@ public class Controller {
    * @param port     port of the server to connect to
    * @param username username of the player
    */
-  public void connexion(String ip, int port, String username) {
+  public void connexion(String ip, int port, String username, UserMode mode) {
     try {
-      this.model.initManagedBoard(username);
-      this.view.displayBoard(username);
       this.model.connect(port, ip);
-      this.model.addPropertyChangeListener(this.view.getListeners());
+      this.model.initManagedBoard(username); // todo factory class
+      if (mode == UserMode.SPECTATOR) { //Spectate
+        this.view.displayBoard(username);
+        this.model.sendAction(PlayerAction.SPECTATE);
+        this.model.addPropertyChangeListener(this.view.getListeners());
+      } else if (mode == UserMode.PLAYER) { //Play
+        this.view.displayBoard(username);
+        this.model.addPropertyChangeListener(this.view.getListeners());
+        //todo send name
+        this.model.sendAction(PlayerAction.PLAY_ONLINE);
+      } else {
+        //TODO faire un system pour se co au statistique.
+        this.view.displayStatitics(); //TODO BESOIN D'UN OBJETS PLAYER AVEC LES INFOS
+      }
     } catch (Exception e) {
       this.view.displayError(e);
       this.view.displayConnexion();

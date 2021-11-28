@@ -24,6 +24,7 @@
 
 package esi.acgt.atlj.client.connexionServer;
 
+import esi.acgt.atlj.message.PlayerAction;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.net.ConnectException;
@@ -44,6 +45,13 @@ public interface ClientInterface {
    * Request the next color of Tetrimino.
    */
   void requestNextMino();
+
+  /**
+   * Sends player action to server.
+   *
+   * @param a Action to send.
+   */
+  void sendAction(PlayerAction a);
 
   /**
    * Sends the mino that has been put into hold by player to server

@@ -24,22 +24,61 @@
 
 package esi.acgt.atlj.server;
 
+import esi.acgt.atlj.database.business.BusinessInterface;
+import esi.acgt.atlj.database.business.BusinessModel;
+import esi.acgt.atlj.database.dto.User;
+import esi.acgt.atlj.database.exceptions.BusinessException;
+import esi.acgt.atlj.database.exceptions.DbException;
 import esi.acgt.atlj.message.PlayerStatus;
-import esi.acgt.atlj.message.messageTypes.*;
-import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.message.messageTypes.PlayerState;
+import esi.acgt.atlj.server.utils.MatchUpGenerator;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Random;
+import java.util.Locale.Builder;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Collectors;
 
+/**
+ * Tetris server
+ */
 public class Server extends AbstractServer {
 
   /**
-   * First random bag of tetriminos of game.
+   * current number of match-ups;
    */
-  private final Mino[] firstBag;
+  private int matchUpId = 0;
+
+  /**
+   * Database interaction
+   */
+  BusinessInterface interactDatabase;
+
   /**
    * Hash map of all members in function of their clientId.
    */
   private final HashMap<Integer, CustomClientThread> members;
+
+  /**
+   * All the clients that are currently waiting to play
+   */
+  private final BlockingQueue<CustomClientThread> waitingList;
+
+  /**
+   * All match-ups with their id.
+   */
+  private final HashMap<Integer, MatchUpGenerator> matchUps;
+
+  /**
+   * Waiting list for spectators. Player is placed in list if all current match-up are
+   */
+  private final BlockingQueue<CustomClientThread> waitingListForSpectators;
+
   /**
    * current tally of client id.
    */
@@ -50,81 +89,83 @@ public class Server extends AbstractServer {
    *
    * @param port Port for server to listen on.
    */
-  public Server(int port) {
+  public Server(int port) throws IOException {
     super(port);
-    firstBag = regenBag();
+    waitingList = new LinkedBlockingQueue<>();
     clientId = 0;
+    interactDatabase = new BusinessModel();
     members = new HashMap<>();
-    this.startServer();
+    matchUps = new HashMap<>();
+    waitingListForSpectators = new LinkedBlockingQueue<>();
+    this.listen();
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  protected void exceptionHook(Exception e) {
-    super.exceptionHook(e);
-    System.err.println(e.getMessage());
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  protected void handleMessageClient(Object msg, CustomClientThread client) {
-    if (client.getClientStatus().equals(PlayerStatus.READY)) {
-      CustomClientThread opPlayer = members.get(0).equals(client) ? members.get(1) : members.get(0);
-      if (msg.toString().equalsIgnoreCase("ASK_PIECE")) {
-        Mino m = client.getTetrimino();
-        client.sendMessage(new SendPiece(m));
-        opPlayer.sendMessage(new UpdatePieceUnmanagedBoard(m));
-      } else {
-        opPlayer.sendMessage(msg);
-      }
+  protected synchronized void clientException(CustomClientThread client, Throwable exception) {
+    super.clientException(client, exception);
+    if (client.isConnected()) {
+      client.sendMessage(
+          new IllegalArgumentException("Cannot parse message " + exception.getMessage()));
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  void refillBag() {
-    Mino[] newBag = regenBag();
-    for (int numberOfPlayer = 0; numberOfPlayer < members.size(); numberOfPlayer++) {
-      for (Mino tetrimino : newBag) {
-        members.get(numberOfPlayer).addTetrimino(tetrimino);
-      }
-    }
-  }
+  Runnable decrementMatchUpId = () -> {
+    this.matchUpId--;
+  };
 
   /**
-   * Regenerates a new bag of seven tetriminodes that has been shuffled.
+   * Returns the next match-up id.
    *
-   * @return Array of shuffled tetriminodes.
+   * @return Id for creation of next match-up.
    */
-  private Mino[] regenBag() {
-    Mino[] bag = new Mino[]{
-        Mino.S_MINO, Mino.Z_MINO, Mino.O_MINO, Mino.J_MINO, Mino.T_MINO,
-        Mino.I_MINO, Mino.L_MINO
-    };
-    shuffle(bag);
-    return bag;
+  private int getNextMatchupId() {
+    matchUpId++;
+    return matchUpId;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected void serverStarted(int port) {
+    System.out.println("Server is running on " + getIP() + ":" + port + "...");
   }
 
   /**
-   * Shuffles an array with the Fisher-Yates algorithm.
+   * Gets the local address of the server.
    *
-   * @param array Shuffled array.
+   * @return Local address of server.
    */
-  private static void shuffle(Mino[] array) {
-    int n = array.length;
-    Random random = new Random(System.currentTimeMillis());
-    for (int i = 0; i < array.length; i++) {
-      int randomValue = i + random.nextInt(n - i);
-      Mino randomElement = array[randomValue];
-      array[randomValue] = array[i];
-      array[i] = randomElement;
+  private static InetAddress getLocalAddress() {
+    try {
+      Enumeration<NetworkInterface> b = NetworkInterface.getNetworkInterfaces();
+      while (b.hasMoreElements()) {
+        for (InterfaceAddress f : b.nextElement().getInterfaceAddresses()) {
+          if (f.getAddress().isSiteLocalAddress()) {
+            return f.getAddress();
+          }
+        }
+      }
+    } catch (SocketException e) {
+      System.err.println("Error with network interface, cannot get local ip address");
     }
+    return null;
+  }
+
+  /**
+   * Return the server IP address.
+   *
+   * @return the server IP address.
+   */
+  public String getIP() {
+    if (getLocalAddress() == null) {
+      return "Unknown";
+    }
+    return getLocalAddress().getHostAddress();
   }
 
   /**
@@ -153,14 +194,64 @@ public class Server extends AbstractServer {
   protected void clientConnected(CustomClientThread client) {
     super.clientConnected(client);
     members.put(getNextId(), client);
-    for (Mino t : firstBag) {
-      client.addTetrimino(t);
-    }
-    if (members.size() == 2) {
-      updateAllPlayerState(PlayerStatus.READY);
-    }
     System.out.println(
-        "Client " + client.getIdOfClient() + " has connected successfully with " + client.getId());
+        "Client " + client.getIdOfClient() + " has connected successfully with "
+            + client.getInetAddress() + " and is in the waiting list");
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public synchronized void addSpectator(CustomClientThread e, int matchId) {
+    this.waitingListForSpectators.add(e);
+    if (matchId != 0) {
+      MatchUpGenerator match = matchUps.get(matchId);
+      if (match != null) {
+        System.out.println("spectator added");
+        match.addSpectator(e);
+      } else {
+        e.sendMessage(new PlayerState(PlayerStatus.NOT_FOUND));
+      }
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected synchronized void checkUser(User user) {
+    try {
+      User persistentUser = interactDatabase.getUser(user.getUsername());
+      if (persistentUser != null) {
+        user.set(persistentUser);
+      } else {
+        interactDatabase.addUser(user.getUsername());
+      }
+    } catch (BusinessException e) {
+      System.err.println("error creating or adding user");
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public synchronized void addPlayer(CustomClientThread client, int matchId) {
+    waitingList.add(client);
+    if (waitingList.size() % 2 == 0) {
+      MatchUpGenerator matchUp = new MatchUpGenerator(
+          waitingList.stream().limit(2).collect(Collectors.toList()), this.matchUpId,
+          interactDatabase);
+      matchUp.connectDecrementMatchUpId(this.decrementMatchUpId);
+      matchUps.put(getNextMatchupId(), matchUp);
+      System.out.println("A new match-up has been created with id: " + this.matchUpId);
+      try {
+        waitingList.take();
+        waitingList.take();
+      } catch (InterruptedException ignored) {
+      }
+    }
   }
 
   /**
@@ -169,22 +260,13 @@ public class Server extends AbstractServer {
   @Override
   protected void clientDisconnected(CustomClientThread client) {
     super.clientDisconnected(client);
-    if (members.size() > 1) {
-      members.get(client.getIdOfClient() == 0 ? 1 : 0)
-          .sendMessage(new PlayerState(PlayerStatus.DISCONNECTED));
+    try {
+      waitingList.remove(client);
+    } catch (NullPointerException ignored) {
     }
     members.remove(client.getIdOfClient());
-    clientId = 0;
+    clientId--;
   }
 
-  /**
-   * Updates the player state for every player
-   *
-   * @param playerState PlayerState to update to.
-   */
-  public void updateAllPlayerState(PlayerStatus playerState) {
-    for (int numberOfPlayer = 0; numberOfPlayer < members.size(); numberOfPlayer++) {
-      members.get(numberOfPlayer).setClientStatus(playerState);
-    }
-  }
+
 }

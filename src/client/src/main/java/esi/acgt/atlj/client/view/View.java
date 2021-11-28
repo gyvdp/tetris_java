@@ -49,7 +49,8 @@ public class View implements ViewInterface {
    * Constructor of view.
    */
   public View() {
-
+    this.controller = null;
+    this.mpgController = null;
   }
 
   /**
@@ -69,8 +70,6 @@ public class View implements ViewInterface {
 
   /**
    * {@inheritDoc}
-   *
-   * @param username
    */
   @Override
   public void displayBoard(String username) {
@@ -132,6 +131,18 @@ public class View implements ViewInterface {
   public PropertyChangeListener[] getListeners() {
     return new PropertyChangeListener[]{this.mpgController.getPlayer1(),
         this.mpgController.getPlayer2()};
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void displayStatitics() {
+    this.primaryStage = new Stage();
+    this.primaryStage.setTitle("Statistique");
+    this.primaryStage.setOnCloseRequest(event -> this.controller.disconnect());
+    new Statistics(this.primaryStage);
+    this.primaryStage.setResizable(false);
   }
 
 }

@@ -38,6 +38,7 @@
     <module>src/client</module>
     <module>src/server</module>
     <module>src/message</module>
+    <module>src/DB</module>
   </modules>
 
   <build>

@@ -26,18 +26,16 @@ package esi.acgt.atlj.client.model;
 
 import esi.acgt.atlj.client.connexionServer.Client;
 import esi.acgt.atlj.client.connexionServer.ClientInterface;
+import esi.acgt.atlj.client.model.utils.MessagesFromServerHandler;
+import esi.acgt.atlj.client.model.utils.MessagesToServerHandler;
+import esi.acgt.atlj.message.PlayerAction;
 import esi.acgt.atlj.model.Model;
 import esi.acgt.atlj.model.game.Direction;
 import esi.acgt.atlj.model.game.GameStatus;
 import esi.acgt.atlj.model.game.ManagedGame;
 import esi.acgt.atlj.model.game.UnmanagedGame;
-import esi.acgt.atlj.model.tetrimino.Mino;
-import esi.acgt.atlj.model.tetrimino.Tetrimino;
-import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
 import java.net.ConnectException;
-import java.util.List;
-import java.util.function.Consumer;
 
 public class ClientModel extends Model {
 
@@ -50,153 +48,13 @@ public class ClientModel extends Model {
   }
 
   /**
-   * Lambda expression to connect ask new mino from managed board to server.
+   * Sends action to server.
+   *
+   * @param a Action to send to server.
    */
-  Runnable askNextMino = () ->
-  {
-    if (client != null) {
-      this.client.requestNextMino();
-    } else {
-      var minos = Mino.values();
-      player.setNextTetrimino(
-          Tetrimino.createTetrimino(minos[(int) (Math.random() * (minos.length))]));
-    }
-  };
-
-  /**
-   * Lambda expression to connect new mino from server to update from managed board.
-   */
-  Consumer<Mino> newMinoFromServer = (Mino nextMino) ->
-      player.setNextTetrimino(Tetrimino.createTetrimino(nextMino));
-
-  /**
-   * Sets the name of the player given from the server
-   */
-  Consumer<String> receiveName = (String name) -> otherPlayer.setUsername(name);
-
-  /**
-   * Lambda expression to connect remove line to update from unmanaged board
-   */
-  Consumer<List<Integer>> removeLine = (List<Integer> line) ->
-  {
-    otherPlayer.removeLines(line);
-    otherPlayer.setNbLine(line.size());
-  };
-
-  /**
-   * Lambda to execute when locking other player.
-   */
-  Consumer<TetriminoInterface> lockTetrimino = (TetriminoInterface tetriminoInterface) ->
-      otherPlayer.placeTetrimino(tetriminoInterface);
-
-
-  /**
-   * Send which line has been destroyed by the managed game to the server
-   */
-  Consumer<List<Integer>> lineDestroyed = (List<Integer> lineDestroyed) -> {
-    if (client != null) {
-      client.removeLine(lineDestroyed);
-    }
-  };
-
-  Runnable iLost = () ->
-  {
-    if (client != null) {
-      this.client.notifyLoss();
-    }
-  };
-
-  /**
-   * Lambda expression to connect add tetrimino to update from unmanaged board. Behaviour for when a
-   * player send you his placed pawn.
-   */
-  Consumer<TetriminoInterface> addTetrimino = (TetriminoInterface tetriminoInterface) ->
-      otherPlayer.setActualTetrimino(tetriminoInterface);
-
-  public void closeConnection() {
-    if (client != null) {
-      this.client.closeConnectionToServer();
-    }
+  public void sendAction(PlayerAction a) {
+    this.client.sendAction(a);
   }
-
-  /**
-   * Send a pawn to another player.
-   */
-  Consumer<TetriminoInterface> addTetriminoToOtherPlayer = (TetriminoInterface tetriminoInterface) ->
-  {
-    if (client != null) {
-      this.client.sendTetriminoToOtherPlayer(tetriminoInterface);
-    }
-  };
-
-  Consumer<Mino> setHold = (Mino m) ->
-  {
-    if (client != null) {
-      this.client.sendHoldMino(m);
-    }
-  };
-
-  /**
-   * Lambda expression to connect send score to update from unmanaged board
-   */
-  Consumer<Integer> sendScore = (Integer score) ->
-  {
-    if (client != null) {
-      otherPlayer.setScore(score);
-    }
-  };
-
-
-  /**
-   * Lambda expression to connect hold with client
-   */
-  Consumer<Mino> hold = (Mino mino) ->
-      otherPlayer.setHold(mino);
-
-  /**
-   * Updates next mino of other player.
-   */
-  Consumer<Mino> updateNextTetriminoOtherPlayer = (Mino m) ->
-      otherPlayer.setNextTetrimino(Tetrimino.createTetrimino(m));
-
-  /**
-   * Sends a tetrimino to lock to server.
-   */
-  Consumer<TetriminoInterface> lockMyTetrimino = (TetriminoInterface m) -> {
-    if (client != null) {
-      client.lockTetrimino(m);
-    }
-  };
-
-  /**
-   * Lambda expression to connect game state from server to model.
-   */
-  Runnable playerReady = this::start;
-
-  /**
-   * Lambda expression to connect game state from server to model. Runs if other player has lost
-   */
-  Runnable otherPlayerLost = () -> {
-    this.otherPlayer.playerStatus("LOCK OUT", 0.9);
-  };
-
-  /**
-   * Sends the score to the server to be updated in other board
-   */
-  Consumer<Integer> sendScoreServer = (Integer score) -> {
-    if (client != null) {
-      this.client.sendScore(score);
-    }
-  };
-
-  Runnable playerLost = () -> this.client.notifyLoss();
-
-  /**
-   * Lambda expression to connect game state from server to model. Runs if other player has been
-   * disconnected
-   */
-  Runnable playerDisconnected = () ->
-      this.otherPlayer.playerStatus("Disconnected", 1);
 
   /**
    * Instantiates a new client with port and host to connect to. Connects all lambda methods in
@@ -207,26 +65,9 @@ public class ClientModel extends Model {
    */
   public void connect(int port, String host) throws ConnectException {
     this.client = new Client(port, host);
-    connectLambdaClient();
     this.client.connect();
   }
 
-  /**
-   * All necessary lambda connection with client
-   */
-  private void connectLambdaClient() {
-    client.connectNewMinoFromServer(this.newMinoFromServer);
-    client.connectRemoveLine(this.removeLine);
-    client.connectAddTetrimino(this.addTetrimino);
-    client.connectSendScore(this.sendScore);
-    client.connectUpdateNextTetriminoOtherPlayer(this.updateNextTetriminoOtherPlayer);
-    client.connectPlayerReady(this.playerReady);
-    client.connectOtherPlayerLost(this.otherPlayerLost);
-    client.connectPlayerDisconnected(this.playerDisconnected);
-    client.connectReceiveUserName(this.receiveName);
-    client.connectHold(this.hold);
-    client.connectlockTetrimino(this.lockTetrimino);
-  }
 
   /**
    * Getter for client interface
@@ -237,17 +78,15 @@ public class ClientModel extends Model {
     return client;
   }
 
+
   /**
    * Starts a new game.
    */
   public void start() {
-    askNextMino.run();
     this.player.start();
     this.otherPlayer.playerStatus("", 0);
-    if (client != null) {
-      client.sendNameToServer(player.getUsername());
-    }
   }
+
 
   /**
    * Initializes a managed game.
@@ -257,22 +96,18 @@ public class ClientModel extends Model {
   public void initManagedBoard(String username) {
     player = new ManagedGame(username);
     otherPlayer = new UnmanagedGame();
-    connectLambdaPlayer(this.player);
+    client.sendNameToServer(player.getUsername());
+    new MessagesToServerHandler(player, client);
+    new MessagesFromServerHandler(otherPlayer, player, client);
   }
 
   /**
-   * All necessary connection with player
-   *
-   * @param player Player to connect lambdas too
+   * Closes connection to server.
    */
-  public void connectLambdaPlayer(ManagedGame player) {
-    player.connectAskNewMino(askNextMino);
-    player.connectAddTetrimino(addTetriminoToOtherPlayer);
-    player.connectHoldMino(this.setHold);
-    player.connectLineDestroyed(this.lineDestroyed);
-    player.connectSendScoreServer(sendScoreServer);
-    player.connectLost(this.iLost);
-    player.connectTetriminoLock(this.lockMyTetrimino);
+  public void closeConnection() {
+    if (client != null) {
+      this.client.closeConnectionToServer();
+    }
   }
 
   /**
