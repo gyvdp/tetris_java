@@ -25,11 +25,14 @@
 package esi.acgt.atlj.client.controller.fxml;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 
 public class InfoBoxController implements Initializable {
 
@@ -49,9 +52,16 @@ public class InfoBoxController implements Initializable {
 
     infoBoxText.prefWidthProperty().bind(container.widthProperty());
     infoBoxText.prefHeightProperty().bind(infoBoxText.widthProperty().divide(W).multiply(H));
+
+    infoBoxText.fontProperty()
+        .bind(Bindings.createObjectBinding(
+            () -> Font.loadFont(
+                Objects.requireNonNull(getClass().getResource("/fonts/Pixel_NES.otf")).openStream(),
+                container.heightProperty().divide(H).multiply(7).doubleValue()),
+            container.heightProperty()));
   }
 
   public void setText(String text) {
-    infoBoxText.setText(text);
+    infoBoxText.setText(text.toUpperCase());
   }
 }

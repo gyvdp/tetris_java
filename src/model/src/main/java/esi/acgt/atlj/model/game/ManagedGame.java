@@ -195,7 +195,7 @@ public class ManagedGame extends AbstractGame {
   @Override
   public synchronized void setNextTetrimino(TetriminoInterface nextTetrimino) {
     this.nextTetrimino = nextTetrimino;
-    this.changeSupport.firePropertyChange("next", null, this.getNextTetrimino());
+    this.changeSupport.firePropertyChange("next", null, this.getNextTetrimino().getType());
   }
 
   /**

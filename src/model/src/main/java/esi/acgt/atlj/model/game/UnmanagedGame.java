@@ -56,7 +56,7 @@ public class UnmanagedGame extends AbstractGame {
    */
   public void setNextTetrimino(TetriminoInterface tetrimino) {
     this.nextTetrimino = tetrimino;
-    this.changeSupport.firePropertyChange("next", null, this.getNextTetrimino());
+    this.changeSupport.firePropertyChange("next", null, this.getNextTetrimino().getType());
   }
 
   /**

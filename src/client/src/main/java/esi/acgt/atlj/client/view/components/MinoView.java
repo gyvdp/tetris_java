@@ -37,18 +37,15 @@ public class MinoView extends Pane {
   private final static Image A1;
   private final static Image B1;
   private final static Image C1;
-  private final static Image D1;
 
   static {
     A1 = new Image(
-        Objects.requireNonNull(MinoView.class.getResourceAsStream("/image/mino/A1.png")));
+        Objects.requireNonNull(MinoView.class.getResourceAsStream("/image/mino/A0.png")));
     B1 = new Image(
-        Objects.requireNonNull(MinoView.class.getResourceAsStream("/image/mino/B1.png")));
+        Objects.requireNonNull(MinoView.class.getResourceAsStream("/image/mino/B0.png")));
     C1 = new Image(
-        Objects.requireNonNull(MinoView.class.getResourceAsStream("/image/mino/C1.png")));
-    D1 = new Image(
-        Objects.requireNonNull(MinoView.class.getResourceAsStream(
-            "/image/mino/D1.png")));
+        Objects.requireNonNull(MinoView.class.getResourceAsStream("/image/mino/C0.png")));
+
   }
 
   private ImageView image;

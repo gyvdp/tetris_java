@@ -24,6 +24,7 @@
 
 package esi.acgt.atlj.client.controller.fxml;
 
+import esi.acgt.atlj.model.tetrimino.Mino;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -39,7 +40,13 @@ public class BoardAsideController implements Initializable {
   @FXML
   public VBox container;
   public StackPane next;
+
+  public TetriminoHolderController nextController;
+
   public StackPane hold;
+
+  public TetriminoHolderController holdController;
+
   public StackPane score;
   public ScoreController scoreController;
 
@@ -61,9 +68,19 @@ public class BoardAsideController implements Initializable {
     hold.maxHeightProperty()
         .bind(container.heightProperty().divide(H).multiply(TetriminoHolderController.H));
 
+    nextController.setType("Next");
+    holdController.setType("Hold");
   }
 
   public void setScore(int score) {
     scoreController.setScore(score);
+  }
+
+  public void setNextTetrimino(Mino mino) {
+    nextController.setTetrimino(mino);
+  }
+
+  public void setHoldTetrimino(Mino mino) {
+    holdController.setTetrimino(mino);
   }
 }

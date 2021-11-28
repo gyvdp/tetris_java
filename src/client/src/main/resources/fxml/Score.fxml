@@ -30,7 +30,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
-<StackPane fx:id="container" minHeight="144" minWidth="128" styleClass="score"
+<StackPane fx:id="container" minHeight="144" minWidth="128"
   stylesheets="@../css/score.css" xmlns="http://javafx.com/javafx/11.0.2"
   xmlns:fx="http://javafx.com/fxml/1"
   fx:controller="esi.acgt.atlj.client.controller.fxml.ScoreController">
@@ -41,55 +41,43 @@
   <Label fx:id="topTitle" alignment="CENTER" contentDisplay="CENTER" minHeight="14" minWidth="128"
     styleClass="nes-text" text="TOP" textAlignment="CENTER" textFill="WHITE"
     StackPane.alignment="TOP_CENTER">
-    <StackPane.margin>
-      <Insets top="32"/>
-    </StackPane.margin>
     <font>
       <Font size="14"/>
     </font>
     <padding>
-      <Insets left="16" right="16"/>
+      <Insets top="32" left="16" right="16"/>
     </padding>
   </Label>
   <Label fx:id="topValue" alignment="CENTER" contentDisplay="CENTER" minHeight="14" minWidth="128"
     styleClass="nes-text" text="000000" textAlignment="CENTER" textFill="WHITE"
     StackPane.alignment="TOP_CENTER">
-    <StackPane.margin>
-      <Insets top="48"/>
-    </StackPane.margin>
     <font>
       <Font size="14"/>
     </font>
     <padding>
-      <Insets left="16" right="16"/>
+      <Insets top="48" left="16" right="16"/>
     </padding>
   </Label>
 
   <Label fx:id="scoreTitle" alignment="CENTER" contentDisplay="CENTER" minHeight="14"
     minWidth="128" styleClass="nes-text" text="SCORE" textAlignment="CENTER" textFill="WHITE"
     StackPane.alignment="TOP_CENTER">
-    <StackPane.margin>
-      <Insets top="80"/>
-    </StackPane.margin>
     <font>
       <Font size="14"/>
     </font>
     <padding>
-      <Insets left="18" right="18"/>
+      <Insets top="80" left="18" right="18"/>
     </padding>
   </Label>
 
   <Label fx:id="scoreValue" alignment="CENTER" contentDisplay="CENTER" minHeight="14"
     minWidth="128" styleClass="nes-text" text="000000" textAlignment="CENTER" textFill="WHITE"
     StackPane.alignment="TOP_CENTER">
-    <StackPane.margin>
-      <Insets top="96"/>
-    </StackPane.margin>
     <font>
       <Font size="14"/>
     </font>
     <padding>
-      <Insets left="18" right="18"/>
+      <Insets top="96" left="18" right="18"/>
     </padding>
   </Label>
 

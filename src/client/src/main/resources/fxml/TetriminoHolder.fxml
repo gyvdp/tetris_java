@@ -31,7 +31,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 <StackPane fx:id="container" minHeight="108" minWidth="90" xmlns="http://javafx.com/javafx/11.0.2"
-  xmlns:fx="http://javafx.com/fxml/1"
+  xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../css/tetriminoholder.css"
   fx:controller="esi.acgt.atlj.client.controller.fxml.TetriminoHolderController">
   <ImageView fx:id="background" fitHeight="108" fitWidth="90" pickOnBounds="true"
     preserveRatio="true">
@@ -39,7 +39,6 @@
   </ImageView>
   <ImageView fx:id="tetrimino" fitHeight="62" fitWidth="90" pickOnBounds="true" preserveRatio="true"
     StackPane.alignment="BOTTOM_CENTER">
-    <Image url="@../image/O.png"/>
     <StackPane.margin>
       <Insets bottom="14"/>
     </StackPane.margin>
@@ -47,11 +46,8 @@
   <Label fx:id="typeText" alignment="CENTER" contentDisplay="CENTER" minHeight="14" minWidth="90"
     styleClass="nes-text" text="NEXT" textAlignment="CENTER" textFill="WHITE"
     StackPane.alignment="TOP_CENTER">
-    <StackPane.margin>
-      <Insets top="14"/>
-    </StackPane.margin>
     <padding>
-      <Insets left="14" right="14"/>
+      <Insets top="14" left="14" right="14"/>
     </padding>
     <font>
       <Font size="14.0"/>

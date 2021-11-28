@@ -84,6 +84,14 @@ public class BoardController implements Initializable, PropertyChangeListener {
     asideController.setScore(score);
   }
 
+  public void setNextTetrimino(Mino mino) {
+    asideController.setNextTetrimino(mino);
+  }
+
+  public void setHoldTetrimino(Mino mino) {
+    asideController.setHoldTetrimino(mino);
+  }
+
   /**
    * PropertyChange that will change the view on base of what he receive
    *
@@ -97,8 +105,8 @@ public class BoardController implements Initializable, PropertyChangeListener {
         case "line" -> setLines((int) evt.getNewValue());
         case "score" -> setScore((int) evt.getNewValue());
         case "username" -> setUsername(evt.getNewValue().toString());
-//        case "hold" -> updateHold(((Mino) evt.getNewValue()));
-//        case "next" -> updateNextPiece((TetriminoInterface) evt.getNewValue());
+        case "hold" -> setHoldTetrimino(((Mino) evt.getNewValue()));
+        case "next" -> setNextTetrimino((Mino) evt.getNewValue());
 //        case "winner" -> displayWinner((String) evt.getOldValue(), (String) evt.getNewValue());
 //        case "status" -> updateStatusLabel((String) evt.getOldValue(), (double) evt.getNewValue());
       }

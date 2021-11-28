@@ -25,16 +25,22 @@
 package esi.acgt.atlj.client.controller.fxml;
 
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 
 public class ScoreController implements Initializable {
 
   public static final int W = 64;
   public static final int H = 72;
+  public static final int P = 8;
 
   public StackPane container;
   public ImageView background;
@@ -59,6 +65,51 @@ public class ScoreController implements Initializable {
     background.fitWidthProperty().bind(container.widthProperty());
     background.fitHeightProperty().bind(background.fitWidthProperty().divide(W).multiply(H));
 
+    for (Label label : Arrays.asList(topTitle, topValue, scoreTitle, scoreValue)) {
+      label.fontProperty()
+          .bind(Bindings.createObjectBinding(
+              () -> Font.loadFont(
+                  Objects.requireNonNull(getClass().getResource("/fonts/Pixel_NES.otf"))
+                      .openStream(),
+                  container.heightProperty().divide(H).multiply(7).doubleValue()),
+              container.heightProperty()));
+    }
+
+    topTitle.paddingProperty().bind(Bindings.createObjectBinding(
+        () -> {
+          var padding = container.widthProperty().divide(W).multiply(P).doubleValue();
+          return new Insets(container.heightProperty().divide(H).multiply(16).doubleValue(),
+              padding, padding,
+              padding);
+        },
+        container.heightProperty()));
+
+    topValue.paddingProperty().bind(Bindings.createObjectBinding(
+        () -> {
+          var padding = container.widthProperty().divide(W).multiply(P).doubleValue();
+          return new Insets(container.heightProperty().divide(H).multiply(24).doubleValue(),
+              padding, padding,
+              padding);
+        },
+        container.heightProperty()));
+
+    scoreTitle.paddingProperty().bind(Bindings.createObjectBinding(
+        () -> {
+          var padding = container.widthProperty().divide(W).multiply(P).doubleValue();
+          return new Insets(container.heightProperty().divide(H).multiply(40).doubleValue(),
+              padding, padding,
+              padding);
+        },
+        container.heightProperty()));
+
+    scoreValue.paddingProperty().bind(Bindings.createObjectBinding(
+        () -> {
+          var padding = container.widthProperty().divide(W).multiply(P).doubleValue();
+          return new Insets(container.heightProperty().divide(H).multiply(48).doubleValue(),
+              padding, padding,
+              padding);
+        },
+        container.heightProperty()));
   }
 
   public void setScore(int score) {

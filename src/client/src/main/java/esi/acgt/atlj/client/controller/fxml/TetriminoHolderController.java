@@ -24,18 +24,54 @@
 
 package esi.acgt.atlj.client.controller.fxml;
 
+import esi.acgt.atlj.model.tetrimino.Mino;
 import java.net.URL;
+import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 
 public class TetriminoHolderController implements Initializable {
 
   public static final int W = 45;
   public static final int H = 54;
   public static final int P = 7;
+
+  public static final Map<Mino, Image> imageMap = Map.of(
+      Mino.L_MINO,
+      new Image(Objects.requireNonNull(
+          TetriminoHolderController.class.getResourceAsStream("/image/tetrimino/L0.png"))),
+
+      Mino.J_MINO,
+      new Image(Objects.requireNonNull(
+          TetriminoHolderController.class.getResourceAsStream("/image/tetrimino/J0.png"))),
+
+      Mino.Z_MINO, new Image(Objects.requireNonNull(
+          TetriminoHolderController.class.getResourceAsStream("/image/tetrimino/Z0.png"))),
+
+      Mino.S_MINO,
+      new Image(Objects.requireNonNull(
+          TetriminoHolderController.class.getResourceAsStream("/image/tetrimino/S0.png"))),
+
+      Mino.O_MINO,
+      new Image(Objects.requireNonNull(
+          TetriminoHolderController.class.getResourceAsStream("/image/tetrimino/O0.png"))),
+
+      Mino.I_MINO,
+      new Image(Objects.requireNonNull(
+          TetriminoHolderController.class.getResourceAsStream("/image/tetrimino/I0.png"))),
+
+      Mino.T_MINO,
+      new Image(Objects.requireNonNull(
+          TetriminoHolderController.class.getResourceAsStream("/image/tetrimino/T0.png")))
+  );
 
   public StackPane container;
   public ImageView background;
@@ -48,5 +84,32 @@ public class TetriminoHolderController implements Initializable {
     background.fitHeightProperty().bind(background.fitWidthProperty().divide(W).multiply(H));
 
     background.fitWidthProperty().bind(container.widthProperty());
+
+    typeText.fontProperty()
+        .bind(Bindings.createObjectBinding(
+            () -> Font.loadFont(
+                Objects.requireNonNull(getClass().getResource("/fonts/Pixel_NES.otf"))
+                    .openStream(),
+                container.heightProperty().divide(H).multiply(7).doubleValue()),
+            container.heightProperty()));
+
+    typeText.paddingProperty().bind(Bindings.createObjectBinding(
+        () -> new Insets(container.heightProperty().divide(H).multiply(7).doubleValue()),
+        container.heightProperty()));
+
+    tetrimino.fitWidthProperty().bind(container.widthProperty().divide(W).multiply(W - (2 * P)));
+    tetrimino.fitHeightProperty().bind(tetrimino.fitWidthProperty());
+
+    container.heightProperty().addListener((observable) ->
+        StackPane.setMargin(tetrimino,
+            new Insets(container.heightProperty().divide(H).multiply(7).doubleValue())));
+  }
+
+  public void setTetrimino(Mino mino) {
+    tetrimino.setImage(imageMap.get(mino));
+  }
+
+  public void setType(String type) {
+    typeText.setText(type.toUpperCase());
   }
 }
