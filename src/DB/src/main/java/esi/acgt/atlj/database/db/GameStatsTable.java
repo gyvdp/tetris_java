@@ -63,6 +63,39 @@ public class GameStatsTable {
   }
 
   /**
+   * Adds +1 to the number of lost game
+   *
+   * @param user
+   */
+  public static void addWonGame(User user) throws DbException {
+    try {
+      java.sql.Connection connection = DataBaseManager.getConnection();
+      java.sql.PreparedStatement updateNbWonGame;
+      updateNbWonGame = connection.prepareStatement(
+          "UPDATE game_stats SET nb_won = nb_won+1 WHERE user_id = ?");
+      updateNbWonGame.setInt(1, user.getId());
+      updateNbWonGame.executeQuery();
+    } catch (Exception e) {
+      throw new DbException(
+          tableName + ": Impossible to add won game to the user\n" + e.getMessage());
+    }
+  }
+
+  public static void addLostGame(User user) throws DbException {
+    try {
+      java.sql.Connection connection = DataBaseManager.getConnection();
+      java.sql.PreparedStatement updateNbWonGame;
+      updateNbWonGame = connection.prepareStatement(
+          "UPDATE game_stats SET nb_lost = nb_lost+1 WHERE user_id = ?");
+      updateNbWonGame.setInt(1, user.getId());
+      updateNbWonGame.executeQuery();
+    } catch (Exception e) {
+      throw new DbException(
+          tableName + ": Impossible to add lost game to the user\n" + e.getMessage());
+    }
+  }
+
+  /**
    * Sets the new high score of the user.
    *
    * @param user         User to set new high score to.

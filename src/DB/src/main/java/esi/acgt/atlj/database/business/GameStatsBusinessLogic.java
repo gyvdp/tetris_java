@@ -74,6 +74,32 @@ class GameStatsBusinessLogic {
   }
 
   /**
+   * Increments the number of games won of a user.
+   *
+   * @param user User to modify
+   */
+  static void incrementWonGame(User user) {
+    try {
+      GameStatsTable.addWonGame(user);
+    } catch (Exception e) {
+      System.err.println("Cannot get number of games won \n" + e.getMessage());
+    }
+  }
+
+  /**
+   * Increments the number of game lost by a user.
+   *
+   * @param user User to modify
+   */
+  static void incrementLostGame(User user) {
+    try {
+      GameStatsTable.addLostGame(user);
+    } catch (Exception e) {
+      System.err.println("Cannot get number of games won \n" + e.getMessage());
+    }
+  }
+
+  /**
    * Gets the number of games won of the given user.
    *
    * @param user User to get number of games won.

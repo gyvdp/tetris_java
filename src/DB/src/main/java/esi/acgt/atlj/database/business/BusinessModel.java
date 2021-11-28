@@ -191,6 +191,42 @@ public class BusinessModel implements BusinessInterface {
     }
   }
 
+  @Override
+  public void addLostGame(User user) throws BusinessException {
+    try {
+      DataBaseManager.startTransaction();
+      GameStatsBusinessLogic.incrementLostGame(user);
+      DataBaseManager.validateTransacation();
+    } catch (DbException e) {
+      String msg = e.getMessage();
+      try {
+        DataBaseManager.cancelTransaction();
+      } catch (DbException ex) {
+        msg = ex.getMessage() + e.getMessage();
+      } finally {
+        throw new BusinessException("Getting number of games won by user has failed \n" + msg);
+      }
+    }
+  }
+
+  @Override
+  public void addWonGame(User user) throws BusinessException {
+    try {
+      DataBaseManager.startTransaction();
+      GameStatsBusinessLogic.incrementWonGame(user);
+      DataBaseManager.validateTransacation();
+    } catch (DbException e) {
+      String msg = e.getMessage();
+      try {
+        DataBaseManager.cancelTransaction();
+      } catch (DbException ex) {
+        msg = ex.getMessage() + e.getMessage();
+      } finally {
+        throw new BusinessException("Getting number of games won by user has failed \n" + msg);
+      }
+    }
+  }
+
   /**
    * {@inheritDoc}
    */
@@ -198,7 +234,7 @@ public class BusinessModel implements BusinessInterface {
   public int getNumberOfGamesWon(User user) throws BusinessException {
     try {
       DataBaseManager.startTransaction();
-      int highScore = GameStatsBusinessLogic.getHighScore(user);
+      int highScore = GameStatsBusinessLogic.getNbGamesWon(user);
       DataBaseManager.validateTransacation();
       return highScore;
     } catch (DbException e) {
