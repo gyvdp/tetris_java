@@ -99,9 +99,7 @@ public class MatchUpGenerator extends Thread {
     this.id = idGeneratedMatchUp;
     for (CustomClientThread client : clients) {
       getOpposingClient(client).sendMessage(new SendName(client.getUsername()));
-      client.connectRefillBag(this.refillBag);
-      client.connectHandleMessage(this.handleMessage);
-      client.connectDisconnect(this.disconnect);
+      clientLambdaConnections(client);
       try {
         client.sendMessage(new SendHighScore(interactDatabase.getUserHighScore(client.getUser())));
       } catch (BusinessException e) {
@@ -157,6 +155,17 @@ public class MatchUpGenerator extends Thread {
       }
     }
 
+  }
+
+  /**
+   * Connects all necessary lambdas to client.
+   *
+   * @param client Client to connect lambdas to.
+   */
+  public void clientLambdaConnections(CustomClientThread client) {
+    client.connectRefillBag(this.refillBag);
+    client.connectHandleMessage(this.handleMessage);
+    client.connectDisconnect(this.disconnect);
   }
 
   public synchronized void addSpectator(CustomClientThread client) {
