@@ -47,7 +47,7 @@ public class MinoView extends Pane {
     C1 = new Image(
         Objects.requireNonNull(MinoView.class.getResourceAsStream("/image/mino/C1.png")));
     D1 = new Image(
-        Objects.requireNonNull(esi.acgt.atlj.client.view.components.Mino.class.getResourceAsStream(
+        Objects.requireNonNull(MinoView.class.getResourceAsStream(
             "/image/mino/D1.png")));
   }
 
