@@ -52,14 +52,16 @@ public class GameStatsTable {
       java.sql.PreparedStatement highScore;
       highScore = connection.prepareStatement(
           "SELECT high_score FROM game_stats WHERE user_id = ? LIMIT 1");
-      highScore.setInt(1, user.getId());
-      ResultSet rs = highScore.executeQuery();
-      return rs.next() ?
-          rs.getInt(1) : -1;
+      if (user.isPersistant()) {
+        highScore.setInt(1, user.getId());
+        ResultSet rs = highScore.executeQuery();
+        rs.getInt(1);
+      }
     } catch (Exception e) {
       throw new DbException(
           tableName + ": Impossible to get high score from the user\n" + e.getMessage());
     }
+    return -1;
   }
 
   /**
@@ -73,8 +75,10 @@ public class GameStatsTable {
       java.sql.PreparedStatement updateNbWonGame;
       updateNbWonGame = connection.prepareStatement(
           "UPDATE game_stats SET nb_won = nb_won+1 WHERE user_id = ?");
-      updateNbWonGame.setInt(1, user.getId());
-      updateNbWonGame.executeQuery();
+      if (user.isPersistant()) {
+        updateNbWonGame.setInt(1, user.getId());
+        updateNbWonGame.executeQuery();
+      }
     } catch (Exception e) {
       throw new DbException(
           tableName + ": Impossible to add won game to the user\n" + e.getMessage());
@@ -87,8 +91,10 @@ public class GameStatsTable {
       java.sql.PreparedStatement updateNbWonGame;
       updateNbWonGame = connection.prepareStatement(
           "UPDATE game_stats SET nb_lost = nb_lost+1 WHERE user_id = ?");
-      updateNbWonGame.setInt(1, user.getId());
-      updateNbWonGame.executeQuery();
+      if (user.isPersistant()) {
+        updateNbWonGame.setInt(1, user.getId());
+        updateNbWonGame.executeQuery();
+      }
     } catch (Exception e) {
       throw new DbException(
           tableName + ": Impossible to add lost game to the user\n" + e.getMessage());
@@ -109,9 +115,10 @@ public class GameStatsTable {
       System.out.println(user.getId());
       highScore = connection.prepareStatement(
           "UPDATE main.game_stats SET high_score =" + newHighScore + " WHERE user_id = ?");
-      highScore.setInt(1, user.getId());
-      System.out.println("updates");
-      highScore.executeUpdate();
+      if (user.isPersistant()) {
+        highScore.setInt(1, user.getId());
+        highScore.executeUpdate();
+      }
     } catch (Exception e) {
       throw new DbException(
           tableName + ": Impossible to set high score for the user\n" + e.getMessage());
@@ -122,7 +129,7 @@ public class GameStatsTable {
    * Gets the number of game won by the user.
    *
    * @param user User to get number of game from.
-   * @return Number of games won by the user.
+   * @return Number of games won by the user, if user does not exist in database returns -1.
    * @throws DbException If query for getting number of games won has failed.
    */
   public static int getNbGameWon(User user) throws DbException {
@@ -131,14 +138,16 @@ public class GameStatsTable {
       java.sql.PreparedStatement nbGames;
       nbGames = connection.prepareStatement(
           "SELECT nb_won FROM game_stats WHERE user_id = ? LIMIT 1");
-      nbGames.setInt(1, user.getId());
-      ResultSet rs = nbGames.executeQuery();
-      return rs.next() ?
-          rs.getInt(1) : -1;
+      if (user.isPersistant()) {
+        nbGames.setInt(1, user.getId());
+        ResultSet rs = nbGames.executeQuery();
+        return rs.getInt(1);
+      }
     } catch (Exception e) {
       throw new DbException(
           tableName + ": Impossible to get high score from the user\n" + e.getMessage());
     }
+    return -1;
   }
 
   /**
@@ -154,6 +163,7 @@ public class GameStatsTable {
       java.sql.PreparedStatement nbLost;
       nbLost = connection.prepareStatement(
           "SELECT nb_lost FROM game_stats WHERE user_id = ? LIMIT 1");
+
       nbLost.setInt(1, user.getId());
       ResultSet rs = nbLost.executeQuery();
       return rs.next() ?

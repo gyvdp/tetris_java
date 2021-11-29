@@ -56,6 +56,10 @@ public class User extends EntityDto<Integer> {
     this.username = username;
   }
 
+  public void setId(int id) {
+    this.id = id;
+  }
+
   public void set(User user) {
     this.id = user.getId();
     this.username = user.getUsername();

@@ -82,7 +82,7 @@ class GameStatsBusinessLogic {
     try {
       GameStatsTable.addWonGame(user);
     } catch (Exception e) {
-      System.err.println("Cannot get number of games won \n" + e.getMessage());
+      System.err.println("Cannot add to the number of games won \n" + e.getMessage());
     }
   }
 
@@ -95,7 +95,7 @@ class GameStatsBusinessLogic {
     try {
       GameStatsTable.addLostGame(user);
     } catch (Exception e) {
-      System.err.println("Cannot get number of games won \n" + e.getMessage());
+      System.err.println("Cannot add to the number of games lost \n" + e.getMessage());
     }
   }
 

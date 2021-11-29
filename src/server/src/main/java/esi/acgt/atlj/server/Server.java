@@ -216,7 +216,7 @@ public class Server extends AbstractServer {
       if (persistentUser != null) {
         user.set(persistentUser);
       } else {
-        interactDatabase.addUser(user.getUsername());
+        user.setId(interactDatabase.addUser(user.getUsername()));
       }
     } catch (BusinessException e) {
       System.err.println("error creating or adding user");

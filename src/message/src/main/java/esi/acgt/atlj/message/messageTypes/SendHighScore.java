@@ -25,6 +25,7 @@
 package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.MessageType;
 
 public class SendHighScore extends Message {
 
@@ -36,6 +37,7 @@ public class SendHighScore extends Message {
    * @param score High score to send.
    */
   public SendHighScore(int score) {
+    this.messageType = MessageType.SEND_HIGH_SCORE;
     this.highScore = score;
   }
 

@@ -125,6 +125,7 @@ public class MatchUpGenerator extends Thread {
     }
   };
 
+
   /**
    * Constructor for match-up generator. Assigns its current id to both clients and launches the
    * game in a new thread.
@@ -153,6 +154,21 @@ public class MatchUpGenerator extends Thread {
     this.start();
   }
 
+  Consumer<CustomClientThread> updateDb = this::updateDataBaseUserSpecific;
+
+  /**
+   * Updates all user specific statistics in the database.
+   *
+   * @param client User to update.
+   */
+  private void updateDataBaseUserSpecific(CustomClientThread client) {
+    try {
+      interactDatabase.setUserHighScore(client.getUser(), model.getGameScore(client));
+    } catch (BusinessException e) {
+      System.err.println("Cannot send high score to database \n" + e.getMessage());
+    }
+  }
+
   /**
    * Updates the database with specific values of the game
    */
@@ -164,14 +180,6 @@ public class MatchUpGenerator extends Thread {
     } catch (BusinessException e) {
       System.err.println("Cannot send won and lost games to database \n" + e.getMessage());
     }
-    for (CustomClientThread client : clients) {
-      try {
-        interactDatabase.setUserHighScore(client.getUser(), model.getGameScore(client));
-      } catch (BusinessException e) {
-        System.err.println("Cannot send high score to database \n" + e.getMessage());
-      }
-    }
-
   }
 
   /**
@@ -180,9 +188,12 @@ public class MatchUpGenerator extends Thread {
    * @param client Client to connect lambdas to.
    */
   public void clientLambdaConnections(CustomClientThread client) {
-    client.connectRefillBag(this.refillBag);
-    client.connectHandleMessage(this.handleMessage);
-    client.connectDisconnect(this.disconnect);
+    if (client != null) {
+      client.connectRefillBag(this.refillBag);
+      client.connectHandleMessage(this.handleMessage);
+      client.connectDisconnect(this.disconnect);
+      client.connectUpdateDb(this.updateDb);
+    }
   }
 
   public synchronized void addSpectator(CustomClientThread client) {

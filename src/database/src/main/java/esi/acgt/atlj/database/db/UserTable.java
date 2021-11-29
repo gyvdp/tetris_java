@@ -39,7 +39,8 @@ public class UserTable {
    * Insert into user table a user
    *
    * @param user User to add.
-   * @return Id of user. * @throws DbException If failed to add player
+   * @return unique id of user.
+   * @throws DbException If failed to add player.
    */
   public static int insert(User user) throws DbException {
     try {
@@ -51,7 +52,7 @@ public class UserTable {
       insert = connection.prepareStatement("INSERT INTO game_stats(user_id) VALUES (?);");
       insert.setInt(1, findUsername(user.getUsername()).getId());
       insert.executeUpdate();
-      return 0; //todo autoincrement to return the number of the client.
+      return findUsername(user.getUsername()).getId();
     } catch (Exception e) {
       throw new DbException(tableName + ": Impossible to add a user\n" + e.getMessage());
     }

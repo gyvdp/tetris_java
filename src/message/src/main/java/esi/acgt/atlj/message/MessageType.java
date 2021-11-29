@@ -39,5 +39,6 @@ public enum MessageType {
   NUMBER_LINES, // Send the number of line the player has destructed
   HOLD, // Sends the mino the player is holding
   ACTION, //Action player would like to do
-  SEND_BOARD // Sends board to spectator
+  SEND_BOARD, // Sends board to spectator
+  SEND_HIGH_SCORE // Send the user's high score to himself.
 }

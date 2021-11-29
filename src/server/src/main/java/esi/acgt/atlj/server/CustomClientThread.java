@@ -104,6 +104,8 @@ public class CustomClientThread extends Thread {
    */
   private boolean readyToStop;
 
+  Consumer<CustomClientThread> updateDb;
+
 
   /**
    * Constructs a new connection to a client.
@@ -367,10 +369,12 @@ public class CustomClientThread extends Thread {
       }
     } finally {
       if (this.disconnect != null) {
+        updateDb.accept(this);
         disconnect.accept(this);
       }
     }
   }
+
 
   /**
    * Connect handle message to match-up generator.
@@ -379,6 +383,10 @@ public class CustomClientThread extends Thread {
    */
   public void connectHandleMessage(BiConsumer<Message, CustomClientThread> handleMessage) {
     this.handleMessage = handleMessage;
+  }
+
+  public void connectUpdateDb(Consumer<CustomClientThread> updateDb) {
+    this.updateDb = updateDb;
   }
 
   /**
