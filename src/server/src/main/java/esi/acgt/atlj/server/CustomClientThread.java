@@ -193,7 +193,7 @@ public class CustomClientThread extends Thread {
     try {
       return this.myTetriminos.take();
     } catch (InterruptedException e) {
-      System.out.println("Cannot give tetrimino");
+      System.err.println("Cannot give tetrimino");
     }
     return Mino.O_MINO;
   }
