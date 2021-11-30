@@ -26,6 +26,7 @@ package esi.acgt.atlj.database.business;
 
 import esi.acgt.atlj.database.db.GameStatsTable;
 import esi.acgt.atlj.database.dto.User;
+import java.util.HashMap;
 
 class GameStatsBusinessLogic {
 
@@ -84,6 +85,21 @@ class GameStatsBusinessLogic {
     } catch (Exception e) {
       System.err.println("Cannot add to the number of games won \n" + e.getMessage());
     }
+  }
+
+  /**
+   * Selects all columns in table of specific user.
+   *
+   * @param user User to select all from.
+   */
+  static HashMap<String, Integer> selectAll(User user) {
+    try {
+      return GameStatsTable.selectAllColumnsOfTable(user);
+    } catch (Exception e) {
+      System.err.println(
+          "Cannot select all of columns of game_history from user" + "[" + user + "]");
+    }
+    return null;
   }
 
   /**

@@ -30,7 +30,9 @@ import esi.acgt.atlj.model.game.UnmanagedGame;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -42,15 +44,34 @@ public class MessagesFromServerHandler {
    * Current playing player.
    */
   private ManagedGame player;
+
+  /**
+   * Other player that is playing.
+   */
+  private UnmanagedGame otherPlayer;
+
+
+  /**
+   * Constructor for message from server.
+   *
+   * @param otherPlayer Other player that is playing
+   * @param player      Current playing player.
+   * @param client      Client that will receive message from server.
+   */
+  public MessagesFromServerHandler(UnmanagedGame otherPlayer, ManagedGame player,
+      ClientInterface client) {
+    this.otherPlayer = otherPlayer;
+    this.client = client;
+    this.player = player;
+    connectLambdaClient();
+  }
+
   /**
    * Updates players next mino.
    */
   Consumer<Mino> nextMinoSentFromServer = (Mino nextMino) ->
       player.setNextTetrimino(Tetrimino.createTetrimino(nextMino));
-  /**
-   * Other player that is playing.
-   */
-  private UnmanagedGame otherPlayer;
+
   /**
    * Sets the name of the other player.
    */
@@ -90,9 +111,7 @@ public class MessagesFromServerHandler {
   /**
    * Sets other player to lost.
    */
-  Runnable playerLostSentFromServer = () -> {
-    this.otherPlayer.playerStatus("LOCK OUT", 0.9);
-  };
+  Runnable playerLostSentFromServer = () -> this.otherPlayer.playerStatus("LOCK OUT", 0.9);
   /**
    * Sets other player to disconnected.
    */
@@ -112,20 +131,20 @@ public class MessagesFromServerHandler {
     }
   };
 
-  /**
-   * Constructor for message from server.
-   *
-   * @param otherPlayer Other player that is playing
-   * @param player      Current playing player.
-   * @param client      Client that will receive message from server.
-   */
-  public MessagesFromServerHandler(UnmanagedGame otherPlayer, ManagedGame player,
-      ClientInterface client) {
-    this.otherPlayer = otherPlayer;
-    this.client = client;
-    this.player = player;
-    connectLambdaClient();
-  }
+  Consumer<HashMap<String, Integer>> setHighScoreReceivedFromServer = (HashMap<String, Integer> highScore) ->
+  {
+    if (client != null) {
+      System.err.println("hello");
+    }
+  };
+
+  Consumer<HashMap<String, Integer>> setStatisticsReceivedFromServer = (HashMap<String, Integer> statistics) ->
+  {
+    if (client != null) {
+      System.err.println("hellopppppppp");
+    }
+  };
+
 
   /**
    * All necessary lambda connection with client
@@ -143,6 +162,8 @@ public class MessagesFromServerHandler {
       client.connectReceiveUserName(this.nameSentFromServer);
       client.connectHold(this.holdReceivedFromServer);
       client.connectlockTetrimino(this.lockedTetriminoSentFromServer);
+      client.connectStatistics(this.setStatisticsReceivedFromServer);
+      client.connectHighScore(this.setHighScoreReceivedFromServer);
     }
   }
 

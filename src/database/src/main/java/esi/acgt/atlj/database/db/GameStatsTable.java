@@ -27,6 +27,9 @@ package esi.acgt.atlj.database.db;
 import esi.acgt.atlj.database.dto.User;
 import esi.acgt.atlj.database.exceptions.DbException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Hashtable;
 
 
 /**
@@ -65,6 +68,49 @@ public class GameStatsTable {
   }
 
   /**
+   * Selects all columns of the table from the user.
+   *
+   * @param user User to select all columns.
+   * @throws DbException If query to select all has failed.
+   */
+  public static HashMap<String, Integer> selectAllColumnsOfTable(User user) throws DbException {
+    try {
+      java.sql.Connection connection = DataBaseManager.getConnection();
+      java.sql.PreparedStatement selectAll;
+      selectAll = connection.prepareStatement(
+          "SELECT high_score, nb_lost, nb_won FROM game_stats WHERE user_id = ? LIMIT 1");
+      if (user.isPersistant()) {
+        selectAll.setInt(1, user.getId());
+        return parseSelectAll(selectAll.executeQuery());
+      }
+
+    } catch (Exception e) {
+      throw new DbException(
+          tableName + ": Impossible to get high score from the user\n" + e.getMessage());
+    }
+    return null;
+  }
+
+
+  /**
+   * Result set for select all to parse into list for all
+   *
+   * @param parsable Result set to parse.
+   * @throws DbException if parsing query for select all has failed.
+   */
+  private static HashMap<String, Integer> parseSelectAll(ResultSet parsable) throws DbException {
+    HashMap<String, Integer> statistics = new HashMap<>();
+    try {
+      statistics.put("SCORE", parsable.getInt(1));
+      statistics.put("LOST", parsable.getInt(2));
+      statistics.put("WON", parsable.getInt(3));
+    } catch (SQLException e) {
+      throw new DbException("Cannot parse select all query");
+    }
+    return statistics;
+  }
+
+  /**
    * Sets the new high score of the user.
    *
    * @param user         User to set new high score to.
@@ -72,7 +118,6 @@ public class GameStatsTable {
    * @throws DbException If query for setting high score from user has failed.
    */
   public static void setHighScore(User user, int newHighScore) throws DbException {
-    int highscore = getHighScore(user);
     if (getHighScore(user) < newHighScore) {
       try {
         java.sql.Connection connection = DataBaseManager.getConnection();
@@ -94,9 +139,9 @@ public class GameStatsTable {
   }
 
   /**
-   * Adds +1 to the number of lost game
+   * Increments the number of won games.
    *
-   * @param user
+   * @param user User to increment from.
    */
   public static void addWonGame(User user) throws DbException {
     try {

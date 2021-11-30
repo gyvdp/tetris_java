@@ -22,24 +22,51 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message;
+package esi.acgt.atlj.message.messageTypes;
+
+import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.MessageType;
+import java.util.HashMap;
 
 /**
- * All different type of message that are possible to send/receive from client/server
+ * Sends all statistics to user.
  */
-public enum MessageType {
-  ASK_PIECE, // asks a piece to the server
-  ADD_TETRIMINO, //Adds a tetrimino to the unmanaged board of the other player
-  SEND_PIECE, //Send a piece from the server to the client
-  SEND_SCORE, //Sends the score to the server or client
-  REMOVE_LINE, //Removes a line to the unmanaged board of the other player
-  PLAYER_STATUS, //Send the status to the player
-  UPDATE_PIECE_UNMANAGED, //Updates piece of unmanaged board of other player
-  SEND_NAME,// Sends username of player to other player.
-  NUMBER_LINES, // Send the number of line the player has destructed
-  HOLD, // Sends the mino the player is holding
-  ACTION, //Action player would like to do
-  SEND_BOARD, // Sends board to spectator
-  SEND_HIGH_SCORE, // Send the user's high score to himself.
-  SEND_ALL_STATISTICS // Sends all user statistics.
+public class SendAllStatistics extends Message {
+
+  HashMap<String, Integer> game_history;
+  HashMap<String, Integer> tetrimino_history;
+
+  /**
+   * Constructor to send all statistics.
+   */
+  public SendAllStatistics() {
+    this.messageType = MessageType.SEND_ALL_STATISTICS;
+  }
+
+  public void setGame_history(HashMap<String, Integer> game_history) {
+    this.game_history = game_history;
+  }
+
+  public void setTetrimino_history(
+      HashMap<String, Integer> tetrimino_history) {
+    this.tetrimino_history = tetrimino_history;
+  }
+
+  /**
+   * Getter for game history.
+   *
+   * @return Hashmap for game history.
+   */
+  public HashMap<String, Integer> getGame_history() {
+    return game_history;
+  }
+
+  /**
+   * Getter for tetrimino history.
+   *
+   * @return Hashmap for tetrimino history.
+   */
+  public HashMap<String, Integer> getTetrimino_history() {
+    return tetrimino_history;
+  }
 }

@@ -28,6 +28,7 @@ import esi.acgt.atlj.message.PlayerAction;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.net.ConnectException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -40,6 +41,11 @@ public interface ClientInterface {
    * Tries to establish a connexion with server.
    */
   void connect() throws ConnectException;
+
+
+  void connectStatistics(Consumer<HashMap<String, Integer>> setStatisticsReceivedFromServer);
+
+  void connectHighScore(Consumer<HashMap<String, Integer>> setHighScoreReceivedFromServer);
 
   /**
    * Request the next color of Tetrimino.

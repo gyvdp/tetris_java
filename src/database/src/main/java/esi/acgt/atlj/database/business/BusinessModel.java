@@ -29,6 +29,7 @@ import esi.acgt.atlj.database.dto.User;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.database.exceptions.DbException;
 import esi.acgt.atlj.database.exceptions.DtoException;
+import java.util.HashMap;
 
 /**
  * All tools needed to interact with database.
@@ -122,6 +123,29 @@ public class BusinessModel implements BusinessInterface {
         throw new BusinessException("Impossible to remove user \n" + msg);
       }
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public HashMap<String, Integer> selectAllFromUserHistory(User user) throws BusinessException {
+    HashMap<String, Integer> statistics;
+    try {
+      DataBaseManager.startTransaction();
+      statistics = GameStatsBusinessLogic.selectAll(user);
+      DataBaseManager.validateTransacation();
+    } catch (DbException e) {
+      String msg = e.getMessage();
+      try {
+        DataBaseManager.cancelTransaction();
+      } catch (DbException ex) {
+        msg = ex.getMessage() + e.getMessage();
+      } finally {
+        throw new BusinessException("Impossible to select all \n" + msg);
+      }
+    }
+    return statistics;
   }
 
   /**

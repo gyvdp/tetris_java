@@ -26,6 +26,7 @@ package esi.acgt.atlj.database.business;
 
 import esi.acgt.atlj.database.dto.User;
 import esi.acgt.atlj.database.exceptions.BusinessException;
+import java.util.HashMap;
 
 /**
  * Interface to interact with database.
@@ -95,6 +96,14 @@ public interface BusinessInterface {
    * @throws BusinessException If query to remove user has failed.
    */
   void removeUser(User user) throws BusinessException;
+
+  /**
+   * Selects all information from game history of user.
+   *
+   * @param user User to select from.
+   * @return HashMap contain statistics
+   */
+  HashMap<String, Integer> selectAllFromUserHistory(User user) throws BusinessException;
 
   /**
    * Updates user in the database.

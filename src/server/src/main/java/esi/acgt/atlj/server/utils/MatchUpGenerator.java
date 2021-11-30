@@ -30,6 +30,7 @@ import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
+import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import esi.acgt.atlj.message.messageTypes.SendHighScore;
 import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
@@ -145,8 +146,11 @@ public class MatchUpGenerator extends Thread {
     for (CustomClientThread client : clients) {
       getOpposingClient(client).sendMessage(new SendName(client.getUsername()));
       clientLambdaConnections(client);
+      SendAllStatistics statistics = new SendAllStatistics();
       try {
         client.sendMessage(new SendHighScore(getBothPlayersHighScore()));
+        statistics.setGame_history(interactDatabase.selectAllFromUserHistory(client.getUser()));
+        client.sendMessage(statistics);
       } catch (BusinessException e) {
         System.err.println("Cannot get user high score");
       }

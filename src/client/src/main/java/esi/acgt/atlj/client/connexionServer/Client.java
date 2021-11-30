@@ -32,6 +32,7 @@ import esi.acgt.atlj.message.messageTypes.LockedTetrimino;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.RemoveLine;
 import esi.acgt.atlj.message.messageTypes.SendAction;
+import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import esi.acgt.atlj.message.messageTypes.SendHighScore;
 import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
@@ -42,6 +43,7 @@ import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -99,6 +101,11 @@ public class Client extends AbstractClient implements ClientInterface {
    */
   private Consumer<Mino> updateNextTetriminoOtherPlayer;
 
+
+  private Consumer<HashMap<String, Integer>> setHighScoreReceivedFromServer;
+
+  private Consumer<HashMap<String, Integer>> setStatisticsReceivedFromServer;
+
   /**
    * Constructor of a client.
    *
@@ -143,7 +150,10 @@ public class Client extends AbstractClient implements ClientInterface {
     } else if (information instanceof LockedTetrimino message) { //When locked tetrimino has been send from server.
       locked.accept(message.getTetrimino());
     } else if (information instanceof SendHighScore message) {
-      System.out.println(message.getHighScore()); //todo interpret command
+      setHighScoreReceivedFromServer.accept(message.getHighScore());
+    } else if (information instanceof SendAllStatistics message) {
+      System.out.println(message.getGame_history());
+      setStatisticsReceivedFromServer.accept(message.getGame_history());
     }
   }
 
@@ -318,6 +328,15 @@ public class Client extends AbstractClient implements ClientInterface {
   @Override
   public void connectHold(Consumer<Mino> hold) {
     this.hold = hold;
+  }
+
+  public void connectStatistics(
+      Consumer<HashMap<String, Integer>> setStatisticsReceivedFromServer) {
+    this.setStatisticsReceivedFromServer = setStatisticsReceivedFromServer;
+  }
+
+  public void connectHighScore(Consumer<HashMap<String, Integer>> setHighScoreReceivedFromServer) {
+    this.setHighScoreReceivedFromServer = setHighScoreReceivedFromServer;
   }
 
 
