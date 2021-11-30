@@ -55,7 +55,7 @@ public class GameStatsTable {
       if (user.isPersistant()) {
         highScore.setInt(1, user.getId());
         ResultSet rs = highScore.executeQuery();
-        rs.getInt(1);
+        return rs.getInt(1);
       }
     } catch (Exception e) {
       throw new DbException(
@@ -72,18 +72,24 @@ public class GameStatsTable {
    * @throws DbException If query for setting high score from user has failed.
    */
   public static void setHighScore(User user, int newHighScore) throws DbException {
-    try {
-      java.sql.Connection connection = DataBaseManager.getConnection();
-      java.sql.PreparedStatement highScore;
-      highScore = connection.prepareStatement(
-          "UPDATE main.game_stats SET high_score =" + newHighScore + " WHERE user_id = ?");
-      if (user.isPersistant()) {
-        highScore.setInt(1, user.getId());
-        highScore.executeUpdate();
+    int highscore = getHighScore(user);
+    if (getHighScore(user) < newHighScore) {
+      try {
+        java.sql.Connection connection = DataBaseManager.getConnection();
+        java.sql.PreparedStatement highScore;
+        highScore = connection.prepareStatement(
+            "UPDATE main.game_stats SET high_score =" + newHighScore + " WHERE user_id = ?");
+        if (user.isPersistant()) {
+          highScore.setInt(1, user.getId());
+          highScore.executeUpdate();
+        }
+      } catch (Exception e) {
+        throw new DbException(
+            tableName + ": Impossible to set high score for the user\n" + e.getMessage());
       }
-    } catch (Exception e) {
-      throw new DbException(
-          tableName + ": Impossible to set high score for the user\n" + e.getMessage());
+    } else {
+      System.out.println(
+          "[" + user.getUsername() + "]" + " " + newHighScore + " was not a high score");
     }
   }
 
