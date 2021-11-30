@@ -27,7 +27,7 @@
 <?import javafx.scene.layout.VBox?>
 <VBox fx:id="container" minHeight="444.0" minWidth="186.0" spacing="2.0"
   xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="esi.acgt.atlj.client.controller.fxml.BoardMainController">
+  fx:controller="esi.acgt.atlj.client.view.controllers.BoardMainController">
   <fx:include fx:id="topBox" minHeight="48.0" minWidth="186.0" source="InfoBox.fxml"
     VBox.vgrow="NEVER"/>
   <fx:include fx:id="matrix" minHeight="348.0" minWidth="186.0" source="Matrix.fxml"

@@ -25,6 +25,8 @@
 package esi.acgt.atlj.client.model.utils;
 
 import esi.acgt.atlj.client.connexionServer.ClientInterface;
+import esi.acgt.atlj.model.game.GameInterface;
+import esi.acgt.atlj.model.game.GameStat;
 import esi.acgt.atlj.model.game.ManagedGame;
 import esi.acgt.atlj.model.game.UnmanagedGame;
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -32,7 +34,6 @@ import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -50,6 +51,7 @@ public class MessagesFromServerHandler {
    */
   private UnmanagedGame otherPlayer;
 
+  private List<GameInterface> players;
 
   /**
    * Constructor for message from server.
@@ -59,12 +61,14 @@ public class MessagesFromServerHandler {
    * @param client      Client that will receive message from server.
    */
   public MessagesFromServerHandler(UnmanagedGame otherPlayer, ManagedGame player,
-      ClientInterface client) {
+      ClientInterface client, List<GameInterface> players) {
     this.otherPlayer = otherPlayer;
     this.client = client;
     this.player = player;
+    this.players = players;
     connectLambdaClient();
   }
+
 
   /**
    * Updates players next mino.
@@ -76,42 +80,51 @@ public class MessagesFromServerHandler {
    * Sets the name of the other player.
    */
   Consumer<String> nameSentFromServer = (String name) -> otherPlayer.setUsername(name);
+
   /**
    * Removes lines from other player.
    */
   Consumer<List<Integer>> removeLineSentFromServer = (List<Integer> line) ->
   {
     otherPlayer.removeLines(line);
-    otherPlayer.setNbLine(line.size());
+    otherPlayer.setBurns(line.size());
   };
+
   /**
    * Lockes the other players tetrimino.
    */
   Consumer<TetriminoInterface> lockedTetriminoSentFromServer = (TetriminoInterface tetriminoInterface) ->
       otherPlayer.placeTetrimino(tetriminoInterface);
+
   /**
    * Updates the other players falling tetrimino.
    */
   Consumer<TetriminoInterface> fallingTetriminoSentFromServer = (TetriminoInterface tetriminoInterface) ->
       otherPlayer.setActualTetrimino(tetriminoInterface);
+
   /**
    * Updates the hold tetrimino from the other player sent from the server.
    */
   Consumer<Mino> holdReceivedFromServer = (Mino mino) ->
       otherPlayer.setHold(mino);
+
   /**
    * Updates the next tetrimino from the other player sent from the server.
    */
   Consumer<Mino> updateNextTetriminoOtherPlayer = (Mino m) ->
       otherPlayer.setNextTetrimino(Tetrimino.createTetrimino(m));
+
   /**
    * Starts a game when server sent green light.
    */
   Runnable playerReady = this::start;
+
   /**
    * Sets other player to lost.
    */
-  Runnable playerLostSentFromServer = () -> this.otherPlayer.playerStatus("LOCK OUT", 0.9);
+  Runnable playerLostSentFromServer = () ->
+      this.otherPlayer.playerStatus("LOCK OUT", 0.9);
+
   /**
    * Sets other player to disconnected.
    */
@@ -124,6 +137,7 @@ public class MessagesFromServerHandler {
   /**
    * Updates the score from the other player.
    */
+
   Consumer<Integer> scoreReceivedFromServer = (Integer score) ->
   {
     if (client != null) {
@@ -134,14 +148,19 @@ public class MessagesFromServerHandler {
   Consumer<HashMap<String, Integer>> setHighScoreReceivedFromServer = (HashMap<String, Integer> highScore) ->
   {
     if (client != null) {
-      System.err.println("hello");
+      for (var player : players) {
+        var highscore = highScore.get(player.getUsername());
+        if (highscore != null) {
+          ((GameStat) player.getStats()).setHighScore(highscore);
+        }
+      }
     }
   };
 
   Consumer<HashMap<String, Integer>> setStatisticsReceivedFromServer = (HashMap<String, Integer> statistics) ->
   {
     if (client != null) {
-      System.err.println("hellopppppppp");
+      // TODO
     }
   };
 

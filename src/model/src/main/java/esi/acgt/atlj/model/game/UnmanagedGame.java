@@ -43,10 +43,10 @@ public class UnmanagedGame extends AbstractGame {
    *
    * @param tetrimino Tetrimino to set.
    */
-  public void setActualTetrimino(TetriminoInterface tetrimino) {
-    Mino[][] oldBoard = this.getBoard();
+  public synchronized void setActualTetrimino(TetriminoInterface tetrimino) {
+    Mino[][] oldBoard = this.getMatrix();
     this.actualTetrimino = tetrimino;
-    this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
+    this.pcs.firePropertyChange("board", oldBoard, this.getMatrix());
   }
 
   /**
@@ -54,9 +54,9 @@ public class UnmanagedGame extends AbstractGame {
    *
    * @param tetrimino Tetrimino to set.
    */
-  public void setNextTetrimino(TetriminoInterface tetrimino) {
+  public synchronized void setNextTetrimino(TetriminoInterface tetrimino) {
     this.nextTetrimino = tetrimino;
-    this.changeSupport.firePropertyChange("next", null, this.getNextTetrimino().getType());
+    this.pcs.firePropertyChange("next", null, this.getNextTetrimino().getType());
   }
 
   /**
@@ -64,9 +64,8 @@ public class UnmanagedGame extends AbstractGame {
    *
    * @param score Score to set
    */
-  public void setScore(int score) {
-    this.score = score;
-    this.changeSupport.firePropertyChange("score", null, this.score);
+  public synchronized void setScore(int score) {
+    this.stats.setScore(score);
   }
 
   /**
@@ -74,9 +73,9 @@ public class UnmanagedGame extends AbstractGame {
    *
    * @param username username to set.
    */
-  public void setUsername(String username) {
+  public synchronized void setUsername(String username) {
     this.username = username;
-    this.changeSupport.firePropertyChange("username", null, this.username);
+    this.pcs.firePropertyChange("username", null, this.username);
   }
 
   /**
@@ -84,19 +83,7 @@ public class UnmanagedGame extends AbstractGame {
    *
    * @param nbLine Number of line to set to.
    */
-  public void setNbLine(int nbLine) {
-    this.nbLine += nbLine;
-    this.changeSupport.firePropertyChange("line", null, this.nbLine);
+  public synchronized void setBurns(int nbLine) {
+    this.stats.setBurns(nbLine);
   }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void setHold(Mino hold) {
-    this.hold = hold;
-    this.changeSupport.firePropertyChange("hold", null, this.hold);
-  }
-
-
 }

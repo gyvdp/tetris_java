@@ -33,7 +33,7 @@
 <StackPane fx:id="container" maxHeight="Infinity" maxWidth="Infinity" minHeight="174" minWidth="93"
   stylesheets="@../css/matrix.css" xmlns="http://javafx.com/javafx/11.0.2"
   xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="esi.acgt.atlj.client.controller.fxml.MatrixController">
+  fx:controller="esi.acgt.atlj.client.view.controllers.MatrixController">
   <ImageView fx:id="background" fitHeight="174" fitWidth="93" StackPane.alignment="CENTER">
     <Image url="@../image/bg/board.png"/>
   </ImageView>

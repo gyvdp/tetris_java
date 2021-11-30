@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.client.controller.fxml;
+package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
 import java.net.URL;

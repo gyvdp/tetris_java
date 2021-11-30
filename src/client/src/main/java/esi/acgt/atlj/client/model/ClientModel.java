@@ -100,7 +100,9 @@ public class ClientModel extends Model {
       client.sendNameToServer(player.getUsername());
     }
     new MessagesToServerHandler(player, client);
-    new MessagesFromServerHandler(otherPlayer, player, client);
+    new MessagesFromServerHandler(otherPlayer, player, client, players);
+    players.add(player);
+    players.add(otherPlayer);
   }
 
   /**
@@ -154,7 +156,7 @@ public class ClientModel extends Model {
   }
 
   /**
-   * Soft drops a players mino.
+   * Soft drops a player's mino.
    */
   public void softDrop() {
     this.player.softDrop();

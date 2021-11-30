@@ -32,7 +32,7 @@
 <StackPane id="infobox" fx:id="container" maxHeight="219" maxWidth="850" minHeight="48"
   minWidth="186" stylesheets="@../css/info.css" xmlns="http://javafx.com/javafx/11.0.2"
   xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="esi.acgt.atlj.client.controller.fxml.InfoBoxController">
+  fx:controller="esi.acgt.atlj.client.view.controllers.InfoBoxController">
   <ImageView fx:id="background" fitHeight="48" fitWidth="186" preserveRatio="true" smooth="false"
     StackPane.alignment="BOTTOM_CENTER">
     <Image url="@../image/bg/infobox.png"/>

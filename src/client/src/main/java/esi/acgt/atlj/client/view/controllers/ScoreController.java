@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.client.controller.fxml;
+package esi.acgt.atlj.client.view.controllers;
 
 import java.net.URL;
 import java.util.Arrays;
@@ -114,5 +114,9 @@ public class ScoreController implements Initializable {
 
   public void setScore(int score) {
     scoreValue.setText(scoreToText(score));
+  }
+
+  public void setHighScore(int highScore) {
+    topValue.setText(scoreToText(highScore));
   }
 }

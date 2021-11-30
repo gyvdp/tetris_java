@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.client.controller.fxml;
+package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
 import java.net.URL;
@@ -74,6 +74,10 @@ public class BoardAsideController implements Initializable {
 
   public void setScore(int score) {
     scoreController.setScore(score);
+  }
+
+  public void setHighScore(int highScore) {
+    scoreController.setHighScore(highScore);
   }
 
   public void setNextTetrimino(Mino mino) {

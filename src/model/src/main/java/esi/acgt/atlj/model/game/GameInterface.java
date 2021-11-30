@@ -45,16 +45,16 @@ public interface GameInterface {
    *
    * @return the matrix of minos
    */
-  Mino[][] getBoard();
+  Mino[][] getMatrix();
 
   /**
-   * Get the actual score of the Player
+   * Get the stats of the game
    *
-   * @return the score
+   * @return Interface with all stats
    */
-  int getScore();
+  GameStatInterface getStats();
 
-
+  
   boolean[][] generateFreeMask(int height, int width, int xStart, int yStart, int xMargin,
       int yMargin);
 

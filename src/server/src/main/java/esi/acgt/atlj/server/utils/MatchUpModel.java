@@ -83,7 +83,7 @@ public class MatchUpModel {
       game.setActualTetrimino(message.getTetrimino());
     }
     if (information instanceof SendScore message) { // When send score is sent from server
-      game.setScore(message.getScore());
+      game.getStats().setScore(message.getScore());
     }
     if (information instanceof SetHold message) { // When hold tetrimino is sent from server
       game.setHold(message.getHold());
@@ -100,7 +100,7 @@ public class MatchUpModel {
    * @return Score of the client
    */
   public int getGameScore(CustomClientThread client) {
-    return gameHashMap.get(client).getScore();
+    return gameHashMap.get(client).getStats().getScore();
   }
 
   /**

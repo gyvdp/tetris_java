@@ -24,26 +24,88 @@
 
 package esi.acgt.atlj.model.game;
 
+/**
+ * The Action enumeration describes actions of the player and the associated points
+ */
 public enum Action {
-  SINGLE(100, true),
-  DOUBLE(300, true),
-  TRIPLE(500, true),
-  TETRIS(800, true),
+  /**
+   * Single line burn
+   */
+  SINGLE(100, 1, true),
+  /**
+   * Double line burn
+   */
+  DOUBLE(300, 2, true),
+  /**
+   * TRIPLE line burn
+   */
+  TRIPLE(500, 3, true),
+  /**
+   * TETRIS line burn (4 lines)
+   */
+  TETRIS(800, 4, true),
+  /**
+   * Soft drop action
+   */
   SOFT_DROP(1),
+  /**
+   * Hard drop action (one per line)
+   */
   HARD_DROP(2);
 
-  private final int score;
+  /**
+   * Value in points of an action
+   */
+  private final int points;
+
+  /**
+   * Number of burns of the action
+   */
+  private final int burns;
+
+  /**
+   * Action to multiply by level to obtain real points
+   */
   private final boolean multiplyLevel;
 
-  Action(int score) {
-    this(score, false);
-  }
-
-  Action(int score, boolean multiplyLevel) {
-    this.score = score;
+  /**
+   * Action constructor
+   *
+   * @param points        number of points of the action
+   * @param burns         number of burns of the action
+   * @param multiplyLevel true if you need to multiply point by level
+   */
+  Action(int points, int burns, boolean multiplyLevel) {
+    this.points = points;
+    this.burns = burns;
     this.multiplyLevel = multiplyLevel;
   }
 
+  /**
+   * Action constructor
+   *
+   * @param points number of points of the action
+   */
+  Action(int points) {
+    this(points, 0, false);
+  }
+
+  /**
+   * Action constructor
+   *
+   * @param points        number of points of the action
+   * @param multiplyLevel true if you need to multiply point by level
+   */
+  Action(int points, boolean multiplyLevel) {
+    this(points, 0, multiplyLevel);
+  }
+
+  /**
+   * Give the action that correspond to n line burns
+   *
+   * @param lines nb of lines to burn
+   * @return the action associated
+   */
   static Action getActionByFullLines(int lines) {
     return switch (lines) {
       case 1 -> SINGLE;
@@ -54,12 +116,31 @@ public enum Action {
     };
   }
 
-  int getScore() {
-    return score;
+  /**
+   * Get the number of points of an action
+   *
+   * @return the number of points
+   */
+  int getPoints() {
+    return points;
   }
 
+  /**
+   * Get if the action is to multiply by level
+   *
+   * @return true if to multiply, false if not
+   */
   boolean getMultiplyLevel() {
     return multiplyLevel;
+  }
+
+  /**
+   * Get the number of line burns
+   *
+   * @return the number of burns
+   */
+  int getBurns() {
+    return burns;
   }
 
 }

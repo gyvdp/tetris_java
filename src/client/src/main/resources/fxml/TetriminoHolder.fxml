@@ -32,7 +32,7 @@
 <?import javafx.scene.text.Font?>
 <StackPane fx:id="container" minHeight="108" minWidth="90" xmlns="http://javafx.com/javafx/11.0.2"
   xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../css/tetriminoholder.css"
-  fx:controller="esi.acgt.atlj.client.controller.fxml.TetriminoHolderController">
+  fx:controller="esi.acgt.atlj.client.view.controllers.TetriminoHolderController">
   <ImageView fx:id="background" fitHeight="108" fitWidth="90" pickOnBounds="true"
     preserveRatio="true">
     <Image url="@../image/bg/tetriminoholder.png"/>

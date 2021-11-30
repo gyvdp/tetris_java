@@ -29,7 +29,7 @@
 <HBox fx:id="container" alignment="CENTER" minHeight="572.0" minWidth="884.0"
   style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/11.0.2"
   xmlns:fx="http://javafx.com/fxml/1" spacing="2.0"
-  fx:controller="esi.acgt.atlj.client.controller.fxml.MultiplayerGameController">
+  fx:controller="esi.acgt.atlj.client.view.controllers.MultiplayerGameController">
   <fx:include fx:id="left" minHeight="444.0" minWidth="250.0" source="LeftBoard.fxml"
     HBox.hgrow="NEVER"/>
   <fx:include fx:id="right" minHeight="444.0" minWidth="250.0" source="RightBoard.fxml"

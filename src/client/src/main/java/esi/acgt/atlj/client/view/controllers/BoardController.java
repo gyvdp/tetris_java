@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.client.controller.fxml;
+package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
 import java.beans.PropertyChangeEvent;
@@ -84,6 +84,10 @@ public class BoardController implements Initializable, PropertyChangeListener {
     asideController.setScore(score);
   }
 
+  public void setHighScore(int highScore) {
+    asideController.setHighScore(highScore);
+  }
+
   public void setNextTetrimino(Mino mino) {
     asideController.setNextTetrimino(mino);
   }
@@ -102,8 +106,9 @@ public class BoardController implements Initializable, PropertyChangeListener {
     Platform.runLater(() -> {
       switch (evt.getPropertyName()) {
         case "board" -> setMatrix((Mino[][]) evt.getNewValue());
-        case "line" -> setLines((int) evt.getNewValue());
-        case "score" -> setScore((int) evt.getNewValue());
+        case "BURNS" -> setLines((int) evt.getNewValue());
+        case "SCORE" -> setScore((int) evt.getNewValue());
+        case "HIGH_SCORE" -> setHighScore((int) evt.getNewValue());
         case "username" -> setUsername(evt.getNewValue().toString());
         case "hold" -> setHoldTetrimino(((Mino) evt.getNewValue()));
         case "next" -> setNextTetrimino((Mino) evt.getNewValue());

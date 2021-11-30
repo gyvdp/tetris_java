@@ -25,7 +25,7 @@
 package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
-import esi.acgt.atlj.client.controller.fxml.MultiplayerGameController;
+import esi.acgt.atlj.client.view.controllers.MultiplayerGameController;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.Objects;

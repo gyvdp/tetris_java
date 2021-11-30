@@ -33,7 +33,7 @@
 <StackPane fx:id="container" minHeight="144" minWidth="128"
   stylesheets="@../css/score.css" xmlns="http://javafx.com/javafx/11.0.2"
   xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="esi.acgt.atlj.client.controller.fxml.ScoreController">
+  fx:controller="esi.acgt.atlj.client.view.controllers.ScoreController">
   <ImageView fx:id="background" fitHeight="144" fitWidth="128" pickOnBounds="true"
     preserveRatio="true">
     <Image url="@../image/bg/score.png"/>

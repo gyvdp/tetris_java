@@ -37,26 +37,58 @@ import java.util.List;
 
 public abstract class AbstractGame implements GameInterface, Serializable {
 
-  protected Mino[][] minos;
-  protected int score;
-  protected int level;
-  protected String username;
-  protected int nbLine;
-  protected Mino hold;
-  protected TetriminoInterface actualTetrimino;
-  protected TetriminoInterface nextTetrimino;
-  protected PropertyChangeSupport changeSupport;
+  /**
+   * The matrix of the board
+   */
+  protected Mino[][] matrix;
 
+  /**
+   * The username of the player
+   */
+  protected String username;
+
+  /**
+   * The stats of the actual game
+   */
+  protected GameStat stats;
+
+  /**
+   * The actual falling tetrimino
+   */
+  protected TetriminoInterface actualTetrimino;
+
+  /**
+   * The next tetrimino
+   */
+  protected TetriminoInterface nextTetrimino;
+
+  /**
+   * The holed tetrimino
+   */
+  protected Mino hold;
+
+  /**
+   * The Property Change support
+   */
+  protected PropertyChangeSupport pcs;
+
+  /**
+   * The AbstractGame constructor
+   *
+   * @param username the username of the player
+   */
   public AbstractGame(String username) {
     this.username = username;
-    this.score = 0;
-    this.nbLine = 0;
     this.actualTetrimino = new OTetrimino();
     this.nextTetrimino = new ITetrimino();
-    this.changeSupport = new PropertyChangeSupport(this);
-    minos = new Mino[HEIGHT][WIDTH];
+    this.pcs = new PropertyChangeSupport(this);
+    this.matrix = new Mino[HEIGHT][WIDTH];
+    this.stats = new GameStat(this.pcs);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public synchronized boolean[][] generateFreeMask(int height, int width, int xStart, int yStart,
       int xMargin, int yMargin) {
@@ -75,7 +107,7 @@ public abstract class AbstractGame implements GameInterface, Serializable {
         int y = yStart - yMargin + i;
 
         boolean outOfBound = x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1;
-        boolean notFree = !outOfBound && minos[y][x] != null;
+        boolean notFree = !outOfBound && matrix[y][x] != null;
         if (outOfBound || notFree) {
           mask[i][j] = false;
           continue;
@@ -87,20 +119,6 @@ public abstract class AbstractGame implements GameInterface, Serializable {
     return mask;
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public synchronized int getScore() {
-    return score;
-  }
-
-  /**
-   * Setter of Score
-   *
-   * @param score new score
-   */
-  public abstract void setScore(int score);
 
   /**
    * {@inheritDoc}
@@ -123,7 +141,10 @@ public abstract class AbstractGame implements GameInterface, Serializable {
    *
    * @param hold new mino that you hold
    */
-  public abstract void setHold(Mino hold);
+  public synchronized void setHold(Mino hold) {
+    this.hold = hold;
+    this.pcs.firePropertyChange("hold", null, this.hold);
+  }
 
   /**
    * {@inheritDoc}
@@ -159,11 +180,11 @@ public abstract class AbstractGame implements GameInterface, Serializable {
    * {@inheritDoc}
    */
   @Override
-  public synchronized Mino[][] getBoard() {
-    Mino[][] copyBoard = new Mino[this.minos.length - 2][];
+  public synchronized Mino[][] getMatrix() {
+    Mino[][] copyBoard = new Mino[this.matrix.length - 2][];
     for (int i = 0; i < copyBoard.length; i++) {
       var y = i + 2;
-      copyBoard[i] = Arrays.copyOf(this.minos[y], this.minos[y].length);
+      copyBoard[i] = Arrays.copyOf(this.matrix[y], this.matrix[y].length);
     }
 
     if (actualTetrimino != null) {
@@ -189,7 +210,7 @@ public abstract class AbstractGame implements GameInterface, Serializable {
    */
   @Override
   public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
-    changeSupport.addPropertyChangeListener(listener);
+    pcs.addPropertyChangeListener(listener);
   }
 
   /**
@@ -197,18 +218,7 @@ public abstract class AbstractGame implements GameInterface, Serializable {
    */
   @Override
   public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
-    changeSupport.removePropertyChangeListener(listener);
-  }
-
-  /**
-   * Sets the number of lines player has destroyed
-   *
-   * @param nbLine Number of lines to set
-   */
-  public synchronized void setNbLine(int nbLine) {
-    int oldNbLine = this.nbLine;
-    this.nbLine = nbLine;
-    this.changeSupport.firePropertyChange("line", oldNbLine, this.nbLine);
+    pcs.removePropertyChangeListener(listener);
   }
 
   /**
@@ -218,36 +228,40 @@ public abstract class AbstractGame implements GameInterface, Serializable {
    * @param opacity opcaity of this new status
    */
   public synchronized void playerStatus(String status, double opacity) {
-    this.changeSupport.firePropertyChange("status", status, opacity);
+    this.pcs.firePropertyChange("status", status, opacity);
   }
 
+  /**
+   * Remove lines in the matrix
+   *
+   * @param lines The list of indexes of lines to remove
+   */
   public synchronized void removeLines(List<Integer> lines) {
-    var oldBoard = getBoard();
+    var oldBoard = getMatrix();
     lines.sort(Collections.reverseOrder());
     int removed = 0;
     for (var line : lines) {
-      if (line > minos.length - 1 || line < 0) {
+      if (line > matrix.length - 1 || line < 0) {
         throw new IllegalArgumentException("You cannot remove a line that is out of the game");
       }
 
       for (int i = line + removed; i >= 0; --i) {
-        for (int j = 0; j < minos[i].length; ++j) {
-          minos[i][j] = i != 0 ? minos[i - 1][j] : null;
+        for (int j = 0; j < matrix[i].length; ++j) {
+          matrix[i][j] = i != 0 ? matrix[i - 1][j] : null;
         }
       }
       removed++;
     }
-    setLevel((nbLine / 10) + 1);
-
-    this.changeSupport.firePropertyChange("board", oldBoard, getBoard());
+    this.pcs.firePropertyChange("board", oldBoard, getMatrix());
   }
 
-  public void setLevel(int level) {
-    this.level = level;
-  }
-
-  public void placeTetrimino(TetriminoInterface tetrimino) {
-    var oldBoard = getBoard();
+  /**
+   * Place a tetrimino on the matrix
+   *
+   * @param tetrimino The tetrimino to place
+   */
+  public synchronized void placeTetrimino(TetriminoInterface tetrimino) {
+    var oldBoard = getMatrix();
     var tMinos = tetrimino.getMinos();
     for (var i = 0; i < tMinos.length; ++i) {
       for (var j = 0; j < tMinos[i].length; ++j) {
@@ -257,11 +271,19 @@ public abstract class AbstractGame implements GameInterface, Serializable {
         var line = tetrimino.getY() + i;
         var col = tetrimino.getX() + j;
 
-        if (!(line < 0 || col < 0) && line < minos.length && col < minos[line].length) {
-          minos[line][col] = tMinos[i][j];
+        if (!(line < 0 || col < 0) && line < matrix.length && col < matrix[line].length) {
+          matrix[line][col] = tMinos[i][j];
         }
       }
     }
-    this.changeSupport.firePropertyChange("board", oldBoard, getBoard());
+    this.pcs.firePropertyChange("board", oldBoard, getMatrix());
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public synchronized GameStat getStats() {
+    return this.stats;
   }
 }

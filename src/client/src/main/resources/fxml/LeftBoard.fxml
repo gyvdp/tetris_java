@@ -27,7 +27,7 @@
 <?import javafx.scene.layout.HBox?>
 <HBox fx:id="container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="222" minWidth="157"
   spacing="2.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="esi.acgt.atlj.client.controller.fxml.BoardController">
+  fx:controller="esi.acgt.atlj.client.view.controllers.BoardController">
   <fx:include fx:id="aside" source="BoardAside.fxml" HBox.hgrow="NEVER"/>
   <fx:include fx:id="boardMain" source="BoardMain.fxml" HBox.hgrow="NEVER"/>
 </HBox>

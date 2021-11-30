@@ -79,7 +79,6 @@ public class ManagedGame extends AbstractGame {
     super(username);
     hasAlreadyHolded = false;
     this.status = GameStatus.NOT_STARTED;
-    this.level = 1;
     this.timer = new Timer(true);
     this.tickHandler = new TickHandler(this);
   }
@@ -89,7 +88,7 @@ public class ManagedGame extends AbstractGame {
    *
    * @param askNextMino Lambda expression to connect.
    */
-  public void connectAskNewMino(Runnable askNextMino) {
+  public synchronized void connectAskNewMino(Runnable askNextMino) {
     this.askNextMino = askNextMino;
   }
 
@@ -97,7 +96,7 @@ public class ManagedGame extends AbstractGame {
   /**
    * Connect lambda to send to server that player lost.
    */
-  public void connectLost(Runnable iLost) {
+  public synchronized void connectLost(Runnable iLost) {
     this.iLost = iLost;
   }
 
@@ -106,7 +105,7 @@ public class ManagedGame extends AbstractGame {
    *
    * @param myTT Lambda to connect
    */
-  public void connectTetriminoLock(Consumer<TetriminoInterface> myTT) {
+  public synchronized void connectTetriminoLock(Consumer<TetriminoInterface> myTT) {
     this.tetriminoLock = myTT;
   }
 
@@ -116,8 +115,9 @@ public class ManagedGame extends AbstractGame {
    *
    * @param setScoreServer Lambda to connect.
    */
-  public void connectSendScoreServer(Consumer<Integer> setScoreServer) {
+  public synchronized void connectSendScoreServer(Consumer<Integer> setScoreServer) {
     this.setScoreServer = setScoreServer;
+    this.stats.connectSendScore(setScoreServer);
   }
 
   /**
@@ -125,7 +125,7 @@ public class ManagedGame extends AbstractGame {
    *
    * @param holdMino Lambda expression to connect
    */
-  public void connectHoldMino(Consumer<Mino> holdMino) {
+  public synchronized void connectHoldMino(Consumer<Mino> holdMino) {
     this.holdMino = holdMino;
   }
 
@@ -134,7 +134,7 @@ public class ManagedGame extends AbstractGame {
    *
    * @param addTetrimino Lambda expression to connect
    */
-  public void connectAddTetrimino(Consumer<TetriminoInterface> addTetrimino) {
+  public synchronized void connectAddTetrimino(Consumer<TetriminoInterface> addTetrimino) {
     this.addTetrimino = addTetrimino;
   }
 
@@ -144,7 +144,7 @@ public class ManagedGame extends AbstractGame {
   public synchronized void start() {
     this.askNextMino.run();
     Mino[][] emptyBoard = new Mino[HEIGHT][WIDTH];
-    this.changeSupport.firePropertyChange("board", emptyBoard, this.getBoard());
+    this.pcs.firePropertyChange("board", emptyBoard, this.getMatrix());
     setStatus(GameStatus.TETRIMINO_FALLING);
   }
 
@@ -155,12 +155,12 @@ public class ManagedGame extends AbstractGame {
    * @return True if tetrimino is able to move
    */
   public synchronized boolean move(Direction direction) {
-    Mino[][] oldBoard = this.getBoard();
+    Mino[][] oldBoard = this.getMatrix();
 
     boolean moved = this.actualTetrimino.move(direction,
         generateFreeMask(6, 6, actualTetrimino.getX(), actualTetrimino.getY(), 1, 1));
 
-    this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
+    this.pcs.firePropertyChange("board", oldBoard, this.getMatrix());
 
     if (moved) {
       if (status == GameStatus.LOCK_DOWN) {
@@ -168,25 +168,15 @@ public class ManagedGame extends AbstractGame {
       }
 
       if (status == GameStatus.TETRIMINO_HARD_DROPPING) {
-        increaseScore(2);
+        stats.applyAction(Action.HARD_DROP);
       }
     }
     addTetrimino.accept(actualTetrimino);
     return moved;
   }
 
-  public void connectLineDestroyed(Consumer<List<Integer>> lineDestroyed) {
+  public synchronized void connectLineDestroyed(Consumer<List<Integer>> lineDestroyed) {
     this.lineDestroyed = lineDestroyed;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public synchronized void setHold(Mino hold) {
-    this.hold = hold;
-    holdMino.accept(hold);
-    this.changeSupport.firePropertyChange("hold", null, this.getHold());
   }
 
   /**
@@ -195,7 +185,7 @@ public class ManagedGame extends AbstractGame {
   @Override
   public synchronized void setNextTetrimino(TetriminoInterface nextTetrimino) {
     this.nextTetrimino = nextTetrimino;
-    this.changeSupport.firePropertyChange("next", null, this.getNextTetrimino().getType());
+    this.pcs.firePropertyChange("next", null, this.getNextTetrimino().getType());
   }
 
   /**
@@ -212,9 +202,9 @@ public class ManagedGame extends AbstractGame {
         this.setActualTetrimino(temp);
       }
       hasAlreadyHolded = true;
+      holdMino.accept(hold);
       setStatus(GameStatus.TETRIMINO_FALLING);
     }
-
   }
 
   /**
@@ -222,9 +212,8 @@ public class ManagedGame extends AbstractGame {
    */
   @Override
   public synchronized void setActualTetrimino(TetriminoInterface actualTetrimino) {
-    Mino[][] oldBoard = this.getBoard();
     this.actualTetrimino = actualTetrimino;
-    this.changeSupport.firePropertyChange("board", oldBoard, this.getBoard());
+    this.pcs.firePropertyChange("board", null, this.getMatrix());
   }
 
   /**
@@ -247,41 +236,14 @@ public class ManagedGame extends AbstractGame {
    * @param clockwise True if tetrimino should rotate clockwise.
    */
   public synchronized boolean rotate(boolean clockwise) {
-    var oldBoard = getBoard();
+    var oldBoard = getMatrix();
     boolean rotated = actualTetrimino.rotate(clockwise,
         this.generateFreeMask(4, 4, actualTetrimino.getX(),
             actualTetrimino.getY(), 0, 0));
     if (rotated) {
-      this.changeSupport.firePropertyChange("board", oldBoard, getBoard());
+      this.pcs.firePropertyChange("board", oldBoard, getMatrix());
     }
     return rotated;
-  }
-
-  /**
-   * Sets the score of the current player
-   *
-   * @param score Score to set to.
-   */
-  public synchronized void setScore(int score) {
-    int oldScore = this.score;
-    this.score = score;
-    this.changeSupport.firePropertyChange("score", oldScore, this.score);
-    if (setScoreServer != null) {
-      this.setScoreServer.accept(this.score);
-    }
-  }
-
-  public synchronized void increaseScore(int increment) {
-    setScore(score + increment);
-  }
-
-  public synchronized void increaseScore(Action action) {
-    int multiplier = action.getMultiplyLevel() ? this.level : 1;
-    increaseScore(action.getScore() * multiplier);
-  }
-
-  public synchronized void incrementNbLines(int increment) {
-    setNbLine(nbLine + increment);
   }
 
   /**
@@ -306,7 +268,7 @@ public class ManagedGame extends AbstractGame {
 
     switch (status) {
       case TETRIMINO_FALLING -> {
-        timer.schedule(this.tickHandler, TickHandler.tickDelay(this.level));
+        timer.schedule(this.tickHandler, TickHandler.tickDelay(this.stats.getLevel()));
         this.playerStatus("", 0);
       }
       case LOCK_DOWN -> {
@@ -330,13 +292,12 @@ public class ManagedGame extends AbstractGame {
     this.hasAlreadyHolded = false;
     setActualTetrimino(this.nextTetrimino);
     askNextMino.run();
-    List<Integer> lines = getFullLines();
 
+    List<Integer> lines = getFullLines();
     if (lines.size() != 0) {
       removeLines(lines);
       lineDestroyed.accept(lines);
-      increaseScore(Action.getActionByFullLines(lines.size()));
-      incrementNbLines(lines.size());
+      this.stats.applyAction(Action.getActionByFullLines(lines.size()));
     }
 
     if (outOfBound()) {
@@ -350,26 +311,16 @@ public class ManagedGame extends AbstractGame {
   }
 
   /**
-   * Update that the game has finished
-   *
-   * @param winnerName Name of the winner
-   * @param reason     Reason from player to have won, sometimes it's just skill :}
-   */
-  public synchronized void fireEndGame(String winnerName, String reason) {
-    this.changeSupport.firePropertyChange("winner", winnerName, reason);
-  }
-
-  /**
    * Gets all the line of the whole board
    *
    * @return All the line
    */
   private synchronized List<Integer> getFullLines() {
     List<Integer> lines = new ArrayList<>();
-    for (int i = 0; i < minos.length; ++i) {
+    for (int i = 0; i < matrix.length; ++i) {
       boolean full = true;
-      for (int j = 0; j < minos[i].length; ++j) {
-        if (minos[i][j] == null) {
+      for (int j = 0; j < matrix[i].length; ++j) {
+        if (matrix[i][j] == null) {
           full = false;
           break;
         }
@@ -383,10 +334,10 @@ public class ManagedGame extends AbstractGame {
     return lines;
   }
 
-  boolean outOfBound() {
+  private synchronized boolean outOfBound() {
     for (int i = 0; i < 2; ++i) {
-      for (int j = 0; j < minos[i].length; ++j) {
-        if (minos[i][j] != null) {
+      for (int j = 0; j < matrix[i].length; ++j) {
+        if (matrix[i][j] != null) {
           return true;
         }
       }

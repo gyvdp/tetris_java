@@ -27,7 +27,7 @@
 <?import javafx.scene.layout.VBox?>
 <VBox fx:id="container" alignment="TOP_RIGHT" spacing="2.0" xmlns="http://javafx.com/javafx/11.0.2"
   xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="esi.acgt.atlj.client.controller.fxml.BoardAsideController">
+  fx:controller="esi.acgt.atlj.client.view.controllers.BoardAsideController">
   <fx:include fx:id="score" source="Score.fxml" VBox.vgrow="NEVER"/>
   <fx:include fx:id="next" source="TetriminoHolder.fxml" VBox.vgrow="NEVER"/>
   <fx:include fx:id="hold" source="TetriminoHolder.fxml" VBox.vgrow="NEVER"/>
