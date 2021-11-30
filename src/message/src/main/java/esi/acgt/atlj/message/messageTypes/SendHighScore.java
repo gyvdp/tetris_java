@@ -26,19 +26,20 @@ package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.MessageType;
+import java.util.HashMap;
 
 public class SendHighScore extends Message {
 
-  private int highScore;
+  HashMap<String, Integer> highScores;
 
   /**
    * High score of the current player.
    *
-   * @param score High score to send.
+   * @param highScores High score to send.
    */
-  public SendHighScore(int score) {
+  public SendHighScore(HashMap<String, Integer> highScores) {
     this.messageType = MessageType.SEND_HIGH_SCORE;
-    this.highScore = score;
+    this.highScores = highScores;
   }
 
   /**
@@ -46,8 +47,8 @@ public class SendHighScore extends Message {
    *
    * @return High score of player.
    */
-  public int getHighScore() {
-    return this.highScore;
+  public HashMap<String, Integer> getHighScore() {
+    return this.highScores;
   }
 
 }

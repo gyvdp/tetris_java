@@ -37,6 +37,7 @@ import esi.acgt.atlj.message.messageTypes.UpdateNextPieceOther;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.server.CustomClientThread;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -118,10 +119,9 @@ public class MatchUpGenerator extends Thread {
     }
     if (notPlaying == 2) { //If both players are not playing match-up should end.
       updateDb();
-      System.out.println("Match-up " + this.id + " has ended");
+      System.out.println("Match-up " + this.id + 1 + " has ended");
       decrementMatchUpId.run();
       this.interrupt();
-      this.stop();
     }
   };
 
@@ -146,12 +146,26 @@ public class MatchUpGenerator extends Thread {
       getOpposingClient(client).sendMessage(new SendName(client.getUsername()));
       clientLambdaConnections(client);
       try {
-        client.sendMessage(new SendHighScore(interactDatabase.getUserHighScore(client.getUser())));
+        client.sendMessage(new SendHighScore(getBothPlayersHighScore()));
       } catch (BusinessException e) {
         System.err.println("Cannot get user high score");
       }
     }
     this.start();
+  }
+
+  /**
+   * Gets high score of both players.
+   *
+   * @return A hashmap where the high score is identified by the username.
+   * @throws BusinessException If query to get user high score has failed.
+   */
+  private HashMap<String, Integer> getBothPlayersHighScore() throws BusinessException {
+    HashMap<String, Integer> highScores = new HashMap<>();
+    for (CustomClientThread client : clients) {
+      highScores.put(client.getUsername(), interactDatabase.getUserHighScore(client.getUser()));
+    }
+    return highScores;
   }
 
   Consumer<CustomClientThread> updateDb = this::updateDataBaseUserSpecific;
