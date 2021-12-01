@@ -44,13 +44,17 @@ public class View implements ViewInterface {
   private Controller controller;
   private HBox layout;
   private MultiplayerGameController mpgController;
+  private GameMenuController menuController;
+  private Connexion connexion;
 
   /**
    * Constructor of view.
    */
   public View() {
+    this.connexion = null;
     this.controller = null;
     this.mpgController = null;
+    this.menuController = null;
   }
 
   /**
@@ -59,12 +63,7 @@ public class View implements ViewInterface {
   @Override
   public void displayConnexion() {
     this.primaryStage = new Stage();
-    this.primaryStage.getIcons()
-        .add(new Image(Objects.requireNonNull(
-            Connexion.class.getResourceAsStream("/image/tetris-icon-32.png"))));
-    this.primaryStage.setTitle("Tetris connexion");
-    // TODO Cest quoi cette connection?
-    new Connexion(this.controller, this.primaryStage);
+    this.connexion = new Connexion(this.controller, this.primaryStage);
     this.primaryStage.setResizable(false);
   }
 
@@ -73,15 +72,19 @@ public class View implements ViewInterface {
    */
   @Override
   public void displayBoard(String username) {
+    this.primaryStage.close();
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MultiplayerGame.fxml"));
 
-    this.primaryStage.close();
     this.primaryStage = new Stage();
     this.primaryStage.getIcons()
         .add(new Image(Objects.requireNonNull(
             Connexion.class.getResourceAsStream("/image/tetris-icon-32.png"))));
     this.primaryStage.setTitle("Tetris");
-    this.primaryStage.setOnCloseRequest(event -> this.controller.disconnect());
+    this.primaryStage.setOnCloseRequest(event -> {
+      this.controller.leaveMatch();
+      this.displayMenu(username);
+      this.show();
+    });
     try {
       this.layout = loader.load();
       this.mpgController = loader.getController();
@@ -100,7 +103,6 @@ public class View implements ViewInterface {
    */
   @Override
   public void show() {
-    this.primaryStage.setOnCloseRequest(event -> this.controller.disconnect());
     this.primaryStage.centerOnScreen();
     this.primaryStage.show();
   }
@@ -133,16 +135,12 @@ public class View implements ViewInterface {
         this.mpgController.getPlayer2()};
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
-  public void displayStatitics() {
+  public void displayMenu(String username) {
+    this.mpgController = null;
+    this.primaryStage.close();
     this.primaryStage = new Stage();
-    this.primaryStage.setTitle("Statistique");
-    this.primaryStage.setOnCloseRequest(event -> this.controller.disconnect());
-    new Statistics(this.primaryStage);
+    this.menuController = new GameMenuController(username, primaryStage, controller);
     this.primaryStage.setResizable(false);
   }
-
 }
