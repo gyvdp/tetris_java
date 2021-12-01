@@ -22,9 +22,10 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.client.view;
+package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.client.controller.Controller;
+import esi.acgt.atlj.client.view.controllers.ConnexionController;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
@@ -61,7 +62,13 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   @FXML
   public Label winningPercent;
 
-
+  /**
+   * Constructor of GameMenuController
+   *
+   * @param username   username of the connected player
+   * @param stage      stage of this controller
+   * @param controller controller that this class will interact with to contact with model
+   */
   public GameMenuController(String username, Stage stage, Controller controller) {
     this.username = username;
     this.controller = controller;
@@ -73,7 +80,7 @@ public class GameMenuController implements Initializable, PropertyChangeListener
     });
     this.stage.getIcons()
         .add(new Image(Objects.requireNonNull(
-            Connexion.class.getResourceAsStream("/image/tetris-icon-32.png"))));
+            ConnexionController.class.getResourceAsStream("/image/tetris-icon-32.png"))));
     this.stage.setTitle("Tetris");
 
     FXMLLoader loader = new FXMLLoader(
@@ -86,11 +93,17 @@ public class GameMenuController implements Initializable, PropertyChangeListener
     }
   }
 
+  /**
+   * Action when you click on the disconnect button
+   */
   public void disconnect() {
     this.stage.close();
     this.controller.disconnect();
   }
 
+  /**
+   * Action when you click on the Play button
+   */
   public void play() {
     this.controller.startPlay(this.username);
   }
@@ -100,7 +113,6 @@ public class GameMenuController implements Initializable, PropertyChangeListener
    *
    * @param evt event of the change
    */
-
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
     Platform.runLater(() -> {
