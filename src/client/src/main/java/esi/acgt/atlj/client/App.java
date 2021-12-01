@@ -50,8 +50,7 @@ public class App extends Application {
     final Parameters params = getParameters();
     for (var param : params.getRaw()) {
       switch (param) {
-        case "--localhost" -> controller.connexion("127.0.0.1", 6969, "Pacliclown",
-            UserMode.PLAYER);
+        case "--localhost" -> controller.connexion("127.0.0.1", 6969, "Pacliclown");
         case "--client" -> controller.solo("Andrew");
       }
     }
