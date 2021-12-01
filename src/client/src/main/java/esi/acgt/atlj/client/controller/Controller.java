@@ -69,7 +69,9 @@ public class Controller {
    * End the Programme
    */
   public void disconnect() {
+    view.displayConnexion();
     model.closeConnection();
+    view.show();
   }
 
 
@@ -101,28 +103,22 @@ public class Controller {
    * @param port     port of the server to connect to
    * @param username username of the player
    */
-  public void connexion(String ip, int port, String username, UserMode mode) {
+  public void connexion(String ip, int port, String username) {
     try {
       this.model.connect(port, ip);
-      this.model.initManagedBoard(username); // todo factory class
-      if (mode == UserMode.SPECTATOR) { //Spectate
-        this.view.displayBoard(username);
-        this.model.sendAction(PlayerAction.SPECTATE);
-        this.model.addPropertyChangeListener(this.view.getListeners());
-      } else if (mode == UserMode.PLAYER) { //Play
-        this.view.displayBoard(username);
-        this.model.addPropertyChangeListener(this.view.getListeners());
-        //todo send name
-        this.model.sendAction(PlayerAction.PLAY_ONLINE);
-      } else {
-        //TODO faire un system pour se co au statistique.
-        this.view.displayStatitics(); //TODO BESOIN D'UN OBJETS PLAYER AVEC LES INFOS
-      }
+      this.view.displayMenu(username);
     } catch (Exception e) {
       this.view.displayError(e);
       this.view.displayConnexion();
     }
     this.view.show();
+  }
+
+  public void startPlay(String username) {
+    this.model.initManagedBoard(username); // todo factory class
+    this.view.displayBoard(username);
+    this.model.addPropertyChangeListener(this.view.getListeners());
+    this.model.sendAction(PlayerAction.PLAY_ONLINE);
   }
 
   public void solo(String username) {
@@ -139,4 +135,7 @@ public class Controller {
     this.view.show();
   }
 
+  public void leaveMatch() {
+    //TODO Quitter le match et "stop" le model.
+  }
 }
