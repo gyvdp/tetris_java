@@ -148,8 +148,9 @@ public class MatchUpGenerator extends Thread {
       clientLambdaConnections(client);
       SendAllStatistics statistics = new SendAllStatistics();
       try {
-        client.sendMessage(new SendHighScore(getBothPlayersHighScore()));
+        client.sendMessage(new SendHighScore(getBothPlayersHighScoreDB()));
         statistics.setGame_history(interactDatabase.selectAllFromUserHistory(client.getUser()));
+        //todo sent Tetrimino stats history.
         client.sendMessage(statistics);
       } catch (BusinessException e) {
         System.err.println("Cannot get user high score");
@@ -164,7 +165,7 @@ public class MatchUpGenerator extends Thread {
    * @return A hashmap where the high score is identified by the username.
    * @throws BusinessException If query to get user high score has failed.
    */
-  private HashMap<String, Integer> getBothPlayersHighScore() throws BusinessException {
+  private HashMap<String, Integer> getBothPlayersHighScoreDB() throws BusinessException {
     HashMap<String, Integer> highScores = new HashMap<>();
     for (CustomClientThread client : clients) {
       highScores.put(client.getUsername(), interactDatabase.getUserHighScore(client.getUser()));
@@ -182,6 +183,9 @@ public class MatchUpGenerator extends Thread {
   private void updateDataBaseUserSpecific(CustomClientThread client) {
     try {
       interactDatabase.setUserHighScore(client.getUser(), model.getGameScore(client));
+      interactDatabase.addBurns(client.getUser(), 5);
+      interactDatabase.addPlacedTetriminos(client.getUser(), 5);
+      interactDatabase.setHighestLevel(client.getUser(), 5);
     } catch (BusinessException e) {
       System.err.println("Cannot send high score to database \n" + e.getMessage());
     }

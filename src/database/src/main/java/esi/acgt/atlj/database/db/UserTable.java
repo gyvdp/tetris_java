@@ -52,6 +52,10 @@ public class UserTable {
       insert = connection.prepareStatement("INSERT INTO game_stats(user_id) VALUES (?);");
       insert.setInt(1, findUsername(user.getUsername()).getId());
       insert.executeUpdate();
+      insert = connection.prepareStatement(
+          "INSERT INTO tetrimino_stats(user_id) VALUES (?);");
+      insert.setInt(1, findUsername(user.getUsername()).getId());
+      insert.executeUpdate();
       return findUsername(user.getUsername()).getId();
     } catch (Exception e) {
       throw new DbException(tableName + ": Impossible to add a user\n" + e.getMessage());

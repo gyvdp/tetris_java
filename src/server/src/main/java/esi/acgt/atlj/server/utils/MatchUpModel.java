@@ -31,6 +31,7 @@ import esi.acgt.atlj.message.messageTypes.RemoveLine;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.SendScore;
 import esi.acgt.atlj.message.messageTypes.SetHold;
+import esi.acgt.atlj.model.game.GameStatInterface;
 import esi.acgt.atlj.model.game.ManagedGame;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.server.CustomClientThread;

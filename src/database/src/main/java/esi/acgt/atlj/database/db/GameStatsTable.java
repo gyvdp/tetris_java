@@ -139,6 +139,30 @@ public class GameStatsTable {
   }
 
   /**
+   * @param user
+   * @param level
+   * @throws DbException
+   */
+  public static void setHighestLevel(User user, int level) throws DbException {
+    //if (level > getLevel(user)) //todo
+    try {
+      java.sql.Connection connection = DataBaseManager.getConnection();
+      java.sql.PreparedStatement updateNbWonGame;
+      updateNbWonGame = connection.prepareStatement(
+          "UPDATE game_stats SET highest_level = ? WHERE user_id = ?");
+      if (user.isPersistant()) {
+        updateNbWonGame.setInt(1, level);
+        updateNbWonGame.setInt(2, user.getId());
+        updateNbWonGame.executeUpdate();
+      }
+
+    } catch (Exception e) {
+      throw new DbException(
+          tableName + ": Impossible to add won game to the user\n" + e.getMessage());
+    }
+  }
+
+  /**
    * Increments the number of won games.
    *
    * @param user User to increment from.

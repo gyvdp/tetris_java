@@ -251,6 +251,60 @@ public class BusinessModel implements BusinessInterface {
     }
   }
 
+  @Override
+  public void setHighestLevel(User user, int level) throws BusinessException {
+    try {
+      DataBaseManager.startTransaction();
+      GameStatsBusinessLogic.setHighestLevel(user, level);
+      DataBaseManager.validateTransacation();
+    } catch (DbException e) {
+      String msg = e.getMessage();
+      try {
+        DataBaseManager.cancelTransaction();
+      } catch (DbException ex) {
+        msg = ex.getMessage() + e.getMessage();
+      } finally {
+        throw new BusinessException("Setting highest level has failed \n" + msg);
+      }
+    }
+  }
+
+  @Override
+  public void addBurns(User user, int increase) throws BusinessException {
+    try {
+      DataBaseManager.startTransaction();
+      TetriminoStatsBusinessLogic.addBurns(user, increase);
+      DataBaseManager.validateTransacation();
+    } catch (DbException e) {
+      String msg = e.getMessage();
+      try {
+        DataBaseManager.cancelTransaction();
+      } catch (DbException ex) {
+        msg = ex.getMessage() + e.getMessage();
+      } finally {
+        throw new BusinessException("Cannot increment burns \n" + msg);
+      }
+    }
+  }
+
+  @Override
+  public void addPlacedTetriminos(User user, int increase) throws BusinessException {
+    try {
+      DataBaseManager.startTransaction();
+      TetriminoStatsBusinessLogic.addPlacedTetriminos(user, increase);
+      DataBaseManager.validateTransacation();
+    } catch (DbException e) {
+      String msg = e.getMessage();
+      try {
+        DataBaseManager.cancelTransaction();
+      } catch (DbException ex) {
+        msg = ex.getMessage() + e.getMessage();
+      } finally {
+        throw new BusinessException("Cannot add to placed tetriminos \n" + msg);
+      }
+    }
+  }
+
   /**
    * {@inheritDoc}
    */

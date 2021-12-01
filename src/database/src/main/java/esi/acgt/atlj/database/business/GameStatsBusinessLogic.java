@@ -47,6 +47,18 @@ class GameStatsBusinessLogic {
   }
 
   /**
+   * @param user
+   * @param level
+   */
+  static void setHighestLevel(User user, int level) {
+    try {
+      GameStatsTable.setHighestLevel(user, level);
+    } catch (Exception e) {
+      System.err.println("Cannot set highest level in database \n" + e.getMessage());
+    }
+  }
+
+  /**
    * Sets the high score of the given user.
    *
    * @param user User to set high score from.

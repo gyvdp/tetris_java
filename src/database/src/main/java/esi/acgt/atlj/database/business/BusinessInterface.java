@@ -118,4 +118,10 @@ public interface BusinessInterface {
   void addLostGame(User user) throws BusinessException;
 
   void addWonGame(User user) throws BusinessException;
+
+  void setHighestLevel(User user, int level) throws BusinessException;
+
+  void addBurns(User user, int increase) throws BusinessException;
+
+  void addPlacedTetriminos(User user, int increase) throws BusinessException;
 }
