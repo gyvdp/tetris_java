@@ -227,7 +227,7 @@ public class Server extends AbstractServer {
    * {@inheritDoc}
    */
   @Override
-  public synchronized void addPlayer(CustomClientThread client, int matchId) {
+  public synchronized void addPlayer(CustomClientThread client) {
     waitingList.add(client);
     if (waitingList.size() % 2 == 0) {
       MatchUpGenerator matchUp = new MatchUpGenerator(
@@ -242,6 +242,13 @@ public class Server extends AbstractServer {
       } catch (InterruptedException ignored) {
       }
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public synchronized void addSoloPlayer(CustomClientThread client) {
+    //todo
   }
 
   /**

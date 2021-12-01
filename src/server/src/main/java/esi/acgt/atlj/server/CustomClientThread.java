@@ -246,11 +246,11 @@ public class CustomClientThread extends Thread {
       }
     }
     if (message instanceof SendAction e) {
-      if (e.getAction() == PlayerAction.SPECTATE) {
-        server.addSpectator(this, 2);
-      }
       if (e.getAction() == PlayerAction.PLAY_ONLINE) {
-        server.addPlayer(this, 0);
+        server.addPlayer(this);
+      }
+      if (e.getAction() == PlayerAction.PLAY_SOLO) {
+        server.addSoloPlayer(this);
       }
       return false;
     }

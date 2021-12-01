@@ -242,11 +242,19 @@ public abstract class AbstractServer implements Runnable {
   }
 
   /**
-   * Adds a player to a client to a match-up when player has chosen that action.
+   * Adds a player to a match-up when player has chosen that action.
    *
    * @param client Client to add to match-up
    */
-  protected synchronized void addPlayer(CustomClientThread client, int matchId) {
+  protected synchronized void addPlayer(CustomClientThread client) {
+  }
+
+  /**
+   * Adds a player to a solo  match-up when player has chosen that action.
+   *
+   * @param client Client to add to match-up
+   */
+  protected synchronized void addSoloPlayer(CustomClientThread client) {
   }
 
   /**

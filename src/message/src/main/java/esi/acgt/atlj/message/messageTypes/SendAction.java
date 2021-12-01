@@ -31,7 +31,6 @@ import esi.acgt.atlj.message.PlayerAction;
 public class SendAction extends Message {
 
   PlayerAction action;
-  int matchUpID;
 
   public SendAction() {
     this.messageType = MessageType.ACTION;
@@ -48,23 +47,5 @@ public class SendAction extends Message {
 
   public void setAction(PlayerAction e) {
     this.action = e;
-  }
-
-  /**
-   * Returns the match-up id of action of player
-   *
-   * @return
-   */
-  public int getMatchUpID() {
-    return matchUpID;
-  }
-
-  /**
-   * Sets the
-   *
-   * @param matchUpID
-   */
-  public void setMatchUpID(int matchUpID) {
-    this.matchUpID = matchUpID;
   }
 }

@@ -25,8 +25,6 @@
 package esi.acgt.atlj.message;
 
 public enum PlayerAction {
-  SPECTATE, // Spectate a match-up.
   PLAY_ONLINE, // Play versus another player in the waiting list.
   PLAY_SOLO, // Player solo on server.
-  GET_STATS // Ask database for player stats
 }

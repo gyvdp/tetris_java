@@ -105,11 +105,7 @@ public class Controller {
     try {
       this.model.connect(port, ip);
       this.model.initManagedBoard(username); // todo factory class
-      if (mode == UserMode.SPECTATOR) { //Spectate
-        this.view.displayBoard(username);
-        this.model.sendAction(PlayerAction.SPECTATE);
-        this.model.addPropertyChangeListener(this.view.getListeners());
-      } else if (mode == UserMode.PLAYER) { //Play
+      if (mode == UserMode.PLAYER) { //Play
         this.view.displayBoard(username);
         this.model.addPropertyChangeListener(this.view.getListeners());
         //todo send name
@@ -131,6 +127,7 @@ public class Controller {
       this.view.displayBoard(username);
       this.model.addPropertyChangeListener(this.view.getListeners());
       this.model.start();
+      //todo this.model.sendAction(PlayerAction.PLAY_SOLO);
     } catch (Exception e) {
       e.printStackTrace();
       this.view.displayError(e);
