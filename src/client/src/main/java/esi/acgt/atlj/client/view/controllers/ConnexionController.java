@@ -22,10 +22,9 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.client.view;
+package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.client.controller.Controller;
-import esi.acgt.atlj.model.UserMode;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
@@ -47,7 +46,7 @@ import javafx.stage.Stage;
 /**
  * Connexion Scene
  */
-public class Connexion implements Initializable {
+public class ConnexionController implements Initializable {
 
   /**
    * Pattern of a adress IP
@@ -68,13 +67,13 @@ public class Connexion implements Initializable {
    * @param controller controller wich we interact with
    * @param stage      stage of the window for this scene
    */
-  public Connexion(Controller controller, Stage stage) {
+  public ConnexionController(Controller controller, Stage stage) {
     this.controller = controller;
     this.stage = stage;
 
     this.stage.getIcons()
         .add(new Image(Objects.requireNonNull(
-            Connexion.class.getResourceAsStream("/image/tetris-icon-32.png"))));
+            ConnexionController.class.getResourceAsStream("/image/tetris-icon-32.png"))));
     this.stage.setTitle("Tetris connexion");
 
     FXMLLoader loader = new FXMLLoader(

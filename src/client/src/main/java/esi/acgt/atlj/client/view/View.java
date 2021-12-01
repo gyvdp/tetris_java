@@ -25,6 +25,8 @@
 package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
+import esi.acgt.atlj.client.view.controllers.ConnexionController;
+import esi.acgt.atlj.client.view.controllers.GameMenuController;
 import esi.acgt.atlj.client.view.controllers.MultiplayerGameController;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
@@ -45,13 +47,13 @@ public class View implements ViewInterface {
   private HBox layout;
   private MultiplayerGameController mpgController;
   private GameMenuController menuController;
-  private Connexion connexion;
+  private ConnexionController connexionController;
 
   /**
    * Constructor of view.
    */
   public View() {
-    this.connexion = null;
+    this.connexionController = null;
     this.controller = null;
     this.mpgController = null;
     this.menuController = null;
@@ -63,7 +65,7 @@ public class View implements ViewInterface {
   @Override
   public void displayConnexion() {
     this.primaryStage = new Stage();
-    this.connexion = new Connexion(this.controller, this.primaryStage);
+    this.connexionController = new ConnexionController(this.controller, this.primaryStage);
     this.primaryStage.setResizable(false);
   }
 
@@ -78,7 +80,7 @@ public class View implements ViewInterface {
     this.primaryStage = new Stage();
     this.primaryStage.getIcons()
         .add(new Image(Objects.requireNonNull(
-            Connexion.class.getResourceAsStream("/image/tetris-icon-32.png"))));
+            ConnexionController.class.getResourceAsStream("/image/tetris-icon-32.png"))));
     this.primaryStage.setTitle("Tetris");
     this.primaryStage.setOnCloseRequest(event -> {
       this.controller.leaveMatch();
