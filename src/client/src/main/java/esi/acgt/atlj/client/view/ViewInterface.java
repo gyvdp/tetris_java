@@ -43,8 +43,5 @@ public interface ViewInterface {
    */
   PropertyChangeListener[] getListeners();
 
-  /**
-   * Display the window of statics
-   */
-  void displayStatitics();
+  void displayMenu(String username);
 }
