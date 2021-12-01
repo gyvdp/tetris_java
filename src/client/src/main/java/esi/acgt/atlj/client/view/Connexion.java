@@ -28,6 +28,7 @@ import esi.acgt.atlj.client.controller.Controller;
 import esi.acgt.atlj.model.UserMode;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,6 +71,12 @@ public class Connexion implements Initializable {
   public Connexion(Controller controller, Stage stage) {
     this.controller = controller;
     this.stage = stage;
+
+    this.stage.getIcons()
+        .add(new Image(Objects.requireNonNull(
+            Connexion.class.getResourceAsStream("/image/tetris-icon-32.png"))));
+    this.stage.setTitle("Tetris connexion");
+
     FXMLLoader loader = new FXMLLoader(
         getClass().getResource("/fxml/Connexion.fxml"));
     loader.setController(this);
@@ -80,11 +87,9 @@ public class Connexion implements Initializable {
     }
     this.stage.getScene().addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
       if (key.getCode() == KeyCode.ENTER) {
-        this.playPressed();
+        this.connexion();
       }
     });
-    this.stage.getIcons()
-        .add(new Image(Connexion.class.getResourceAsStream("/image/tetris-icon-32.png")));
   }
 
   /**
@@ -109,10 +114,10 @@ public class Connexion implements Initializable {
   /**
    * Action when you press on the button for connexion
    */
-  public void playPressed() {
+  public void connexion() {
     if (informationComplete()) {
       this.controller.connexion(ip.getText(), Integer.parseInt(port.getText()),
-          username.getText(), UserMode.PLAYER);
+          username.getText());
       this.stage.close();
     }
   }
@@ -122,28 +127,6 @@ public class Connexion implements Initializable {
    */
   public void leavePressed() {
     this.stage.close();
-  }
-
-  /**
-   * Action when you press on the button to spectate a game
-   */
-  public void spectatePressed() {
-    if (informationComplete()) {
-      this.controller.connexion(ip.getText(), Integer.parseInt(port.getText()),
-          username.getText(), UserMode.SPECTATOR);
-      this.stage.close();
-    }
-  }
-
-  /**
-   * Action when you press on the button to watch statistics
-   */
-  public void watchStatistic() {
-    if (informationComplete()) {
-      this.controller.connexion(ip.getText(), Integer.parseInt(port.getText()),
-          username.getText(), UserMode.STATISTICS);
-      this.stage.close();
-    }
   }
 
   /**
