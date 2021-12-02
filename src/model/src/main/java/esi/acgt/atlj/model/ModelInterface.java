@@ -32,7 +32,7 @@ public interface ModelInterface {
    *
    * @param listener all listerners
    */
-  void addPropertyChangeListener(PropertyChangeListener[] listener);
+  void addPropertyChangeListenerToBoards(PropertyChangeListener[] listener);
 
   /**
    * Remove listener from the PropertyChanger

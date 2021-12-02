@@ -118,7 +118,7 @@ public class ClientModel extends Model {
    * {@inheritDoc}
    */
   @Override
-  public void addPropertyChangeListener(PropertyChangeListener[] listener) {
+  public void addPropertyChangeListenerToBoards(PropertyChangeListener[] listener) {
     this.player.addPropertyChangeListener(listener[0]);
     this.otherPlayer.addPropertyChangeListener(listener[1]);
   }

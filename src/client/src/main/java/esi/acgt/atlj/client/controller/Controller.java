@@ -27,7 +27,6 @@ package esi.acgt.atlj.client.controller;
 import esi.acgt.atlj.client.model.ClientModel;
 import esi.acgt.atlj.client.view.ViewInterface;
 import esi.acgt.atlj.message.PlayerAction;
-import esi.acgt.atlj.model.UserMode;
 import esi.acgt.atlj.model.game.Direction;
 import esi.acgt.atlj.model.game.GameStatus;
 import java.util.Objects;
@@ -106,7 +105,7 @@ public class Controller {
   public void connexion(String ip, int port, String username) {
     try {
       this.model.connect(port, ip);
-      this.view.displayMenu(username);
+      this.startMenu(username);
     } catch (Exception e) {
       this.view.displayError(e);
       this.view.displayConnexion();
@@ -114,10 +113,17 @@ public class Controller {
     this.view.show();
   }
 
+  public void startMenu(String username) {
+    this.view.displayMenu(username);
+    // Link entre le menu et le clientmodel pour faire les fires.
+    //this.model.addPropertyChangeListenerToClient(this.view.getMenuListeners());
+  }
+
+
   public void startPlay(String username) {
     this.model.initManagedBoard(username); // todo factory class
     this.view.displayBoard(username);
-    this.model.addPropertyChangeListener(this.view.getListeners());
+    this.model.addPropertyChangeListenerToBoards(this.view.getBoardListeners());
     this.model.sendAction(PlayerAction.PLAY_ONLINE);
   }
 
@@ -125,7 +131,7 @@ public class Controller {
     try {
       this.model.initManagedBoard(username);
       this.view.displayBoard(username);
-      this.model.addPropertyChangeListener(this.view.getListeners());
+      this.model.addPropertyChangeListenerToBoards(this.view.getBoardListeners());
       this.model.start();
     } catch (Exception e) {
       e.printStackTrace();
