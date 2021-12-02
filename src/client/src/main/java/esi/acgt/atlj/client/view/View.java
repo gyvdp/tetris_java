@@ -132,9 +132,16 @@ public class View implements ViewInterface {
    * {@inheritDoc}
    */
   @Override
-  public PropertyChangeListener[] getListeners() {
+  public PropertyChangeListener[] getBoardListeners() {
     return new PropertyChangeListener[]{this.mpgController.getPlayer1(),
         this.mpgController.getPlayer2()};
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public PropertyChangeListener getMenuListener() {
+    return this.menuController;
   }
 
   @Override

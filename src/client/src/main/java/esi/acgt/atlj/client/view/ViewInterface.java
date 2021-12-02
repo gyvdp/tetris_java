@@ -41,7 +41,14 @@ public interface ViewInterface {
    *
    * @return Listerners
    */
-  PropertyChangeListener[] getListeners();
+  PropertyChangeListener[] getBoardListeners();
+
+  /**
+   * Getter of MenuController casted in PropertyListener
+   *
+   * @return Listener
+   */
+  PropertyChangeListener getMenuListener();
 
   void displayMenu(String username);
 }
