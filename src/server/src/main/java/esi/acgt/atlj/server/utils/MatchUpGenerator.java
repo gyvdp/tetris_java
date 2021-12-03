@@ -41,7 +41,6 @@ import esi.acgt.atlj.model.game.GameStatInterface;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.server.CustomClientThread;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -102,8 +101,9 @@ public class MatchUpGenerator extends Thread {
       SendAllStatistics statistics = new SendAllStatistics();
       try {
         client.sendMessage(new SendHighScore(getBothPlayersHighScoreDB()));
-        statistics.setGame_history(interactDatabase.selectAllFromUserHistory(client.getUser()));
-        //todo sent Tetrimino stats history.
+        statistics.setGame_history(interactDatabase.selectAllFromGameHistory(client.getUser()));
+        statistics.setTetrimino_history(
+            interactDatabase.selectAllFromTetriminoHistory(client.getUser()));
         client.sendMessage(statistics);
       } catch (BusinessException e) {
         System.err.println("Cannot get user high score");

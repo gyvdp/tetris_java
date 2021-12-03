@@ -105,7 +105,7 @@ public interface BusinessInterface {
    * @param user User to select from.
    * @return HashMap contain statistics
    */
-  HashMap<String, Integer> selectAllFromUserHistory(User user) throws BusinessException;
+  HashMap<String, Integer> selectAllFromGameHistory(User user) throws BusinessException;
 
   /**
    * Updates user in the database.
@@ -126,4 +126,6 @@ public interface BusinessInterface {
   void addBurns(User user, int increase) throws BusinessException;
 
   void addDestroyedLines(User user, Map<Action, Integer> actions) throws BusinessException;
+
+  HashMap<String, Integer> selectAllFromTetriminoHistory(User user) throws BusinessException;
 }

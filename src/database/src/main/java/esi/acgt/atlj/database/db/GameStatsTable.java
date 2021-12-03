@@ -144,7 +144,7 @@ public class GameStatsTable {
    * @throws DbException
    */
   public static void setHighestLevel(User user, int level) throws DbException {
-    //if (level > getLevel(user)) //todo
+    //todo if (level > getLevel(user)){
     try {
       java.sql.Connection connection = DataBaseManager.getConnection();
       java.sql.PreparedStatement updateNbWonGame;

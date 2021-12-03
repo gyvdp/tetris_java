@@ -27,6 +27,7 @@ package esi.acgt.atlj.database.business;
 import esi.acgt.atlj.database.db.TetriminoStatsTable;
 import esi.acgt.atlj.database.dto.User;
 import esi.acgt.atlj.model.game.Action;
+import java.util.HashMap;
 import java.util.Map;
 
 public class TetriminoStatsBusinessLogic {
@@ -41,6 +42,15 @@ public class TetriminoStatsBusinessLogic {
     } catch (Exception e) {
       System.err.println("Cannot set number of tetriminos in database \n" + e.getMessage());
     }
+  }
+
+  static HashMap<String, Integer> selectAll(User user) {
+    try {
+      return TetriminoStatsTable.selectAll(user);
+    } catch (Exception e) {
+      System.err.println("Cannot select all of tetriminos in database \n" + e.getMessage());
+    }
+    return null;
   }
 
   /**

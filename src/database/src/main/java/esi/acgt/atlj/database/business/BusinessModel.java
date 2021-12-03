@@ -38,6 +38,7 @@ import java.util.Map;
  */
 public class BusinessModel implements BusinessInterface {
 
+
   /**
    * {@inheritDoc}
    */
@@ -131,7 +132,7 @@ public class BusinessModel implements BusinessInterface {
    * {@inheritDoc}
    */
   @Override
-  public HashMap<String, Integer> selectAllFromUserHistory(User user) throws BusinessException {
+  public HashMap<String, Integer> selectAllFromGameHistory(User user) throws BusinessException {
     HashMap<String, Integer> statistics;
     try {
       DataBaseManager.startTransaction();
@@ -306,6 +307,27 @@ public class BusinessModel implements BusinessInterface {
         throw new BusinessException("Cannot add to placed tetriminos \n" + msg);
       }
     }
+  }
+
+  @Override
+  public HashMap<String, Integer> selectAllFromTetriminoHistory(User user)
+      throws BusinessException {
+    HashMap<String, Integer> statistics;
+    try {
+      DataBaseManager.startTransaction();
+      statistics = TetriminoStatsBusinessLogic.selectAll(user);
+      DataBaseManager.validateTransacation();
+    } catch (DbException e) {
+      String msg = e.getMessage();
+      try {
+        DataBaseManager.cancelTransaction();
+      } catch (DbException ex) {
+        msg = ex.getMessage() + e.getMessage();
+      } finally {
+        throw new BusinessException("Impossible to select all \n" + msg);
+      }
+    }
+    return statistics;
   }
 
   /**

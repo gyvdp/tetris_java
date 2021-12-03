@@ -28,8 +28,10 @@ import esi.acgt.atlj.database.dto.User;
 import esi.acgt.atlj.database.exceptions.DbException;
 import esi.acgt.atlj.model.game.Action;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 public class TetriminoStatsTable {
@@ -68,6 +70,7 @@ public class TetriminoStatsTable {
           tableName + ": Impossible to add destroyed lines to the user\n" + e.getMessage());
     }
   }
+
 
   /**
    * Parses actions from client statistics.
@@ -119,8 +122,36 @@ public class TetriminoStatsTable {
    * @param user User to select all columns from.
    * @throws DbException If query to select all has failed.
    */
-  public static void selectAll(User user) throws DbException {
-
+  public static HashMap<String, Integer> selectAll(User user) throws DbException {
+    try {
+      java.sql.Connection connection = DataBaseManager.getConnection();
+      java.sql.PreparedStatement selectAll;
+      selectAll = connection.prepareStatement(
+          "SELECT total_burns, single, doubles, triple, tetris, soft_drop, hard_drop FROM tetrimino_stats WHERE user_id = ? LIMIT 1");
+      if (user.isPersistant()) {
+        selectAll.setInt(1, user.getId());
+        return parseSelectAll(selectAll.executeQuery());
+      }
+    } catch (Exception e) {
+      throw new DbException(
+          tableName + ": Impossible to add nb of burns to the user\n" + e.getMessage());
+    }
+    return null;
   }
 
+  public static HashMap<String, Integer> parseSelectAll(ResultSet parsable) throws DbException {
+    HashMap<String, Integer> statistics = new HashMap<>();
+    try {
+      statistics.put("BURN", parsable.getInt(1));
+      statistics.put("SINGLE", parsable.getInt(2));
+      statistics.put("DOUBLE", parsable.getInt(3));
+      statistics.put("TRIPLE", parsable.getInt(4));
+      statistics.put("TETRIS", parsable.getInt(5));
+      statistics.put("SOFT", parsable.getInt(6));
+      statistics.put("HARD", parsable.getInt(7));
+    } catch (SQLException e) {
+      throw new DbException("Cannot parse select all query");
+    }
+    return statistics;
+  }
 }
