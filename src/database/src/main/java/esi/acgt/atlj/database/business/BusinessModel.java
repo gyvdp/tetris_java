@@ -29,7 +29,9 @@ import esi.acgt.atlj.database.dto.User;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.database.exceptions.DbException;
 import esi.acgt.atlj.database.exceptions.DtoException;
+import esi.acgt.atlj.model.game.Action;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * All tools needed to interact with database.
@@ -288,10 +290,11 @@ public class BusinessModel implements BusinessInterface {
   }
 
   @Override
-  public void addPlacedTetriminos(User user, int increase) throws BusinessException {
+  public void addDestroyedLines(User user, Map<Action, Integer> actions)
+      throws BusinessException {
     try {
       DataBaseManager.startTransaction();
-      TetriminoStatsBusinessLogic.addPlacedTetriminos(user, increase);
+      TetriminoStatsBusinessLogic.addDestroyedLines(user, actions);
       DataBaseManager.validateTransacation();
     } catch (DbException e) {
       String msg = e.getMessage();

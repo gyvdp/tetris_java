@@ -26,7 +26,9 @@ package esi.acgt.atlj.database.business;
 
 import esi.acgt.atlj.database.dto.User;
 import esi.acgt.atlj.database.exceptions.BusinessException;
+import esi.acgt.atlj.model.game.Action;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Interface to interact with database.
@@ -123,5 +125,5 @@ public interface BusinessInterface {
 
   void addBurns(User user, int increase) throws BusinessException;
 
-  void addPlacedTetriminos(User user, int increase) throws BusinessException;
+  void addDestroyedLines(User user, Map<Action, Integer> actions) throws BusinessException;
 }

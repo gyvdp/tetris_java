@@ -25,10 +25,13 @@
 package esi.acgt.atlj.client.model.utils;
 
 import esi.acgt.atlj.client.connexionServer.ClientInterface;
+import esi.acgt.atlj.model.game.GameStat;
+import esi.acgt.atlj.model.game.GameStatInterface;
 import esi.acgt.atlj.model.game.ManagedGame;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+import java.io.Serializable;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -111,6 +114,12 @@ public class MessagesToServerHandler {
     }
   };
 
+  Consumer<GameStatInterface> sendAllGameStatistics = (GameStatInterface allGameStats) -> {
+    if (client != null) {
+      client.sendAllGameStats(allGameStats);
+    }
+  };
+
 
   /**
    * Constructor for message to server.
@@ -135,6 +144,7 @@ public class MessagesToServerHandler {
     player.connectSendScoreServer(sendScoreToServer);
     player.connectLost(this.sendLostStatusToServer);
     player.connectTetriminoLock(this.sendLockedTetriminoToServer);
+    player.connectSendGameStatistics(this.sendAllGameStatistics);
   }
 
 

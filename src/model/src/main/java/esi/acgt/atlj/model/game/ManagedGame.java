@@ -62,6 +62,8 @@ public class ManagedGame extends AbstractGame {
    * Hold tetrimino to send to server
    */
   Consumer<Mino> holdMino;
+
+  Consumer<GameStatInterface> sendAllGameStats;
   /**
    * Sends current score to the server
    */
@@ -119,6 +121,11 @@ public class ManagedGame extends AbstractGame {
     this.setScoreServer = setScoreServer;
     this.stats.connectSendScore(setScoreServer);
   }
+
+  public synchronized void connectSendGameStatistics(Consumer<GameStatInterface> allGameStats) {
+    this.sendAllGameStats = allGameStats;
+  }
+
 
   /**
    * Connect lambda expression form ModelClient to indicate which mino has been held
@@ -303,6 +310,7 @@ public class ManagedGame extends AbstractGame {
     if (outOfBound()) {
       setActualTetrimino(null);
       setStatus(GameStatus.LOCK_OUT);
+      sendAllGameStats.accept(getStats());
       iLost.run();
     } else {
       setStatus(GameStatus.TETRIMINO_FALLING);

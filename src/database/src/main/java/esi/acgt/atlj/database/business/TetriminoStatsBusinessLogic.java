@@ -26,16 +26,18 @@ package esi.acgt.atlj.database.business;
 
 import esi.acgt.atlj.database.db.TetriminoStatsTable;
 import esi.acgt.atlj.database.dto.User;
+import esi.acgt.atlj.model.game.Action;
+import java.util.Map;
 
 public class TetriminoStatsBusinessLogic {
 
   /**
    * @param user
-   * @param increase
+   * @param actions
    */
-  static void addPlacedTetriminos(User user, int increase) {
+  static void addDestroyedLines(User user, Map<Action, Integer> actions) {
     try {
-      TetriminoStatsTable.addNbPlacedTetriminos(user, increase);
+      TetriminoStatsTable.addDestroyedLines(user, actions);
     } catch (Exception e) {
       System.err.println("Cannot set number of tetriminos in database \n" + e.getMessage());
     }

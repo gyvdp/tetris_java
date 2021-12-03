@@ -24,12 +24,13 @@
 
 package esi.acgt.atlj.model.game;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * The GameStatInterface describes the possible statistics you can get in a game.
  */
-public interface GameStatInterface {
+public interface GameStatInterface extends Serializable {
 
   /**
    * Get the high-score of the player (include actual game score)

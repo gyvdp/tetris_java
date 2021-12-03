@@ -104,9 +104,6 @@ public class CustomClientThread extends Thread {
    */
   private boolean readyToStop;
 
-  Consumer<CustomClientThread> updateDb;
-
-
   /**
    * Constructs a new connection to a client.
    *
@@ -363,13 +360,12 @@ public class CustomClientThread extends Thread {
           System.out.println(
               "Client " + this.getIdOfClient() + " has disconnected with" + this.getInetAddress());
           closeAll();
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
         server.clientException(this, exception);
       }
     } finally {
       if (this.disconnect != null) {
-        updateDb.accept(this);
         disconnect.accept(this);
       }
     }
@@ -385,9 +381,6 @@ public class CustomClientThread extends Thread {
     this.handleMessage = handleMessage;
   }
 
-  public void connectUpdateDb(Consumer<CustomClientThread> updateDb) {
-    this.updateDb = updateDb;
-  }
 
   /**
    * Returns a string representation of the client.

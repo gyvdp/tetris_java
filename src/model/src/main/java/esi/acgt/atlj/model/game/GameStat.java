@@ -25,6 +25,7 @@
 package esi.acgt.atlj.model.game;
 
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -54,12 +55,12 @@ public class GameStat implements GameStatInterface {
   /**
    * The Property Change Support to notify when something changes
    */
-  protected PropertyChangeSupport pcs;
+  protected transient PropertyChangeSupport pcs;
 
   /**
    * Send score to the server (lambda)
    */
-  protected Consumer<Integer> setScoreServer;
+  protected transient Consumer<Integer> setScoreServer;
 
   /**
    * GameStat constructor
@@ -112,8 +113,8 @@ public class GameStat implements GameStatInterface {
 
   /**
    * Set the score and notify the pcs
-   *
-   * @param score new score
+   * <p>
+   * * @param score new score
    */
   public void setScore(int score) {
     var old = this.score;
@@ -135,6 +136,14 @@ public class GameStat implements GameStatInterface {
    */
   public void increaseScore(int increase) {
     setScore(score + increase);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Map<Action, Integer> getActionCount() {
+    return actions;
   }
 
   /**
@@ -173,14 +182,6 @@ public class GameStat implements GameStatInterface {
   @Override
   public int getLevel() {
     return (burns / 10) + 1;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public Map<Action, Integer> getActionCount() {
-    return actions;
   }
 
   /**

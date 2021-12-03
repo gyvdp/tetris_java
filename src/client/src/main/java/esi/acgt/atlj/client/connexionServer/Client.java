@@ -33,16 +33,20 @@ import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.RemoveLine;
 import esi.acgt.atlj.message.messageTypes.SendAction;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
+import esi.acgt.atlj.message.messageTypes.SendGameStats;
 import esi.acgt.atlj.message.messageTypes.SendHighScore;
 import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.SendScore;
 import esi.acgt.atlj.message.messageTypes.SetHold;
 import esi.acgt.atlj.message.messageTypes.UpdateNextPieceOther;
+import esi.acgt.atlj.model.game.GameStat;
+import esi.acgt.atlj.model.game.GameStatInterface;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
@@ -272,6 +276,17 @@ public class Client extends AbstractClient implements ClientInterface {
   @Override
   protected void connexionException(Exception e) {
 
+  }
+
+  @Override
+  public void sendAllGameStats(GameStatInterface gameStats) {
+    try {
+      sendToServer(new SendGameStats(gameStats));
+    } catch (IOException e) {
+      e.printStackTrace();
+      System.out.println(e.getMessage());
+      System.err.println("Cannot send game stats to server");
+    }
   }
 
   /**

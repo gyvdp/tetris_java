@@ -179,4 +179,5 @@ public class ClientModel extends Model {
   public GameStatus getStatus() {
     return this.player.getStatus();
   }
+
 }

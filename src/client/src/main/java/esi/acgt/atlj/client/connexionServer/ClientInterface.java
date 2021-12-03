@@ -25,6 +25,8 @@
 package esi.acgt.atlj.client.connexionServer;
 
 import esi.acgt.atlj.message.PlayerAction;
+import esi.acgt.atlj.model.game.GameStat;
+import esi.acgt.atlj.model.game.GameStatInterface;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.net.ConnectException;
@@ -38,13 +40,26 @@ import java.util.function.Consumer;
 public interface ClientInterface {
 
   /**
+   * Sends all game stats to user.
+   *
+   * @param gameStats Game stats interface to send to model.
+   */
+  void sendAllGameStats(GameStatInterface gameStats);
+
+  /**
    * Tries to establish a connexion with server.
    */
   void connect() throws ConnectException;
 
 
+  /**
+   * @param setStatisticsReceivedFromServer
+   */
   void connectStatistics(Consumer<HashMap<String, Integer>> setStatisticsReceivedFromServer);
 
+  /**
+   * @param setHighScoreReceivedFromServer
+   */
   void connectHighScore(Consumer<HashMap<String, Integer>> setHighScoreReceivedFromServer);
 
   /**

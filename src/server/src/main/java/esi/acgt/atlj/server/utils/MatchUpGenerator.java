@@ -25,19 +25,23 @@
 package esi.acgt.atlj.server.utils;
 
 import esi.acgt.atlj.database.business.BusinessInterface;
+import esi.acgt.atlj.database.dto.User;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
+import esi.acgt.atlj.message.messageTypes.SendGameStats;
 import esi.acgt.atlj.message.messageTypes.SendHighScore;
 import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.UpdateNextPieceOther;
+import esi.acgt.atlj.model.game.GameStatInterface;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.server.CustomClientThread;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -75,57 +79,6 @@ public class MatchUpGenerator extends Thread {
    * Unique id of generated match-up.
    */
   int id;
-  /**
-   * Lambda expression to refill bags.
-   */
-  Runnable refillBag = this::refillBags;
-  /**
-   * Lambda expression to handle message from client.
-   */
-  BiConsumer<Message, CustomClientThread> handleMessage = (Message m, CustomClientThread client) ->
-  {
-
-    if (client.getClientStatus().equals(PlayerStatus.READY)) {
-      sendMessageToModel(m, client);
-      //todo sendMessageToSpectator(m, client);
-      CustomClientThread opPlayer = getOpposingClient(client);
-      if (opPlayer != null) {
-        if (m instanceof AskPiece) {
-          Mino mino = client.getMino();
-          client.sendMessage(new SendPiece(mino));
-          opPlayer.sendMessage(new UpdateNextPieceOther(mino));
-        } else {
-          opPlayer.sendMessage(m);
-        }
-      }
-    } else {
-      System.err.println("Message dropped " + m.toString() + " from " + client.getInetAddress());
-    }
-  };
-  /**
-   * Decrements the id of match-up in server when this closes.
-   */
-  private Runnable decrementMatchUpId;
-  /**
-   * Handles disconnection of player from match-up. If both players have disconnected, kills
-   * thread.
-   */
-  Consumer<CustomClientThread> disconnect = (CustomClientThread clientThread) -> {
-    int notPlaying = 0;
-    getOpposingClient(clientThread).sendMessage(new PlayerState(PlayerStatus.DISCONNECTED));
-    for (CustomClientThread customClientThread : clients) {
-      if (!(customClientThread.isConnected())) {
-        notPlaying++;
-      }
-    }
-    if (notPlaying == 2) { //If both players are not playing match-up should end.
-      updateDb();
-      System.out.println("Match-up " + this.id + 1 + " has ended");
-      decrementMatchUpId.run();
-      this.interrupt();
-    }
-  };
-
 
   /**
    * Constructor for match-up generator. Assigns its current id to both clients and launches the
@@ -160,6 +113,62 @@ public class MatchUpGenerator extends Thread {
   }
 
   /**
+   * Lambda expression to refill bags.
+   */
+  Runnable refillBag = this::refillBags;
+
+  /**
+   * Lambda expression to handle message from client.
+   */
+  BiConsumer<Message, CustomClientThread> handleMessage = (Message m, CustomClientThread client) ->
+  {
+
+    if (client.getClientStatus().equals(PlayerStatus.READY)) {
+      sendMessageToModel(m, client);
+      CustomClientThread opPlayer = getOpposingClient(client);
+      if (opPlayer != null) {
+        if (m instanceof AskPiece) {
+          Mino mino = client.getMino();
+          client.sendMessage(new SendPiece(mino));
+          opPlayer.sendMessage(new UpdateNextPieceOther(mino));
+        } else if (m instanceof SendGameStats stats) {
+          setGameStats(stats.getGameStats(), client.getUser());
+        } else {
+          opPlayer.sendMessage(m);
+        }
+      }
+
+    } else {
+      System.err.println("Message dropped " + m.toString() + " from " + client.getInetAddress());
+    }
+  };
+
+  /**
+   * Decrements the id of match-up in server when this closes.
+   */
+  private Runnable decrementMatchUpId;
+  /**
+   * Handles disconnection of player from match-up. If both players have disconnected, kills
+   * thread.
+   */
+  Consumer<CustomClientThread> disconnect = (CustomClientThread clientThread) -> {
+    int notPlaying = 0;
+    getOpposingClient(clientThread).sendMessage(new PlayerState(PlayerStatus.DISCONNECTED));
+    for (CustomClientThread customClientThread : clients) {
+      if (!(customClientThread.isConnected())) {
+        notPlaying++;
+      }
+    }
+    if (notPlaying == 2) { //If both players are not playing match-up should end.
+      updateDb();
+      System.out.println("Match-up " + this.id + 1 + " has ended");
+      decrementMatchUpId.run();
+      this.interrupt();
+    }
+  };
+
+
+  /**
    * Gets high score of both players.
    *
    * @return A hashmap where the high score is identified by the username.
@@ -173,22 +182,16 @@ public class MatchUpGenerator extends Thread {
     return highScores;
   }
 
-  Consumer<CustomClientThread> updateDb = this::updateDataBaseUserSpecific;
-
-  /**
-   * Updates all user specific statistics in the database.
-   *
-   * @param client User to update.
-   */
-  private void updateDataBaseUserSpecific(CustomClientThread client) {
+  private void setGameStats(GameStatInterface statistics, User user) {
     try {
-      interactDatabase.setUserHighScore(client.getUser(), model.getGameScore(client));
-      interactDatabase.addBurns(client.getUser(), 5);
-      interactDatabase.addPlacedTetriminos(client.getUser(), 5);
-      interactDatabase.setHighestLevel(client.getUser(), 5);
+      interactDatabase.addBurns(user, statistics.getBurns());
+      interactDatabase.setHighestLevel(user, statistics.getLevel());
+      interactDatabase.setUserHighScore(user, statistics.getScore());
+      interactDatabase.addDestroyedLines(user, statistics.getActionCount());
     } catch (BusinessException e) {
-      System.err.println("Cannot send high score to database \n" + e.getMessage());
+      System.out.println("Cannot set user in database.");
     }
+
   }
 
   /**
@@ -214,7 +217,6 @@ public class MatchUpGenerator extends Thread {
       client.connectRefillBag(this.refillBag);
       client.connectHandleMessage(this.handleMessage);
       client.connectDisconnect(this.disconnect);
-      client.connectUpdateDb(this.updateDb);
     }
   }
 

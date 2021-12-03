@@ -130,6 +130,7 @@ public class MessagesFromServerHandler {
    */
   Runnable playerDisconnectedSentFromServer = () ->
       this.otherPlayer.playerStatus("Disconnected", 1);
+
   /**
    * Client that will received message from server.
    */

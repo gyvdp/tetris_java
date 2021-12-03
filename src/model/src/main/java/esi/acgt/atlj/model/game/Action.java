@@ -24,10 +24,12 @@
 
 package esi.acgt.atlj.model.game;
 
+import java.io.Serializable;
+
 /**
  * The Action enumeration describes actions of the player and the associated points
  */
-public enum Action {
+public enum Action implements Serializable {
   /**
    * Single line burn
    */

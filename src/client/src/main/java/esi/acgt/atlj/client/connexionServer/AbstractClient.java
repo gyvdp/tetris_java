@@ -43,6 +43,7 @@ public abstract class AbstractClient implements Runnable {
    * Host name of server wishing to connect to.
    */
   private final String host;
+  
   /**
    * Port number of server wishing to connect to.
    */
