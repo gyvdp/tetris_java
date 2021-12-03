@@ -44,6 +44,8 @@ import esi.acgt.atlj.model.game.GameStat;
 import esi.acgt.atlj.model.game.GameStatInterface;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.Arrays;
@@ -59,6 +61,8 @@ import java.util.function.Consumer;
  * @see esi.acgt.atlj.client.connexionServer.AbstractClient
  */
 public class Client extends AbstractClient implements ClientInterface {
+
+  private PropertyChangeSupport pcs;
 
   /**
    * Lambda to run when players are ready
@@ -118,6 +122,7 @@ public class Client extends AbstractClient implements ClientInterface {
    */
   public Client(int port, String host) {
     super(port, host);
+    this.pcs = new PropertyChangeSupport(this);
   }
 
   /**
@@ -435,5 +440,14 @@ public class Client extends AbstractClient implements ClientInterface {
     } catch (IOException e) {
       System.err.println("Cannot send line to remove");
     }
+  }
+
+  @Override
+  public void addPropertyChangeListenerToClient(PropertyChangeListener propertyChangeListener) {
+    this.pcs.addPropertyChangeListener(propertyChangeListener);
+  }
+
+  public PropertyChangeSupport getPcs() {
+    return pcs;
   }
 }
