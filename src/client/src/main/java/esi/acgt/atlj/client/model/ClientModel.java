@@ -180,4 +180,8 @@ public class ClientModel extends Model {
     return this.player.getStatus();
   }
 
+  public void addPropertyChangeListenerToClient(PropertyChangeListener propertyChangeListener) {
+    this.client.addPropertyChangeListenerToClient(propertyChangeListener);
+  }
+
 }

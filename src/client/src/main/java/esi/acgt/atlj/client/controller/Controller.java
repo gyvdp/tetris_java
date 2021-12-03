@@ -115,8 +115,8 @@ public class Controller {
 
   public void startMenu(String username) {
     this.view.displayMenu(username);
-    // Link entre le menu et le clientmodel pour faire les fires.
-    //this.model.addPropertyChangeListenerToClient(this.view.getMenuListeners());
+    this.model.addPropertyChangeListenerToClient(this.view.getMenuListener());
+    //DEMANDER AU SERVER LES INFOS AU MENU.
   }
 
 

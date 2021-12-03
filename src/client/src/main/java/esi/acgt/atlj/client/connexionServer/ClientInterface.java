@@ -29,6 +29,8 @@ import esi.acgt.atlj.model.game.GameStat;
 import esi.acgt.atlj.model.game.GameStatInterface;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.List;
@@ -211,4 +213,8 @@ public interface ClientInterface {
    * @param linesDestroyed Line that current player just destroyed.
    */
   void removeLine(List<Integer> linesDestroyed);
+
+  void addPropertyChangeListenerToClient(PropertyChangeListener propertyChangeListener);
+
+  PropertyChangeSupport getPcs();
 }

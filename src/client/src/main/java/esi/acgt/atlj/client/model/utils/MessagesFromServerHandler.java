@@ -54,6 +54,11 @@ public class MessagesFromServerHandler {
   private List<GameInterface> players;
 
   /**
+   * Client that will received message from server.
+   */
+  private ClientInterface client;
+
+  /**
    * Constructor for message from server.
    *
    * @param otherPlayer Other player that is playing
@@ -132,13 +137,8 @@ public class MessagesFromServerHandler {
       this.otherPlayer.playerStatus("Disconnected", 1);
 
   /**
-   * Client that will received message from server.
-   */
-  private ClientInterface client;
-  /**
    * Updates the score from the other player.
    */
-
   Consumer<Integer> scoreReceivedFromServer = (Integer score) ->
   {
     if (client != null) {
