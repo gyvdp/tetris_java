@@ -283,8 +283,6 @@ public class Client extends AbstractClient implements ClientInterface {
     try {
       sendToServer(new SendGameStats(gameStats));
     } catch (IOException e) {
-      e.printStackTrace();
-      System.out.println(e.getMessage());
       System.err.println("Cannot send game stats to server");
     }
   }
@@ -295,6 +293,15 @@ public class Client extends AbstractClient implements ClientInterface {
   @Override
   public void connect() throws ConnectException {
     connectToServer();
+  }
+
+  @Override
+  public void askAllStatistics() {
+    try {
+      sendToServer(new SendAllStatistics());
+    } catch (IOException e) {
+      System.err.println("Cannot send game stats to server");
+    }
   }
 
   /**

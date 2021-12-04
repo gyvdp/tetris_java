@@ -101,10 +101,7 @@ public class MatchUpGenerator extends Thread {
       SendAllStatistics statistics = new SendAllStatistics();
       try {
         client.sendMessage(new SendHighScore(getBothPlayersHighScoreDB()));
-        statistics.setGame_history(interactDatabase.selectAllFromGameHistory(client.getUser()));
-        statistics.setTetrimino_history(
-            interactDatabase.selectAllFromTetriminoHistory(client.getUser()));
-        client.sendMessage(statistics);
+        createSendAllStatisticsMessage(statistics, client);
       } catch (BusinessException e) {
         System.err.println("Cannot get user high score");
       }
@@ -142,6 +139,28 @@ public class MatchUpGenerator extends Thread {
       System.err.println("Message dropped " + m.toString() + " from " + client.getInetAddress());
     }
   };
+
+  /**
+   * Gets all user stats
+   */
+  BiConsumer<SendAllStatistics, CustomClientThread> getAllStats = this::createSendAllStatisticsMessage;
+
+  /**
+   * Creates a message will both tables for a specific user.
+   *
+   * @param m      Message to create.
+   * @param client Client to get all statistics from.
+   */
+  private void createSendAllStatisticsMessage(SendAllStatistics m, CustomClientThread client) {
+    try {
+      m.setGame_history(interactDatabase.selectAllFromGameHistory(client.getUser()));
+      m.setTetrimino_history(
+          interactDatabase.selectAllFromTetriminoHistory(client.getUser()));
+      client.sendMessage(m);
+    } catch (BusinessException e) {
+      System.err.println("Cannot create message with all statistics");
+    }
+  }
 
   /**
    * Decrements the id of match-up in server when this closes.
@@ -217,6 +236,7 @@ public class MatchUpGenerator extends Thread {
       client.connectRefillBag(this.refillBag);
       client.connectHandleMessage(this.handleMessage);
       client.connectDisconnect(this.disconnect);
+      client.connectAllStats(this.getAllStats);
     }
   }
 
