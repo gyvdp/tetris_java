@@ -151,7 +151,11 @@ public class GameMenuController implements Initializable, PropertyChangeListener
    * @param percent new value of winningPercent
    */
   private void updateWinsPercentLabel(double percent) {
-    this.winningPercent.setText(Double.toString(percent));
+    if (percent >= 0) {
+      this.winningPercent.setText(Double.toString(percent));
+    } else {
+      this.winningPercent.setText("N/A");
+    }
   }
 
   /**

@@ -161,7 +161,16 @@ public class MessagesFromServerHandler {
   Consumer<HashMap<String, Integer>> setStatisticsReceivedFromServer = (HashMap<String, Integer> statistics) ->
   {
     if (client != null) {
-      // TODO
+      int won = statistics.getOrDefault("WON", 0);
+      int loses = statistics.getOrDefault("LOST", 0);
+      this.client.getPcs().firePropertyChange("wins", null, won);
+      this.client.getPcs().firePropertyChange("lose", null, loses);
+      this.client.getPcs().firePropertyChange("highest", null, statistics.getOrDefault("SCORE", 0));
+      if (won == 0 && loses == 0) {
+        this.client.getPcs().firePropertyChange("percent", null, -1);
+      } else {
+        this.client.getPcs().firePropertyChange("percent", null, won / loses);
+      }
     }
   };
 
