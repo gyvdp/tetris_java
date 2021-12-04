@@ -103,12 +103,14 @@
     <VBox.margin>
       <Insets bottom="15.0"/>
     </VBox.margin>
-    <Button mnemonicParsing="false" style="-fx-background-color: gray;" text="Quitter">
+    <Button mnemonicParsing="false" onAction="#leavePressed" style="-fx-background-color: gray;"
+      text="Quitter">
       <font>
         <Font size="15.0"/>
       </font>
     </Button>
-    <Button mnemonicParsing="false" style="-fx-background-color: gray;" text="Connexion">
+    <Button mnemonicParsing="false" onAction="#connexion" style="-fx-background-color: gray;"
+      text="Connexion">
       <font>
         <Font size="15.0"/>
       </font>
