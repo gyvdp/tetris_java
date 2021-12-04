@@ -55,6 +55,11 @@ public interface ClientInterface {
 
 
   /**
+   *
+   */
+  void askAllStatistics();
+
+  /**
    * @param setStatisticsReceivedFromServer
    */
   void connectStatistics(Consumer<HashMap<String, Integer>> setStatisticsReceivedFromServer);

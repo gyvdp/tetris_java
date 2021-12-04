@@ -31,6 +31,7 @@ import esi.acgt.atlj.message.PlayerAction;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.SendAction;
+import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import java.io.IOException;
@@ -77,6 +78,8 @@ public class CustomClientThread extends Thread {
    * Sends disconnect message to other player.
    */
   private Consumer<CustomClientThread> disconnect;
+
+  private BiConsumer<SendAllStatistics, CustomClientThread> getAllStats;
   /**
    * Runs when need to refill bag
    */
@@ -251,6 +254,9 @@ public class CustomClientThread extends Thread {
       }
       return false;
     }
+    if (message instanceof SendAllStatistics e) {
+      getAllStats.accept(e, this);
+    }
     return true;
   }
 
@@ -276,6 +282,16 @@ public class CustomClientThread extends Thread {
       } catch (NullPointerException ignored) {
       }
     }
+  }
+
+  /**
+   * Connect all statistics lambda to match-up generator.
+   *
+   * @param getAllStats Lambda to connect.
+   */
+  public void connectAllStats(BiConsumer<SendAllStatistics, CustomClientThread> getAllStats) {
+    this.getAllStats = getAllStats;
+
   }
 
   /**
