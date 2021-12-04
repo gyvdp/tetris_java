@@ -124,15 +124,6 @@ public class ClientModel extends Model {
   }
 
   /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void removePropertyChangeListener(PropertyChangeListener listener) {
-    this.player.removePropertyChangeListener(listener);
-    this.otherPlayer.removePropertyChangeListener(listener);
-  }
-
-  /**
    * Moves a player mino
    *
    * @param direction Direction to move mino in.

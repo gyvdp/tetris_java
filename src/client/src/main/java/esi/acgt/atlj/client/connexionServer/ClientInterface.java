@@ -219,7 +219,17 @@ public interface ClientInterface {
    */
   void removeLine(List<Integer> linesDestroyed);
 
+  /**
+   * Add a propertyChangeListener to the propertyChangerSupport that's used for the Menu's data
+   *
+   * @param propertyChangeListener new Listenner
+   */
   void addPropertyChangeListenerToClient(PropertyChangeListener propertyChangeListener);
 
+  /**
+   * Getter of Pcs
+   *
+   * @return PropertyChangeSupport
+   */
   PropertyChangeSupport getPcs();
 }

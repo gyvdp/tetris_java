@@ -442,11 +442,20 @@ public class Client extends AbstractClient implements ClientInterface {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void addPropertyChangeListenerToClient(PropertyChangeListener propertyChangeListener) {
+    if (this.pcs.getPropertyChangeListeners().length == 1) {
+      this.pcs.removePropertyChangeListener(this.pcs.getPropertyChangeListeners()[0]);
+    }
     this.pcs.addPropertyChangeListener(propertyChangeListener);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public PropertyChangeSupport getPcs() {
     return pcs;
   }

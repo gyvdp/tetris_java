@@ -113,13 +113,22 @@ public class Controller {
     this.view.show();
   }
 
+  /**
+   * Start the menu window and link it to the client
+   *
+   * @param username username of the player
+   */
   public void startMenu(String username) {
     this.view.displayMenu(username);
     this.model.addPropertyChangeListenerToClient(this.view.getMenuListener());
     //DEMANDER AU SERVER LES INFOS AU MENU.
   }
 
-
+  /**
+   * Start the game window and link the boards to the model
+   *
+   * @param username username of the player
+   */
   public void startPlay(String username) {
     this.model.initManagedBoard(username); // todo factory class
     this.view.displayBoard(username);
