@@ -49,8 +49,6 @@ public class View implements ViewInterface {
   private GameMenuController menuController;
   private ConnexionController connexionController;
 
-  //todo hello thomas
-
   /**
    * Constructor of view.
    */
@@ -86,7 +84,7 @@ public class View implements ViewInterface {
     this.primaryStage.setTitle("Tetris");
     this.primaryStage.setOnCloseRequest(event -> {
       this.controller.leaveMatch();
-      this.displayMenu(username);
+      this.controller.startMenu(username);
       this.show();
     });
     try {
