@@ -49,6 +49,8 @@ public class View implements ViewInterface {
   private GameMenuController menuController;
   private ConnexionController connexionController;
 
+  //todo hello thomas
+
   /**
    * Constructor of view.
    */
