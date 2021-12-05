@@ -161,7 +161,6 @@ public class Client extends AbstractClient implements ClientInterface {
     } else if (information instanceof SendHighScore message) {
       setHighScoreReceivedFromServer.accept(message.getHighScore());
     } else if (information instanceof SendAllStatistics message) {
-      System.out.println(message.getGame_history());
       setStatisticsReceivedFromServer.accept(message.getGame_history());
     }
   }
@@ -366,7 +365,6 @@ public class Client extends AbstractClient implements ClientInterface {
     this.setHighScoreReceivedFromServer = setHighScoreReceivedFromServer;
   }
 
-
   /**
    * {@inheritDoc}
    */
@@ -416,7 +414,6 @@ public class Client extends AbstractClient implements ClientInterface {
       System.err.println("Cannot send name to server");
     }
   }
-
 
   /**
    * {@inheritDoc}

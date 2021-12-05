@@ -26,6 +26,8 @@ package esi.acgt.atlj.server;
 
 
 import esi.acgt.atlj.database.dto.User;
+import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.ServerSocket;
@@ -240,6 +242,11 @@ public abstract class AbstractServer implements Runnable {
    */
   protected synchronized void addSpectator(CustomClientThread e, int matchId) {
   }
+
+  public synchronized void getStatOfPlayer(SendAllStatistics m, CustomClientThread client) {
+
+  }
+
 
   /**
    * Adds a player to a client to a match-up when player has chosen that action.
