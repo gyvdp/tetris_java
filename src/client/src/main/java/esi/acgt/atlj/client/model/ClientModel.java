@@ -36,6 +36,8 @@ import esi.acgt.atlj.model.game.ManagedGame;
 import esi.acgt.atlj.model.game.UnmanagedGame;
 import java.beans.PropertyChangeListener;
 import java.net.ConnectException;
+import java.util.HashMap;
+import java.util.function.Consumer;
 
 public class ClientModel extends Model {
 
@@ -66,8 +68,10 @@ public class ClientModel extends Model {
   public void connect(int port, String host) throws ConnectException {
     this.client = new Client(port, host);
     this.client.connect();
+    if (client != null) {
+      client.connectStatistics(this.setStatisticsReceivedFromServer);
+    }
   }
-
 
   /**
    * Getter for client interface
@@ -96,13 +100,43 @@ public class ClientModel extends Model {
   public void initManagedBoard(String username) {
     player = new ManagedGame(username);
     otherPlayer = new UnmanagedGame();
-    if (client != null) {
-      client.sendNameToServer(player.getUsername());
-    }
     new MessagesToServerHandler(player, client);
     new MessagesFromServerHandler(otherPlayer, player, client, players);
     players.add(player);
     players.add(otherPlayer);
+  }
+
+  Consumer<HashMap<String, Integer>> setStatisticsReceivedFromServer = (HashMap<String, Integer> statistics) ->
+  {
+    if (client != null) {
+      int won = statistics.getOrDefault("WON", 0);
+      int loses = statistics.getOrDefault("LOST", 0);
+      this.client.getPcs().firePropertyChange("wins", null, won);
+      this.client.getPcs().firePropertyChange("lose", null, loses);
+      this.client.getPcs().firePropertyChange("highest", null, statistics.getOrDefault("SCORE", 0));
+      if (won == 0 && loses == 0) {
+        this.client.getPcs().firePropertyChange("percent", null, -1.0);
+      } else {
+        this.client.getPcs().firePropertyChange("percent", null, won / loses);
+      }
+    }
+  };
+
+  /**
+   * Sends name to server
+   *
+   * @param username Username to send to server.
+   */
+  public void sendName(String username) {
+    if (client != null) {
+      client.sendNameToServer(username);
+    }
+  }
+
+  public void askStats() {
+    if (client != null) {
+      client.askAllStatistics();
+    }
   }
 
   /**

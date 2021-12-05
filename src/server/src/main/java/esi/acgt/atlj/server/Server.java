@@ -28,8 +28,10 @@ import esi.acgt.atlj.database.business.BusinessInterface;
 import esi.acgt.atlj.database.business.BusinessModel;
 import esi.acgt.atlj.database.dto.User;
 import esi.acgt.atlj.database.exceptions.BusinessException;
+import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
+import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import esi.acgt.atlj.server.utils.MatchUpGenerator;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -220,6 +222,17 @@ public class Server extends AbstractServer {
       }
     } catch (BusinessException e) {
       System.err.println("error creating or adding user");
+    }
+  }
+
+  public synchronized void getStatOfPlayer(SendAllStatistics m, CustomClientThread client) {
+    try {
+      m.setGame_history(interactDatabase.selectAllFromGameHistory(client.getUser()));
+      m.setTetrimino_history(
+          interactDatabase.selectAllFromTetriminoHistory(client.getUser()));
+      client.sendMessage(m);
+    } catch (BusinessException e) {
+      System.err.println("Cannot create message with all statistics");
     }
   }
 

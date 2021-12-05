@@ -98,10 +98,8 @@ public class MatchUpGenerator extends Thread {
     for (CustomClientThread client : clients) {
       getOpposingClient(client).sendMessage(new SendName(client.getUsername()));
       clientLambdaConnections(client);
-      SendAllStatistics statistics = new SendAllStatistics();
       try {
         client.sendMessage(new SendHighScore(getBothPlayersHighScoreDB()));
-        createSendAllStatisticsMessage(statistics, client);
       } catch (BusinessException e) {
         System.err.println("Cannot get user high score");
       }

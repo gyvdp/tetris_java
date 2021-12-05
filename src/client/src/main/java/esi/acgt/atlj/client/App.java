@@ -24,6 +24,7 @@
 
 package esi.acgt.atlj.client;
 
+import esi.acgt.atlj.client.connexionServer.Client;
 import esi.acgt.atlj.client.controller.Controller;
 import esi.acgt.atlj.client.model.ClientModel;
 import esi.acgt.atlj.client.view.View;

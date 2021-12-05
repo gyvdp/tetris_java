@@ -27,6 +27,7 @@ package esi.acgt.atlj.client.controller;
 import esi.acgt.atlj.client.model.ClientModel;
 import esi.acgt.atlj.client.view.ViewInterface;
 import esi.acgt.atlj.message.PlayerAction;
+import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.model.game.Direction;
 import esi.acgt.atlj.model.game.GameStatus;
 import java.util.Objects;
@@ -105,6 +106,7 @@ public class Controller {
   public void connexion(String ip, int port, String username) {
     try {
       this.model.connect(port, ip);
+      this.model.sendName(username);
       this.startMenu(username);
     } catch (Exception e) {
       this.view.displayError(e);
@@ -121,7 +123,7 @@ public class Controller {
   public void startMenu(String username) {
     this.view.displayMenu(username);
     this.model.addPropertyChangeListenerToClient(this.view.getMenuListener());
-    //DEMANDER AU SERVER LES INFOS AU MENU.
+    this.model.askStats();
   }
 
   /**
@@ -130,7 +132,7 @@ public class Controller {
    * @param username username of the player
    */
   public void startPlay(String username) {
-    this.model.initManagedBoard(username); // todo factory class
+    this.model.initManagedBoard(username);
     this.view.displayBoard(username);
     this.model.addPropertyChangeListenerToBoards(this.view.getBoardListeners());
     this.model.sendAction(PlayerAction.PLAY_ONLINE);

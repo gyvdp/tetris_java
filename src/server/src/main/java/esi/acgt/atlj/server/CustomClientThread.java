@@ -255,7 +255,8 @@ public class CustomClientThread extends Thread {
       return false;
     }
     if (message instanceof SendAllStatistics e) {
-      getAllStats.accept(e, this);
+      server.getStatOfPlayer(e, this);
+      return false;
     }
     return true;
   }
@@ -363,7 +364,9 @@ public class CustomClientThread extends Thread {
           msg = input.readObject();
           if (!readyToStop && handleMessageFromClient(msg)) {
             if (msg instanceof Message m) {
-              handleMessage.accept(m, this);
+              if (handleMessage != null) {
+                handleMessage.accept(m, this);
+              }
             }
           }
         } catch (ClassNotFoundException | RuntimeException ex) {
