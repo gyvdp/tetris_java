@@ -34,6 +34,7 @@ import java.beans.PropertyChangeSupport;
 import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -62,7 +63,8 @@ public interface ClientInterface {
   /**
    * @param setStatisticsReceivedFromServer
    */
-  void connectStatistics(Consumer<HashMap<String, Integer>> setStatisticsReceivedFromServer);
+  void connectStatistics(
+      BiConsumer<HashMap<String, Integer>, HashMap<String, Integer>> setStatisticsReceivedFromServer);
 
   /**
    * @param setHighScoreReceivedFromServer
