@@ -37,6 +37,7 @@ import esi.acgt.atlj.model.game.UnmanagedGame;
 import java.beans.PropertyChangeListener;
 import java.net.ConnectException;
 import java.util.HashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class ClientModel extends Model {
@@ -106,14 +107,14 @@ public class ClientModel extends Model {
     players.add(otherPlayer);
   }
 
-  Consumer<HashMap<String, Integer>> setStatisticsReceivedFromServer = (HashMap<String, Integer> statistics) ->
+  BiConsumer<HashMap<String, Integer>, HashMap<String, Integer>> setStatisticsReceivedFromServer = (HashMap<String, Integer> gameStats, HashMap<String, Integer> tetriminoStats) ->
   {
     if (client != null) {
-      int won = statistics.getOrDefault("WON", 0);
-      int loses = statistics.getOrDefault("LOST", 0);
+      int won = gameStats.getOrDefault("WON", 0);
+      int loses = gameStats.getOrDefault("LOST", 0);
       this.client.getPcs().firePropertyChange("wins", null, won);
       this.client.getPcs().firePropertyChange("lose", null, loses);
-      this.client.getPcs().firePropertyChange("highest", null, statistics.getOrDefault("SCORE", 0));
+      this.client.getPcs().firePropertyChange("highest", null, gameStats.getOrDefault("SCORE", 0));
       if (won == 0 && loses == 0) {
         this.client.getPcs().firePropertyChange("percent", null, -1.0);
       } else {

@@ -51,6 +51,7 @@ import java.net.ConnectException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 
@@ -112,7 +113,7 @@ public class Client extends AbstractClient implements ClientInterface {
 
   private Consumer<HashMap<String, Integer>> setHighScoreReceivedFromServer;
 
-  private Consumer<HashMap<String, Integer>> setStatisticsReceivedFromServer;
+  private BiConsumer<HashMap<String, Integer>, HashMap<String, Integer>> setStatisticsReceivedFromServer;
 
   /**
    * Constructor of a client.
@@ -161,7 +162,8 @@ public class Client extends AbstractClient implements ClientInterface {
     } else if (information instanceof SendHighScore message) {
       setHighScoreReceivedFromServer.accept(message.getHighScore());
     } else if (information instanceof SendAllStatistics message) {
-      setStatisticsReceivedFromServer.accept(message.getGame_history());
+      setStatisticsReceivedFromServer.accept(message.getGame_history(),
+          message.getTetrimino_history());
     }
   }
 
@@ -357,7 +359,7 @@ public class Client extends AbstractClient implements ClientInterface {
   }
 
   public void connectStatistics(
-      Consumer<HashMap<String, Integer>> setStatisticsReceivedFromServer) {
+      BiConsumer<HashMap<String, Integer>, HashMap<String, Integer>> setStatisticsReceivedFromServer) {
     this.setStatisticsReceivedFromServer = setStatisticsReceivedFromServer;
   }
 
