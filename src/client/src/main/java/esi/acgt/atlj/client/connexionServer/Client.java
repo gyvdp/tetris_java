@@ -448,7 +448,23 @@ public class Client extends AbstractClient implements ClientInterface {
   /**
    * {@inheritDoc}
    */
-  public PropertyChangeSupport getPcs() {
-    return pcs;
+  @Override
+  public void fireDataToMenu(HashMap<String, Integer> gameStats,
+      HashMap<String, Integer> tetriminoStats) {
+    int won = gameStats.getOrDefault("WON", 0);
+    int loses = gameStats.getOrDefault("LOST", 0);
+    this.pcs.firePropertyChange("WON", null, won);
+    this.pcs.firePropertyChange("LOST", null, loses);
+    this.pcs.firePropertyChange("SCORE", null, gameStats.getOrDefault("SCORE", 0));
+    this.pcs.firePropertyChange("BURN", null, tetriminoStats.getOrDefault("BURN", 0));
+    this.pcs.firePropertyChange("HARD", null, tetriminoStats.getOrDefault("HARD", 0));
+    if (won == 0 && loses == 0) {
+      this.pcs.firePropertyChange("PERCENT", null, -1.0);
+    } else {
+      if (loses == 0) {
+        this.pcs.firePropertyChange("PERCENT", null, (double) 100);
+      }
+      this.pcs.firePropertyChange("PERCENT", null, ((double) (won / loses)) * 100);
+    }
   }
 }
