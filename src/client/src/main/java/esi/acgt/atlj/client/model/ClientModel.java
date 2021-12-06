@@ -109,16 +109,7 @@ public class ClientModel extends Model {
   BiConsumer<HashMap<String, Integer>, HashMap<String, Integer>> setStatisticsReceivedFromServer = (HashMap<String, Integer> gameStats, HashMap<String, Integer> tetriminoStats) ->
   {
     if (client != null) {
-      int won = gameStats.getOrDefault("WON", 0);
-      int loses = gameStats.getOrDefault("LOST", 0);
-      this.client.getPcs().firePropertyChange("wins", null, won);
-      this.client.getPcs().firePropertyChange("lose", null, loses);
-      this.client.getPcs().firePropertyChange("highest", null, gameStats.getOrDefault("SCORE", 0));
-      if (won == 0 && loses == 0) {
-        this.client.getPcs().firePropertyChange("percent", null, -1.0);
-      } else {
-        this.client.getPcs().firePropertyChange("percent", null, (double) won / loses);
-      }
+      this.client.fireDataToMenu(gameStats, tetriminoStats);
     }
   };
 

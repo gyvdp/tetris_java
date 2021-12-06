@@ -52,7 +52,7 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   @FXML
   public Label destroyedLine;
   @FXML
-  public Label tetriminoPlaced;
+  public Label hardDrop;
   @FXML
   public Label wins;
   @FXML
@@ -117,12 +117,12 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   public void propertyChange(PropertyChangeEvent evt) {
     Platform.runLater(() -> {
       switch (evt.getPropertyName()) {
-        case "line" -> updateLineLabel((int) evt.getNewValue());
-        case "placed" -> updateTetriminoPlacedLabel((int) evt.getNewValue());
-        case "wins" -> updateWinsLabel((int) evt.getNewValue());
-        case "lose" -> updateLosesLabel((int) evt.getNewValue());
-        case "highest" -> updateHighestScoreLabel((int) evt.getNewValue());
-        case "percent" -> updateWinsPercentLabel((double) evt.getNewValue());
+        case "BURN" -> updateLineLabel((int) evt.getNewValue());
+        case "HARD" -> updateHardDropLabel((int) evt.getNewValue());
+        case "WON" -> updateWinsLabel((int) evt.getNewValue());
+        case "LOST" -> updateLosesLabel((int) evt.getNewValue());
+        case "SCORE" -> updateHighestScoreLabel((int) evt.getNewValue());
+        case "PERCENT" -> updateWinsPercentLabel((double) evt.getNewValue());
       }
     });
   }
@@ -152,7 +152,7 @@ public class GameMenuController implements Initializable, PropertyChangeListener
    */
   private void updateWinsPercentLabel(double percent) {
     if (percent >= 0) {
-      this.winningPercent.setText(Double.toString(percent));
+      this.winningPercent.setText(Double.toString(percent) + "%");
     } else {
       this.winningPercent.setText("N/A");
     }
@@ -168,12 +168,12 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   }
 
   /**
-   * Update TetriminoPlaced
+   * Update hardDrop label
    *
-   * @param placed new value of tetriminoPlaced
+   * @param hardD new value of hardDrop
    */
-  private void updateTetriminoPlacedLabel(int placed) {
-    this.tetriminoPlaced.setText(Integer.toString(placed));
+  private void updateHardDropLabel(int hardD) {
+    this.hardDrop.setText(Integer.toString(hardD));
   }
 
   /**

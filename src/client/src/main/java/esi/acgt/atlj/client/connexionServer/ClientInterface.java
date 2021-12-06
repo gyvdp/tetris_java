@@ -229,9 +229,10 @@ public interface ClientInterface {
   void addPropertyChangeListenerToClient(PropertyChangeListener propertyChangeListener);
 
   /**
-   * Getter of Pcs
+   * Use the 2 hashmap that is recieve from the server's database to display data on the menu.
    *
-   * @return PropertyChangeSupport
+   * @param gameStats      data from the player game data
+   * @param tetriminoStats data from player tetrimo data
    */
-  PropertyChangeSupport getPcs();
+  void fireDataToMenu(HashMap<String, Integer> gameStats, HashMap<String, Integer> tetriminoStats);
 }
