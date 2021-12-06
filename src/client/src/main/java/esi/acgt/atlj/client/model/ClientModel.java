@@ -38,7 +38,6 @@ import java.beans.PropertyChangeListener;
 import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class ClientModel extends Model {
 
@@ -122,7 +121,7 @@ public class ClientModel extends Model {
       if (won == 0 && loses == 0) {
         this.client.getPcs().firePropertyChange("percent", null, -1.0);
       } else {
-        this.client.getPcs().firePropertyChange("percent", null, won / loses);
+        this.client.getPcs().firePropertyChange("percent", null, (double) won / loses);
       }
     }
   };
