@@ -54,6 +54,8 @@ public class CustomClientThread extends Thread {
    * List of next tetriminos of player.
    */
   private final BlockingQueue<Mino> myTetriminos;
+
+  private boolean playingInsideMatchUp;
   /**
    * Unique id of client.
    */
@@ -79,7 +81,6 @@ public class CustomClientThread extends Thread {
    */
   private Consumer<CustomClientThread> disconnect;
 
-  private BiConsumer<SendAllStatistics, CustomClientThread> getAllStats;
   /**
    * Runs when need to refill bag
    */
@@ -106,6 +107,9 @@ public class CustomClientThread extends Thread {
    * initiated.
    */
   private boolean readyToStop;
+
+  private Consumer<CustomClientThread> quit;
+
 
   /**
    * Constructs a new connection to a client.
@@ -137,6 +141,8 @@ public class CustomClientThread extends Thread {
       throw ex;
     }
     readyToStop = false;
+    playingInsideMatchUp = false;
+    setName("Client connection" + getIdOfClient());
     this.start();
   }
 
@@ -170,6 +176,22 @@ public class CustomClientThread extends Thread {
       input = null;
       clientSocket = null;
     }
+  }
+
+  /**
+   * Sets flag of player inside match up to true.
+   */
+  public void addedToMatchUp() {
+    this.playingInsideMatchUp = true;
+  }
+
+  /**
+   * Checks if a player is currently playing inside a match-up
+   *
+   * @return True if player is playing inside a match-up.
+   */
+  public boolean playing() {
+    return this.playingInsideMatchUp;
   }
 
   /**
@@ -246,11 +268,16 @@ public class CustomClientThread extends Thread {
       }
     }
     if (message instanceof SendAction e) {
-      if (e.getAction() == PlayerAction.SPECTATE) {
-        server.addSpectator(this, 2);
-      }
       if (e.getAction() == PlayerAction.PLAY_ONLINE) {
-        server.addPlayer(this, 0);
+        server.addPlayer(this);
+      }
+      if (e.getAction() == PlayerAction.QUIT) {
+        playingInsideMatchUp = false;
+        if (quit == null) {
+          server.playerQuit(this);
+        } else {
+          quit.accept(this);
+        }
       }
       return false;
     }
@@ -259,6 +286,11 @@ public class CustomClientThread extends Thread {
       return false;
     }
     return true;
+  }
+
+
+  public void connectQuit(Consumer<CustomClientThread> quit) {
+    this.quit = quit;
   }
 
   /**
@@ -283,16 +315,6 @@ public class CustomClientThread extends Thread {
       } catch (NullPointerException ignored) {
       }
     }
-  }
-
-  /**
-   * Connect all statistics lambda to match-up generator.
-   *
-   * @param getAllStats Lambda to connect.
-   */
-  public void connectAllStats(BiConsumer<SendAllStatistics, CustomClientThread> getAllStats) {
-    this.getAllStats = getAllStats;
-
   }
 
   /**

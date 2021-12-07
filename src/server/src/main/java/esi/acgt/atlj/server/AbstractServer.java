@@ -34,6 +34,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * All necessary definition to run a server.
@@ -247,13 +248,21 @@ public abstract class AbstractServer implements Runnable {
 
   }
 
+  protected synchronized void playerQuit(CustomClientThread client) {
+
+  }
+
+  public synchronized void addClientToWaitingList(CustomClientThread client) {
+
+  }
+
 
   /**
    * Adds a player to a client to a match-up when player has chosen that action.
    *
    * @param client Client to add to match-up
    */
-  protected synchronized void addPlayer(CustomClientThread client, int matchId) {
+  protected synchronized void addPlayer(CustomClientThread client) {
   }
 
   /**
@@ -272,6 +281,7 @@ public abstract class AbstractServer implements Runnable {
               CustomClientThread client = new CustomClientThread(
                   clientSocket, this, threads.size());
               this.threads.add(client);
+
             }
           }
         } catch (InterruptedIOException exception) {

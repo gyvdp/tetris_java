@@ -120,12 +120,6 @@ public class MessagesToServerHandler {
     }
   };
 
-  Runnable askAllStatsToServer = () -> {
-    if (client != null) {
-      this.client.askAllStatistics();
-    }
-  };
-
 
   /**
    * Constructor for message to server.

@@ -31,7 +31,6 @@ import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
-import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import esi.acgt.atlj.message.messageTypes.SendGameStats;
 import esi.acgt.atlj.message.messageTypes.SendHighScore;
 import esi.acgt.atlj.message.messageTypes.SendName;
@@ -39,6 +38,7 @@ import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.UpdateNextPieceOther;
 import esi.acgt.atlj.model.game.GameStatInterface;
 import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.server.AbstractServer;
 import esi.acgt.atlj.server.CustomClientThread;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,6 +69,10 @@ public class MatchUpGenerator extends Thread {
    */
   List<CustomClientThread> clients;
 
+  List<CustomClientThread> persistantClient;
+
+  AbstractServer server;
+
   /**
    * List of spectators
    */
@@ -88,11 +92,13 @@ public class MatchUpGenerator extends Thread {
    * @param interactDatabase   Interface to interact with database.
    */
   public MatchUpGenerator(List<CustomClientThread> clients, int idGeneratedMatchUp,
-      BusinessInterface interactDatabase) {
+      BusinessInterface interactDatabase, AbstractServer server) {
     this.clients = clients;
+    this.server = server;
+    this.persistantClient = new ArrayList<>(clients);
     this.interactDatabase = interactDatabase;
     this.spectators = new ArrayList<>();
-    this.model = new MatchUpModel(clients);
+    this.model = new MatchUpModel(new ArrayList<>(clients));
     this.bagGenerator = new BagGenerator();
     this.id = idGeneratedMatchUp;
     for (CustomClientThread client : clients) {
@@ -111,6 +117,7 @@ public class MatchUpGenerator extends Thread {
    * Lambda expression to refill bags.
    */
   Runnable refillBag = this::refillBags;
+
 
   /**
    * Lambda expression to handle message from client.
@@ -139,51 +146,28 @@ public class MatchUpGenerator extends Thread {
   };
 
   /**
-   * Gets all user stats
-   */
-  BiConsumer<SendAllStatistics, CustomClientThread> getAllStats = this::createSendAllStatisticsMessage;
-
-  /**
-   * Creates a message will both tables for a specific user.
-   *
-   * @param m      Message to create.
-   * @param client Client to get all statistics from.
-   */
-  private void createSendAllStatisticsMessage(SendAllStatistics m, CustomClientThread client) {
-    try {
-      m.setGame_history(interactDatabase.selectAllFromGameHistory(client.getUser()));
-      m.setTetrimino_history(
-          interactDatabase.selectAllFromTetriminoHistory(client.getUser()));
-      client.sendMessage(m);
-    } catch (BusinessException e) {
-      System.err.println("Cannot create message with all statistics");
-    }
-  }
-
-  /**
    * Decrements the id of match-up in server when this closes.
    */
   private Runnable decrementMatchUpId;
+
+
   /**
-   * Handles disconnection of player from match-up. If both players have disconnected, kills
-   * thread.
+   * Removes client from list of clients.
    */
-  Consumer<CustomClientThread> disconnect = (CustomClientThread clientThread) -> {
-    int notPlaying = 0;
-    getOpposingClient(clientThread).sendMessage(new PlayerState(PlayerStatus.DISCONNECTED));
-    for (CustomClientThread customClientThread : clients) {
-      if (!(customClientThread.isConnected())) {
-        notPlaying++;
-      }
-    }
-    if (notPlaying == 2) { //If both players are not playing match-up should end.
-      updateDb();
-      System.out.println("Match-up " + this.id + 1 + " has ended");
-      decrementMatchUpId.run();
-      this.interrupt();
-    }
+  Consumer<CustomClientThread> quit = (CustomClientThread clientThread) -> {
+    System.out.println("Client " + clientThread.getIdOfClient() + " has quit the match-up");
+    this.clients.remove(clientThread);
+    server.addClientToWaitingList(clientThread);
+    checkEndOfMatchUp();
   };
 
+  private void checkEndOfMatchUp() {
+    if (clients.size() == 0) {
+      updateDb();
+      System.out.println("Match-up " + (this.id + 1) + " has ended");
+      decrementMatchUpId.run();
+    }
+  }
 
   /**
    * Gets high score of both players.
@@ -211,11 +195,12 @@ public class MatchUpGenerator extends Thread {
 
   }
 
+
   /**
    * Updates the database with specific values of the game
    */
   public void updateDb() {
-    CustomClientThread loser = model.getLoser(clients);
+    CustomClientThread loser = model.getLoser();
     try {
       interactDatabase.addLostGame(loser.getUser());
       interactDatabase.addWonGame(getOpposingClient(loser).getUser());
@@ -233,8 +218,8 @@ public class MatchUpGenerator extends Thread {
     if (client != null) {
       client.connectRefillBag(this.refillBag);
       client.connectHandleMessage(this.handleMessage);
-      client.connectDisconnect(this.disconnect);
-      client.connectAllStats(this.getAllStats);
+      //client.connectDisconnect(this.disconnect);
+      client.connectQuit(this.quit);
     }
   }
 
@@ -264,23 +249,14 @@ public class MatchUpGenerator extends Thread {
   }
 
   /**
-   * Sends a message to the spectator.
-   *
-   * @param m Message to send to spectator.
-   * @param c Client to send message to.
-   */
-  public void sendMessageToSpectator(Message m, CustomClientThread c) {
-    c.sendMessage(m); //todo specific spectator message with name of player sending it.
-  }
-
-  /**
    * Gets the opposing client of the given client.
    *
    * @param client Client to get adversary of.
    * @return Opposing client of given client.
    */
   private CustomClientThread getOpposingClient(CustomClientThread client) {
-    return clients.get(0).equals(client) ? clients.get(1) : clients.get(0);
+    return persistantClient.get(0).equals(client) ? persistantClient.get(1)
+        : persistantClient.get(0);
   }
 
   /**

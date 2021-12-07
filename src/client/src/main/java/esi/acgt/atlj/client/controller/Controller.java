@@ -24,10 +24,11 @@
 
 package esi.acgt.atlj.client.controller;
 
+import static esi.acgt.atlj.message.PlayerAction.QUIT;
+
 import esi.acgt.atlj.client.model.ClientModel;
 import esi.acgt.atlj.client.view.ViewInterface;
 import esi.acgt.atlj.message.PlayerAction;
-import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.model.game.Direction;
 import esi.acgt.atlj.model.game.GameStatus;
 import java.util.Objects;
@@ -153,6 +154,7 @@ public class Controller {
   }
 
   public void leaveMatch() {
-    //TODO Quitter le match et "stop" le model.
+    //todo stop real game.
+    model.sendAction(QUIT);
   }
 }
