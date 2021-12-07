@@ -54,6 +54,9 @@ public class MatchUpModel {
    */
   HashMap<CustomClientThread, ManagedGame> gameHashMap;
 
+
+  List<CustomClientThread> clientThreads;
+
   /**
    * Constructor for server model.
    */
@@ -63,6 +66,7 @@ public class MatchUpModel {
     gameHashMap = new HashMap<>();
     gameHashMap.put(clients.get(0), playerOne);
     gameHashMap.put(clients.get(1), playerTwo);
+    this.clientThreads = clients;
   }
 
   /**
@@ -106,12 +110,12 @@ public class MatchUpModel {
   /**
    * Returns the player that lost in a list of players.
    *
-   * @param clients List of players in which to determine loser.
    * @return Player that lost in the list of players.
    */
-  public CustomClientThread getLoser(List<CustomClientThread> clients) {
-    return getGameScore(clients.get(1)) > getGameScore(clients.get(0)) ? clients.get(0)
-        : clients.get(1);
+  public CustomClientThread getLoser() {
+    return getGameScore(clientThreads.get(1)) > getGameScore(clientThreads.get(0))
+        ? clientThreads.get(0)
+        : clientThreads.get(1);
   }
 }
 

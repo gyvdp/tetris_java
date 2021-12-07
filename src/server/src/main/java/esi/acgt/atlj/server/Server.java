@@ -40,6 +40,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
@@ -185,10 +186,9 @@ public class Server extends AbstractServer {
   @Override
   protected void clientConnected(CustomClientThread client) {
     super.clientConnected(client);
+    System.out.println("Client" + client.getIdOfClient() + " has connected with ip address :"
+        + client.getInetAddress());
     members.put(getNextId(), client);
-    System.out.println(
-        "Client " + client.getIdOfClient() + " has connected successfully with "
-            + client.getInetAddress() + " and is in the waiting list");
   }
 
   /**
@@ -240,12 +240,13 @@ public class Server extends AbstractServer {
    * {@inheritDoc}
    */
   @Override
-  public synchronized void addPlayer(CustomClientThread client, int matchId) {
-    waitingList.add(client);
+  public synchronized void addPlayer(CustomClientThread client) {
+    addClientToWaitingList(client);
+    System.out.println(waitingList.size());
     if (waitingList.size() % 2 == 0) {
       MatchUpGenerator matchUp = new MatchUpGenerator(
           waitingList.stream().limit(2).collect(Collectors.toList()), this.matchUpId,
-          interactDatabase);
+          interactDatabase, this);
       matchUp.connectDecrementMatchUpId(this.decrementMatchUpId);
       matchUps.put(getNextMatchupId(), matchUp);
       System.out.println("A new match-up has been created with id: " + this.matchUpId);
@@ -257,6 +258,22 @@ public class Server extends AbstractServer {
     }
   }
 
+
+  public void addClientToWaitingList(CustomClientThread client) {
+    waitingList.add(client);
+    System.out.println(
+        "Client " + client.getIdOfClient() + " is in the waiting list");
+  }
+
+  @Override
+  protected synchronized void playerQuit(CustomClientThread client) {
+    super.playerQuit(client);
+    if (waitingList.remove(client)) {
+      System.out.println("Client" + client.getIdOfClient() +
+          " has quit the game, he is no longer is the waiting list");
+    }
+  }
+
   /**
    * {@inheritDoc}
    */
@@ -264,7 +281,10 @@ public class Server extends AbstractServer {
   protected void clientDisconnected(CustomClientThread client) {
     super.clientDisconnected(client);
     try {
-      waitingList.remove(client);
+      if (waitingList.remove(client)) {
+        System.out.println(
+            "Client " + client.getIdOfClient() + " has been removed from the waiting list");
+      }
     } catch (NullPointerException ignored) {
     }
     members.remove(client.getIdOfClient());
