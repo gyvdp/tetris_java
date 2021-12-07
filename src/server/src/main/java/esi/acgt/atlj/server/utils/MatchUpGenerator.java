@@ -72,12 +72,6 @@ public class MatchUpGenerator extends Thread {
   List<CustomClientThread> persistantClient;
 
   AbstractServer server;
-
-  /**
-   * List of spectators
-   */
-  List<CustomClientThread> spectators;
-
   /**
    * Unique id of generated match-up.
    */
@@ -97,7 +91,6 @@ public class MatchUpGenerator extends Thread {
     this.server = server;
     this.persistantClient = new ArrayList<>(clients);
     this.interactDatabase = interactDatabase;
-    this.spectators = new ArrayList<>();
     this.model = new MatchUpModel(new ArrayList<>(clients));
     this.bagGenerator = new BagGenerator();
     this.id = idGeneratedMatchUp;
@@ -221,12 +214,6 @@ public class MatchUpGenerator extends Thread {
       //client.connectDisconnect(this.disconnect);
       client.connectQuit(this.quit);
     }
-  }
-
-  public synchronized void addSpectator(CustomClientThread client) {
-    this.spectators.add(client);
-    //client.sendMessage(new SendBoard(model.receiveBoard(client), client.getNameOfClient());
-    //todo add spectator??.
   }
 
   /**

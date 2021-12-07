@@ -236,14 +236,6 @@ public abstract class AbstractServer implements Runnable {
   protected void serverClosed() {
   }
 
-  /**
-   * Adds a client to the spectator list when player has chosen that action.
-   *
-   * @param e Client to add to list.
-   */
-  protected synchronized void addSpectator(CustomClientThread e, int matchId) {
-  }
-
   public synchronized void getStatOfPlayer(SendAllStatistics m, CustomClientThread client) {
 
   }
