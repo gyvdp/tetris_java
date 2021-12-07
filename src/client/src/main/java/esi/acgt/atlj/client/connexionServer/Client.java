@@ -451,20 +451,21 @@ public class Client extends AbstractClient implements ClientInterface {
   @Override
   public void fireDataToMenu(HashMap<String, Integer> gameStats,
       HashMap<String, Integer> tetriminoStats) {
-    int won = gameStats.getOrDefault("WON", 0);
-    int loses = gameStats.getOrDefault("LOST", 0);
-    this.pcs.firePropertyChange("WON", null, won);
-    this.pcs.firePropertyChange("LOST", null, loses);
+    double won = gameStats.getOrDefault("WON", 0);
+    double loses = gameStats.getOrDefault("LOST", 0);
+    this.pcs.firePropertyChange("WON", null, (int) won);
+    this.pcs.firePropertyChange("LOST", null, (int) loses);
     this.pcs.firePropertyChange("SCORE", null, gameStats.getOrDefault("SCORE", 0));
-    this.pcs.firePropertyChange("BURN", null, tetriminoStats.getOrDefault("BURN", 0));
-    this.pcs.firePropertyChange("HARD", null, tetriminoStats.getOrDefault("HARD", 0));
     if (won == 0 && loses == 0) {
       this.pcs.firePropertyChange("PERCENT", null, -1.0);
     } else {
-      if (loses == 0) {
-        this.pcs.firePropertyChange("PERCENT", null, (double) 100);
-      }
-      this.pcs.firePropertyChange("PERCENT", null, ((double) (won / loses)) * 100);
+      this.pcs.firePropertyChange("PERCENT", null, ((won / (loses + won))) * 100);
     }
+    this.pcs.firePropertyChange("BURN", null, tetriminoStats.getOrDefault("BURN", 0));
+    this.pcs.firePropertyChange("HARD", null, tetriminoStats.getOrDefault("HARD", 0));
+    this.pcs.firePropertyChange("SINGLE", null, tetriminoStats.getOrDefault("SINGLE", 0));
+    this.pcs.firePropertyChange("DOUBLE", null, tetriminoStats.getOrDefault("DOUBLE", 0));
+    this.pcs.firePropertyChange("TRIPLE", null, tetriminoStats.getOrDefault("TRIPLE", 0));
+    this.pcs.firePropertyChange("TETRIS", null, tetriminoStats.getOrDefault("TETRIS", 0));
   }
 }

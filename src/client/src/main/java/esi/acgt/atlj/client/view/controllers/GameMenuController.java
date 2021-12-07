@@ -50,6 +50,14 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   @FXML
   public Label connectedUsername;
   @FXML
+  public Label singleLabel;
+  @FXML
+  public Label doubleLabel;
+  @FXML
+  public Label tripleLabel;
+  @FXML
+  public Label tetrisLabel;
+  @FXML
   public Label destroyedLine;
   @FXML
   public Label hardDrop;
@@ -123,6 +131,10 @@ public class GameMenuController implements Initializable, PropertyChangeListener
         case "LOST" -> updateLosesLabel((int) evt.getNewValue());
         case "SCORE" -> updateHighestScoreLabel((int) evt.getNewValue());
         case "PERCENT" -> updateWinsPercentLabel((double) evt.getNewValue());
+        case "SINGLE" -> updateSingleLabel((int) evt.getNewValue());
+        case "DOUBLE" -> updateDoubleLabel((int) evt.getNewValue());
+        case "TRIPLE" -> updateTripleLabel((int) evt.getNewValue());
+        case "TETRIS" -> updateTetrisLabel((int) evt.getNewValue());
       }
     });
   }
@@ -174,6 +186,42 @@ public class GameMenuController implements Initializable, PropertyChangeListener
    */
   private void updateHardDropLabel(int hardD) {
     this.hardDrop.setText(Integer.toString(hardD));
+  }
+
+  /**
+   * Update single label
+   *
+   * @param single new value of hardDrop
+   */
+  private void updateSingleLabel(int single) {
+    this.singleLabel.setText(Integer.toString(single));
+  }
+
+  /**
+   * Update double label
+   *
+   * @param doubleL new value of hardDrop
+   */
+  private void updateDoubleLabel(int doubleL) {
+    this.doubleLabel.setText(Integer.toString(doubleL));
+  }
+
+  /**
+   * Update triple label
+   *
+   * @param triple new value of hardDrop
+   */
+  private void updateTripleLabel(int triple) {
+    this.tripleLabel.setText(Integer.toString(triple));
+  }
+
+  /**
+   * Update double label
+   *
+   * @param tetris new value of hardDrop
+   */
+  private void updateTetrisLabel(int tetris) {
+    this.tetrisLabel.setText(Integer.toString(tetris));
   }
 
   /**
