@@ -62,10 +62,7 @@ public class Server extends AbstractServer {
    * All match-ups with their id.
    */
   private final HashMap<Integer, MatchUpGenerator> matchUps;
-  /**
-   * Waiting list for spectators. Player is placed in list if all current match-up are
-   */
-  private final BlockingQueue<CustomClientThread> waitingListForSpectators;
+
   /**
    * Database interaction
    */
@@ -94,7 +91,6 @@ public class Server extends AbstractServer {
     interactDatabase = new BusinessModel();
     members = new HashMap<>();
     matchUps = new HashMap<>();
-    waitingListForSpectators = new LinkedBlockingQueue<>();
     this.listen();
   }
 
@@ -189,23 +185,6 @@ public class Server extends AbstractServer {
     System.out.println("Client" + client.getIdOfClient() + " has connected with ip address :"
         + client.getInetAddress());
     members.put(getNextId(), client);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public synchronized void addSpectator(CustomClientThread e, int matchId) {
-    this.waitingListForSpectators.add(e);
-    if (matchId != 0) {
-      MatchUpGenerator match = matchUps.get(matchId);
-      if (match != null) {
-        System.out.println("spectator added");
-        match.addSpectator(e);
-      } else {
-        e.sendMessage(new PlayerState(PlayerStatus.NOT_FOUND));
-      }
-    }
   }
 
   /**
