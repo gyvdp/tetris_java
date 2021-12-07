@@ -25,7 +25,6 @@
 package esi.acgt.atlj.client.connexionServer;
 
 import esi.acgt.atlj.message.PlayerAction;
-import esi.acgt.atlj.model.game.GameStat;
 import esi.acgt.atlj.model.game.GameStatInterface;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
@@ -56,18 +55,22 @@ public interface ClientInterface {
 
 
   /**
-   *
+   * Ask server to send all statistics of current player.
    */
   void askAllStatistics();
 
   /**
-   * @param setStatisticsReceivedFromServer
+   * Connects lambda expression to set all stats received from server.
+   *
+   * @param setStatisticsReceivedFromServer Lambda expression to connect.
    */
   void connectStatistics(
       BiConsumer<HashMap<String, Integer>, HashMap<String, Integer>> setStatisticsReceivedFromServer);
 
   /**
-   * @param setHighScoreReceivedFromServer
+   * Connects lambda expression to set high scores received from server.
+   *
+   * @param setHighScoreReceivedFromServer Lambda expression to connect.
    */
   void connectHighScore(Consumer<HashMap<String, Integer>> setHighScoreReceivedFromServer);
 
@@ -139,12 +142,6 @@ public interface ClientInterface {
    */
   void connectUpdateNextTetriminoOtherPlayer(Consumer<Mino> updateNextTetriminoOtherPlayer);
 
-  /**
-   * Sends your name to the server.
-   *
-   * @param name Name of the current player.
-   */
-  void sendName(String name);
 
   /**
    * Connects a consumer of new mino of model to client.

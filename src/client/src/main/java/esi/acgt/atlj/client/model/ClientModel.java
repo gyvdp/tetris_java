@@ -74,6 +74,10 @@ public class ClientModel extends Model {
     }
   }
 
+  public void quitGame() {
+    player.quit();
+  }
+
   /**
    * Getter for client interface
    *

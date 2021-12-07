@@ -55,6 +55,9 @@ public class MatchUpModel {
   HashMap<CustomClientThread, ManagedGame> gameHashMap;
 
 
+  /**
+   * Alls clients
+   */
   List<CustomClientThread> clientThreads;
 
   /**

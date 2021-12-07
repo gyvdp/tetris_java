@@ -30,7 +30,6 @@ import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
-import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.SendGameStats;
 import esi.acgt.atlj.message.messageTypes.SendHighScore;
 import esi.acgt.atlj.message.messageTypes.SendName;
@@ -69,9 +68,16 @@ public class MatchUpGenerator extends Thread {
    */
   List<CustomClientThread> clients;
 
+  /**
+   * List of clients that will never be changed.
+   */
   List<CustomClientThread> persistantClient;
 
+  /**
+   * Server that match-up belongs to.
+   */
   AbstractServer server;
+
   /**
    * Unique id of generated match-up.
    */
@@ -154,6 +160,9 @@ public class MatchUpGenerator extends Thread {
     checkEndOfMatchUp();
   };
 
+  /**
+   * Check if it is the end of the match-up.
+   */
   private void checkEndOfMatchUp() {
     if (clients.size() == 0) {
       updateDb();
@@ -176,6 +185,12 @@ public class MatchUpGenerator extends Thread {
     return highScores;
   }
 
+  /**
+   * Sets the game statistics for a player.
+   *
+   * @param statistics Statistics to set.
+   * @param user       Player to set statistics to.
+   */
   private void setGameStats(GameStatInterface statistics, User user) {
     try {
       interactDatabase.addBurns(user, statistics.getBurns());

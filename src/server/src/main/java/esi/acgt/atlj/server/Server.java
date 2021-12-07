@@ -71,9 +71,12 @@ public class Server extends AbstractServer {
    * current number of match-ups;
    */
   private int matchUpId = 0;
-  Runnable decrementMatchUpId = () -> {
-    this.matchUpId--;
-  };
+
+  /**
+   * Decrements the match-up id to have correct number.
+   */
+  Runnable decrementMatchUpId = () -> this.matchUpId--;
+
   /**
    * current tally of client id.
    */
@@ -204,6 +207,10 @@ public class Server extends AbstractServer {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public synchronized void getStatOfPlayer(SendAllStatistics m, CustomClientThread client) {
     try {
       m.setGame_history(interactDatabase.selectAllFromGameHistory(client.getUser()));
@@ -238,6 +245,10 @@ public class Server extends AbstractServer {
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public void addClientToWaitingList(CustomClientThread client) {
     waitingList.add(client);
     System.out.println(

@@ -110,9 +110,14 @@ public class Client extends AbstractClient implements ClientInterface {
    */
   private Consumer<Mino> updateNextTetriminoOtherPlayer;
 
-
+  /**
+   * Method used when highscore is received from server.
+   */
   private Consumer<HashMap<String, Integer>> setHighScoreReceivedFromServer;
 
+  /**
+   * Method used when all statistics are received from server.
+   */
   private BiConsumer<HashMap<String, Integer>, HashMap<String, Integer>> setStatisticsReceivedFromServer;
 
   /**
@@ -403,18 +408,6 @@ public class Client extends AbstractClient implements ClientInterface {
   @Override
   public void connectPlayerDisconnected(Runnable playerDisconnected) {
     this.playerDisconnected = playerDisconnected;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void sendName(String name) {
-    try {
-      sendToServer(new SendName(name));
-    } catch (IOException e) {
-      System.err.println("Cannot send name to server");
-    }
   }
 
   /**

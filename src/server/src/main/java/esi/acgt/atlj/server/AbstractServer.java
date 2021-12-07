@@ -111,7 +111,7 @@ public abstract class AbstractServer implements Runnable {
       }
       try {
         connectionListener.join();
-      } catch (InterruptedException | NullPointerException ex) {
+      } catch (InterruptedException | NullPointerException ignored) {
       }
       serverClosed();
     }
@@ -236,14 +236,28 @@ public abstract class AbstractServer implements Runnable {
   protected void serverClosed() {
   }
 
+  /**
+   * Gets statistics of a player.
+   *
+   * @param m      Message to put statistics inside.
+   * @param client Client to get statistics from.
+   */
   public synchronized void getStatOfPlayer(SendAllStatistics m, CustomClientThread client) {
 
   }
 
+  /**
+   * Expected action when player want to quit a match-up.
+   */
   protected synchronized void playerQuit(CustomClientThread client) {
 
   }
 
+  /**
+   * Adds a client to the waiting list.
+   *
+   * @param client Client to add to the waiting list.
+   */
   public synchronized void addClientToWaitingList(CustomClientThread client) {
 
   }
@@ -276,7 +290,7 @@ public abstract class AbstractServer implements Runnable {
 
             }
           }
-        } catch (InterruptedIOException exception) {
+        } catch (InterruptedIOException ignored) {
         }
       }
     } catch (IOException exception) {

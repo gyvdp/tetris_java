@@ -85,6 +85,10 @@ public class ManagedGame extends AbstractGame {
     this.tickHandler = new TickHandler(this);
   }
 
+  public synchronized void quit() {
+    setStatus(GameStatus.LOCK_OUT);
+  }
+
   /**
    * Connect lambda expression from ModelClient to ask client for new mino.
    *

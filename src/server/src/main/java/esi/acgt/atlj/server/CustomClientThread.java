@@ -55,7 +55,6 @@ public class CustomClientThread extends Thread {
    */
   private final BlockingQueue<Mino> myTetriminos;
 
-  private boolean playingInsideMatchUp;
   /**
    * Unique id of client.
    */
@@ -87,8 +86,6 @@ public class CustomClientThread extends Thread {
   private Runnable refillBag;
   /**
    * Sockets are used in the operating system as channels of communication between two processes.
-   *
-   * @see java.net.Socket
    */
   private Socket clientSocket;
 
@@ -108,6 +105,9 @@ public class CustomClientThread extends Thread {
    */
   private boolean readyToStop;
 
+  /**
+   * Run when player want to quit match-up
+   */
   private Consumer<CustomClientThread> quit;
 
 
@@ -141,7 +141,6 @@ public class CustomClientThread extends Thread {
       throw ex;
     }
     readyToStop = false;
-    playingInsideMatchUp = false;
     setName("Client connection" + getIdOfClient());
     this.start();
   }
@@ -176,22 +175,6 @@ public class CustomClientThread extends Thread {
       input = null;
       clientSocket = null;
     }
-  }
-
-  /**
-   * Sets flag of player inside match up to true.
-   */
-  public void addedToMatchUp() {
-    this.playingInsideMatchUp = true;
-  }
-
-  /**
-   * Checks if a player is currently playing inside a match-up
-   *
-   * @return True if player is playing inside a match-up.
-   */
-  public boolean playing() {
-    return this.playingInsideMatchUp;
   }
 
   /**
@@ -272,7 +255,6 @@ public class CustomClientThread extends Thread {
         server.addPlayer(this);
       }
       if (e.getAction() == PlayerAction.QUIT) {
-        playingInsideMatchUp = false;
         if (quit == null) {
           server.playerQuit(this);
         } else {

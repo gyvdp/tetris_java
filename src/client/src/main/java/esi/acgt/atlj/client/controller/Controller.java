@@ -154,7 +154,7 @@ public class Controller {
   }
 
   public void leaveMatch() {
-    //todo stop real game.
+    model.quitGame();
     model.sendAction(QUIT);
   }
 }
