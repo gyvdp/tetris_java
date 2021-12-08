@@ -40,6 +40,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import java.text.DecimalFormat;
 
 public class GameMenuController implements Initializable, PropertyChangeListener {
 
@@ -164,7 +165,8 @@ public class GameMenuController implements Initializable, PropertyChangeListener
    */
   private void updateWinsPercentLabel(double percent) {
     if (percent >= 0) {
-      this.winningPercent.setText(Double.toString(percent) + "%");
+      var temp = new DecimalFormat("#.##").format(percent);
+      this.winningPercent.setText(temp.toString() + "%");
     } else {
       this.winningPercent.setText("N/A");
     }
