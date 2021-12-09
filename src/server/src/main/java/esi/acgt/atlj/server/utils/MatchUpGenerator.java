@@ -138,7 +138,6 @@ public class MatchUpGenerator extends Thread {
           opPlayer.sendMessage(m);
         }
       }
-
     } else {
       System.err.println("Message dropped " + m.toString() + " from " + client.getInetAddress());
     }

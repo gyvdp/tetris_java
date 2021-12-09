@@ -24,13 +24,13 @@
 
 package esi.acgt.atlj.database.business;
 
-import esi.acgt.atlj.database.db.TetriminoStatsTable;
+import esi.acgt.atlj.database.db.TetriminoStatTable;
 import esi.acgt.atlj.database.dto.User;
 import esi.acgt.atlj.model.game.Action;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TetriminoStatsBusinessLogic {
+public class TetriminoStatBusinessLogic {
 
   /**
    * @param user
@@ -38,7 +38,7 @@ public class TetriminoStatsBusinessLogic {
    */
   static void addDestroyedLines(User user, Map<Action, Integer> actions) {
     try {
-      TetriminoStatsTable.addDestroyedLines(user, actions);
+      TetriminoStatTable.addDestroyedLines(user, actions);
     } catch (Exception e) {
       System.err.println("Cannot set number of tetriminos in database \n" + e.getMessage());
     }
@@ -46,7 +46,7 @@ public class TetriminoStatsBusinessLogic {
 
   static HashMap<String, Integer> selectAll(User user) {
     try {
-      return TetriminoStatsTable.selectAll(user);
+      return TetriminoStatTable.selectAll(user);
     } catch (Exception e) {
       System.err.println("Cannot select all of tetriminos in database \n" + e.getMessage());
     }
@@ -59,7 +59,7 @@ public class TetriminoStatsBusinessLogic {
    */
   static void addBurns(User user, int increase) {
     try {
-      TetriminoStatsTable.addNbBurns(user, increase);
+      TetriminoStatTable.addNbBurns(user, increase);
     } catch (Exception e) {
       System.err.println("Cannot set number of burns in database \n" + e.getMessage());
     }

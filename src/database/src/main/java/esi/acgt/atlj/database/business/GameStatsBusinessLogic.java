@@ -24,7 +24,7 @@
 
 package esi.acgt.atlj.database.business;
 
-import esi.acgt.atlj.database.db.GameStatsTable;
+import esi.acgt.atlj.database.db.GameStatTable;
 import esi.acgt.atlj.database.dto.User;
 import java.util.HashMap;
 
@@ -39,7 +39,7 @@ class GameStatsBusinessLogic {
    */
   static int getHighScore(User user) {
     try {
-      return GameStatsTable.getHighScore(user);
+      return GameStatTable.getHighScore(user);
     } catch (Exception e) {
       System.err.println("Cannot get high score from database \n" + e.getMessage());
     }
@@ -52,7 +52,7 @@ class GameStatsBusinessLogic {
    */
   static void setHighestLevel(User user, int level) {
     try {
-      GameStatsTable.setHighestLevel(user, level);
+      GameStatTable.setHighestLevel(user, level);
     } catch (Exception e) {
       System.err.println("Cannot set highest level in database \n" + e.getMessage());
     }
@@ -65,7 +65,7 @@ class GameStatsBusinessLogic {
    */
   static void setHighScore(User user, int newHighScore) {
     try {
-      GameStatsTable.setHighScore(user, newHighScore);
+      GameStatTable.setHighScore(user, newHighScore);
     } catch (Exception e) {
       System.err.println("Cannot set high score \n" + e.getMessage());
     }
@@ -79,7 +79,7 @@ class GameStatsBusinessLogic {
    */
   static int getNbGamesWon(User user) {
     try {
-      return GameStatsTable.getNbGameWon(user);
+      return GameStatTable.getNbGameWon(user);
     } catch (Exception e) {
       System.err.println("Cannot get number of games won \n" + e.getMessage());
     }
@@ -93,7 +93,7 @@ class GameStatsBusinessLogic {
    */
   static void incrementWonGame(User user) {
     try {
-      GameStatsTable.addWonGame(user);
+      GameStatTable.addWonGame(user);
     } catch (Exception e) {
       System.err.println("Cannot add to the number of games won \n" + e.getMessage());
     }
@@ -106,7 +106,7 @@ class GameStatsBusinessLogic {
    */
   static HashMap<String, Integer> selectAll(User user) {
     try {
-      return GameStatsTable.selectAllColumnsOfTable(user);
+      return GameStatTable.selectAllColumnsOfTable(user);
     } catch (Exception e) {
       System.err.println(
           "Cannot select all of columns of game_history from user" + "[" + user + "]");
@@ -121,7 +121,7 @@ class GameStatsBusinessLogic {
    */
   static void incrementLostGame(User user) {
     try {
-      GameStatsTable.addLostGame(user);
+      GameStatTable.addLostGame(user);
     } catch (Exception e) {
       System.err.println("Cannot add to the number of games lost \n" + e.getMessage());
     }
@@ -135,7 +135,7 @@ class GameStatsBusinessLogic {
    */
   static int getNbGamesLost(User user) {
     try {
-      return GameStatsTable.getNbGameLost(user);
+      return GameStatTable.getNbGameLost(user);
     } catch (Exception e) {
       System.err.println("Cannot get number of games won \n" + e.getMessage());
     }

@@ -35,7 +35,7 @@ import java.util.Hashtable;
 /**
  * Tools needed to interact with game stats table
  */
-public class GameStatsTable {
+public class GameStatTable {
 
   /**
    * Table name.

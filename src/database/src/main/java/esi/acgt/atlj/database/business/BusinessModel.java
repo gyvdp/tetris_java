@@ -276,7 +276,7 @@ public class BusinessModel implements BusinessInterface {
   public void addBurns(User user, int increase) throws BusinessException {
     try {
       DataBaseManager.startTransaction();
-      TetriminoStatsBusinessLogic.addBurns(user, increase);
+      TetriminoStatBusinessLogic.addBurns(user, increase);
       DataBaseManager.validateTransacation();
     } catch (DbException e) {
       String msg = e.getMessage();
@@ -295,7 +295,7 @@ public class BusinessModel implements BusinessInterface {
       throws BusinessException {
     try {
       DataBaseManager.startTransaction();
-      TetriminoStatsBusinessLogic.addDestroyedLines(user, actions);
+      TetriminoStatBusinessLogic.addDestroyedLines(user, actions);
       DataBaseManager.validateTransacation();
     } catch (DbException e) {
       String msg = e.getMessage();
@@ -315,7 +315,7 @@ public class BusinessModel implements BusinessInterface {
     HashMap<String, Integer> statistics;
     try {
       DataBaseManager.startTransaction();
-      statistics = TetriminoStatsBusinessLogic.selectAll(user);
+      statistics = TetriminoStatBusinessLogic.selectAll(user);
       DataBaseManager.validateTransacation();
     } catch (DbException e) {
       String msg = e.getMessage();
