@@ -207,7 +207,11 @@ public class ClientModel extends Model {
    * @return Current status of the game.
    */
   public GameStatus getStatus() {
-    return this.player.getStatus();
+    if (this.player != null) {
+      return this.player.getStatus();
+    } else {
+      return GameStatus.NOT_STARTED;
+    }
   }
 
   public void addPropertyChangeListenerToClient(PropertyChangeListener propertyChangeListener) {

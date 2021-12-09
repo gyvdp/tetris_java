@@ -255,9 +255,7 @@ public class CustomClientThread extends Thread {
         server.addPlayer(this);
       }
       if (e.getAction() == PlayerAction.QUIT) {
-        if (quit == null) {
-          server.playerQuit(this);
-        } else {
+        if (quit != null) {
           quit.accept(this);
         }
       }

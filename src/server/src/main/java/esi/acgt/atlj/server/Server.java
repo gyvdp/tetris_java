@@ -228,7 +228,6 @@ public class Server extends AbstractServer {
   @Override
   public synchronized void addPlayer(CustomClientThread client) {
     addClientToWaitingList(client);
-    System.out.println(waitingList.size());
     if (waitingList.size() % 2 == 0) {
       MatchUpGenerator matchUp = new MatchUpGenerator(
           waitingList.stream().limit(2).collect(Collectors.toList()), this.matchUpId,
@@ -250,17 +249,10 @@ public class Server extends AbstractServer {
    */
   @Override
   public void addClientToWaitingList(CustomClientThread client) {
-    waitingList.add(client);
-    System.out.println(
-        "Client " + client.getIdOfClient() + " is in the waiting list");
-  }
-
-  @Override
-  protected synchronized void playerQuit(CustomClientThread client) {
-    super.playerQuit(client);
-    if (waitingList.remove(client)) {
-      System.out.println("Client" + client.getIdOfClient() +
-          " has quit the game, he is no longer is the waiting list");
+    if (!(waitingList.contains(client))) {
+      waitingList.add(client);
+      System.out.println(
+          "Client " + client.getIdOfClient() + " is in the waiting list");
     }
   }
 

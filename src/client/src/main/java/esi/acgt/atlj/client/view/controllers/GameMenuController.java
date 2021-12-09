@@ -25,7 +25,7 @@
 package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.client.controller.Controller;
-import esi.acgt.atlj.client.view.controllers.ConnexionController;
+import esi.acgt.atlj.model.game.GameStatus;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;

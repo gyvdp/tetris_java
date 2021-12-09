@@ -247,13 +247,6 @@ public abstract class AbstractServer implements Runnable {
   }
 
   /**
-   * Expected action when player want to quit a match-up.
-   */
-  protected synchronized void playerQuit(CustomClientThread client) {
-
-  }
-
-  /**
    * Adds a client to the waiting list.
    *
    * @param client Client to add to the waiting list.

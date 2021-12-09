@@ -257,8 +257,12 @@ public class MatchUpGenerator extends Thread {
    * @return Opposing client of given client.
    */
   private CustomClientThread getOpposingClient(CustomClientThread client) {
-    return persistantClient.get(0).equals(client) ? persistantClient.get(1)
-        : persistantClient.get(0);
+    try {
+      return persistantClient.get(0).equals(client) ? clients.get(1)
+          : clients.get(0);
+    } catch (NullPointerException ignored) {
+      return null;
+    }
   }
 
   /**
