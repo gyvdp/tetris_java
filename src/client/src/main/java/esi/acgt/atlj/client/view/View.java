@@ -64,6 +64,9 @@ public class View implements ViewInterface {
    */
   @Override
   public void displayConnexion() {
+    if (this.primaryStage != null) {
+      this.primaryStage.close();
+    }
     this.primaryStage = new Stage();
     this.connexionController = new ConnexionController(this.controller, this.primaryStage);
     this.primaryStage.setResizable(false);
