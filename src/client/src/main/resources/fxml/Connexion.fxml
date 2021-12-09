@@ -80,12 +80,12 @@
       </font>
     </Label>
     <TextField fx:id="ip" promptText="Adresse ip (172.168.45.24)"
-      style="-fx-background-color: gray;" GridPane.columnIndex="1">
+      style="-fx-background-color: gray;" text="127.0.0.1" GridPane.columnIndex="1">
       <GridPane.margin>
         <Insets left="25.0"/>
       </GridPane.margin>
     </TextField>
-    <TextField fx:id="port" promptText="Port (6545)" style="-fx-background-color: gray;"
+    <TextField fx:id="port" promptText="Port (6545)" style="-fx-background-color: gray;" text="6969"
       GridPane.columnIndex="3">
       <GridPane.margin>
         <Insets right="25.0"/>

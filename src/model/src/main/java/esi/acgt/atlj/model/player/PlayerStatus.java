@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.game;
+package esi.acgt.atlj.model.player;
 
-public enum GameStatus {
+public enum PlayerStatus {
   NOT_STARTED,
   TETRIMINO_FALLING,
   ROTATING_CLOCKWISE,

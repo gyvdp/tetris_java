@@ -22,41 +22,11 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model;
+package esi.acgt.atlj.client.model;
 
-import esi.acgt.atlj.model.game.GameInterface;
-import java.util.LinkedList;
-import java.util.List;
-
-public abstract class Model implements ModelInterface {
-
-  protected List<GameInterface> players;
-
-  protected Model() {
-    this.players = new LinkedList<>();
-  }
-
-  @Override
-  public String[] getUsernames() {
-    var players = new String[this.players.size()];
-    for (var i = 0; i < this.players.size(); ++i) {
-      players[i] = this.players.get(i).getUsername();
-    }
-    return players;
-  }
-
-  @Override
-  public GameInterface getBoard(String username) {
-    for (GameInterface player : this.players) {
-      if (player.getUsername().equals(username)) {
-        return player;
-      }
-    }
-    return null;
-  }
-
-  @Override
-  public void addPlayer(GameInterface board) {
-    this.players.add(board);
-  }
+public enum ClientStatus {
+  CONNECTED,
+  SOLO,
+  MULTIPLAYER,
+  OBSERVER
 }

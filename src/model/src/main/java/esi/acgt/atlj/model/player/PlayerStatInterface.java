@@ -21,58 +21,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package esi.acgt.atlj.model.tetrimino;
 
-import esi.acgt.atlj.model.player.Direction;
+package esi.acgt.atlj.model.player;
+
+import java.io.Serializable;
+import java.util.Map;
 
 /**
- * The TetriminoInterface
+ * The GameStatInterface describes the possible statistics you can get in a game.
  */
-public interface TetriminoInterface {
+public interface PlayerStatInterface extends Serializable {
 
   /**
-   * Get the x position
+   * Get the high-score of the player (include actual game score)
    *
-   * @return the x position
+   * @return the player high-score
    */
-  int getX();
+  int getHighScore();
 
   /**
-   * Get the y position
+   * Get the actual game score
    *
-   * @return the y position
+   * @return the score
    */
-  int getY();
+  int getScore();
 
   /**
-   * Get a matrix of the minos in the tetrimino
+   * Get the number of burns in this game
    *
-   * @return the tetrimino as minos matrix
+   * @return nb lines burnt
    */
-  Mino[][] getMinos();
+  int getBurns();
 
   /**
-   * Get the minos wich the matrix is made of
+   * Get the actual level of the game
    *
-   * @return the mino contains in the matrix of minos
+   * @return the level
    */
-  Mino getType();
+  int getLevel();
 
   /**
-   * Rotate the Tetrimino
+   * Get the count of all actions of the game
    *
-   * @param clockwise       true if clockwise
-   * @param surroundingArea Area of surrounding blocks.
-   * @throws IllegalArgumentException if non valid parameters.
+   * @return a map with the count of each action
    */
-  boolean rotate(boolean clockwise, boolean[][] surroundingArea);
-
-  /**
-   * Moves the tetrimino in a direction
-   *
-   * @param direction Direction to move tetrimino in.
-   */
-  boolean move(Direction direction, boolean[][] freeMask);
-
-  Mino[][] rotatedShape(boolean clockwise);
+  Map<Action, Integer> getActionCount();
 }

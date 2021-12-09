@@ -22,11 +22,11 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.game;
+package esi.acgt.atlj.model.player;
 
-import esi.acgt.atlj.model.tetrimino.ITetrimino;
 import esi.acgt.atlj.model.tetrimino.Mino;
-import esi.acgt.atlj.model.tetrimino.OTetrimino;
+import esi.acgt.atlj.model.tetrimino.TTetrimino;
+import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -35,7 +35,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class AbstractGame implements GameInterface, Serializable {
+public abstract class AbstractPlayer implements PlayerInterface, Serializable {
 
   /**
    * The matrix of the board
@@ -50,7 +50,7 @@ public abstract class AbstractGame implements GameInterface, Serializable {
   /**
    * The stats of the actual game
    */
-  protected GameStat stats;
+  protected PlayerStat stats;
 
   /**
    * The actual falling tetrimino
@@ -77,13 +77,13 @@ public abstract class AbstractGame implements GameInterface, Serializable {
    *
    * @param username the username of the player
    */
-  public AbstractGame(String username) {
+  public AbstractPlayer(String username) {
     this.username = username;
-    this.actualTetrimino = new OTetrimino();
-    this.nextTetrimino = new ITetrimino();
+    this.actualTetrimino = new TTetrimino();
+    this.nextTetrimino = null;
     this.pcs = new PropertyChangeSupport(this);
     this.matrix = new Mino[HEIGHT][WIDTH];
-    this.stats = new GameStat(this.pcs);
+    this.stats = new PlayerStat(this.pcs);
   }
 
   /**
@@ -170,11 +170,14 @@ public abstract class AbstractGame implements GameInterface, Serializable {
   }
 
   /**
-   * Setter of nextTetrimino
+   * Sets the next upcoming tetrimino.
    *
-   * @param nextTetrimino new nextTetrimino
+   * @param type Tetrimino to set.
    */
-  public abstract void setNextTetrimino(TetriminoInterface nextTetrimino);
+  public synchronized void setNextTetrimino(Mino type) {
+    this.nextTetrimino = type != null ? Tetrimino.createTetrimino(type) : null;
+    this.pcs.firePropertyChange("next", null, type);
+  }
 
   /**
    * {@inheritDoc}
@@ -283,7 +286,7 @@ public abstract class AbstractGame implements GameInterface, Serializable {
    * {@inheritDoc}
    */
   @Override
-  public synchronized GameStat getStats() {
+  public synchronized PlayerStat getStats() {
     return this.stats;
   }
 }

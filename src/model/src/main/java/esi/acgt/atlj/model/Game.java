@@ -22,38 +22,41 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.client;
+package esi.acgt.atlj.model;
 
-import esi.acgt.atlj.client.connexionServer.Client;
-import esi.acgt.atlj.client.controller.Controller;
-import esi.acgt.atlj.client.model.ClientModel;
-import esi.acgt.atlj.client.view.View;
-import esi.acgt.atlj.client.view.ViewInterface;
-import javafx.application.Application;
-import javafx.stage.Stage;
+import esi.acgt.atlj.model.player.PlayerInterface;
+import java.util.LinkedList;
+import java.util.List;
 
-/**
- * Client Application
- */
-public class App extends Application {
+public abstract class Game implements GameInterface {
 
-  public static void main(String[] args) {
-    launch(args);
+  protected List<PlayerInterface> players;
+
+  protected Game() {
+    this.players = new LinkedList<>();
   }
 
   @Override
-  public void start(Stage stage) {
-    ClientModel model = new ClientModel();
-    ViewInterface view = new View();
-    Controller controller = new Controller(model, view);
-    controller.start();
-    final Parameters params = getParameters();
-    for (var param : params.getRaw()) {
-      switch (param) {
-        case "--localhost" -> controller.connexion("127.0.0.1", 6969, "Pacliclown");
-        case "--client" -> controller.solo("Andrew");
-      }
+  public String[] getUsernames() {
+    var players = new String[this.players.size()];
+    for (var i = 0; i < this.players.size(); ++i) {
+      players[i] = this.players.get(i).getUsername();
     }
+    return players;
   }
 
+  @Override
+  public PlayerInterface getBoard(String username) {
+    for (PlayerInterface player : this.players) {
+      if (player.getUsername().equals(username)) {
+        return player;
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public void addPlayer(PlayerInterface board) {
+    this.players.add(board);
+  }
 }

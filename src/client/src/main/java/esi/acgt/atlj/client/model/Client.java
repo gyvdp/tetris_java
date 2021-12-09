@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.client.connexionServer;
+package esi.acgt.atlj.client.model;
 
+import esi.acgt.atlj.client.model.game.MultiplayerGame;
 import esi.acgt.atlj.message.PlayerAction;
-import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.AddTetrimino;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.LockedTetrimino;
@@ -40,80 +40,31 @@ import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.SendScore;
 import esi.acgt.atlj.message.messageTypes.SetHold;
 import esi.acgt.atlj.message.messageTypes.UpdateNextPieceOther;
-import esi.acgt.atlj.model.game.GameStat;
-import esi.acgt.atlj.model.game.GameStatInterface;
+import esi.acgt.atlj.model.Game;
+import esi.acgt.atlj.model.player.Direction;
+import esi.acgt.atlj.model.player.PlayerStatInterface;
+import esi.acgt.atlj.model.player.PlayerStatus;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.net.ConnectException;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import javafx.scene.input.KeyCode;
 
 
 /**
  * Sets up a specialized client with overridden methods from AbstractClient on which application
  * will run on.
  *
- * @see esi.acgt.atlj.client.connexionServer.AbstractClient
+ * @see AbstractClient
  */
-public class Client extends AbstractClient implements ClientInterface {
+public class Client extends AbstractClient implements ClientInterface, PropertyChangeListener {
 
-  private PropertyChangeSupport pcs;
+  private ClientStatus status;
 
-  /**
-   * Lambda to run when players are ready
-   */
-  Runnable playerReady;
-  /**
-   * Lambda to run when other player has lost
-   */
-  Runnable otherPlayerLost;
-  /**
-   * Lambda to run when other player has disconnected
-   */
-  Runnable playerDisconnected;
-  /**
-   * Lambda to run when a locked tetrimino has been sent.
-   */
-  Consumer<TetriminoInterface> locked;
-  /**
-   * Method used when sendPiece message comes from server.
-   */
-  private Consumer<Mino> newMino;
-  /**
-   * Method used when a name is received
-   */
-  private Consumer<String> receiveName;
-  /**
-   * Method used when setting hold of other player.
-   */
-  private Consumer<Mino> hold;
-  /**
-   * Method used when removeLine message comes from server.
-   */
-  private Consumer<List<Integer>> removeLine;
-  /**
-   * Method used when addTetrimino message comes from server.
-   */
-  private Consumer<TetriminoInterface> addTetrimino;
-  /**
-   * Method used when sendScore message comes from server.
-   */
-  private Consumer<Integer> sendScore;
-  /**
-   * Method used when updating next mino of other player
-   */
-  private Consumer<Mino> updateNextTetriminoOtherPlayer;
-
-
-  private Consumer<HashMap<String, Integer>> setHighScoreReceivedFromServer;
-
-  private BiConsumer<HashMap<String, Integer>, HashMap<String, Integer>> setStatisticsReceivedFromServer;
+  private Game game;
 
   /**
    * Constructor of a client.
@@ -123,7 +74,7 @@ public class Client extends AbstractClient implements ClientInterface {
    */
   public Client(int port, String host) {
     super(port, host);
-    this.pcs = new PropertyChangeSupport(this);
+    this.status = ClientStatus.CONNECTED;
   }
 
   /**
@@ -131,39 +82,44 @@ public class Client extends AbstractClient implements ClientInterface {
    */
   @Override
   protected void handleServerMessage(Object information) {
+    var player = ((MultiplayerGame) game).getPlayer();
+    var otherPlayer = ((MultiplayerGame) game).getOtherPlayer();
+
     if (information instanceof SendPiece message) { //When next tetrimino is sent from server
-      newMino.accept(message.getMino());
+      player.setNextTetrimino(message.getMino());
     } else if (information instanceof RemoveLine message) { //When remove line is send from server
-      removeLine.accept(message.getLine());
+      otherPlayer.removeLines(message.getLine());
     } else if (information instanceof AddTetrimino message) { //When add tetrimino is sent from server
-      addTetrimino.accept(message.getTetrimino());
+      otherPlayer.setActualTetrimino(message.getTetrimino());
     } else if (information instanceof SendScore message) { // When send score is sent from server
-      sendScore.accept(message.getScore());
+      otherPlayer.setScore(message.getScore());
     } else if (information instanceof
         UpdateNextPieceOther message) {//When update next tetrimino is sent from server
-      updateNextTetriminoOtherPlayer.accept(message.getPiece());
+      otherPlayer.setNextTetrimino(message.getPiece());
     } else if (information instanceof PlayerState message) {
-      if (message.getPlayerState().equals
-          (PlayerStatus.READY)) { // When player state ready is sent from server
-        playerReady.run();
+      if (message.getPlayerState()
+          .equals(
+              esi.acgt.atlj.message.PlayerStatus.READY)) { // When player state ready is sent from server
+        requestNextMino();
+        ((MultiplayerGame) game).start();
       } else if (message.getPlayerState().equals
-          (PlayerStatus.LOST)) { // When player state lost in sent from server
-        otherPlayerLost.run();
+          (esi.acgt.atlj.message.PlayerStatus.LOST)) { // When player state lost in sent from server
+        // todo :otherPlayerLost.run();
       } else if (message.getPlayerState().equals
-          (PlayerStatus.DISCONNECTED)) { // When player state disconnected is sent from server
-        playerDisconnected.run();
+          (esi.acgt.atlj.message.PlayerStatus.DISCONNECTED)) { // When player state disconnected is sent from server
+        // todo :playerDisconnected.run();
       }
     } else if (information instanceof SendName message) { // When send name is sent from server
-      receiveName.accept(message.getUsername());
+      otherPlayer.setUsername(message.getUsername());
     } else if (information instanceof SetHold message) { // When hold tetrimino is sent from server
-      hold.accept(message.getHold());
+      otherPlayer.setHold(message.getHold());
     } else if (information instanceof LockedTetrimino message) { //When locked tetrimino has been send from server.
-      locked.accept(message.getTetrimino());
+      otherPlayer.placeTetrimino(message.getTetrimino());
     } else if (information instanceof SendHighScore message) {
-      setHighScoreReceivedFromServer.accept(message.getHighScore());
+      // todo :setHighScoreReceivedFromServer.accept(message.getHighScore());
     } else if (information instanceof SendAllStatistics message) {
-      setStatisticsReceivedFromServer.accept(message.getGame_history(),
-          message.getTetrimino_history());
+      // todo :setStatisticsReceivedFromServer.accept(message.getGame_history(),
+      //message.getTetrimino_history());
     }
   }
 
@@ -173,14 +129,6 @@ public class Client extends AbstractClient implements ClientInterface {
   @Override
   public void closeConnectionToServer() {
     super.closeConnectionToServer();
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void connectReceiveUserName(Consumer<String> receiveName) {
-    this.receiveName = receiveName;
   }
 
   /**
@@ -201,51 +149,10 @@ public class Client extends AbstractClient implements ClientInterface {
   @Override
   public void notifyLoss() {
     try {
-      sendToServer(new PlayerState(PlayerStatus.LOST));
+      sendToServer(new PlayerState(esi.acgt.atlj.message.PlayerStatus.LOST));
     } catch (IOException e) {
       System.err.println("Sorry cannot send loss");
     }
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void connectUpdateNextTetriminoOtherPlayer(Consumer<Mino> updateNextTetriminoOtherPlayer) {
-    this.updateNextTetriminoOtherPlayer = updateNextTetriminoOtherPlayer;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void connectNewMinoFromServer(Consumer<Mino> newMino) {
-    this.newMino = newMino;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void connectAddTetrimino(Consumer<TetriminoInterface> addTetrimino) {
-    this.addTetrimino = addTetrimino;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void connectSendScore(Consumer<Integer> sendScore) {
-    this.sendScore = sendScore;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void connectRemoveLine(Consumer<List<Integer>> removeLine) {
-    this.removeLine = removeLine;
   }
 
   /**
@@ -285,7 +192,7 @@ public class Client extends AbstractClient implements ClientInterface {
   }
 
   @Override
-  public void sendAllGameStats(GameStatInterface gameStats) {
+  public void sendAllGameStats(PlayerStatInterface gameStats) {
     try {
       sendToServer(new SendGameStats(gameStats));
     } catch (IOException e) {
@@ -350,39 +257,6 @@ public class Client extends AbstractClient implements ClientInterface {
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void connectHold(Consumer<Mino> hold) {
-    this.hold = hold;
-  }
-
-  public void connectStatistics(
-      BiConsumer<HashMap<String, Integer>, HashMap<String, Integer>> setStatisticsReceivedFromServer) {
-    this.setStatisticsReceivedFromServer = setStatisticsReceivedFromServer;
-  }
-
-  public void connectHighScore(Consumer<HashMap<String, Integer>> setHighScoreReceivedFromServer) {
-    this.setHighScoreReceivedFromServer = setHighScoreReceivedFromServer;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void connectPlayerReady(Runnable playerReady) {
-    this.playerReady = playerReady;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void connectOtherPlayerLost(Runnable otherPlayerLost) {
-    this.otherPlayerLost = otherPlayerLost;
-  }
-
   @Override
   public void lockTetrimino(TetriminoInterface m) {
     try {
@@ -390,19 +264,6 @@ public class Client extends AbstractClient implements ClientInterface {
     } catch (IOException e) {
       System.err.println("Cannot send name to server");
     }
-  }
-
-  @Override
-  public void connectlockTetrimino(Consumer<TetriminoInterface> tetriminoInterfaceConsumer) {
-    this.locked = tetriminoInterfaceConsumer;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void connectPlayerDisconnected(Runnable playerDisconnected) {
-    this.playerDisconnected = playerDisconnected;
   }
 
   /**
@@ -441,38 +302,63 @@ public class Client extends AbstractClient implements ClientInterface {
     }
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
-  public void addPropertyChangeListenerToClient(PropertyChangeListener propertyChangeListener) {
-    if (this.pcs.getPropertyChangeListeners().length == 1) {
-      this.pcs.removePropertyChangeListener(this.pcs.getPropertyChangeListeners()[0]);
-    }
-    this.pcs.addPropertyChangeListener(propertyChangeListener);
+  public void startMultiplayerGame(String username) {
+    this.game = new MultiplayerGame(username);
+    ((MultiplayerGame) this.game).addPCLToPlayer(this);
+    sendAction(PlayerAction.PLAY_ONLINE);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
-  public void fireDataToMenu(HashMap<String, Integer> gameStats,
-      HashMap<String, Integer> tetriminoStats) {
-    double won = gameStats.getOrDefault("WON", 0);
-    double loses = gameStats.getOrDefault("LOST", 0);
-    this.pcs.firePropertyChange("WON", null, (int) won);
-    this.pcs.firePropertyChange("LOST", null, (int) loses);
-    this.pcs.firePropertyChange("SCORE", null, gameStats.getOrDefault("SCORE", 0));
-    if (won == 0 && loses == 0) {
-      this.pcs.firePropertyChange("PERCENT", null, -1.0);
-    } else {
-      this.pcs.firePropertyChange("PERCENT", null, ((won / (loses + won))) * 100);
+  public void addPCSToBoard(PropertyChangeListener[] listeners) {
+    if (game != null) {
+      game.addPropertyChangeListenerToBoards(listeners);
     }
-    this.pcs.firePropertyChange("BURN", null, tetriminoStats.getOrDefault("BURN", 0));
-    this.pcs.firePropertyChange("HARD", null, tetriminoStats.getOrDefault("HARD", 0));
-    this.pcs.firePropertyChange("SINGLE", null, tetriminoStats.getOrDefault("SINGLE", 0));
-    this.pcs.firePropertyChange("DOUBLE", null, tetriminoStats.getOrDefault("DOUBLE", 0));
-    this.pcs.firePropertyChange("TRIPLE", null, tetriminoStats.getOrDefault("TRIPLE", 0));
-    this.pcs.firePropertyChange("TETRIS", null, tetriminoStats.getOrDefault("TETRIS", 0));
+  }
+
+  @Override
+  public Game getActualGame() {
+    return game;
+  }
+
+  @Override
+  public ClientStatus getStatus() {
+    return this.status;
+  }
+
+  @Override
+  public void keyBoardInput(KeyCode input) {
+    if (game instanceof MultiplayerGame) {
+      var multiplayerGame = (MultiplayerGame) game;
+
+      if (multiplayerGame.getStatus() != PlayerStatus.LOCK_OUT) {
+        switch (input) {
+          case LEFT, NUMPAD4 -> multiplayerGame.move(Direction.LEFT);
+          case RIGHT, NUMPAD6 -> multiplayerGame.move(Direction.RIGHT);
+          case DOWN, NUMPAD2 -> multiplayerGame.softDrop();
+          case UP, X, NUMPAD3, NUMPAD5 -> multiplayerGame.rotate(true);
+          case SHIFT, C, NUMPAD0 -> multiplayerGame.hold();
+          case SPACE, NUMPAD8 -> multiplayerGame.hardDrop();
+          case CONTROL, NUMPAD1, NUMPAD9 -> multiplayerGame.rotate(false);
+        }
+      }
+    }
+
+  }
+
+
+  @Override
+  public void propertyChange(PropertyChangeEvent evt) {
+    switch (evt.getPropertyName()) {
+      case "hold" -> sendHoldMino((Mino) evt.getNewValue());
+      case "ACTUAL" -> sendTetriminoToOtherPlayer((TetriminoInterface) evt.getNewValue());
+      case "SCORE" -> sendScore((int) evt.getNewValue());
+      case "PLACE_TETRIMINO" -> lockTetrimino((TetriminoInterface) evt.getNewValue());
+      case "next" -> {
+        if (evt.getNewValue() == null) {
+          requestNextMino();
+        }
+      }
+    }
   }
 }

@@ -27,12 +27,12 @@ package esi.acgt.atlj.database.business;
 import esi.acgt.atlj.database.db.TetriminoStatsTable;
 import esi.acgt.atlj.database.dto.TetriminoDto;
 import esi.acgt.atlj.database.dto.UserDto;
-import esi.acgt.atlj.model.game.Action;
+import esi.acgt.atlj.model.player.Action;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TetriminoStatsBusinessLogic {
-  
+
 
   static TetriminoDto getTetrimino(UserDto user) {
     try {

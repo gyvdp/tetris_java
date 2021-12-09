@@ -25,11 +25,11 @@
 package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.client.controller.Controller;
-import esi.acgt.atlj.client.view.controllers.ConnexionController;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -40,7 +40,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import java.text.DecimalFormat;
 
 public class GameMenuController implements Initializable, PropertyChangeListener {
 
@@ -114,7 +113,7 @@ public class GameMenuController implements Initializable, PropertyChangeListener
    * Action when you click on the Play button
    */
   public void play() {
-    this.controller.startPlay(this.username);
+    this.controller.startMultiplayerGame(this.username);
   }
 
   /**

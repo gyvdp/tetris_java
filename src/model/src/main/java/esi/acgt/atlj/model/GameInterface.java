@@ -22,82 +22,40 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.game;
+package esi.acgt.atlj.model;
 
-import esi.acgt.atlj.model.tetrimino.Mino;
-import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+import esi.acgt.atlj.model.player.PlayerInterface;
 import java.beans.PropertyChangeListener;
 
 public interface GameInterface {
 
   /**
-   * The width of the board
-   */
-  int WIDTH = 10;
-
-  /**
-   * The height of the board
-   */
-  int HEIGHT = 22;
-
-  /**
-   * Get the matrix of the board (including falling piece)
+   * Get the usernames of the players
    *
-   * @return the matrix of minos
+   * @return array of usernames
    */
-  Mino[][] getMatrix();
+  String[] getUsernames();
 
   /**
-   * Get the stats of the game
+   * Get the board of a particular Player Get the board of the managed board player
    *
-   * @return Interface with all stats
+   * @param username username of the Player to get the board from
+   * @return the board of the asked Player
    */
-  GameStatInterface getStats();
-
-  
-  boolean[][] generateFreeMask(int height, int width, int xStart, int yStart, int xMargin,
-      int yMargin);
+  PlayerInterface getBoard(String username);
 
   /**
-   * Get the username of the Player
+   * Ads a player to the game.
    *
-   * @return the username of the Player
+   * @param board Game to add player to.
    */
-  String getUsername();
+  void addPlayer(PlayerInterface board);
 
   /**
-   * Get the held piece
+   * Links Games (ManagedGame and Unmanaged) with their owm Listener
    *
-   * @return the held piece or null if there is no piece
+   * @param listener all listerners
    */
-  Mino getHold();
-
-  /**
-   * Get the actual falling tetrimino
-   *
-   * @return the falling tetrimino
-   */
-  TetriminoInterface getActualTetrimino();
-
-  /**
-   * Get the next tetrimino of the Player
-   *
-   * @return the next tetrimino
-   */
-  TetriminoInterface getNextTetrimino();
-
-  /**
-   * Add a Listener
-   *
-   * @param listener Listerner to add
-   */
-  void addPropertyChangeListener(PropertyChangeListener listener);
-
-  /**
-   * Remove a Listener
-   *
-   * @param listener Listerner to remove
-   */
-  void removePropertyChangeListener(PropertyChangeListener listener);
+  void addPropertyChangeListenerToBoards(PropertyChangeListener[] listener);
 
 }

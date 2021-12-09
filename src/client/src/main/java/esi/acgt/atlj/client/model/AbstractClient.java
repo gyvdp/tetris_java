@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.client.connexionServer;
+package esi.acgt.atlj.client.model;
 
 import esi.acgt.atlj.message.Message;
 import java.io.IOException;
@@ -43,7 +43,7 @@ public abstract class AbstractClient implements Runnable {
    * Host name of server wishing to connect to.
    */
   private final String host;
-  
+
   /**
    * Port number of server wishing to connect to.
    */

@@ -23,7 +23,7 @@
  */
 package esi.acgt.atlj.model.tetrimino;
 
-import esi.acgt.atlj.model.game.Direction;
+import esi.acgt.atlj.model.player.Direction;
 import esi.acgt.atlj.model.shape.Orientation;
 import java.io.Serializable;
 

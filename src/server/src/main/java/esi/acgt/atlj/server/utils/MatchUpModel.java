@@ -31,8 +31,7 @@ import esi.acgt.atlj.message.messageTypes.RemoveLine;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.SendScore;
 import esi.acgt.atlj.message.messageTypes.SetHold;
-import esi.acgt.atlj.model.game.ManagedGame;
-import esi.acgt.atlj.model.tetrimino.Tetrimino;
+import esi.acgt.atlj.model.player.ManagedPlayer;
 import esi.acgt.atlj.server.CustomClientThread;
 import java.util.HashMap;
 import java.util.List;
@@ -42,17 +41,17 @@ public class MatchUpModel {
   /**
    * First players.
    */
-  ManagedGame playerOne;
+  ManagedPlayer playerOne;
 
   /**
    * Seconds player.
    */
-  ManagedGame playerTwo;
+  ManagedPlayer playerTwo;
 
   /**
    * Map to define with players manages which game.
    */
-  HashMap<CustomClientThread, ManagedGame> gameHashMap;
+  HashMap<CustomClientThread, ManagedPlayer> gameHashMap;
 
 
   List<CustomClientThread> clientThreads;
@@ -61,8 +60,8 @@ public class MatchUpModel {
    * Constructor for server model.
    */
   public MatchUpModel(List<CustomClientThread> clients) {
-    this.playerTwo = new ManagedGame("two");
-    this.playerOne = new ManagedGame("one");
+    this.playerTwo = new ManagedPlayer("two");
+    this.playerOne = new ManagedPlayer("one");
     gameHashMap = new HashMap<>();
     gameHashMap.put(clients.get(0), playerOne);
     gameHashMap.put(clients.get(1), playerTwo);
@@ -78,7 +77,7 @@ public class MatchUpModel {
   public void receiveMessage(Message information, CustomClientThread client) {
     var game = gameHashMap.get(client);
     if (information instanceof SendPiece message) { //When next tetrimino is sent from server
-      game.setNextTetrimino(Tetrimino.createTetrimino(message.getMino()));
+      game.setNextTetrimino(message.getMino());
     }
     if (information instanceof RemoveLine message) { //When remove line is send from server
       game.removeLines(message.getLine());

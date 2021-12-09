@@ -22,15 +22,15 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.game;
+package esi.acgt.atlj.model.player;
 
 import java.util.TimerTask;
 
 public class TickHandler extends TimerTask {
 
-  private final ManagedGame managedBoard;
+  private final ManagedPlayer managedBoard;
 
-  public TickHandler(ManagedGame managedBoard) {
+  public TickHandler(ManagedPlayer managedBoard) {
     this.managedBoard = managedBoard;
   }
 
@@ -43,31 +43,31 @@ public class TickHandler extends TimerTask {
     switch (managedBoard.getStatus()) {
       case TETRIMINO_FALLING -> {
         if (!managedBoard.move(Direction.DOWN)) {
-          managedBoard.setStatus(GameStatus.LOCK_DOWN);
+          managedBoard.setStatus(PlayerStatus.LOCK_DOWN);
         } else {
-          managedBoard.setStatus(GameStatus.TETRIMINO_FALLING);
+          managedBoard.setStatus(PlayerStatus.TETRIMINO_FALLING);
         }
       }
       case TETRIMINO_HARD_DROPPING -> {
         if (!managedBoard.move(Direction.DOWN)) {
           managedBoard.lock();
         } else {
-          managedBoard.setStatus(GameStatus.TETRIMINO_HARD_DROPPING);
+          managedBoard.setStatus(PlayerStatus.TETRIMINO_HARD_DROPPING);
         }
       }
       case LOCK_DOWN -> managedBoard.lock();
       case ROTATING_CLOCKWISE -> {
         if (managedBoard.rotate(true)) {
-          managedBoard.setStatus(GameStatus.TETRIMINO_FALLING);
+          managedBoard.setStatus(PlayerStatus.TETRIMINO_FALLING);
         }
       }
       case ROTATING_ANTI_CLOCKWISE -> managedBoard.rotate(false);
       case SOFT_DROPPING -> {
         if (managedBoard.move(Direction.DOWN)) {
           managedBoard.getStats().increaseScore(1);
-          managedBoard.setStatus(GameStatus.TETRIMINO_FALLING);
+          managedBoard.setStatus(PlayerStatus.TETRIMINO_FALLING);
         } else {
-          managedBoard.setStatus(GameStatus.LOCK_DOWN);
+          managedBoard.setStatus(PlayerStatus.LOCK_DOWN);
         }
 
       }

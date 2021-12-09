@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.game;
+package esi.acgt.atlj.model.player;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
@@ -30,45 +30,15 @@ import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
-import java.util.function.Consumer;
 
 /**
  * Game that is going to be played by the playing player.
  */
-public class ManagedGame extends AbstractGame {
+public class ManagedPlayer extends AbstractPlayer {
 
   private final Timer timer;
-  /**
-   * Tells server to lock tetrimino
-   */
-  Consumer<TetriminoInterface> tetriminoLock;
-  /**
-   * All lines that have been destroyed by game in an array to send to server
-   */
-  Consumer<List<Integer>> lineDestroyed;
-  /**
-   * Lambda expression to ask client for next piece in bag.
-   */
-  Runnable askNextMino;
-  /**
-   * Sends to server that you lost.
-   */
-  Runnable iLost;
-  /**
-   * Locked tetrimino to send to server.
-   */
-  Consumer<TetriminoInterface> addTetrimino;
-  /**
-   * Hold tetrimino to send to server
-   */
-  Consumer<Mino> holdMino;
 
-  Consumer<GameStatInterface> sendAllGameStats;
-  /**
-   * Sends current score to the server
-   */
-  Consumer<Integer> setScoreServer;
-  private GameStatus status;
+  private PlayerStatus status;
   private TickHandler tickHandler;
   private boolean hasAlreadyHolded;
 
@@ -77,82 +47,22 @@ public class ManagedGame extends AbstractGame {
    *
    * @param username Username of player.
    */
-  public ManagedGame(String username) {
+  public ManagedPlayer(String username) {
     super(username);
     hasAlreadyHolded = false;
-    this.status = GameStatus.NOT_STARTED;
+    this.status = PlayerStatus.NOT_STARTED;
     this.timer = new Timer(true);
     this.tickHandler = new TickHandler(this);
-  }
-
-  /**
-   * Connect lambda expression from ModelClient to ask client for new mino.
-   *
-   * @param askNextMino Lambda expression to connect.
-   */
-  public synchronized void connectAskNewMino(Runnable askNextMino) {
-    this.askNextMino = askNextMino;
-  }
-
-
-  /**
-   * Connect lambda to send to server that player lost.
-   */
-  public synchronized void connectLost(Runnable iLost) {
-    this.iLost = iLost;
-  }
-
-  /**
-   * Connects lambda of locked tetrimino to client.
-   *
-   * @param myTT Lambda to connect
-   */
-  public synchronized void connectTetriminoLock(Consumer<TetriminoInterface> myTT) {
-    this.tetriminoLock = myTT;
-  }
-
-
-  /**
-   * Sends the score to the server via a Lambda
-   *
-   * @param setScoreServer Lambda to connect.
-   */
-  public synchronized void connectSendScoreServer(Consumer<Integer> setScoreServer) {
-    this.setScoreServer = setScoreServer;
-    this.stats.connectSendScore(setScoreServer);
-  }
-
-  public synchronized void connectSendGameStatistics(Consumer<GameStatInterface> allGameStats) {
-    this.sendAllGameStats = allGameStats;
-  }
-
-
-  /**
-   * Connect lambda expression form ModelClient to indicate which mino has been held
-   *
-   * @param holdMino Lambda expression to connect
-   */
-  public synchronized void connectHoldMino(Consumer<Mino> holdMino) {
-    this.holdMino = holdMino;
-  }
-
-  /**
-   * Connects lambda expression to add tetrimino to server
-   *
-   * @param addTetrimino Lambda expression to connect
-   */
-  public synchronized void connectAddTetrimino(Consumer<TetriminoInterface> addTetrimino) {
-    this.addTetrimino = addTetrimino;
   }
 
   /**
    * Game starts making tetriminos fall
    */
   public synchronized void start() {
-    this.askNextMino.run();
+    // todo : this.askNextMino.run();
     Mino[][] emptyBoard = new Mino[HEIGHT][WIDTH];
     this.pcs.firePropertyChange("board", emptyBoard, this.getMatrix());
-    setStatus(GameStatus.TETRIMINO_FALLING);
+    setStatus(PlayerStatus.TETRIMINO_FALLING);
   }
 
   /**
@@ -168,31 +78,18 @@ public class ManagedGame extends AbstractGame {
         generateFreeMask(6, 6, actualTetrimino.getX(), actualTetrimino.getY(), 1, 1));
 
     this.pcs.firePropertyChange("board", oldBoard, this.getMatrix());
+    this.pcs.firePropertyChange("ACTUAL", null, this.actualTetrimino);
 
     if (moved) {
-      if (status == GameStatus.LOCK_DOWN) {
-        setStatus(GameStatus.TETRIMINO_FALLING);
+      if (status == PlayerStatus.LOCK_DOWN) {
+        setStatus(PlayerStatus.TETRIMINO_FALLING);
       }
 
-      if (status == GameStatus.TETRIMINO_HARD_DROPPING) {
+      if (status == PlayerStatus.TETRIMINO_HARD_DROPPING) {
         stats.applyAction(Action.HARD_DROP);
       }
     }
-    addTetrimino.accept(actualTetrimino);
     return moved;
-  }
-
-  public synchronized void connectLineDestroyed(Consumer<List<Integer>> lineDestroyed) {
-    this.lineDestroyed = lineDestroyed;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public synchronized void setNextTetrimino(TetriminoInterface nextTetrimino) {
-    this.nextTetrimino = nextTetrimino;
-    this.pcs.firePropertyChange("next", null, this.getNextTetrimino().getType());
   }
 
   /**
@@ -209,8 +106,7 @@ public class ManagedGame extends AbstractGame {
         this.setActualTetrimino(temp);
       }
       hasAlreadyHolded = true;
-      holdMino.accept(hold);
-      setStatus(GameStatus.TETRIMINO_FALLING);
+      setStatus(PlayerStatus.TETRIMINO_FALLING);
     }
   }
 
@@ -220,6 +116,7 @@ public class ManagedGame extends AbstractGame {
   @Override
   public synchronized void setActualTetrimino(TetriminoInterface actualTetrimino) {
     this.actualTetrimino = actualTetrimino;
+    this.pcs.firePropertyChange("ACTUAL", null, this.actualTetrimino);
     this.pcs.firePropertyChange("board", null, this.getMatrix());
   }
 
@@ -227,14 +124,14 @@ public class ManagedGame extends AbstractGame {
    * Soft drops a tetrimino.
    */
   public synchronized void softDrop() {
-    setStatus(GameStatus.SOFT_DROPPING);
+    setStatus(PlayerStatus.SOFT_DROPPING);
   }
 
   /**
    * Makes a tetrimino hard drop automatically locking it in place.
    */
   public synchronized void hardDrop() {
-    setStatus(GameStatus.TETRIMINO_HARD_DROPPING);
+    setStatus(PlayerStatus.TETRIMINO_HARD_DROPPING);
   }
 
   /**
@@ -258,7 +155,7 @@ public class ManagedGame extends AbstractGame {
    *
    * @return Current status of the game
    */
-  public synchronized GameStatus getStatus() {
+  public synchronized PlayerStatus getStatus() {
     return this.status;
   }
 
@@ -268,7 +165,7 @@ public class ManagedGame extends AbstractGame {
    *
    * @param status Status to set game to.
    */
-  public synchronized void setStatus(GameStatus status) {
+  public synchronized void setStatus(PlayerStatus status) {
     this.tickHandler.cancel();
     this.tickHandler = new TickHandler(this);
     this.status = status;
@@ -295,25 +192,22 @@ public class ManagedGame extends AbstractGame {
    */
   public synchronized void lock() {
     placeTetrimino(this.actualTetrimino);
-    tetriminoLock.accept(actualTetrimino);
+    this.pcs.firePropertyChange("PLACE_TETRIMINO", null, this.actualTetrimino);
     this.hasAlreadyHolded = false;
     setActualTetrimino(this.nextTetrimino);
-    askNextMino.run();
+    setNextTetrimino(null);
 
     List<Integer> lines = getFullLines();
     if (lines.size() != 0) {
       removeLines(lines);
-      lineDestroyed.accept(lines);
       this.stats.applyAction(Action.getActionByFullLines(lines.size()));
     }
 
     if (outOfBound()) {
       setActualTetrimino(null);
-      setStatus(GameStatus.LOCK_OUT);
-      sendAllGameStats.accept(getStats());
-      iLost.run();
+      setStatus(PlayerStatus.LOCK_OUT);
     } else {
-      setStatus(GameStatus.TETRIMINO_FALLING);
+      setStatus(PlayerStatus.TETRIMINO_FALLING);
     }
 
   }

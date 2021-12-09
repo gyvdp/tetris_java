@@ -67,6 +67,7 @@ public class View implements ViewInterface {
     this.primaryStage = new Stage();
     this.connexionController = new ConnexionController(this.controller, this.primaryStage);
     this.primaryStage.setResizable(false);
+    this.show();
   }
 
   /**

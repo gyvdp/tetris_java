@@ -28,7 +28,7 @@ import esi.acgt.atlj.database.dto.GameHistoryDto;
 import esi.acgt.atlj.database.dto.TetriminoDto;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
-import esi.acgt.atlj.model.game.Action;
+import esi.acgt.atlj.model.player.Action;
 import java.util.HashMap;
 import java.util.Map;
 

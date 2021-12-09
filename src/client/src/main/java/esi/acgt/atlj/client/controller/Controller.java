@@ -26,88 +26,54 @@ package esi.acgt.atlj.client.controller;
 
 import static esi.acgt.atlj.message.PlayerAction.QUIT;
 
-import esi.acgt.atlj.client.model.ClientModel;
+import esi.acgt.atlj.client.model.Client;
+import esi.acgt.atlj.client.model.ClientInterface;
+import esi.acgt.atlj.client.view.View;
 import esi.acgt.atlj.client.view.ViewInterface;
-import esi.acgt.atlj.message.PlayerAction;
-import esi.acgt.atlj.model.game.Direction;
-import esi.acgt.atlj.model.game.GameStatus;
-import java.util.Objects;
+import javafx.application.Application;
 import javafx.scene.input.KeyCode;
+import javafx.stage.Stage;
 
 /**
- * Controller of the Client application
+ * Client Application
  */
-public class Controller {
+public class Controller extends Application {
 
-  private final ClientModel model;
+  private ViewInterface view;
 
-  private final ViewInterface view;
+  private ClientInterface client;
 
-  /**
-   * Constructor of Controller
-   *
-   * @param model Model of the Client
-   * @param view  View of the Client
-   */
-  public Controller(ClientModel model, ViewInterface view) {
-    Objects.requireNonNull(model, "model can not be null");
-    Objects.requireNonNull(view, "view can not be null");
-    this.model = model;
-    this.view = view;
+  public static void main(String[] args) {
+    launch(args);
   }
 
-
-  /**
-   * Launches the view
-   */
-  public void start() {
+  @Override
+  public void start(Stage stage) {
+    this.view = new View();
     view.setController(this);
     view.displayConnexion();
-    view.show();
-  }
 
-  /**
-   * End the Programme
-   */
-  public void disconnect() {
-    view.displayConnexion();
-    model.closeConnection();
-    view.show();
-  }
-
-
-  /**
-   * Forward inputs from the view to the model
-   *
-   * @param input keyboard input from the view
-   */
-  public void keyBoardInput(KeyCode input) {
-    if (this.model.getStatus() != GameStatus.NOT_STARTED
-        && this.model.getStatus() != GameStatus.LOCK_OUT) {
-      switch (input) {
-        case LEFT, NUMPAD4 -> this.model.move(Direction.LEFT);
-        case RIGHT, NUMPAD6 -> this.model.move(Direction.RIGHT);
-        case DOWN, NUMPAD2 -> this.model.softDrop();
-        case UP, X, NUMPAD3, NUMPAD5 -> this.model.rotate(true);
-        case SHIFT, C, NUMPAD0 -> this.model.hold();
-        case SPACE, NUMPAD8 -> this.model.hardDrop();
-        case CONTROL, NUMPAD1, NUMPAD9 -> this.model.rotate(false);
+    final Parameters params = getParameters();
+    for (var param : params.getRaw()) {
+      switch (param) {
+        case "--localhost" -> this.connexion("127.0.0.1", 6969, "Pacliclown");
+        // todo : case "--client" -> this.solo("Andrew");
       }
     }
-
   }
 
   /**
    * Connexion to the server and when it's done start the board view
    *
-   * @param ip       ip of the server to connect to
+   * @param host     host of the server to connect to
    * @param port     port of the server to connect to
    * @param username username of the player
    */
-  public void connexion(String ip, int port, String username) {
+  public void connexion(String host, int port, String username) {
     try {
-      this.model.connect(port, ip);
-      this.model.sendName(username);
+      this.client = new Client(port, host);
+      this.client.connect();
+      this.client.sendNameToServer(username);
       this.startMenu(username);
     } catch (Exception e) {
       this.view.displayError(e);
@@ -117,14 +83,36 @@ public class Controller {
   }
 
   /**
+   * End the Programme
+   */
+  public void disconnect() {
+    view.displayConnexion();
+    view.show();
+  }
+
+  /**
    * Start the menu window and link it to the client
    *
    * @param username username of the player
    */
   public void startMenu(String username) {
     this.view.displayMenu(username);
-    this.model.addPropertyChangeListenerToClient(this.view.getMenuListener());
-    this.model.askStats();
+    // todo : this.model.addPropertyChangeListenerToClient(this.view.getMenuListener());
+    this.client.askAllStatistics();
+  }
+
+  public void leaveMatch() {
+    //todo stop real game.
+    client.sendAction(QUIT);
+  }
+
+  /**
+   * Forward inputs from the view to the model
+   *
+   * @param input keyboard input from the view
+   */
+  public void keyBoardInput(KeyCode input) {
+    this.client.keyBoardInput(input);
   }
 
   /**
@@ -132,29 +120,10 @@ public class Controller {
    *
    * @param username username of the player
    */
-  public void startPlay(String username) {
-    this.model.initManagedBoard(username);
+  public void startMultiplayerGame(String username) {
+    this.client.startMultiplayerGame(username);
     this.view.displayBoard(username);
-    this.model.addPropertyChangeListenerToBoards(this.view.getBoardListeners());
-    this.model.sendAction(PlayerAction.PLAY_ONLINE);
+    this.client.addPCSToBoard(this.view.getBoardListeners());
   }
 
-  public void solo(String username) {
-    try {
-      this.model.initManagedBoard(username);
-      this.view.displayBoard(username);
-      this.model.addPropertyChangeListenerToBoards(this.view.getBoardListeners());
-      this.model.start();
-    } catch (Exception e) {
-      e.printStackTrace();
-      this.view.displayError(e);
-      this.view.displayConnexion();
-    }
-    this.view.show();
-  }
-
-  public void leaveMatch() {
-    //todo stop real game.
-    model.sendAction(QUIT);
-  }
 }

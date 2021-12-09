@@ -21,69 +21,83 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package esi.acgt.atlj.model.game;
+
+package esi.acgt.atlj.model.player;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+import java.beans.PropertyChangeListener;
 
-/**
- * Game that is going to be updated by server. Opponent.
- */
-public class UnmanagedGame extends AbstractGame {
+public interface PlayerInterface {
 
   /**
-   * Initializes a unmanaged game
+   * The width of the board
    */
-  public UnmanagedGame() {
-    super(null);
-  }
+  int WIDTH = 10;
 
   /**
-   * Sets the current tetrimino
+   * The height of the board
+   */
+  int HEIGHT = 22;
+
+  /**
+   * Get the matrix of the board (including falling piece)
    *
-   * @param tetrimino Tetrimino to set.
+   * @return the matrix of minos
    */
-  public synchronized void setActualTetrimino(TetriminoInterface tetrimino) {
-    Mino[][] oldBoard = this.getMatrix();
-    this.actualTetrimino = tetrimino;
-    this.pcs.firePropertyChange("board", oldBoard, this.getMatrix());
-  }
+  Mino[][] getMatrix();
 
   /**
-   * Sets the next upcoming tetrimino.
+   * Get the stats of the game
    *
-   * @param tetrimino Tetrimino to set.
+   * @return Interface with all stats
    */
-  public synchronized void setNextTetrimino(TetriminoInterface tetrimino) {
-    this.nextTetrimino = tetrimino;
-    this.pcs.firePropertyChange("next", null, this.getNextTetrimino().getType());
-  }
+  PlayerStatInterface getStats();
+
+
+  boolean[][] generateFreeMask(int height, int width, int xStart, int yStart, int xMargin,
+      int yMargin);
 
   /**
-   * Sets the score of the player
+   * Get the username of the Player
    *
-   * @param score Score to set
+   * @return the username of the Player
    */
-  public synchronized void setScore(int score) {
-    this.stats.setScore(score);
-  }
+  String getUsername();
 
   /**
-   * Sets the username of the player.
+   * Get the held piece
    *
-   * @param username username to set.
+   * @return the held piece or null if there is no piece
    */
-  public synchronized void setUsername(String username) {
-    this.username = username;
-    this.pcs.firePropertyChange("username", null, this.username);
-  }
+  Mino getHold();
 
   /**
-   * Sets the number of line the players has destroyed.
+   * Get the actual falling tetrimino
    *
-   * @param nbLine Number of line to set to.
+   * @return the falling tetrimino
    */
-  public synchronized void setBurns(int nbLine) {
-    this.stats.setBurns(nbLine);
-  }
+  TetriminoInterface getActualTetrimino();
+
+  /**
+   * Get the next tetrimino of the Player
+   *
+   * @return the next tetrimino
+   */
+  TetriminoInterface getNextTetrimino();
+
+  /**
+   * Add a Listener
+   *
+   * @param listener Listerner to add
+   */
+  void addPropertyChangeListener(PropertyChangeListener listener);
+
+  /**
+   * Remove a Listener
+   *
+   * @param listener Listerner to remove
+   */
+  void removePropertyChangeListener(PropertyChangeListener listener);
+
 }

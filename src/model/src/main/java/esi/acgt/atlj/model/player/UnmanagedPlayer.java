@@ -21,49 +21,60 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package esi.acgt.atlj.model.player;
 
-package esi.acgt.atlj.model.game;
-
-import java.io.Serializable;
-import java.util.Map;
+import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
 /**
- * The GameStatInterface describes the possible statistics you can get in a game.
+ * Game that is going to be updated by server. Opponent.
  */
-public interface GameStatInterface extends Serializable {
+public class UnmanagedPlayer extends AbstractPlayer {
 
   /**
-   * Get the high-score of the player (include actual game score)
-   *
-   * @return the player high-score
+   * Initializes a unmanaged game
    */
-  int getHighScore();
+  public UnmanagedPlayer() {
+    super(null);
+  }
 
   /**
-   * Get the actual game score
+   * Sets the current tetrimino
    *
-   * @return the score
+   * @param tetrimino Tetrimino to set.
    */
-  int getScore();
+  public synchronized void setActualTetrimino(TetriminoInterface tetrimino) {
+    Mino[][] oldBoard = this.getMatrix();
+    this.actualTetrimino = tetrimino;
+    this.pcs.firePropertyChange("board", oldBoard, this.getMatrix());
+  }
+
 
   /**
-   * Get the number of burns in this game
+   * Sets the score of the player
    *
-   * @return nb lines burnt
+   * @param score Score to set
    */
-  int getBurns();
+  public synchronized void setScore(int score) {
+    this.stats.setScore(score);
+  }
 
   /**
-   * Get the actual level of the game
+   * Sets the username of the player.
    *
-   * @return the level
+   * @param username username to set.
    */
-  int getLevel();
+  public synchronized void setUsername(String username) {
+    this.username = username;
+    this.pcs.firePropertyChange("username", null, this.username);
+  }
 
   /**
-   * Get the count of all actions of the game
+   * Sets the number of line the players has destroyed.
    *
-   * @return a map with the count of each action
+   * @param nbLine Number of line to set to.
    */
-  Map<Action, Integer> getActionCount();
+  public synchronized void setBurns(int nbLine) {
+    this.stats.setBurns(nbLine);
+  }
 }

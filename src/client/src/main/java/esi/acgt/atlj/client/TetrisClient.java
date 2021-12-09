@@ -24,9 +24,11 @@
 
 package esi.acgt.atlj.client;
 
+import esi.acgt.atlj.client.controller.Controller;
+
 public class TetrisClient {
 
   public static void main(String[] args) {
-    App.main(args);
+    Controller.main(args);
   }
 }

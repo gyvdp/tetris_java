@@ -37,8 +37,8 @@ import esi.acgt.atlj.message.messageTypes.SendHighScore;
 import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.UpdateNextPieceOther;
-import esi.acgt.atlj.model.game.Action;
-import esi.acgt.atlj.model.game.GameStatInterface;
+import esi.acgt.atlj.model.player.PlayerStatInterface;
+import esi.acgt.atlj.model.player.Action;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.server.AbstractServer;
 import esi.acgt.atlj.server.CustomClientThread;
@@ -178,7 +178,7 @@ public class MatchUpGenerator extends Thread {
     return highScores;
   }
 
-  private void setGameStats(GameStatInterface statistics, UserDto user) {
+  private void setGameStats(PlayerStatInterface statistics, UserDto user) {
     try {
       GameHistoryDto gameDto = new GameHistoryDto(user.getId(), statistics.getLevel(),
           statistics.getScore(), 0, 0);

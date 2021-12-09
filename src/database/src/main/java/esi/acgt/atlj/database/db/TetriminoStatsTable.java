@@ -27,7 +27,7 @@ package esi.acgt.atlj.database.db;
 import esi.acgt.atlj.database.dto.TetriminoDto;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.DbException;
-import esi.acgt.atlj.model.game.Action;
+import esi.acgt.atlj.model.player.Action;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

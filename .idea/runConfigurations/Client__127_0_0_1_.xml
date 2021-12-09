@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Client (127.0.0.1)" type="Application" factoryName="Application" folderName="Client" singleton="false">
-    <option name="MAIN_CLASS_NAME" value="esi.acgt.atlj.client.App" />
+    <option name="MAIN_CLASS_NAME" value="esi.acgt.atlj.client.TetrisClient" />
     <module name="atlj.client" />
     <option name="PROGRAM_PARAMETERS" value="--localhost" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="esi.acgt.atlj.client.*" />
+        <option name="PATTERN" value="esi.acgt.atlj.client.controller.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

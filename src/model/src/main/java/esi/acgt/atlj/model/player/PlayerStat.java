@@ -22,15 +22,14 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.model.game;
+package esi.acgt.atlj.model.player;
 
 import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class GameStat implements GameStatInterface {
+public class PlayerStat implements PlayerStatInterface {
 
   /**
    * The score of the player
@@ -67,7 +66,7 @@ public class GameStat implements GameStatInterface {
    *
    * @param pcs The Property Change Support
    */
-  public GameStat(PropertyChangeSupport pcs) {
+  public PlayerStat(PropertyChangeSupport pcs) {
     this.pcs = pcs;
     this.score = 0;
     this.highScore = 0;

@@ -106,7 +106,7 @@ public class TetriminoHolderController implements Initializable {
   }
 
   public void setTetrimino(Mino mino) {
-    tetrimino.setImage(imageMap.get(mino));
+    tetrimino.setImage(mino != null ? imageMap.get(mino) : null);
   }
 
   public void setType(String type) {
