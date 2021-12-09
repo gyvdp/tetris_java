@@ -35,201 +35,205 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="600.0" style="-fx-background-color: #121212;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-  <GridPane layoutX="15.0" layoutY="25.0" prefHeight="500.0" prefWidth="570.0" AnchorPane.leftAnchor="15.0">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+  prefHeight="550.0" prefWidth="600.0" style="-fx-background-color: #121212;"
+  xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+  <GridPane layoutX="15.0" layoutY="25.0" prefHeight="500.0" prefWidth="570.0"
+    AnchorPane.leftAnchor="15.0">
     <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" percentWidth="40.0" />
-      <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
-      <ColumnConstraints hgrow="SOMETIMES" percentWidth="40.0" />
-      <ColumnConstraints />
+      <ColumnConstraints hgrow="SOMETIMES" percentWidth="40.0"/>
+      <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0"/>
+      <ColumnConstraints hgrow="SOMETIMES" percentWidth="40.0"/>
+      <ColumnConstraints/>
     </columnConstraints>
     <rowConstraints>
-      <RowConstraints percentHeight="20.0" vgrow="SOMETIMES" />
-      <RowConstraints percentHeight="20.0" vgrow="SOMETIMES" />
-      <RowConstraints percentHeight="20.0" vgrow="SOMETIMES" />
-      <RowConstraints percentHeight="15.0" vgrow="SOMETIMES" />
-      <RowConstraints percentHeight="15.0" vgrow="SOMETIMES" />
-         <RowConstraints percentHeight="15.0" vgrow="SOMETIMES" />
-      <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
+      <RowConstraints percentHeight="20.0" vgrow="SOMETIMES"/>
+      <RowConstraints percentHeight="20.0" vgrow="SOMETIMES"/>
+      <RowConstraints percentHeight="20.0" vgrow="SOMETIMES"/>
+      <RowConstraints percentHeight="15.0" vgrow="SOMETIMES"/>
+      <RowConstraints percentHeight="15.0" vgrow="SOMETIMES"/>
+      <RowConstraints percentHeight="15.0" vgrow="SOMETIMES"/>
+      <RowConstraints percentHeight="10.0" vgrow="SOMETIMES"/>
     </rowConstraints>
-    <ImageView fitHeight="250.0" fitWidth="525.0" pickOnBounds="true" preserveRatio="true" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER">
-      <Image url="@../image/Tetris_background.png" />
+    <ImageView fitHeight="250.0" fitWidth="525.0" pickOnBounds="true" preserveRatio="true"
+      GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowSpan="2"
+      GridPane.valignment="CENTER">
+      <Image url="@../image/Tetris_background.png"/>
     </ImageView>
-    <Label fx:id="connectedUsername" text="Connecté en tant que " textFill="WHITE" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+    <Label fx:id="connectedUsername" text="Connecté en tant que " textFill="WHITE"
+      GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="2">
       <font>
-        <Font name="System Bold" size="30.0" />
+        <Font name="System Bold" size="30.0"/>
       </font>
     </Label>
-    <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="3">
+    <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0"
+      GridPane.rowIndex="3">
       <Label text="Ligne détruite : " textFill="WHITE">
         <font>
-          <Font name="System Bold Italic" size="14.0" />
+          <Font name="System Bold Italic" size="14.0"/>
         </font>
       </Label>
       <Label fx:id="destroyedLine" textFill="WHITE">
         <font>
-          <Font name="System Bold" size="17.0" />
+          <Font name="System Bold" size="17.0"/>
         </font>
       </Label>
       <padding>
-        <Insets right="50.0" />
+        <Insets right="50.0"/>
       </padding>
     </HBox>
-    <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="4">
+    <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0"
+      GridPane.rowIndex="4">
       <Label text="Hard drop : " textFill="WHITE">
         <font>
-          <Font name="System Bold Italic" size="14.0" />
+          <Font name="System Bold Italic" size="14.0"/>
         </font>
       </Label>
       <Label fx:id="hardDrop" textFill="WHITE">
         <font>
-          <Font name="System Bold" size="17.0" />
+          <Font name="System Bold" size="17.0"/>
         </font>
       </Label>
       <padding>
-        <Insets right="50.0" />
+        <Insets right="50.0"/>
       </padding>
     </HBox>
-    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0"
+      GridPane.columnIndex="1" GridPane.rowIndex="3">
       <Label text="Wins : " textFill="WHITE">
         <font>
-          <Font name="System Bold Italic" size="14.0" />
+          <Font name="System Bold Italic" size="14.0"/>
         </font>
       </Label>
       <Label fx:id="wins" textFill="WHITE">
         <font>
-          <Font name="System Bold" size="17.0" />
+          <Font name="System Bold" size="17.0"/>
         </font>
       </Label>
     </HBox>
-    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0"
+      GridPane.columnIndex="1" GridPane.rowIndex="4">
       <Label text="Loses : " textFill="WHITE">
         <font>
-          <Font name="System Bold Italic" size="14.0" />
+          <Font name="System Bold Italic" size="14.0"/>
         </font>
       </Label>
       <Label fx:id="loses" textFill="WHITE">
         <font>
-          <Font name="System Bold" size="17.0" />
+          <Font name="System Bold" size="17.0"/>
         </font>
       </Label>
     </HBox>
-    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2"
+      GridPane.rowIndex="3">
       <opaqueInsets>
-        <Insets />
+        <Insets/>
       </opaqueInsets>
       <padding>
-        <Insets left="30.0" />
+        <Insets left="30.0"/>
       </padding>
       <Label text="Highest Score : " textFill="WHITE">
         <font>
-          <Font name="System Bold Italic" size="14.0" />
+          <Font name="System Bold Italic" size="14.0"/>
         </font>
       </Label>
       <Label fx:id="highestScore" textFill="WHITE">
         <font>
-          <Font name="System Bold" size="17.0" />
+          <Font name="System Bold" size="17.0"/>
         </font>
       </Label>
     </HBox>
-    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2"
+      GridPane.rowIndex="4">
       <opaqueInsets>
-        <Insets />
+        <Insets/>
       </opaqueInsets>
       <padding>
-        <Insets left="30.0" />
+        <Insets left="30.0"/>
       </padding>
       <Label text="Winning Percent : " textFill="WHITE">
         <font>
-          <Font name="System Bold Italic" size="14.0" />
+          <Font name="System Bold Italic" size="14.0"/>
         </font>
       </Label>
       <Label fx:id="winningPercent" textFill="WHITE">
         <font>
-          <Font name="System Bold" size="17.0" />
+          <Font name="System Bold" size="17.0"/>
         </font>
       </Label>
     </HBox>
-    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
-      <children>
-        <Button mnemonicParsing="false" onAction="#disconnect" style="-fx-background-color: gray;" text="Déconnexion">
-          <font>
-            <Font name="System Bold Italic" size="15.0" />
-          </font>
-        </Button>
-        <Button mnemonicParsing="false" onAction="#play" style="-fx-background-color: gray;" text="Jouer">
-          <font>
-            <Font name="System Bold Italic" size="15.0" />
-          </font>
-        </Button>
-      </children>
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0"
+      GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="6"
+      GridPane.valignment="CENTER">
+      <Button mnemonicParsing="false" onAction="#disconnect" style="-fx-background-color: gray;"
+        text="Déconnexion">
+        <font>
+          <Font name="System Bold Italic" size="15.0"/>
+        </font>
+      </Button>
+      <Button mnemonicParsing="false" onAction="#play" style="-fx-background-color: gray;"
+        text="Jouer">
+        <font>
+          <Font name="System Bold Italic" size="15.0"/>
+        </font>
+      </Button>
     </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="5">
-         <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
-               <children>
-                  <Label text="Single : " textFill="WHITE">
-                     <font>
-                        <Font name="System Bold Italic" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="singleLabel" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="17.0" />
-                     </font>
-                  </Label>
-               </children>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
-               <children>
-                  <Label text="Double : " textFill="WHITE">
-                     <font>
-                        <Font name="System Bold Italic" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="doubleLabel" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="17.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
-               <children>
-                  <Label text="Triple : " textFill="WHITE">
-                     <font>
-                        <Font name="System Bold Italic" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="tripleLabel" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="17.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
-               <children>
-                  <Label text="Tetris : " textFill="WHITE">
-                     <font>
-                        <Font name="System Bold Italic" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="tetrisLabel" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="17.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-         </children>
-         <GridPane.margin>
-            <Insets left="50.0" right="50.0" />
-         </GridPane.margin>
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="3"
+      GridPane.rowIndex="5">
+      <GridPane.margin>
+        <Insets left="50.0" right="50.0"/>
+      </GridPane.margin>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+        <HBox.margin>
+          <Insets/>
+        </HBox.margin>
+        <Label text="Single : " textFill="WHITE">
+          <font>
+            <Font name="System Bold Italic" size="14.0"/>
+          </font>
+        </Label>
+        <Label fx:id="singleLabel" textFill="WHITE">
+          <font>
+            <Font name="System Bold" size="17.0"/>
+          </font>
+        </Label>
       </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+        <Label text="Double : " textFill="WHITE">
+          <font>
+            <Font name="System Bold Italic" size="14.0"/>
+          </font>
+        </Label>
+        <Label fx:id="doubleLabel" textFill="WHITE">
+          <font>
+            <Font name="System Bold" size="17.0"/>
+          </font>
+        </Label>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+        <Label text="Triple : " textFill="WHITE">
+          <font>
+            <Font name="System Bold Italic" size="14.0"/>
+          </font>
+        </Label>
+        <Label fx:id="tripleLabel" textFill="WHITE">
+          <font>
+            <Font name="System Bold" size="17.0"/>
+          </font>
+        </Label>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+        <Label text="Tetris : " textFill="WHITE">
+          <font>
+            <Font name="System Bold Italic" size="14.0"/>
+          </font>
+        </Label>
+        <Label fx:id="tetrisLabel" textFill="WHITE">
+          <font>
+            <Font name="System Bold" size="17.0"/>
+          </font>
+        </Label>
+      </HBox>
+    </HBox>
   </GridPane>
 </AnchorPane>
