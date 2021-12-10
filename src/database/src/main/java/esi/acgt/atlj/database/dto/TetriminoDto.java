@@ -33,5 +33,50 @@ public class TetriminoDto extends EntityDto<Integer> {
   int tetris;
   int harddrop;
   int softdrop;
+  int burns;
 
+  public TetriminoDto(int id, int single, int doubles, int triple, int tetris, int harddrop,
+      int softdrop, int burns) {
+    this(single, doubles, triple, tetris, harddrop, softdrop, burns);
+    this.id = id;
+  }
+
+  public TetriminoDto(int single, int doubles, int triple, int tetris, int harddrop, int softdrop,
+      int burns) {
+    this.single = single;
+    this.doubles = doubles;
+    this.triple = triple;
+    this.tetris = tetris;
+    this.harddrop = harddrop;
+    this.softdrop = softdrop;
+    this.burns = burns;
+  }
+
+  public int getSingle() {
+    return single;
+  }
+
+  public int getDoubles() {
+    return doubles;
+  }
+
+  public int getTriple() {
+    return triple;
+  }
+
+  public int getTetris() {
+    return tetris;
+  }
+
+  public int getHarddrop() {
+    return harddrop;
+  }
+
+  public int getBurns() {
+    return this.burns;
+  }
+
+  public int getSoftdrop() {
+    return softdrop;
+  }
 }

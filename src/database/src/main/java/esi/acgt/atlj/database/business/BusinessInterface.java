@@ -25,6 +25,7 @@
 package esi.acgt.atlj.database.business;
 
 import esi.acgt.atlj.database.dto.GameHistoryDto;
+import esi.acgt.atlj.database.dto.TetriminoDto;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.model.game.Action;
@@ -72,20 +73,10 @@ public interface BusinessInterface {
    */
   GameHistoryDto getGameStatEntity(UserDto user) throws BusinessException;
 
+  TetriminoDto getTetriminoEntity(UserDto user) throws BusinessException;
+
   void setGameStatEntity(GameHistoryDto gameStatEntity) throws BusinessException;
 
+  void setTetriminoEntity(TetriminoDto tetriminoEntity) throws BusinessException;
 
-  /**
-   * Adds the desired numbered of burns to the total number of burns in the database from a specific
-   * user.
-   *
-   * @param user     User to add number of burns to.
-   * @param increase Number of burns to add to user.
-   * @throws BusinessException If query to add burns has failed.
-   */
-  void addBurns(UserDto user, int increase) throws BusinessException;
-
-  void addDestroyedLines(UserDto user, Map<Action, Integer> actions) throws BusinessException;
-
-  HashMap<String, Integer> selectAllFromTetriminoHistory(UserDto user) throws BusinessException;
 }

@@ -27,6 +27,7 @@ package esi.acgt.atlj.server;
 import esi.acgt.atlj.database.business.BusinessInterface;
 import esi.acgt.atlj.database.business.BusinessModel;
 import esi.acgt.atlj.database.dto.GameHistoryDto;
+import esi.acgt.atlj.database.dto.TetriminoDto;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
@@ -206,7 +207,7 @@ public class Server extends AbstractServer {
       m.setGame_history(
           parseEntityGameHistory(interactDatabase.getGameStatEntity(client.getUser())));
       m.setTetrimino_history(
-          interactDatabase.selectAllFromTetriminoHistory(client.getUser()));
+          parseEntityTetrimino(interactDatabase.getTetriminoEntity(client.getUser())));
       client.sendMessage(m);
     } catch (BusinessException e) {
       System.err.println("Cannot create message with all statistics");
@@ -221,14 +222,23 @@ public class Server extends AbstractServer {
    */
   private HashMap<String, Integer> parseEntityGameHistory(GameHistoryDto entity) {
     HashMap<String, Integer> statistics = new HashMap<>();
-    System.out.println("score " + entity.getHighScore());
     statistics.put("SCORE", entity.getHighScore());
-    System.out.println("lost " + entity.getNbLost());
     statistics.put("LOST", entity.getNbLost());
-    System.out.println("won " + entity.getNbWon());
     statistics.put("WON", entity.getNbWon());
-    System.out.println("level " + entity.getHighestLevel());
     statistics.put("LEVEL", entity.getHighestLevel());
+    return statistics;
+  }
+
+
+  private HashMap<String, Integer> parseEntityTetrimino(TetriminoDto entity) {
+    HashMap<String, Integer> statistics = new HashMap<>();
+    statistics.put("SINGLE", entity.getSingle());
+    statistics.put("DOUBLE", entity.getDoubles());
+    statistics.put("TRIPLE", entity.getTriple());
+    statistics.put("TETRIS", entity.getTetris());
+    statistics.put("SOFT_DROP", entity.getSoftdrop());
+    statistics.put("HARD_DROP", entity.getHarddrop());
+    statistics.put("BURN", entity.getBurns());
     return statistics;
   }
 
@@ -238,7 +248,6 @@ public class Server extends AbstractServer {
   @Override
   public synchronized void addPlayer(CustomClientThread client) {
     addClientToWaitingList(client);
-    System.out.println(waitingList.size());
     if (waitingList.size() % 2 == 0) {
       MatchUpGenerator matchUp = new MatchUpGenerator(
           waitingList.stream().limit(2).collect(Collectors.toList()), this.matchUpId,

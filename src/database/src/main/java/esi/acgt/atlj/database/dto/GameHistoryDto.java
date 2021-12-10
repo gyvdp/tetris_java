@@ -24,7 +24,9 @@
 
 package esi.acgt.atlj.database.dto;
 
-
+/**
+ * Database object to represent a game history entry.
+ */
 public class GameHistoryDto extends EntityDto<Integer> {
 
   int highestLevel;
@@ -32,11 +34,28 @@ public class GameHistoryDto extends EntityDto<Integer> {
   int nbWon;
   int nbLost;
 
+  /**
+   * Constructor of persistent entry.
+   *
+   * @param id           Id of user
+   * @param highestLevel Highest level user has ever reached.
+   * @param highScore    Highest score user has ever reached.
+   * @param nbLost       Number of games player has lost.
+   * @param nbWon        Number of games player has won
+   */
   public GameHistoryDto(Integer id, int highestLevel, int highScore, int nbLost, int nbWon) {
     this(highestLevel, highScore, nbLost, nbWon);
     this.id = id;
   }
 
+  /**
+   * Constructor of non-persistent entry.
+   *
+   * @param highestLevel Highest level user has ever reached.
+   * @param highScore    Highest score user has ever reached.
+   * @param nbLost       Number of games player has lost.
+   * @param nbWon        Number of games player has won
+   */
   public GameHistoryDto(int highestLevel, int highScore, int nbLost, int nbWon) {
     this.highestLevel = highestLevel;
     this.highScore = highScore;
@@ -56,10 +75,21 @@ public class GameHistoryDto extends EntityDto<Integer> {
     return nbWon;
   }
 
+
+  /**
+   * Getter for number of games lost.
+   *
+   * @return Number of games lost.
+   */
   public int getNbLost() {
     return nbLost;
   }
 
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public String toString() {
     return " [User]" + "(" + this.id + ") [ " + highestLevel + ", " + highScore + ", " + nbLost
         + ", " + nbWon + " ]";

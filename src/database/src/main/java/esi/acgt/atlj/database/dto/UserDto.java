@@ -26,6 +26,9 @@ package esi.acgt.atlj.database.dto;
 
 import esi.acgt.atlj.database.exceptions.DtoException;
 
+/**
+ * Database object to represent a user.
+ */
 public class UserDto extends EntityDto<Integer> {
 
   private String username;

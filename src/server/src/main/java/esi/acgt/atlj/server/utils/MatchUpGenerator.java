@@ -26,6 +26,7 @@ package esi.acgt.atlj.server.utils;
 
 import esi.acgt.atlj.database.business.BusinessInterface;
 import esi.acgt.atlj.database.dto.GameHistoryDto;
+import esi.acgt.atlj.database.dto.TetriminoDto;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.message.Message;
@@ -178,11 +179,18 @@ public class MatchUpGenerator extends Thread {
 
   private void setGameStats(GameStatInterface statistics, UserDto user) {
     try {
-      GameHistoryDto dto = new GameHistoryDto(user.getId(), statistics.getLevel(),
+      GameHistoryDto gameDto = new GameHistoryDto(user.getId(), statistics.getLevel(),
           statistics.getScore(), 0, 0);
-      interactDatabase.setGameStatEntity(dto);
-      interactDatabase.addBurns(user, statistics.getBurns());
-      interactDatabase.addDestroyedLines(user, statistics.getActionCount());
+      interactDatabase.setGameStatEntity(gameDto);
+      TetriminoDto tetriminoDto = new TetriminoDto(user.getId(),
+          statistics.getActionCount().getOrDefault("SINGLE", 0),
+          statistics.getActionCount().getOrDefault("DOUBLE", 0),
+          statistics.getActionCount().getOrDefault("TRIPLE", 0),
+          statistics.getActionCount().getOrDefault("TETRIS", 0),
+          statistics.getActionCount().getOrDefault("SOFT_DROP", 0),
+          statistics.getActionCount().getOrDefault("HARD_DROP", 0),
+          statistics.getBurns());
+      interactDatabase.setTetriminoEntity(tetriminoDto);
     } catch (BusinessException e) {
       System.out.println("Cannot set user in database.");
     }

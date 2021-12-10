@@ -26,13 +26,11 @@ package esi.acgt.atlj.database.business;
 
 import esi.acgt.atlj.database.db.DataBaseManager;
 import esi.acgt.atlj.database.dto.GameHistoryDto;
+import esi.acgt.atlj.database.dto.TetriminoDto;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.database.exceptions.DbException;
 import esi.acgt.atlj.database.exceptions.DtoException;
-import esi.acgt.atlj.model.game.Action;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * All tools needed to interact with database.
@@ -107,11 +105,49 @@ public class BusinessModel implements BusinessInterface {
   }
 
   @Override
+  public TetriminoDto getTetriminoEntity(UserDto user) throws BusinessException {
+    TetriminoDto dto;
+    try {
+      DataBaseManager.startTransaction();
+      dto = TetriminoStatsBusinessLogic.getTetrimino(user);
+      DataBaseManager.validateTransacation();
+    } catch (DbException e) {
+      String msg = e.getMessage();
+      try {
+        DataBaseManager.cancelTransaction();
+      } catch (DbException ex) {
+        msg = ex.getMessage() + e.getMessage();
+      } finally {
+        throw new BusinessException("Impossible to select all \n" + msg);
+      }
+    }
+    return dto;
+  }
+
+  @Override
   public void setGameStatEntity(GameHistoryDto gameStatEntity)
       throws BusinessException {
     try {
       DataBaseManager.startTransaction();
       GameStatsBusinessLogic.setGameHistory(gameStatEntity);
+      DataBaseManager.validateTransacation();
+    } catch (DbException e) {
+      String msg = e.getMessage();
+      try {
+        DataBaseManager.cancelTransaction();
+      } catch (DbException ex) {
+        msg = ex.getMessage() + e.getMessage();
+      } finally {
+        throw new BusinessException("Impossible to select all \n" + msg);
+      }
+    }
+  }
+
+  @Override
+  public void setTetriminoEntity(TetriminoDto tetriminoEntity) throws BusinessException {
+    try {
+      DataBaseManager.startTransaction();
+      TetriminoStatsBusinessLogic.setTetrimino(tetriminoEntity);
       DataBaseManager.validateTransacation();
     } catch (DbException e) {
       String msg = e.getMessage();
@@ -146,64 +182,5 @@ public class BusinessModel implements BusinessInterface {
       }
     }
   }
-
-  @Override
-  public void addBurns(UserDto user, int increase) throws BusinessException {
-    try {
-      DataBaseManager.startTransaction();
-      TetriminoStatsBusinessLogic.addBurns(user, increase);
-      DataBaseManager.validateTransacation();
-    } catch (DbException e) {
-      String msg = e.getMessage();
-      try {
-        DataBaseManager.cancelTransaction();
-      } catch (DbException ex) {
-        msg = ex.getMessage() + e.getMessage();
-      } finally {
-        throw new BusinessException("Cannot increment burns \n" + msg);
-      }
-    }
-  }
-
-  @Override
-  public void addDestroyedLines(UserDto user, Map<Action, Integer> actions)
-      throws BusinessException {
-    try {
-      DataBaseManager.startTransaction();
-      TetriminoStatsBusinessLogic.addDestroyedLines(user, actions);
-      DataBaseManager.validateTransacation();
-    } catch (DbException e) {
-      String msg = e.getMessage();
-      try {
-        DataBaseManager.cancelTransaction();
-      } catch (DbException ex) {
-        msg = ex.getMessage() + e.getMessage();
-      } finally {
-        throw new BusinessException("Cannot add to placed tetriminos \n" + msg);
-      }
-    }
-  }
-
-  @Override
-  public HashMap<String, Integer> selectAllFromTetriminoHistory(UserDto user)
-      throws BusinessException {
-    HashMap<String, Integer> statistics;
-    try {
-      DataBaseManager.startTransaction();
-      statistics = TetriminoStatsBusinessLogic.selectAll(user);
-      DataBaseManager.validateTransacation();
-    } catch (DbException e) {
-      String msg = e.getMessage();
-      try {
-        DataBaseManager.cancelTransaction();
-      } catch (DbException ex) {
-        msg = ex.getMessage() + e.getMessage();
-      } finally {
-        throw new BusinessException("Impossible to select all \n" + msg);
-      }
-    }
-    return statistics;
-  }
-
 
 }
