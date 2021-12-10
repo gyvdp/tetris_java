@@ -35,7 +35,7 @@ public class UnmanagedPlayer extends AbstractPlayer {
    * Initializes a unmanaged game
    */
   public UnmanagedPlayer() {
-    super(null);
+    super("search");
   }
 
   /**
