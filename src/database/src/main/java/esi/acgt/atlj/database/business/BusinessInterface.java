@@ -24,6 +24,7 @@
 
 package esi.acgt.atlj.database.business;
 
+import esi.acgt.atlj.database.dto.GameHistoryDto;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.model.game.Action;
@@ -34,15 +35,6 @@ import java.util.Map;
  * Interface to interact with database.
  */
 public interface BusinessInterface {
-
-  /**
-   * Gets a specific user in the database.
-   *
-   * @param id Id of user.
-   * @return User of the given id.
-   * @throws BusinessException If the query for getting the user has failed.
-   */
-  UserDto getUser(int id) throws BusinessException;
 
   /**
    * Gets a specific user in the database.
@@ -72,57 +64,25 @@ public interface BusinessInterface {
    */
   int getUserHighScore(UserDto user) throws BusinessException;
 
-
-  /**
-   * Gets the number of game lost by the user.
-   *
-   * @param user User to get number of lost games from.
-   * @return Number of lost games, -1 if user does not exist.
-   * @throws BusinessException If query from number of lost game failed.
-   */
-  int getNumberOfGamesLost(UserDto user) throws BusinessException;
-
-  /**
-   * Gets the number of games won by the user.
-   *
-   * @param user User to get number of games won by.
-   * @return Number of games won by the user, -1 if user does not exist.
-   * @throws BusinessException If query from number of games failed.
-   */
-  int getNumberOfGamesWon(UserDto user) throws BusinessException;
-
-  /**
-   * Removes user from the database.
-   *
-   * @param user Persistent user to remove from database.
-   * @throws BusinessException If query to remove user has failed.
-   */
-  void removeUser(UserDto user) throws BusinessException;
-
   /**
    * Selects all information from game history of user.
    *
    * @param user User to select from.
    * @return HashMap contain statistics
    */
-  HashMap<String, Integer> selectAllFromGameHistory(UserDto user) throws BusinessException;
+  GameHistoryDto getGameStatEntity(UserDto user) throws BusinessException;
+
+  void setGameStatEntity(GameHistoryDto gameStatEntity) throws BusinessException;
+
 
   /**
-   * Updates user in the database.
+   * Adds the desired numbered of burns to the total number of burns in the database from a specific
+   * user.
    *
-   * @param user User to update in database.
-   * @throws BusinessException If query for updating user has failed.
+   * @param user     User to add number of burns to.
+   * @param increase Number of burns to add to user.
+   * @throws BusinessException If query to add burns has failed.
    */
-  void updateUser(UserDto user) throws BusinessException;
-
-  void setUserHighScore(UserDto user, int newHighScore) throws BusinessException;
-
-  void addLostGame(UserDto user) throws BusinessException;
-
-  void addWonGame(UserDto user) throws BusinessException;
-
-  void setHighestLevel(UserDto user, int level) throws BusinessException;
-
   void addBurns(UserDto user, int increase) throws BusinessException;
 
   void addDestroyedLines(UserDto user, Map<Action, Integer> actions) throws BusinessException;

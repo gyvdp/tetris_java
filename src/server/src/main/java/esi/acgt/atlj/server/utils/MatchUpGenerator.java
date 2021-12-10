@@ -25,6 +25,7 @@
 package esi.acgt.atlj.server.utils;
 
 import esi.acgt.atlj.database.business.BusinessInterface;
+import esi.acgt.atlj.database.dto.GameHistoryDto;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.message.Message;
@@ -177,9 +178,10 @@ public class MatchUpGenerator extends Thread {
 
   private void setGameStats(GameStatInterface statistics, UserDto user) {
     try {
+      GameHistoryDto dto = new GameHistoryDto(user.getId(), statistics.getLevel(),
+          statistics.getScore(), 0, 0);
+      interactDatabase.setGameStatEntity(dto);
       interactDatabase.addBurns(user, statistics.getBurns());
-      interactDatabase.setHighestLevel(user, statistics.getLevel());
-      interactDatabase.setUserHighScore(user, statistics.getScore());
       interactDatabase.addDestroyedLines(user, statistics.getActionCount());
     } catch (BusinessException e) {
       System.out.println("Cannot set user in database.");
@@ -193,9 +195,12 @@ public class MatchUpGenerator extends Thread {
    */
   public void updateDb() {
     CustomClientThread loser = model.getLoser();
+    GameHistoryDto dtoLost = new GameHistoryDto(loser.getUser().getId(), 0, 0, 1, 0);
+    GameHistoryDto dtoWon = new GameHistoryDto(getOpposingClient(loser).getUser().getId(), 0, 0, 0,
+        1);
     try {
-      interactDatabase.addLostGame(loser.getUser());
-      interactDatabase.addWonGame(getOpposingClient(loser).getUser());
+      interactDatabase.setGameStatEntity(dtoLost);
+      interactDatabase.setGameStatEntity(dtoWon);
     } catch (BusinessException e) {
       System.err.println("Cannot send won and lost games to database \n" + e.getMessage());
     }

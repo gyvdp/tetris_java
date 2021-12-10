@@ -24,6 +24,7 @@
 
 package esi.acgt.atlj.database.dto;
 
+
 public class GameHistoryDto extends EntityDto<Integer> {
 
   int highestLevel;

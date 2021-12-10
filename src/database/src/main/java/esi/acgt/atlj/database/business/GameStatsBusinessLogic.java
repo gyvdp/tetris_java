@@ -25,11 +25,10 @@
 package esi.acgt.atlj.database.business;
 
 import esi.acgt.atlj.database.db.GameStatsTable;
+import esi.acgt.atlj.database.dto.GameHistoryDto;
 import esi.acgt.atlj.database.dto.UserDto;
-import java.util.HashMap;
 
 class GameStatsBusinessLogic {
-
 
   /**
    * Gets the high score of the given user.
@@ -39,107 +38,38 @@ class GameStatsBusinessLogic {
    */
   static int getHighScore(UserDto user) {
     try {
-      return GameStatsTable.getHighScore(user);
+      return GameStatsTable.getHighScore(user.getId());
     } catch (Exception e) {
       System.err.println("Cannot get high score from database \n" + e.getMessage());
     }
     return -1;
   }
 
-  /**
-   * @param user
-   * @param level
-   */
-  static void setHighestLevel(UserDto user, int level) {
-    try {
-      GameStatsTable.setHighestLevel(user, level);
-    } catch (Exception e) {
-      System.err.println("Cannot set highest level in database \n" + e.getMessage());
-    }
-  }
-
-  /**
-   * Sets the high score of the given user.
-   *
-   * @param user User to set high score from.
-   */
-  static void setHighScore(UserDto user, int newHighScore) {
-    try {
-      GameStatsTable.setHighScore(user, newHighScore);
-    } catch (Exception e) {
-      System.err.println("Cannot set high score \n" + e.getMessage());
-    }
-  }
-
-  /**
-   * Gets the number of games won of the given user.
-   *
-   * @param user User to get number of games won.
-   * @return Number of games won by the user.
-   */
-  static int getNbGamesWon(UserDto user) {
-    try {
-      return GameStatsTable.getNbGameWon(user);
-    } catch (Exception e) {
-      System.err.println("Cannot get number of games won \n" + e.getMessage());
-    }
-    return -1;
-  }
-
-  /**
-   * Increments the number of games won of a user.
-   *
-   * @param user User to modify
-   */
-  static void incrementWonGame(UserDto user) {
-    try {
-      GameStatsTable.addWonGame(user);
-    } catch (Exception e) {
-      System.err.println("Cannot add to the number of games won \n" + e.getMessage());
-    }
-  }
-
-  /**
-   * Selects all columns in table of specific user.
-   *
-   * @param user User to select all from.
-   */
-  static HashMap<String, Integer> selectAll(UserDto user) {
+  static GameHistoryDto getGameHistory(UserDto user) {
     try {
       return GameStatsTable.selectAllColumnsOfTable(user);
     } catch (Exception e) {
-      System.err.println(
-          "Cannot select all of columns of game_history from user" + "[" + user + "]");
+      System.err.println("Cannot get game history data from user");
     }
     return null;
   }
 
-  /**
-   * Increments the number of game lost by a user.
-   *
-   * @param user User to modify
-   */
-  static void incrementLostGame(UserDto user) {
+  static void setGameHistory(GameHistoryDto gameHistory) {
     try {
-      GameStatsTable.addLostGame(user);
+      if (gameHistory.getHighestLevel() != 0) {
+        GameStatsTable.setHighestLevel(gameHistory.getId(), gameHistory.getHighestLevel());
+      }
+      if (gameHistory.getHighScore() != 0) {
+        GameStatsTable.setHighScore(gameHistory.getId(), gameHistory.getHighScore());
+      }
+      if (gameHistory.getNbLost() != 0) {
+        GameStatsTable.addLostGame(gameHistory.getId());
+      }
+      if (gameHistory.getNbWon() != 0) {
+        GameStatsTable.addWonGame(gameHistory.getId());
+      }
     } catch (Exception e) {
-      System.err.println("Cannot add to the number of games lost \n" + e.getMessage());
+      System.err.println("Cannot set game history in database \n" + e.getMessage());
     }
   }
-
-  /**
-   * Gets the number of games won of the given user.
-   *
-   * @param user User to get number of games won.
-   * @return Number of games won by the user.
-   */
-  static int getNbGamesLost(UserDto user) {
-    try {
-      return GameStatsTable.getNbGameLost(user);
-    } catch (Exception e) {
-      System.err.println("Cannot get number of games won \n" + e.getMessage());
-    }
-    return -1;
-  }
-
 }

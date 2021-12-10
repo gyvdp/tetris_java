@@ -26,6 +26,7 @@ package esi.acgt.atlj.server;
 
 import esi.acgt.atlj.database.business.BusinessInterface;
 import esi.acgt.atlj.database.business.BusinessModel;
+import esi.acgt.atlj.database.dto.GameHistoryDto;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
@@ -202,13 +203,33 @@ public class Server extends AbstractServer {
 
   public synchronized void getStatOfPlayer(SendAllStatistics m, CustomClientThread client) {
     try {
-      m.setGame_history(interactDatabase.selectAllFromGameHistory(client.getUser()));
+      m.setGame_history(
+          parseEntityGameHistory(interactDatabase.getGameStatEntity(client.getUser())));
       m.setTetrimino_history(
           interactDatabase.selectAllFromTetriminoHistory(client.getUser()));
       client.sendMessage(m);
     } catch (BusinessException e) {
       System.err.println("Cannot create message with all statistics");
     }
+  }
+
+  /**
+   * Parses a database object of Game History to send to user via hashmap.
+   *
+   * @param entity Entity to parse.
+   * @return Hashmap that has been parsed.
+   */
+  private HashMap<String, Integer> parseEntityGameHistory(GameHistoryDto entity) {
+    HashMap<String, Integer> statistics = new HashMap<>();
+    System.out.println("score " + entity.getHighScore());
+    statistics.put("SCORE", entity.getHighScore());
+    System.out.println("lost " + entity.getNbLost());
+    statistics.put("LOST", entity.getNbLost());
+    System.out.println("won " + entity.getNbWon());
+    statistics.put("WON", entity.getNbWon());
+    System.out.println("level " + entity.getHighestLevel());
+    statistics.put("LEVEL", entity.getHighestLevel());
+    return statistics;
   }
 
   /**

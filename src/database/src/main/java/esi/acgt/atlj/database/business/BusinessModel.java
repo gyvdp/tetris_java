@@ -25,6 +25,7 @@
 package esi.acgt.atlj.database.business;
 
 import esi.acgt.atlj.database.db.DataBaseManager;
+import esi.acgt.atlj.database.dto.GameHistoryDto;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.database.exceptions.DbException;
@@ -38,27 +39,6 @@ import java.util.Map;
  */
 public class BusinessModel implements BusinessInterface {
 
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public UserDto getUser(int id) throws BusinessException {
-    try {
-      DataBaseManager.startTransaction();
-      UserDto user = UserBusinessLogic.findById(id);
-      DataBaseManager.validateTransacation();
-      return user;
-    } catch (DbException e) {
-      String error = e.getMessage();
-      try {
-        DataBaseManager.cancelTransaction();
-      } catch (DbException ex) {
-        error = ex.getMessage() + "\n" + e.getMessage();
-      }
-      throw new BusinessException("Cannot access users\n " + error);
-    }
-  }
 
   /**
    * {@inheritDoc}
@@ -107,36 +87,11 @@ public class BusinessModel implements BusinessInterface {
    * {@inheritDoc}
    */
   @Override
-  public void removeUser(UserDto user) throws BusinessException {
-    try {
-      if (user.isPersistant()) {
-        DataBaseManager.startTransaction();
-        UserBusinessLogic.remove(user);
-        DataBaseManager.validateTransacation();
-      } else {
-        throw new BusinessException("User does not exist in database");
-      }
-    } catch (DbException e) {
-      String msg = e.getMessage();
-      try {
-        DataBaseManager.cancelTransaction();
-      } catch (DbException ex) {
-        msg = ex.getMessage() + msg;
-      } finally {
-        throw new BusinessException("Impossible to remove user \n" + msg);
-      }
-    }
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public HashMap<String, Integer> selectAllFromGameHistory(UserDto user) throws BusinessException {
-    HashMap<String, Integer> statistics;
+  public GameHistoryDto getGameStatEntity(UserDto user) throws BusinessException {
+    GameHistoryDto dto;
     try {
       DataBaseManager.startTransaction();
-      statistics = GameStatsBusinessLogic.selectAll(user);
+      dto = GameStatsBusinessLogic.getGameHistory(user);
       DataBaseManager.validateTransacation();
     } catch (DbException e) {
       String msg = e.getMessage();
@@ -148,17 +103,15 @@ public class BusinessModel implements BusinessInterface {
         throw new BusinessException("Impossible to select all \n" + msg);
       }
     }
-    return statistics;
+    return dto;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
-  public void updateUser(UserDto user) throws BusinessException {
+  public void setGameStatEntity(GameHistoryDto gameStatEntity)
+      throws BusinessException {
     try {
       DataBaseManager.startTransaction();
-      UserBusinessLogic.update(user);
+      GameStatsBusinessLogic.setGameHistory(gameStatEntity);
       DataBaseManager.validateTransacation();
     } catch (DbException e) {
       String msg = e.getMessage();
@@ -167,7 +120,7 @@ public class BusinessModel implements BusinessInterface {
       } catch (DbException ex) {
         msg = ex.getMessage() + e.getMessage();
       } finally {
-        throw new BusinessException("User update is impossible \n" + msg);
+        throw new BusinessException("Impossible to select all \n" + msg);
       }
     }
   }
@@ -190,84 +143,6 @@ public class BusinessModel implements BusinessInterface {
         msg = ex.getMessage() + e.getMessage();
       } finally {
         throw new BusinessException("Getting high score of user has failed \n" + msg);
-      }
-    }
-  }
-
-  /**
-   * Tries to set a new high score to the user.
-   *
-   * @param user         User to set new high score to.
-   * @param newHighScore New high score of the user.
-   * @throws BusinessException If query to set new high score has failed
-   */
-  public void setUserHighScore(UserDto user, int newHighScore) throws BusinessException {
-    try {
-      DataBaseManager.startTransaction();
-      GameStatsBusinessLogic.setHighScore(user, newHighScore);
-      DataBaseManager.validateTransacation();
-    } catch (DbException e) {
-      String msg = e.getMessage();
-      try {
-        DataBaseManager.cancelTransaction();
-      } catch (DbException ex) {
-        msg = ex.getMessage() + e.getMessage();
-      } finally {
-        throw new BusinessException("Setting high score of user has failed \n" + msg);
-      }
-    }
-  }
-
-  @Override
-  public void addLostGame(UserDto user) throws BusinessException {
-    try {
-      DataBaseManager.startTransaction();
-      GameStatsBusinessLogic.incrementLostGame(user);
-      DataBaseManager.validateTransacation();
-    } catch (DbException e) {
-      String msg = e.getMessage();
-      try {
-        DataBaseManager.cancelTransaction();
-      } catch (DbException ex) {
-        msg = ex.getMessage() + e.getMessage();
-      } finally {
-        throw new BusinessException("Getting number of games won by user has failed \n" + msg);
-      }
-    }
-  }
-
-  @Override
-  public void addWonGame(UserDto user) throws BusinessException {
-    try {
-      DataBaseManager.startTransaction();
-      GameStatsBusinessLogic.incrementWonGame(user);
-      DataBaseManager.validateTransacation();
-    } catch (DbException e) {
-      String msg = e.getMessage();
-      try {
-        DataBaseManager.cancelTransaction();
-      } catch (DbException ex) {
-        msg = ex.getMessage() + e.getMessage();
-      } finally {
-        throw new BusinessException("Getting number of games won by user has failed \n" + msg);
-      }
-    }
-  }
-
-  @Override
-  public void setHighestLevel(UserDto user, int level) throws BusinessException {
-    try {
-      DataBaseManager.startTransaction();
-      GameStatsBusinessLogic.setHighestLevel(user, level);
-      DataBaseManager.validateTransacation();
-    } catch (DbException e) {
-      String msg = e.getMessage();
-      try {
-        DataBaseManager.cancelTransaction();
-      } catch (DbException ex) {
-        msg = ex.getMessage() + e.getMessage();
-      } finally {
-        throw new BusinessException("Setting highest level has failed \n" + msg);
       }
     }
   }
@@ -330,47 +205,5 @@ public class BusinessModel implements BusinessInterface {
     return statistics;
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public int getNumberOfGamesWon(UserDto user) throws BusinessException {
-    try {
-      DataBaseManager.startTransaction();
-      int highScore = GameStatsBusinessLogic.getNbGamesWon(user);
-      DataBaseManager.validateTransacation();
-      return highScore;
-    } catch (DbException e) {
-      String msg = e.getMessage();
-      try {
-        DataBaseManager.cancelTransaction();
-      } catch (DbException ex) {
-        msg = ex.getMessage() + e.getMessage();
-      } finally {
-        throw new BusinessException("Getting number of games won by user has failed \n" + msg);
-      }
-    }
-  }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public int getNumberOfGamesLost(UserDto user) throws BusinessException {
-    try {
-      DataBaseManager.startTransaction();
-      int nbLost = GameStatsBusinessLogic.getNbGamesLost(user);
-      DataBaseManager.validateTransacation();
-      return nbLost;
-    } catch (DbException e) {
-      String msg = e.getMessage();
-      try {
-        DataBaseManager.cancelTransaction();
-      } catch (DbException ex) {
-        msg = ex.getMessage() + e.getMessage();
-      } finally {
-        throw new BusinessException("Getting number of games lost by user has failed \n" + msg);
-      }
-    }
-  }
 }
