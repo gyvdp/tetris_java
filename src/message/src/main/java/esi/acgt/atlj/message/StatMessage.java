@@ -22,31 +22,12 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message.messageTypes;
-
-import esi.acgt.atlj.message.AbstractMessage;
-import esi.acgt.atlj.message.GameMessage;
-import esi.acgt.atlj.model.Game;
-import esi.acgt.atlj.model.player.AbstractPlayer;
-import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+package esi.acgt.atlj.message;
 
 
-public class LockedTetrimino extends GameMessage {
+public class StatMessage extends AbstractMessage {
 
-  TetriminoInterface tetrimino;
-
-  public LockedTetrimino(TetriminoInterface myT, String name) {
-    super(name);
-    tetrimino = myT;
-  }
-
-  @Override
-  public void execute(Game game) {
-    var player = (AbstractPlayer) (game.getBoard(userName));
-    player.placeTetrimino(this.tetrimino);
-  }
-
-  public String toString() {
-    return "Locked_Tetrimino";
+  public StatMessage() {
+    this.messageType = MessageType.STATISTICS;
   }
 }

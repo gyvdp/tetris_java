@@ -28,23 +28,32 @@ import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.GameMessage;
 import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.model.Game;
-import java.util.HashMap;
+import esi.acgt.atlj.model.player.UnmanagedPlayer;
 
-public class SendHighScore extends AbstractMessage {
+/**
+ * Sends score to server.
+ */
+public class Score extends GameMessage {
 
-  HashMap<String, Integer> highScores;
+  private final int score;
 
   /**
-   * High score of the current player.
+   * Adds the score to a player.
    *
-   * @param highScores High score to send.
+   * @param score Score to send.
+   * @param name  Player that has sent the message.
    */
-  public SendHighScore(HashMap<String, Integer> highScores) {
-    this.messageType = MessageType.SEND_HIGH_SCORE;
-    this.highScores = highScores;
+  public Score(int score, String name) {
+    super(name);
+    this.score = score;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public void execute(Game game) {
-    game.setHighScores(this.highScores);
+    var player = (UnmanagedPlayer) (game.getBoard(this.userName));
+    player.setScore(this.score);
   }
 }

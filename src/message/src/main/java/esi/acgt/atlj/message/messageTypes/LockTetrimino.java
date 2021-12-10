@@ -24,47 +24,36 @@
 
 package esi.acgt.atlj.message.messageTypes;
 
-import static esi.acgt.atlj.message.MessageType.HOLD;
-
 import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.GameMessage;
 import esi.acgt.atlj.model.Game;
 import esi.acgt.atlj.model.player.AbstractPlayer;
-import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
 /**
- * Sets the holding mino.
+ * Locks a tetrimino in place.
  */
-public class SetHold extends GameMessage {
+public class LockTetrimino extends GameMessage {
+
+  TetriminoInterface tetrimino;
 
   /**
-   * Mino that is being held
-   */
-  private Mino hold;
-
-  /**
-   * Constructor for hold
+   * Locks a tetrimino in place.
    *
-   * @param hold Hold to set.
+   * @param tetrimino Tetrimino to lock in place.
+   * @param name      Name of player to lock tetrimino for.
    */
-  public SetHold(Mino hold, String name) {
+  public LockTetrimino(TetriminoInterface tetrimino, String name) {
     super(name);
-    this.messageType = HOLD;
-    this.hold = hold;
+    this.tetrimino = tetrimino;
   }
 
   /**
-   * Getter for hold mino
-   *
-   * @return Mino that is holding.
+   * {@inheritDoc}
    */
-  public Mino getHold() {
-    return hold;
-  }
-
   @Override
   public void execute(Game game) {
-    var player = (AbstractPlayer) (game.getBoard(this.userName));
-    player.setHold(hold);
+    var player = (AbstractPlayer) (game.getBoard(userName));
+    player.placeTetrimino(this.tetrimino);
   }
 }

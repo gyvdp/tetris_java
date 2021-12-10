@@ -24,8 +24,34 @@
 
 package esi.acgt.atlj.message.messageTypes;
 
-import esi.acgt.atlj.message.AbstractMessage;
 
-public class StatMessage extends AbstractMessage {
+import esi.acgt.atlj.message.MessageType;
+import esi.acgt.atlj.message.ServerMessage;
 
+/**
+ * Sends its name to the server
+ */
+public class ConnectionMessage extends ServerMessage {
+
+
+  private final String username;
+
+  /**
+   * Constructor for sending username and connection to server.
+   *
+   * @param username Username of player sending the message.
+   */
+  public ConnectionMessage(String username) {
+    this.username = username;
+    this.messageType = MessageType.SERVER;
+  }
+
+  /**
+   * Getter for current name of user.
+   *
+   * @return Username of player.
+   */
+  public String getUsername() {
+    return this.username;
+  }
 }

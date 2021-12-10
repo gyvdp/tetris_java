@@ -25,7 +25,7 @@
 package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.MessageType;
-import esi.acgt.atlj.model.Game;
+import esi.acgt.atlj.message.StatMessage;
 import java.util.HashMap;
 
 /**
@@ -40,7 +40,7 @@ public class SendAllStatistics extends StatMessage {
    * Constructor to send all statistics.
    */
   public SendAllStatistics() {
-    this.messageType = MessageType.SEND_ALL_STATISTICS;
+    super();
   }
 
   public void setGame_history(HashMap<String, Integer> game_history) {

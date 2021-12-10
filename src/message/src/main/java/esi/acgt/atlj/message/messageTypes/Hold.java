@@ -25,35 +25,35 @@
 package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.GameMessage;
-import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.model.Game;
 import esi.acgt.atlj.model.player.AbstractPlayer;
-import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
+import esi.acgt.atlj.model.tetrimino.Mino;
 
-/**
- * Client tell the server to add to its unmanaged board a tetrimino
- */
-public class AddTetrimino extends GameMessage {
+public class Hold extends GameMessage {
 
   /**
-   * Tetrimino to send
+   * Mino that is being held
    */
-  private final TetriminoInterface tetrimino;
+  private Mino hold;
 
   /**
-   * Constructor for tetrimino message.
+   * Constructor for hold
    *
-   * @param tetrimino Tetrimino to add.
+   * @param hold Hold to set.
+   * @param name Name of player that has sent the message.
    */
-  public AddTetrimino(TetriminoInterface tetrimino, String name) {
+  public Hold(Mino hold, String name) {
     super(name);
-    this.tetrimino = tetrimino;
-    this.messageType = MessageType.ADD_TETRIMINO;
+    this.hold = hold;
   }
 
+
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void execute(Game game) {
     var player = (AbstractPlayer) (game.getBoard(this.userName));
-    player.setActualTetrimino(this.tetrimino);
+    player.setHold(hold);
   }
 }

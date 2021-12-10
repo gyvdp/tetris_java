@@ -22,41 +22,34 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message;
-
-import static esi.acgt.atlj.message.MessageType.SEND_NAME;
+package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.GameMessage;
+import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.model.Game;
-import esi.acgt.atlj.model.player.AbstractPlayer;
+import java.util.HashMap;
 
-/**
- * Sends its name to the server
- */
-public class Connection extends AbstractMessage {
+public class HighScore extends AbstractMessage {
 
-  /**
-   * User name to send
-   */
-  private final String username;
+  HashMap<String, Integer> highScores;
 
   /**
-   * Constructor for send username
+   * Send high score of both players inside a match up.
    *
-   * @param username Username to send
+   * @param highScores High scores of both players.
    */
-  public Connection(String username) {
-    this.username = username;
-    this.messageType = SEND_NAME;
+  public HighScore(HashMap<String, Integer> highScores) {
+    super();
+    this.highScores = highScores;
   }
 
   /**
-   * Getter for current name of user.
+   * Sets the high score of both players.
    *
-   * @return Username of player.
+   * @param game Current game to execute on.
    */
-  public String getUsername() {
-    return this.username;
+  public void execute(Game game) {
+    game.setHighScores(this.highScores);
   }
 }

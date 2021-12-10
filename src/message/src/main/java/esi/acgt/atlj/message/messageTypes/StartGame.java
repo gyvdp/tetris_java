@@ -30,14 +30,11 @@ import esi.acgt.atlj.model.player.ManagedPlayer;
 import esi.acgt.atlj.model.player.UnmanagedPlayer;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
-import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
-
 
 /**
- * Conveys the state of the player to the client.
+ * Starts a game when message is received by client
  */
 public class StartGame extends AbstractMessage {
-
 
   String username;
   String usernameOpp;
@@ -45,7 +42,12 @@ public class StartGame extends AbstractMessage {
   Mino nextMino;
 
   /**
-   * Constructor for player state.
+   * Constructor for game start.
+   *
+   * @param usernameOpp Username of opposing player.
+   * @param username    Username of current player.
+   * @param actual      Fist mino of the game.
+   * @param next        First next mino of the game.
    */
   public StartGame(String usernameOpp, String username, Mino actual, Mino next) {
     this.username = username;
@@ -54,6 +56,11 @@ public class StartGame extends AbstractMessage {
     this.nextMino = next;
   }
 
+  /**
+   * Will start the game by setting the players name, high score & launching the game.
+   *
+   * @param game Current game to modify.
+   */
   public void execute(Game game) {
     var playerOpp = (UnmanagedPlayer) game.getBoard("search");
     playerOpp.setUsername(this.usernameOpp);
@@ -63,10 +70,5 @@ public class StartGame extends AbstractMessage {
     playerOpp.setActualTetrimino(Tetrimino.createTetrimino(actualMino));
     playerOpp.setNextTetrimino(nextMino);
     player.start();
-  }
-
-
-  public String toString() {
-    return this.usernameOpp + " - vs - " + this.username;
   }
 }

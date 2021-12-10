@@ -28,18 +28,7 @@ package esi.acgt.atlj.message;
  * All different type of message that are possible to send/receive from client/server
  */
 public enum MessageType {
-  ASK_PIECE, // asks a piece to the server
-  ADD_TETRIMINO, //Adds a tetrimino to the unmanaged board of the other player
-  SEND_PIECE, //Send a piece from the server to the client
-  SEND_SCORE, //Sends the score to the server or client
-  REMOVE_LINE, //Removes a line to the unmanaged board of the other player
-  PLAYER_STATUS, //Send the status to the player
-  UPDATE_PIECE_UNMANAGED, //Updates piece of unmanaged board of other player
-  SEND_NAME,// Sends username of player to other player.
-  NUMBER_LINES, // Send the number of line the player has destructed
-  HOLD, // Sends the mino the player is holding
-  ACTION, //Action player would like to do
-  SEND_HIGH_SCORE, // Send the user's high score to himself.
-  SEND_ALL_STATISTICS, // Sends all user statistics.
-  GAMESTATS // Sends all gamestats
+  GAME,
+  STATISTICS,
+  SERVER
 }

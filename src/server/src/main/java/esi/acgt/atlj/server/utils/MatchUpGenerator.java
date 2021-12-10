@@ -30,14 +30,12 @@ import esi.acgt.atlj.database.dto.TetriminoDto;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.message.AbstractMessage;
-import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.SendGameStats;
-import esi.acgt.atlj.message.messageTypes.SendHighScore;
-import esi.acgt.atlj.message.Connection;
-import esi.acgt.atlj.message.messageTypes.SendPiece;
+import esi.acgt.atlj.message.messageTypes.HighScore;
+import esi.acgt.atlj.message.messageTypes.ConnectionMessage;
+import esi.acgt.atlj.message.messageTypes.NextMino;
 import esi.acgt.atlj.message.messageTypes.StartGame;
-import esi.acgt.atlj.message.messageTypes.UpdateNextPieceOther;
 import esi.acgt.atlj.model.player.PlayerStatInterface;
 import esi.acgt.atlj.model.player.Action;
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -98,7 +96,7 @@ public class MatchUpGenerator extends Thread {
     this.bagGenerator = new BagGenerator();
     this.id = idGeneratedMatchUp;
     for (CustomClientThread client : clients) {
-      getOpposingClient(client).sendMessage(new Connection(client.getUsername()));
+      getOpposingClient(client).sendMessage(new ConnectionMessage(client.getUsername()));
       clientLambdaConnections(client);
     }
     this.start();
@@ -120,8 +118,8 @@ public class MatchUpGenerator extends Thread {
     if (opPlayer != null) {
       if (m instanceof AskPiece) {
         Mino mino = client.getMino();
-        client.sendMessage(new SendPiece(mino, client.getUsername()));
-        opPlayer.sendMessage(new UpdateNextPieceOther(mino, opPlayer.getUsername()));
+        client.sendMessage(new NextMino(mino, client.getUsername()));
+        opPlayer.sendMessage(new NextMino(mino, opPlayer.getUsername()));
       } else if (m instanceof SendGameStats stats) {
         setGameStats(stats.getGameStats(), client.getUser());
       } else {
@@ -285,7 +283,7 @@ public class MatchUpGenerator extends Thread {
     sendGreenLight();
     for (CustomClientThread clientThread : clients) {
       try {
-        clientThread.sendMessage(new SendHighScore(getBothPlayersHighScoreDB()));
+        clientThread.sendMessage(new HighScore(getBothPlayersHighScoreDB()));
       } catch (BusinessException e) {
         System.err.println("Cannot get user high score");
       }

@@ -24,19 +24,18 @@
 
 package esi.acgt.atlj.message;
 
-import esi.acgt.atlj.model.Game;
+
 import java.io.Serializable;
 
 /**
- * Transporter of information. Each message has a type and is serializable to be sent between client
- * and server
+ * Most basic type of message.
  */
 public abstract class AbstractMessage implements Serializable {
 
   /**
    * Type of message to send.
    */
-  public MessageType messageType; //todo
+  protected MessageType messageType;
 
   /**
    * Gets the type of message.
@@ -45,14 +44,6 @@ public abstract class AbstractMessage implements Serializable {
    */
   public MessageType getType() {
     return this.messageType;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public String toString() {
-    return messageType.toString();
   }
 
 }

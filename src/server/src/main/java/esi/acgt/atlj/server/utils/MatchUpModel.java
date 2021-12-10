@@ -25,11 +25,11 @@
 package esi.acgt.atlj.server.utils;
 
 import esi.acgt.atlj.message.AbstractMessage;
-import esi.acgt.atlj.message.messageTypes.AddTetrimino;
-import esi.acgt.atlj.message.messageTypes.LockedTetrimino;
-import esi.acgt.atlj.message.messageTypes.SendPiece;
-import esi.acgt.atlj.message.messageTypes.SendScore;
-import esi.acgt.atlj.message.messageTypes.SetHold;
+import esi.acgt.atlj.message.messageTypes.SetFallingTetrimino;
+import esi.acgt.atlj.message.messageTypes.LockTetrimino;
+import esi.acgt.atlj.message.messageTypes.NextMino;
+import esi.acgt.atlj.message.messageTypes.Score;
+import esi.acgt.atlj.message.messageTypes.Hold;
 import esi.acgt.atlj.model.player.ManagedPlayer;
 import esi.acgt.atlj.server.CustomClientThread;
 import java.util.HashMap;
@@ -75,19 +75,19 @@ public class MatchUpModel {
    */
   public void receiveMessage(AbstractMessage information, CustomClientThread client) {
     var game = gameHashMap.get(client);
-    if (information instanceof SendPiece message) { //When next tetrimino is sent from server
-      game.setNextTetrimino(message.getMino());
+    if (information instanceof NextMino message) { //When next tetrimino is sent from server
+      //game.setNextTetrimino(message.getMino());
     }
-    if (information instanceof AddTetrimino message) { //When add tetrimino is sent from server
+    if (information instanceof SetFallingTetrimino message) { //When add tetrimino is sent from server
       //game.setActualTetrimino(message.getTetrimino());
     }
-    if (information instanceof SendScore message) { // When send score is sent from server
+    if (information instanceof Score message) { // When send score is sent from server
       //game.getStats().setScore(message.getScore());
     }
-    if (information instanceof SetHold message) { // When hold tetrimino is sent from server
-      game.setHold(message.getHold());
+    if (information instanceof Hold message) { // When hold tetrimino is sent from server
+      //game.setHold(message.getHold());
     }
-    if (information instanceof LockedTetrimino message) { //When locked tetrimino has been send from server.
+    if (information instanceof LockTetrimino message) { //When locked tetrimino has been send from server.
       //game.placeTetrimino(message.getTetrimino());
     }
   }

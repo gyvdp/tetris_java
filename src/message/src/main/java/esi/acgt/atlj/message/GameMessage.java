@@ -24,15 +24,32 @@
 
 package esi.acgt.atlj.message;
 
+import static esi.acgt.atlj.message.MessageType.GAME;
+
 import esi.acgt.atlj.model.Game;
 
+/**
+ * Specific message aimed to update the clients view of both players.
+ */
 public abstract class GameMessage extends AbstractMessage {
 
   protected String userName;
 
-  public abstract void execute(Game game);
-
+  /**
+   * Creates a game message.
+   *
+   * @param username Username that sends the message.
+   */
   public GameMessage(String username) {
+    this.messageType = GAME;
     this.userName = username;
   }
+
+  /**
+   * Executes specific behaviour that is expected from message.
+   *
+   * @param game Current game to execute behaviour on.
+   */
+  public abstract void execute(Game game);
+
 }

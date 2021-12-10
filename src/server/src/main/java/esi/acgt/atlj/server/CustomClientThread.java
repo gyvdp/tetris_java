@@ -28,11 +28,10 @@ import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.DtoException;
 import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.PlayerAction;
-import esi.acgt.atlj.message.PlayerStatus;
-import esi.acgt.atlj.message.messageTypes.StartGame;
 import esi.acgt.atlj.message.messageTypes.SendAction;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
-import esi.acgt.atlj.message.Connection;
+import esi.acgt.atlj.message.messageTypes.ConnectionMessage;
+import esi.acgt.atlj.model.player.PlayerStatus;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -123,7 +122,7 @@ public class CustomClientThread extends Thread {
     this.clientSocket = clientSocket;
     this.id = id;
     this.server = server;
-    this.clientStatus = PlayerStatus.WAITING;
+    this.clientStatus = PlayerStatus.NOT_STARTED;
     myTetriminos = new LinkedBlockingQueue<>();
     try {
       clientSocket.setSoTimeout(0);
@@ -258,7 +257,7 @@ public class CustomClientThread extends Thread {
    * @return True if the message needs to be handled by server.
    */
   protected boolean handleMessageFromClient(Object message) {
-    if (message instanceof Connection s) {
+    if (message instanceof ConnectionMessage s) {
       try {
         user = new UserDto(s.getUsername());
         server.checkUser(user);

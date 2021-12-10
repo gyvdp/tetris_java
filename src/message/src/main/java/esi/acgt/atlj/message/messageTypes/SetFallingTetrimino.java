@@ -22,15 +22,38 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message;
+package esi.acgt.atlj.message.messageTypes;
+
+import esi.acgt.atlj.message.GameMessage;
+import esi.acgt.atlj.message.MessageType;
+import esi.acgt.atlj.model.Game;
+import esi.acgt.atlj.model.player.AbstractPlayer;
+import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
 /**
- * Status of player for the servers point of view.
+ * Sets a falling tetrimino on the board.
  */
-public enum PlayerStatus {
-  READY, // Status when both players are connected
-  WAITING, // Players
-  LOST, // Player has lost
-  DISCONNECTED, //Player is disconnected
-  NOT_FOUND // If id of player is not found
+public class SetFallingTetrimino extends GameMessage {
+
+  private final TetriminoInterface tetrimino;
+
+  /**
+   * Sets the falling tetrimino of the user.
+   *
+   * @param tetrimino Tetrimino to set as falling.
+   * @param name      Name of player that has sent the falling tetrimino.
+   */
+  public SetFallingTetrimino(TetriminoInterface tetrimino, String name) {
+    super(name);
+    this.tetrimino = tetrimino;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void execute(Game game) {
+    var player = (AbstractPlayer) (game.getBoard(this.userName));
+    player.setActualTetrimino(this.tetrimino);
+  }
 }

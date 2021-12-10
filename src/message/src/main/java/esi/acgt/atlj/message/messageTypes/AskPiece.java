@@ -39,7 +39,7 @@ public class AskPiece extends ServerMessage {
    * Constructor for askPiece type of message.
    */
   public AskPiece() {
-    this.messageType = MessageType.ASK_PIECE;
+    super();
   }
 
 }

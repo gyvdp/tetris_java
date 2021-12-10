@@ -25,7 +25,6 @@
 package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.AbstractMessage;
-import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.message.PlayerAction;
 
 public class SendAction extends AbstractMessage {
@@ -33,7 +32,7 @@ public class SendAction extends AbstractMessage {
   PlayerAction action;
 
   public SendAction() {
-    this.messageType = MessageType.ACTION;
+    super();
   }
 
   /**

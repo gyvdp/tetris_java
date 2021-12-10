@@ -31,39 +31,38 @@ import esi.acgt.atlj.model.Game;
 import esi.acgt.atlj.model.player.AbstractPlayer;
 import esi.acgt.atlj.model.tetrimino.Mino;
 
-/**
- * Updates a piece in the unmanaged board of the player it is sent to.
- */
-public class UpdateNextPieceOther extends GameMessage {
+public class NextMino extends GameMessage {
+
+
+  private final Mino mino;
+
 
   /**
-   * Piece to update in unmanaged board.
-   */
-  private Mino piece;
-
-  /**
-   * Constructor for updating player piece in unmanaged board of other player.
+   * Sends the next generated mino from the server to the correct player.
    *
-   * @param piece Piece to update
+   * @param mino Mino to send.
+   * @param name Player to update next mino with.
    */
-  public UpdateNextPieceOther(Mino piece, String man) {
-    super(man); //:)//
-    this.messageType = MessageType.UPDATE_PIECE_UNMANAGED;
-    this.piece = piece;
+  public NextMino(Mino mino, String name) {
+    super(name);
+    this.mino = mino;
   }
 
   /**
-   * Getter for piece to update.
+   * Getter for the mino of the current instance.
    *
-   * @return Piece that needs to be updated.
+   * @return Mino that is sent.
    */
-  public Mino getPiece() {
-    return piece;
+  public Mino getMino() {
+    return mino;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void execute(Game game) {
     var player = (AbstractPlayer) (game.getBoard(this.userName));
-    player.setNextTetrimino(piece);
+    player.setNextTetrimino(this.mino);
   }
 }

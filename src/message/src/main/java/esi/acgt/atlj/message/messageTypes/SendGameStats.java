@@ -24,10 +24,8 @@
 
 package esi.acgt.atlj.message.messageTypes;
 
-import static esi.acgt.atlj.message.MessageType.GAMESTATS;
-
-import esi.acgt.atlj.message.AbstractMessage;
-import esi.acgt.atlj.model.Game;
+import esi.acgt.atlj.message.MessageType;
+import esi.acgt.atlj.message.StatMessage;
 import esi.acgt.atlj.model.player.PlayerStatInterface;
 
 /**
@@ -46,7 +44,7 @@ public class SendGameStats extends StatMessage {
    * @param gameStats Game Stats interface to send.
    */
   public SendGameStats(PlayerStatInterface gameStats) {
-    this.messageType = GAMESTATS;
+    this.messageType = MessageType.GAME;
     this.gameStats = gameStats;
   }
 
