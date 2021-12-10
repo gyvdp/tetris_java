@@ -50,5 +50,10 @@ public interface ViewInterface {
    */
   PropertyChangeListener getMenuListener();
 
+  /**
+   * Display the Menu with the statistics of the client
+   *
+   * @param username the username of the client
+   */
   void displayMenu(String username);
 }

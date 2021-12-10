@@ -67,7 +67,7 @@ public class Controller {
   }
 
   /**
-   * End the Programme
+   * End the connection between the client and the server and start a new stage for a new connexion
    */
   public void disconnect() {
     view.displayConnexion();
@@ -98,7 +98,7 @@ public class Controller {
   }
 
   /**
-   * Connexion to the server and when it's done start the board view
+   * Connexion to the server and when it's done start the menu
    *
    * @param ip       ip of the server to connect to
    * @param port     port of the server to connect to
@@ -153,6 +153,9 @@ public class Controller {
     this.view.show();
   }
 
+  /**
+   * Stop the current model and say to the server dans he leaves the current match.
+   */
   public void leaveMatch() {
     //todo stop real game.
     model.sendAction(QUIT);

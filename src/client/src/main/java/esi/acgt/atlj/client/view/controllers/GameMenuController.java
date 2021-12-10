@@ -25,7 +25,6 @@
 package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.client.controller.Controller;
-import esi.acgt.atlj.client.view.controllers.ConnexionController;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
@@ -83,14 +82,7 @@ public class GameMenuController implements Initializable, PropertyChangeListener
     this.controller = controller;
     this.stage = stage;
 
-    this.stage.setOnCloseRequest(windowEvent -> {
-      this.stage.close();
-      this.controller.disconnect();
-    });
-    this.stage.getIcons()
-        .add(new Image(Objects.requireNonNull(
-            ConnexionController.class.getResourceAsStream("/image/tetris-icon-32.png"))));
-    this.stage.setTitle("Tetris");
+    this.modifyStage();
 
     FXMLLoader loader = new FXMLLoader(
         getClass().getResource("/fxml/GameMenu.fxml"));
@@ -103,7 +95,21 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   }
 
   /**
-   * Action when you click on the disconnect button
+   * Modify the action when we close the stage, modify the icon of the stage and the title
+   */
+  private void modifyStage() {
+    this.stage.setOnCloseRequest(windowEvent -> {
+      this.stage.close();
+      this.controller.disconnect();
+    });
+    this.stage.getIcons()
+        .add(new Image(Objects.requireNonNull(
+            ConnexionController.class.getResourceAsStream("/image/tetris-icon-32.png"))));
+    this.stage.setTitle("Tetris");
+  }
+
+  /**
+   * Close the window and disconnect the client from the server.
    */
   public void disconnect() {
     this.stage.close();
@@ -111,7 +117,7 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   }
 
   /**
-   * Action when you click on the Play button
+   * Send to the server that the client is ready to play and will launch the MultiplayerGame.
    */
   public void play() {
     this.controller.startPlay(this.username);
@@ -141,8 +147,6 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   }
 
   /**
-   * Update highestScore label
-   *
    * @param score new value of highestScore
    */
   private void updateHighestScoreLabel(int score) {
@@ -150,8 +154,6 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   }
 
   /**
-   * Update loses
-   *
    * @param loses new value of loses
    */
   private void updateLosesLabel(int loses) {
@@ -159,8 +161,6 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   }
 
   /**
-   * Update winningPercent
-   *
    * @param percent new value of winningPercent
    */
   private void updateWinsPercentLabel(double percent) {
@@ -173,8 +173,6 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   }
 
   /**
-   * Update wins
-   *
    * @param wins new value of wins
    */
   private void updateWinsLabel(int wins) {
@@ -182,8 +180,6 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   }
 
   /**
-   * Update hardDrop label
-   *
    * @param hardD new value of hardDrop
    */
   private void updateHardDropLabel(int hardD) {
@@ -191,8 +187,6 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   }
 
   /**
-   * Update single label
-   *
    * @param single new value of hardDrop
    */
   private void updateSingleLabel(int single) {
@@ -200,8 +194,6 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   }
 
   /**
-   * Update double label
-   *
    * @param doubleL new value of hardDrop
    */
   private void updateDoubleLabel(int doubleL) {
@@ -209,8 +201,6 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   }
 
   /**
-   * Update triple label
-   *
    * @param triple new value of hardDrop
    */
   private void updateTripleLabel(int triple) {
@@ -218,8 +208,6 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   }
 
   /**
-   * Update double label
-   *
    * @param tetris new value of hardDrop
    */
   private void updateTetrisLabel(int tetris) {
@@ -227,15 +215,12 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   }
 
   /**
-   * Update destrouedLine
-   *
    * @param destroyedLine new value of destroyedLine
    */
   private void updateLineLabel(int destroyedLine) {
     this.destroyedLine.setText(Integer.toString(destroyedLine));
   }
-
-
+  
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     this.connectedUsername.setText(this.connectedUsername.getText() + this.username);

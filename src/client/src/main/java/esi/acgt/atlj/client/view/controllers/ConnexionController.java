@@ -52,6 +52,7 @@ public class ConnexionController implements Initializable {
    * Pattern of a adress IP
    */
   private static final Pattern regex = Pattern.compile("^(?:[0-9]{1,3}.){3}[0-9]{1,3}$");
+
   private final Controller controller;
   private final Stage stage;
   @FXML
@@ -71,10 +72,7 @@ public class ConnexionController implements Initializable {
     this.controller = controller;
     this.stage = stage;
 
-    this.stage.getIcons()
-        .add(new Image(Objects.requireNonNull(
-            ConnexionController.class.getResourceAsStream("/image/tetris-icon-32.png"))));
-    this.stage.setTitle("Tetris connexion");
+    this.customizeStage();
 
     FXMLLoader loader = new FXMLLoader(
         getClass().getResource("/fxml/Connexion.fxml"));
@@ -84,6 +82,17 @@ public class ConnexionController implements Initializable {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+  }
+
+  /**
+   * Add a icon on the stage, a action and a title.
+   */
+  private void customizeStage() {
+    this.stage.getIcons()
+        .add(new Image(Objects.requireNonNull(
+            ConnexionController.class.getResourceAsStream("/image/tetris-icon-32.png"))));
+    this.stage.setTitle("Tetris connexion");
     this.stage.getScene().addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
       if (key.getCode() == KeyCode.ENTER) {
         this.connexion();
@@ -111,7 +120,8 @@ public class ConnexionController implements Initializable {
   }
 
   /**
-   * Action when you press on the button for connexion
+   * Verify if all the textfield are complete by using informationComplete and try to connect the
+   * client to the server and close the stage.
    */
   public void connexion() {
     if (informationComplete()) {
@@ -122,17 +132,13 @@ public class ConnexionController implements Initializable {
   }
 
   /**
-   * Action when you press on the button to leave the application
+   * Close this stage and should stop the program.
    */
   public void leavePressed() {
     this.stage.close();
   }
 
-  /**
-   * Initiale of the Connexion.fxml
-   */
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-
   }
 }

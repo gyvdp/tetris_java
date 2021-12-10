@@ -144,6 +144,9 @@ public class View implements ViewInterface {
     return this.menuController;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void displayMenu(String username) {
     this.mpgController = null;
