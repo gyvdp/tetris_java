@@ -35,8 +35,6 @@ import java.util.Timer;
 public class ManagedPlayer extends AbstractPlayer {
 
   private final Timer timer;
-
-  private PlayerStatus status;
   private TickHandler tickHandler;
   private boolean hasAlreadyHolded;
 
@@ -109,16 +107,6 @@ public class ManagedPlayer extends AbstractPlayer {
   }
 
   /**
-   * {@inheritDoc}
-   */
-  @Override
-  public synchronized void setActualTetrimino(TetriminoInterface actualTetrimino) {
-    this.actualTetrimino = actualTetrimino;
-    this.pcs.firePropertyChange("ACTUAL", null, this.actualTetrimino);
-    this.pcs.firePropertyChange("board", null, this.getMatrix());
-  }
-
-  /**
    * Soft drops a tetrimino.
    */
   public synchronized void softDrop() {
@@ -148,15 +136,6 @@ public class ManagedPlayer extends AbstractPlayer {
     return rotated;
   }
 
-  /**
-   * Gets the status of the game
-   *
-   * @return Current status of the game
-   */
-  public synchronized PlayerStatus getStatus() {
-    return this.status;
-  }
-
 
   /**
    * Sets the status of the game
@@ -166,22 +145,19 @@ public class ManagedPlayer extends AbstractPlayer {
   public synchronized void setStatus(PlayerStatus status) {
     this.tickHandler.cancel();
     this.tickHandler = new TickHandler(this);
-    this.status = status;
-
+    super.setStatus(status);
     switch (status) {
       case TETRIMINO_FALLING -> {
         timer.schedule(this.tickHandler, TickHandler.tickDelay(this.stats.getLevel()));
-        this.playerStatus("", 0);
       }
       case LOCK_DOWN -> {
         this.timer.schedule(this.tickHandler, 500);
-        this.playerStatus("LOCK DOWN", 0.2);
       }
       case TETRIMINO_HARD_DROPPING,
           ROTATING_CLOCKWISE,
           ROTATING_ANTI_CLOCKWISE,
           SOFT_DROPPING -> this.timer.schedule(this.tickHandler, 1);
-      case LOCK_OUT -> this.playerStatus("LOCK OUT", 0.9);
+      case LOCK_OUT -> System.out.println("todo");
     }
   }
 

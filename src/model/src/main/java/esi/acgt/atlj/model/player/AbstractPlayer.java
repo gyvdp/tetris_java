@@ -37,6 +37,8 @@ import java.util.List;
 
 public abstract class AbstractPlayer implements PlayerInterface {
 
+  protected PlayerStatus status;
+
   /**
    * The matrix of the board
    */
@@ -129,6 +131,16 @@ public abstract class AbstractPlayer implements PlayerInterface {
   }
 
   /**
+   * Sets the username of the player.
+   *
+   * @param username username to set.
+   */
+  public synchronized void setUsername(String username) {
+    this.username = username;
+    this.pcs.firePropertyChange("username", null, this.username);
+  }
+
+  /**
    * {@inheritDoc}
    */
   @Override
@@ -155,11 +167,29 @@ public abstract class AbstractPlayer implements PlayerInterface {
   }
 
   /**
+   * Gets the status of the game
+   *
+   * @return Current status of the game
+   */
+  public synchronized PlayerStatus getStatus() {
+    return this.status;
+  }
+
+  public synchronized void setStatus(PlayerStatus status) {
+    this.status = status;
+    this.pcs.firePropertyChange("STATUS", null, this.getStatus());
+  }
+
+  /**
    * Setter of actualTetrimino
    *
    * @param actualTetrimino new actualTetrimino
    */
-  public abstract void setActualTetrimino(TetriminoInterface actualTetrimino);
+  public synchronized void setActualTetrimino(TetriminoInterface actualTetrimino) {
+    this.actualTetrimino = actualTetrimino;
+    this.pcs.firePropertyChange("ACTUAL", null, this.actualTetrimino);
+    this.pcs.firePropertyChange("board", null, this.getMatrix());
+  }
 
   /**
    * {@inheritDoc}
@@ -222,16 +252,6 @@ public abstract class AbstractPlayer implements PlayerInterface {
   @Override
   public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
     pcs.removePropertyChangeListener(listener);
-  }
-
-  /**
-   * Fire a propertChange on the status to the view
-   *
-   * @param status  new Status to display
-   * @param opacity opcaity of this new status
-   */
-  public synchronized void playerStatus(String status, double opacity) {
-    this.pcs.firePropertyChange("status", status, opacity);
   }
 
   /**

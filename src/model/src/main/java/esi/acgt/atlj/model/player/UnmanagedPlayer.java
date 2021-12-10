@@ -23,9 +23,6 @@
  */
 package esi.acgt.atlj.model.player;
 
-import esi.acgt.atlj.model.tetrimino.Mino;
-import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
-
 /**
  * Game that is going to be updated by server. Opponent.
  */
@@ -38,17 +35,6 @@ public class UnmanagedPlayer extends AbstractPlayer {
     super("search");
   }
 
-  /**
-   * Sets the current tetrimino
-   *
-   * @param tetrimino Tetrimino to set.
-   */
-  public synchronized void setActualTetrimino(TetriminoInterface tetrimino) {
-    Mino[][] oldBoard = this.getMatrix();
-    this.actualTetrimino = tetrimino;
-    this.pcs.firePropertyChange("board", oldBoard, this.getMatrix());
-  }
-
 
   /**
    * Sets the score of the player
@@ -57,16 +43,6 @@ public class UnmanagedPlayer extends AbstractPlayer {
    */
   public synchronized void setScore(int score) {
     this.stats.setScore(score);
-  }
-
-  /**
-   * Sets the username of the player.
-   *
-   * @param username username to set.
-   */
-  public synchronized void setUsername(String username) {
-    this.username = username;
-    this.pcs.firePropertyChange("username", null, this.username);
   }
 
   /**
