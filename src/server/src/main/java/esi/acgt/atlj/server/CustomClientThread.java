@@ -27,8 +27,8 @@ package esi.acgt.atlj.server;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.DtoException;
 import esi.acgt.atlj.message.AbstractMessage;
-import esi.acgt.atlj.message.PlayerAction;
-import esi.acgt.atlj.message.messageTypes.SendAction;
+import esi.acgt.atlj.message.ServerRequest;
+import esi.acgt.atlj.message.messageTypes.SendRequest;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import esi.acgt.atlj.message.messageTypes.ConnectionMessage;
 import esi.acgt.atlj.model.player.PlayerStatus;
@@ -266,11 +266,11 @@ public class CustomClientThread extends Thread {
         System.err.println("Need valid username to start a game");
       }
     }
-    if (message instanceof SendAction e) {
-      if (e.getAction() == PlayerAction.PLAY_ONLINE) {
+    if (message instanceof SendRequest e) {
+      if (e.getAction() == ServerRequest.MULTIPLAYER) {
         server.addPlayer(this);
       }
-      if (e.getAction() == PlayerAction.QUIT) {
+      if (e.getAction() == ServerRequest.QUIT) {
         playingInsideMatchUp = false;
         if (quit == null) {
           server.playerQuit(this);

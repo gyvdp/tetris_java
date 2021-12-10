@@ -24,8 +24,15 @@
 
 package esi.acgt.atlj.message;
 
-public enum PlayerAction {
-  PLAY_ONLINE, // Play versus another player in the waiting list.
-  GET_STATS, // Ask database for player stats
-  QUIT // Quits a match up
+
+public abstract class StatisticMessage extends AbstractMessage {
+
+  public StatisticMessage() {
+    this.messageType = MessageType.STATISTICS;
+  }
+
+  /**
+   * Displays the statistics in the view.
+   */
+  public abstract void execute();
 }

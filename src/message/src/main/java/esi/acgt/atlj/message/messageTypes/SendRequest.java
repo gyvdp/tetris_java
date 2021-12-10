@@ -25,13 +25,13 @@
 package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.AbstractMessage;
-import esi.acgt.atlj.message.PlayerAction;
+import esi.acgt.atlj.message.ServerRequest;
 
-public class SendAction extends AbstractMessage {
+public class SendRequest extends AbstractMessage {
 
-  PlayerAction action;
+  ServerRequest action;
 
-  public SendAction() {
+  public SendRequest() {
     super();
   }
 
@@ -40,11 +40,12 @@ public class SendAction extends AbstractMessage {
    *
    * @return Action of message
    */
-  public PlayerAction getAction() {
+  public ServerRequest getAction() {
     return this.action;
   }
 
-  public void setAction(PlayerAction e) {
+  public void setAction(ServerRequest e) {
     this.action = e;
   }
+
 }

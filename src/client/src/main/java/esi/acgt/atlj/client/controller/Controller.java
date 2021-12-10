@@ -24,7 +24,7 @@
 
 package esi.acgt.atlj.client.controller;
 
-import static esi.acgt.atlj.message.PlayerAction.QUIT;
+import static esi.acgt.atlj.message.ServerRequest.QUIT;
 
 import esi.acgt.atlj.client.model.Client;
 import esi.acgt.atlj.client.model.ClientInterface;

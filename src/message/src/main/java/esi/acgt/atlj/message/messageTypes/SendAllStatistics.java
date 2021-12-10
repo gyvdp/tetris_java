@@ -24,14 +24,15 @@
 
 package esi.acgt.atlj.message.messageTypes;
 
-import esi.acgt.atlj.message.MessageType;
-import esi.acgt.atlj.message.StatMessage;
+import esi.acgt.atlj.message.GameMessage;
+import esi.acgt.atlj.message.StatisticMessage;
+import esi.acgt.atlj.model.Game;
 import java.util.HashMap;
 
 /**
  * Sends all statistics to user.
  */
-public class SendAllStatistics extends StatMessage {
+public class SendAllStatistics extends StatisticMessage {
 
   HashMap<String, Integer> game_history;
   HashMap<String, Integer> tetrimino_history;
@@ -70,4 +71,7 @@ public class SendAllStatistics extends StatMessage {
     return tetrimino_history;
   }
 
+  public void execute() {
+
+  }
 }

@@ -24,10 +24,8 @@
 
 package esi.acgt.atlj.message;
 
-
-public class StatMessage extends AbstractMessage {
-
-  public StatMessage() {
-    this.messageType = MessageType.STATISTICS;
-  }
+public enum ServerRequest {
+  MULTIPLAYER, // Play versus another player in the waiting list.
+  GET_STATS, // Ask database for player stats
+  QUIT // Quits a match up
 }

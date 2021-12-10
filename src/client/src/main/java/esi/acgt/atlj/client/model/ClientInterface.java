@@ -24,14 +24,13 @@
 
 package esi.acgt.atlj.client.model;
 
-import esi.acgt.atlj.message.PlayerAction;
+import esi.acgt.atlj.message.ServerRequest;
 import esi.acgt.atlj.model.Game;
 import esi.acgt.atlj.model.player.PlayerStatInterface;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
 import java.net.ConnectException;
-import java.util.List;
 import javafx.scene.input.KeyCode;
 
 /**
@@ -67,7 +66,7 @@ public interface ClientInterface {
    *
    * @param a Action to send.
    */
-  void sendAction(PlayerAction a);
+  void sendAction(ServerRequest a);
 
   /**
    * Sends the mino that has been put into hold by player to server

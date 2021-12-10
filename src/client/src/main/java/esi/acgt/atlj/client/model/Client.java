@@ -27,17 +27,14 @@ package esi.acgt.atlj.client.model;
 import esi.acgt.atlj.client.model.game.MultiplayerGame;
 import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.GameMessage;
-import esi.acgt.atlj.message.PlayerAction;
+import esi.acgt.atlj.message.ServerRequest;
 import esi.acgt.atlj.message.messageTypes.SetFallingTetrimino;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.LockTetrimino;
-import esi.acgt.atlj.message.messageTypes.StartGame;
-import esi.acgt.atlj.message.messageTypes.SendAction;
+import esi.acgt.atlj.message.messageTypes.SendRequest;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import esi.acgt.atlj.message.messageTypes.SendGameStats;
-import esi.acgt.atlj.message.messageTypes.HighScore;
 import esi.acgt.atlj.message.messageTypes.ConnectionMessage;
-import esi.acgt.atlj.message.messageTypes.NextMino;
 import esi.acgt.atlj.message.messageTypes.Score;
 import esi.acgt.atlj.message.messageTypes.Hold;
 import esi.acgt.atlj.model.Game;
@@ -198,9 +195,9 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
    * @param a Action to send.
    */
   @Override
-  public void sendAction(PlayerAction a) {
+  public void sendAction(ServerRequest a) {
     try {
-      SendAction action = new SendAction();
+      SendRequest action = new SendRequest();
       action.setAction(a);
       sendToServer(action);
     } catch (IOException e) {
@@ -257,7 +254,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   public void startMultiplayerGame(String username) {
     this.game = new MultiplayerGame(username);
     ((MultiplayerGame) this.game).addPCLToPlayer(this);
-    sendAction(PlayerAction.PLAY_ONLINE);
+    sendAction(ServerRequest.MULTIPLAYER);
   }
 
   @Override
