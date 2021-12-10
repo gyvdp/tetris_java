@@ -62,7 +62,7 @@ public abstract class Game implements GameInterface {
     this.players.add(board);
   }
 
-  void setHighScores(HashMap<String, Integer> highScores) {
+  public void setHighScores(HashMap<String, Integer> highScores) {
     var usernames = getUsernames();
     for (var username : usernames) {
       ((PlayerStat) getBoard(username).getStats()).setHighScore(

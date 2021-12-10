@@ -24,10 +24,9 @@
 
 package esi.acgt.atlj.server.utils;
 
-import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.messageTypes.AddTetrimino;
 import esi.acgt.atlj.message.messageTypes.LockedTetrimino;
-import esi.acgt.atlj.message.messageTypes.RemoveLine;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.SendScore;
 import esi.acgt.atlj.message.messageTypes.SetHold;
@@ -74,25 +73,22 @@ public class MatchUpModel {
    * @param information Message that he needs to handle.
    * @param client      Client that sent the message.
    */
-  public void receiveMessage(Message information, CustomClientThread client) {
+  public void receiveMessage(AbstractMessage information, CustomClientThread client) {
     var game = gameHashMap.get(client);
     if (information instanceof SendPiece message) { //When next tetrimino is sent from server
       game.setNextTetrimino(message.getMino());
     }
-    if (information instanceof RemoveLine message) { //When remove line is send from server
-      game.removeLines(message.getLine());
-    }
     if (information instanceof AddTetrimino message) { //When add tetrimino is sent from server
-      game.setActualTetrimino(message.getTetrimino());
+      //game.setActualTetrimino(message.getTetrimino());
     }
     if (information instanceof SendScore message) { // When send score is sent from server
-      game.getStats().setScore(message.getScore());
+      //game.getStats().setScore(message.getScore());
     }
     if (information instanceof SetHold message) { // When hold tetrimino is sent from server
       game.setHold(message.getHold());
     }
     if (information instanceof LockedTetrimino message) { //When locked tetrimino has been send from server.
-      game.placeTetrimino(message.getTetrimino());
+      //game.placeTetrimino(message.getTetrimino());
     }
   }
 

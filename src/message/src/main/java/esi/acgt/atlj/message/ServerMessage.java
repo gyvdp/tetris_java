@@ -22,36 +22,8 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message.messageTypes;
+package esi.acgt.atlj.message;
 
-import esi.acgt.atlj.message.Message;
-import esi.acgt.atlj.message.MessageType;
-import java.util.List;
+public class ServerMessage extends AbstractMessage {
 
-/**
- * Tells the server to remove a line in its unmanaged board.
- */
-public class RemoveLine extends Message {
-
-  /**
-   * Line to remove
-   */
-  private List<Integer> lines;
-
-  /**
-   * Constructor for remove line type of message.
-   */
-  public RemoveLine(List<Integer> lines) {
-    this.messageType = MessageType.REMOVE_LINE;
-    this.lines = lines;
-  }
-
-  /**
-   * Getter for line to remove
-   *
-   * @return Line to send in message to be removed.
-   */
-  public List<Integer> getLine() {
-    return this.lines;
-  }
 }

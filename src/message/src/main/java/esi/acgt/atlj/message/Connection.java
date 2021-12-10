@@ -22,38 +22,41 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message.messageTypes;
+package esi.acgt.atlj.message;
 
-import static esi.acgt.atlj.message.MessageType.NUMBER_LINES;
+import static esi.acgt.atlj.message.MessageType.SEND_NAME;
 
-import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.AbstractMessage;
+import esi.acgt.atlj.message.GameMessage;
+import esi.acgt.atlj.model.Game;
+import esi.acgt.atlj.model.player.AbstractPlayer;
 
 /**
- * Sets the number of lines that have been removed by a player.
+ * Sends its name to the server
  */
-public class SetNbLines extends Message {
+public class Connection extends AbstractMessage {
 
   /**
-   * Number of lines that have been removed
+   * User name to send
    */
-  private final int numberOfLines;
+  private final String username;
 
   /**
-   * Constructor for set number of lines.
+   * Constructor for send username
    *
-   * @param numberOfLines Number of line that have been removed
+   * @param username Username to send
    */
-  public SetNbLines(int numberOfLines) {
-    this.messageType = NUMBER_LINES;
-    this.numberOfLines = numberOfLines;
+  public Connection(String username) {
+    this.username = username;
+    this.messageType = SEND_NAME;
   }
 
   /**
-   * Getter for the number of lines.
+   * Getter for current name of user.
    *
-   * @return Number of lines that have been removed.
+   * @return Username of player.
    */
-  public int getNumberOfLines() {
-    return this.numberOfLines;
+  public String getUsername() {
+    return this.username;
   }
 }

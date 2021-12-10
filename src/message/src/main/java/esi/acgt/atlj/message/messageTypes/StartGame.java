@@ -25,28 +25,48 @@
 package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.AbstractMessage;
-import esi.acgt.atlj.message.GameMessage;
 import esi.acgt.atlj.model.Game;
-import esi.acgt.atlj.model.player.AbstractPlayer;
+import esi.acgt.atlj.model.player.ManagedPlayer;
+import esi.acgt.atlj.model.player.UnmanagedPlayer;
+import esi.acgt.atlj.model.tetrimino.Mino;
+import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
 
-public class LockedTetrimino extends GameMessage {
+/**
+ * Conveys the state of the player to the client.
+ */
+public class StartGame extends AbstractMessage {
 
-  TetriminoInterface tetrimino;
 
-  public LockedTetrimino(TetriminoInterface myT, String name) {
-    super(name);
-    tetrimino = myT;
+  String username;
+  String usernameOpp;
+  Mino actualMino;
+  Mino nextMino;
+
+  /**
+   * Constructor for player state.
+   */
+  public StartGame(String usernameOpp, String username, Mino actual, Mino next) {
+    this.username = username;
+    this.usernameOpp = usernameOpp;
+    this.actualMino = actual;
+    this.nextMino = next;
   }
 
-  @Override
   public void execute(Game game) {
-    var player = (AbstractPlayer) (game.getBoard(userName));
-    player.placeTetrimino(this.tetrimino);
+    var playerOpp = (UnmanagedPlayer) game.getBoard("search");
+    playerOpp.setUsername(this.usernameOpp);
+    var player = (ManagedPlayer) game.getBoard(this.username);
+    player.setActualTetrimino(Tetrimino.createTetrimino(actualMino));
+    player.setNextTetrimino(nextMino);
+    playerOpp.setActualTetrimino(Tetrimino.createTetrimino(actualMino));
+    playerOpp.setNextTetrimino(nextMino);
+    player.start();
   }
+
 
   public String toString() {
-    return "Locked_Tetrimino";
+    return this.usernameOpp + " - vs - " + this.username;
   }
 }

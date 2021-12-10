@@ -22,42 +22,37 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message.messageTypes;
+package esi.acgt.atlj.message;
 
-import esi.acgt.atlj.message.Message;
-import esi.acgt.atlj.message.MessageType;
-import esi.acgt.atlj.message.PlayerStatus;
+import esi.acgt.atlj.model.Game;
+import java.io.Serializable;
 
 /**
- * Conveys the state of the player to the client.
+ * Transporter of information. Each message has a type and is serializable to be sent between client
+ * and server
  */
-public class PlayerState extends Message {
+public abstract class AbstractMessage implements Serializable {
 
   /**
-   * State of the player
+   * Type of message to send.
    */
-  private PlayerStatus playerState;
+  public MessageType messageType; //todo
 
   /**
-   * Constructor for player state.
+   * Gets the type of message.
    *
-   * @param p PlayerState to set.
+   * @return Type of message.
    */
-  public PlayerState(PlayerStatus p) {
-    this.playerState = p;
+  public MessageType getType() {
+    return this.messageType;
   }
 
   /**
-   * Getter for player state
-   *
-   * @return current state of the player.
+   * {@inheritDoc}
    */
-  public PlayerStatus getPlayerState() {
-    this.messageType = MessageType.PLAYER_STATUS;
-    return this.playerState;
-  }
-
+  @Override
   public String toString() {
-    return this.playerState.toString();
+    return messageType.toString();
   }
+
 }

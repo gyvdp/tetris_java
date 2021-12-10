@@ -83,23 +83,10 @@ public interface ClientInterface {
   void lockTetrimino(TetriminoInterface m);
 
   /**
-   * Sends your name to the server.
-   *
-   * @param name Name of the current player.
-   */
-  void sendName(String name);
-
-  /**
    * Closes the connection to server
    */
   void closeConnectionToServer();
 
-
-  /**
-   * Sends your name to the server
-   *
-   * @param name Same to send
-   */
   void sendNameToServer(String name);
 
   /**
@@ -121,13 +108,6 @@ public interface ClientInterface {
    * @param Score Score of the current player.
    */
   void sendScore(int Score);
-
-  /**
-   * Sends line that current player just destroyed.
-   *
-   * @param linesDestroyed Line that current player just destroyed.
-   */
-  void removeLine(List<Integer> linesDestroyed);
 
 //  /**
 //   * Add a propertyChangeListener to the propertyChangerSupport that's used for the Menu's data

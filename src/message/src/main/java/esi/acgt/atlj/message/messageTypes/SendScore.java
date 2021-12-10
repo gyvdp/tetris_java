@@ -24,13 +24,16 @@
 
 package esi.acgt.atlj.message.messageTypes;
 
-import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.AbstractMessage;
+import esi.acgt.atlj.message.GameMessage;
 import esi.acgt.atlj.message.MessageType;
+import esi.acgt.atlj.model.Game;
+import esi.acgt.atlj.model.player.UnmanagedPlayer;
 
 /**
  * Sends score to server.
  */
-public class SendScore extends Message {
+public class SendScore extends GameMessage {
 
   /**
    * Score to send.
@@ -42,19 +45,16 @@ public class SendScore extends Message {
    *
    * @param score Score to send.
    */
-  public SendScore(int score) {
+  public SendScore(int score, String name) {
+    super(name);
     this.score = score;
     this.messageType = MessageType.SEND_SCORE;
   }
 
-  /**
-   * Getter for the score of the sent score.
-   *
-   * @return Score of the sent message.
-   */
-  public int getScore() {
-    return this.score;
+
+  @Override
+  public void execute(Game game) {
+    var player = (UnmanagedPlayer) (game.getBoard(this.userName));
+    player.setScore(this.score);
   }
-
-
 }

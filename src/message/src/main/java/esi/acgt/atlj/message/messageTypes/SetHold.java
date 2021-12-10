@@ -26,13 +26,16 @@ package esi.acgt.atlj.message.messageTypes;
 
 import static esi.acgt.atlj.message.MessageType.HOLD;
 
-import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.AbstractMessage;
+import esi.acgt.atlj.message.GameMessage;
+import esi.acgt.atlj.model.Game;
+import esi.acgt.atlj.model.player.AbstractPlayer;
 import esi.acgt.atlj.model.tetrimino.Mino;
 
 /**
  * Sets the holding mino.
  */
-public class SetHold extends Message {
+public class SetHold extends GameMessage {
 
   /**
    * Mino that is being held
@@ -44,7 +47,8 @@ public class SetHold extends Message {
    *
    * @param hold Hold to set.
    */
-  public SetHold(Mino hold) {
+  public SetHold(Mino hold, String name) {
+    super(name);
     this.messageType = HOLD;
     this.hold = hold;
   }
@@ -56,5 +60,11 @@ public class SetHold extends Message {
    */
   public Mino getHold() {
     return hold;
+  }
+
+  @Override
+  public void execute(Game game) {
+    var player = (AbstractPlayer) (game.getBoard(this.userName));
+    player.setHold(hold);
   }
 }

@@ -24,7 +24,7 @@
 
 package esi.acgt.atlj.client.model;
 
-import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.AbstractMessage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -184,11 +184,11 @@ public abstract class AbstractClient implements Runnable {
   @Override
   public void run() {
     connectionEstablished();
-    Message information;
+    AbstractMessage information;
     try {
       while (isActive) {
         try {
-          information = (Message) input.readObject();
+          information = (AbstractMessage) input.readObject();
           if (isActive) {
             handleServerMessage(information);
           }

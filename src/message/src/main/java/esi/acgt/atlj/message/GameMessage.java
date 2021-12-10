@@ -22,40 +22,17 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message.messageTypes;
+package esi.acgt.atlj.message;
 
-import static esi.acgt.atlj.message.MessageType.SEND_NAME;
+import esi.acgt.atlj.model.Game;
 
-import esi.acgt.atlj.message.Message;
+public abstract class GameMessage extends AbstractMessage {
 
-/**
- * Sends its name to the server
- */
-public class SendName extends Message {
+  protected String userName;
 
-  /**
-   * User name to send
-   */
-  private final String username;
+  public abstract void execute(Game game);
 
-  /**
-   * Constructor for send username
-   *
-   * @param username Username to send
-   */
-  public SendName(String username) {
-    this.username = username;
-    this.messageType = SEND_NAME;
+  public GameMessage(String username) {
+    this.userName = username;
   }
-
-  /**
-   * Getter for current name of user.
-   *
-   * @return Username of player.
-   */
-  public String getUsername() {
-    return this.username;
-  }
-
-
 }

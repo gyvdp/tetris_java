@@ -24,14 +24,16 @@
 
 package esi.acgt.atlj.message.messageTypes;
 
-import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.GameMessage;
 import esi.acgt.atlj.message.MessageType;
+import esi.acgt.atlj.model.Game;
+import esi.acgt.atlj.model.player.AbstractPlayer;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 
 /**
  * Client tell the server to add to its unmanaged board a tetrimino
  */
-public class AddTetrimino extends Message {
+public class AddTetrimino extends GameMessage {
 
   /**
    * Tetrimino to send
@@ -43,15 +45,15 @@ public class AddTetrimino extends Message {
    *
    * @param tetrimino Tetrimino to add.
    */
-  public AddTetrimino(TetriminoInterface tetrimino) {
+  public AddTetrimino(TetriminoInterface tetrimino, String name) {
+    super(name);
     this.tetrimino = tetrimino;
     this.messageType = MessageType.ADD_TETRIMINO;
   }
 
-  /**
-   * Constructor for add tetrimino type of message.
-   */
-  public TetriminoInterface getTetrimino() {
-    return tetrimino;
+  @Override
+  public void execute(Game game) {
+    var player = (AbstractPlayer) (game.getBoard(this.userName));
+    player.setActualTetrimino(this.tetrimino);
   }
 }

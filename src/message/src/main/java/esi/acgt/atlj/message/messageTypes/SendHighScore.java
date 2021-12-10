@@ -24,11 +24,13 @@
 
 package esi.acgt.atlj.message.messageTypes;
 
-import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.AbstractMessage;
+import esi.acgt.atlj.message.GameMessage;
 import esi.acgt.atlj.message.MessageType;
+import esi.acgt.atlj.model.Game;
 import java.util.HashMap;
 
-public class SendHighScore extends Message {
+public class SendHighScore extends AbstractMessage {
 
   HashMap<String, Integer> highScores;
 
@@ -42,13 +44,7 @@ public class SendHighScore extends Message {
     this.highScores = highScores;
   }
 
-  /**
-   * Getter for high-score of player.
-   *
-   * @return High score of player.
-   */
-  public HashMap<String, Integer> getHighScore() {
-    return this.highScores;
+  public void execute(Game game) {
+    game.setHighScores(this.highScores);
   }
-
 }

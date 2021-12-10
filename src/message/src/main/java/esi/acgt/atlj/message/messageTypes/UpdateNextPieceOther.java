@@ -24,14 +24,17 @@
 
 package esi.acgt.atlj.message.messageTypes;
 
-import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.AbstractMessage;
+import esi.acgt.atlj.message.GameMessage;
 import esi.acgt.atlj.message.MessageType;
+import esi.acgt.atlj.model.Game;
+import esi.acgt.atlj.model.player.AbstractPlayer;
 import esi.acgt.atlj.model.tetrimino.Mino;
 
 /**
  * Updates a piece in the unmanaged board of the player it is sent to.
  */
-public class UpdateNextPieceOther extends Message {
+public class UpdateNextPieceOther extends GameMessage {
 
   /**
    * Piece to update in unmanaged board.
@@ -43,7 +46,8 @@ public class UpdateNextPieceOther extends Message {
    *
    * @param piece Piece to update
    */
-  public UpdateNextPieceOther(Mino piece) {
+  public UpdateNextPieceOther(Mino piece, String man) {
+    super(man); //:)//
     this.messageType = MessageType.UPDATE_PIECE_UNMANAGED;
     this.piece = piece;
   }
@@ -55,5 +59,11 @@ public class UpdateNextPieceOther extends Message {
    */
   public Mino getPiece() {
     return piece;
+  }
+
+  @Override
+  public void execute(Game game) {
+    var player = (AbstractPlayer) (game.getBoard(this.userName));
+    player.setNextTetrimino(piece);
   }
 }

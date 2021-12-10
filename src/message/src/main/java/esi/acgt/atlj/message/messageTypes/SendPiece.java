@@ -24,14 +24,17 @@
 
 package esi.acgt.atlj.message.messageTypes;
 
-import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.AbstractMessage;
+import esi.acgt.atlj.message.GameMessage;
 import esi.acgt.atlj.message.MessageType;
+import esi.acgt.atlj.model.Game;
+import esi.acgt.atlj.model.player.AbstractPlayer;
 import esi.acgt.atlj.model.tetrimino.Mino;
 
 /**
  * Sends a mino to a client
  */
-public class SendPiece extends Message {
+public class SendPiece extends GameMessage {
 
   /**
    * Mino to send
@@ -43,7 +46,8 @@ public class SendPiece extends Message {
    *
    * @param mino Mino to send
    */
-  public SendPiece(Mino mino) {
+  public SendPiece(Mino mino, String name) {
+    super(name);
     this.mino = mino;
     this.messageType = MessageType.SEND_PIECE;
   }
@@ -55,5 +59,11 @@ public class SendPiece extends Message {
    */
   public Mino getMino() {
     return mino;
+  }
+
+  @Override
+  public void execute(Game game) {
+    var player = (AbstractPlayer) (game.getBoard(this.userName));
+    player.setNextTetrimino(this.mino);
   }
 }

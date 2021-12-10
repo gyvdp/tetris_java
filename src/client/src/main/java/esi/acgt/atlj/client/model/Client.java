@@ -29,13 +29,12 @@ import esi.acgt.atlj.message.PlayerAction;
 import esi.acgt.atlj.message.messageTypes.AddTetrimino;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.LockedTetrimino;
-import esi.acgt.atlj.message.messageTypes.PlayerState;
-import esi.acgt.atlj.message.messageTypes.RemoveLine;
+import esi.acgt.atlj.message.messageTypes.StartGame;
 import esi.acgt.atlj.message.messageTypes.SendAction;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import esi.acgt.atlj.message.messageTypes.SendGameStats;
 import esi.acgt.atlj.message.messageTypes.SendHighScore;
-import esi.acgt.atlj.message.messageTypes.SendName;
+import esi.acgt.atlj.message.Connection;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.SendScore;
 import esi.acgt.atlj.message.messageTypes.SetHold;
@@ -50,7 +49,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.ConnectException;
-import java.util.List;
 import javafx.scene.input.KeyCode;
 
 
@@ -63,6 +61,7 @@ import javafx.scene.input.KeyCode;
 public class Client extends AbstractClient implements ClientInterface, PropertyChangeListener {
 
   private ClientStatus status;
+
   private final String username;
 
   private Game game;
@@ -94,37 +93,23 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
     var otherPlayer = ((MultiplayerGame) game).getOtherPlayer();
 
     if (information instanceof SendPiece message) { //When next tetrimino is sent from server
-      player.setNextTetrimino(message.getMino());
-    } else if (information instanceof RemoveLine message) { //When remove line is send from server
-      otherPlayer.removeLines(message.getLine());
+      message.execute(game);
     } else if (information instanceof AddTetrimino message) { //When add tetrimino is sent from server
-      otherPlayer.setActualTetrimino(message.getTetrimino());
+      message.execute(game);
     } else if (information instanceof SendScore message) { // When send score is sent from server
-      otherPlayer.setScore(message.getScore());
+      message.execute(game);
     } else if (information instanceof
         UpdateNextPieceOther message) {//When update next tetrimino is sent from server
-      otherPlayer.setNextTetrimino(message.getPiece());
-    } else if (information instanceof PlayerState message) {
-      if (message.getPlayerState()
-          .equals(
-              esi.acgt.atlj.message.PlayerStatus.READY)) { // When player state ready is sent from server
-        requestNextMino();
-        ((MultiplayerGame) game).start();
-      } else if (message.getPlayerState().equals
-          (esi.acgt.atlj.message.PlayerStatus.LOST)) { // When player state lost in sent from server
-        // todo :otherPlayerLost.run();
-      } else if (message.getPlayerState().equals
-          (esi.acgt.atlj.message.PlayerStatus.DISCONNECTED)) { // When player state disconnected is sent from server
-        // todo :playerDisconnected.run();
-      }
-    } else if (information instanceof SendName message) { // When send name is sent from server
-      otherPlayer.setUsername(message.getUsername());
+      message.execute(game);
+    } else if (information instanceof StartGame message) {
+      message.execute(game);
     } else if (information instanceof SetHold message) { // When hold tetrimino is sent from server
-      otherPlayer.setHold(message.getHold());
+      message.execute(game);
     } else if (information instanceof LockedTetrimino message) { //When locked tetrimino has been send from server.
-      otherPlayer.placeTetrimino(message.getTetrimino());
+      message.execute(game);
     } else if (information instanceof SendHighScore message) {
-      // todo :setHighScoreReceivedFromServer.accept(message.getHighScore());
+      System.out.println("h");
+      message.execute(game);
     } else if (information instanceof SendAllStatistics message) {
       // todo :setStatisticsReceivedFromServer.accept(message.getGame_history(),
       //message.getTetrimino_history());
@@ -139,17 +124,6 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
     super.closeConnectionToServer();
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void sendNameToServer(String name) {
-    try {
-      sendToServer(new SendName(name));
-    } catch (IOException e) {
-      System.err.println("Sorry cannot send name");
-    }
-  }
 
   /**
    * {@inheritDoc}
@@ -157,7 +131,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   @Override
   public void notifyLoss() {
     try {
-      sendToServer(new PlayerState(esi.acgt.atlj.message.PlayerStatus.LOST));
+      sendToServer(new Object()); //todo :)
     } catch (IOException e) {
       System.err.println("Sorry cannot send loss");
     }
@@ -169,7 +143,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   @Override
   public void sendTetriminoToOtherPlayer(TetriminoInterface tetriminoInterface) {
     try {
-      sendToServer(new AddTetrimino(tetriminoInterface));
+      sendToServer(new AddTetrimino(tetriminoInterface, this.username));
     } catch (IOException e) {
       System.err.println("Cannot send tetrimino to server");
     }
@@ -259,7 +233,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   @Override
   public void sendHoldMino(Mino m) {
     try {
-      sendToServer(new SetHold(m));
+      sendToServer(new SetHold(m, this.username));
     } catch (IOException e) {
       System.err.println("Cannot send hold piece");
     }
@@ -268,7 +242,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   @Override
   public void lockTetrimino(TetriminoInterface m) {
     try {
-      sendToServer(new LockedTetrimino(m));
+      sendToServer(new LockedTetrimino(m, this.username));
     } catch (IOException e) {
       System.err.println("Cannot send name to server");
     }
@@ -278,9 +252,9 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
    * {@inheritDoc}
    */
   @Override
-  public void sendName(String name) {
+  public void sendNameToServer(String name) {
     try {
-      sendToServer(new SendName(name));
+      sendToServer(new Connection(name));
     } catch (IOException e) {
       System.err.println("Cannot send name to server");
     }
@@ -292,21 +266,9 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   @Override
   public void sendScore(int score) {
     try {
-      sendToServer(new SendScore(score));
+      sendToServer(new SendScore(score, this.username));
     } catch (IOException e) {
       System.err.println("Cannot send score to server");
-    }
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void removeLine(List<Integer> lines) {
-    try {
-      sendToServer(new RemoveLine(lines));
-    } catch (IOException e) {
-      System.err.println("Cannot send line to remove");
     }
   }
 

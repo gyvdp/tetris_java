@@ -29,13 +29,14 @@ import esi.acgt.atlj.database.dto.GameHistoryDto;
 import esi.acgt.atlj.database.dto.TetriminoDto;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
-import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.SendGameStats;
 import esi.acgt.atlj.message.messageTypes.SendHighScore;
-import esi.acgt.atlj.message.messageTypes.SendName;
+import esi.acgt.atlj.message.Connection;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
+import esi.acgt.atlj.message.messageTypes.StartGame;
 import esi.acgt.atlj.message.messageTypes.UpdateNextPieceOther;
 import esi.acgt.atlj.model.player.PlayerStatInterface;
 import esi.acgt.atlj.model.player.Action;
@@ -97,7 +98,7 @@ public class MatchUpGenerator extends Thread {
     this.bagGenerator = new BagGenerator();
     this.id = idGeneratedMatchUp;
     for (CustomClientThread client : clients) {
-      getOpposingClient(client).sendMessage(new SendName(client.getUsername()));
+      getOpposingClient(client).sendMessage(new Connection(client.getUsername()));
       clientLambdaConnections(client);
       try {
         client.sendMessage(new SendHighScore(getBothPlayersHighScoreDB()));
@@ -117,24 +118,20 @@ public class MatchUpGenerator extends Thread {
   /**
    * Lambda expression to handle message from client.
    */
-  BiConsumer<Message, CustomClientThread> handleMessage = (Message m, CustomClientThread client) ->
+  BiConsumer<AbstractMessage, CustomClientThread> handleMessage = (AbstractMessage m, CustomClientThread client) ->
   {
-
-    if (client.getClientStatus().equals(PlayerStatus.READY)) {
-      sendMessageToModel(m, client);
-      CustomClientThread opPlayer = getOpposingClient(client);
-      if (opPlayer != null) {
-        if (m instanceof AskPiece) {
-          Mino mino = client.getMino();
-          client.sendMessage(new SendPiece(mino));
-          opPlayer.sendMessage(new UpdateNextPieceOther(mino));
-        } else if (m instanceof SendGameStats stats) {
-          setGameStats(stats.getGameStats(), client.getUser());
-        } else {
-          opPlayer.sendMessage(m);
-        }
+    sendMessageToModel(m, client);
+    CustomClientThread opPlayer = getOpposingClient(client);
+    if (opPlayer != null) {
+      if (m instanceof AskPiece) {
+        Mino mino = client.getMino();
+        client.sendMessage(new SendPiece(mino, client.getUsername()));
+        opPlayer.sendMessage(new UpdateNextPieceOther(mino, opPlayer.getUsername()));
+      } else if (m instanceof SendGameStats stats) {
+        setGameStats(stats.getGameStats(), client.getUser());
+      } else {
+        opPlayer.sendMessage(m);
       }
-
     } else {
       System.err.println("Message dropped " + m.toString() + " from " + client.getInetAddress());
     }
@@ -244,7 +241,7 @@ public class MatchUpGenerator extends Thread {
    * @param m Message that needs to be sent.
    * @param c Client that sent the message.
    */
-  public void sendMessageToModel(Message m, CustomClientThread c) {
+  public void sendMessageToModel(AbstractMessage m, CustomClientThread c) {
     model.receiveMessage(m, c);
   }
 
@@ -274,12 +271,13 @@ public class MatchUpGenerator extends Thread {
 
   /**
    * Updates the player state for every player.
-   *
-   * @param playerState PlayerState to update to.
    */
-  public void updateAllPlayerState(PlayerStatus playerState) {
+  public void sendGreenLight() {
     for (CustomClientThread client : clients) {
-      client.setClientStatus(playerState);
+      client.sendMessage(
+          new StartGame
+              (getOpposingClient(client).getUsername(), client.getUsername(), client.getMino(),
+                  client.getMino()));
     }
   }
 
@@ -289,6 +287,6 @@ public class MatchUpGenerator extends Thread {
   @Override
   public void run() {
     refillBags();
-    updateAllPlayerState(PlayerStatus.READY);
+    sendGreenLight();
   }
 }

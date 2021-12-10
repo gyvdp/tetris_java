@@ -52,10 +52,12 @@ public class Server extends AbstractServer {
    * Hash map of all members in function of their clientId.
    */
   private final HashMap<Integer, CustomClientThread> members;
+
   /**
    * All the clients that are currently waiting to play
    */
   private final BlockingQueue<CustomClientThread> waitingList;
+
   /**
    * All match-ups with their id.
    */
@@ -65,6 +67,7 @@ public class Server extends AbstractServer {
    * Database interaction
    */
   BusinessInterface interactDatabase;
+
   /**
    * current number of match-ups;
    */

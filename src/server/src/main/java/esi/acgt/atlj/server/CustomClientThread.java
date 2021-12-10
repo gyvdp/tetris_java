@@ -26,13 +26,13 @@ package esi.acgt.atlj.server;
 
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.DtoException;
-import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.PlayerAction;
 import esi.acgt.atlj.message.PlayerStatus;
-import esi.acgt.atlj.message.messageTypes.PlayerState;
+import esi.acgt.atlj.message.messageTypes.StartGame;
 import esi.acgt.atlj.message.messageTypes.SendAction;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
-import esi.acgt.atlj.message.messageTypes.SendName;
+import esi.acgt.atlj.message.Connection;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -75,7 +75,7 @@ public class CustomClientThread extends Thread {
   /**
    * Handle message from client.
    */
-  private BiConsumer<Message, CustomClientThread> handleMessage;
+  private BiConsumer<AbstractMessage, CustomClientThread> handleMessage;
   /**
    * Sends disconnect message to other player.
    */
@@ -258,7 +258,7 @@ public class CustomClientThread extends Thread {
    * @return True if the message needs to be handled by server.
    */
   protected boolean handleMessageFromClient(Object message) {
-    if (message instanceof SendName s) {
+    if (message instanceof Connection s) {
       try {
         user = new UserDto(s.getUsername());
         server.checkUser(user);
@@ -345,16 +345,6 @@ public class CustomClientThread extends Thread {
   }
 
   /**
-   * Sets the status of the clients and sends it to all clients.
-   *
-   * @param cs Status of the client to set and send.
-   */
-  public void setClientStatus(PlayerStatus cs) {
-    this.clientStatus = cs;
-    this.sendMessage(new PlayerState(cs));
-  }
-
-  /**
    * Return true if the client is connected.
    *
    * @return true if the client is connected.
@@ -385,7 +375,7 @@ public class CustomClientThread extends Thread {
         try {
           msg = input.readObject();
           if (!readyToStop && handleMessageFromClient(msg)) {
-            if (msg instanceof Message m) {
+            if (msg instanceof AbstractMessage m) {
               if (handleMessage != null) {
                 handleMessage.accept(m, this);
               }
@@ -418,7 +408,7 @@ public class CustomClientThread extends Thread {
    *
    * @param handleMessage Lambda function to connect.
    */
-  public void connectHandleMessage(BiConsumer<Message, CustomClientThread> handleMessage) {
+  public void connectHandleMessage(BiConsumer<AbstractMessage, CustomClientThread> handleMessage) {
     this.handleMessage = handleMessage;
   }
 
