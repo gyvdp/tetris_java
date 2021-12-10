@@ -37,6 +37,7 @@ import esi.acgt.atlj.message.messageTypes.SendHighScore;
 import esi.acgt.atlj.message.messageTypes.SendName;
 import esi.acgt.atlj.message.messageTypes.SendPiece;
 import esi.acgt.atlj.message.messageTypes.UpdateNextPieceOther;
+import esi.acgt.atlj.model.game.Action;
 import esi.acgt.atlj.model.game.GameStatInterface;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.server.AbstractServer;
@@ -183,12 +184,12 @@ public class MatchUpGenerator extends Thread {
           statistics.getScore(), 0, 0);
       interactDatabase.setGameStatEntity(gameDto);
       TetriminoDto tetriminoDto = new TetriminoDto(user.getId(),
-          statistics.getActionCount().getOrDefault("SINGLE", 0),
-          statistics.getActionCount().getOrDefault("DOUBLE", 0),
-          statistics.getActionCount().getOrDefault("TRIPLE", 0),
-          statistics.getActionCount().getOrDefault("TETRIS", 0),
-          statistics.getActionCount().getOrDefault("SOFT_DROP", 0),
-          statistics.getActionCount().getOrDefault("HARD_DROP", 0),
+          statistics.getActionCount().getOrDefault(Action.SINGLE, 0),
+          statistics.getActionCount().getOrDefault(Action.DOUBLE, 0),
+          statistics.getActionCount().getOrDefault(Action.TRIPLE, 0),
+          statistics.getActionCount().getOrDefault(Action.TETRIS, 0),
+          statistics.getActionCount().getOrDefault(Action.SOFT_DROP, 0),
+          statistics.getActionCount().getOrDefault(Action.HARD_DROP, 0),
           statistics.getBurns());
       interactDatabase.setTetriminoEntity(tetriminoDto);
     } catch (BusinessException e) {
