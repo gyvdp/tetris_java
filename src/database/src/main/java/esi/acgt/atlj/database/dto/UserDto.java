@@ -22,47 +22,63 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.database.business;
+package esi.acgt.atlj.database.dto;
 
-import esi.acgt.atlj.database.db.TetriminoStatsTable;
-import esi.acgt.atlj.database.dto.UserDto;
-import esi.acgt.atlj.model.game.Action;
-import java.util.HashMap;
-import java.util.Map;
+import esi.acgt.atlj.database.exceptions.DtoException;
 
-public class TetriminoStatsBusinessLogic {
+public class UserDto extends EntityDto<Integer> {
+
+  private String username;
+
 
   /**
-   * @param user
-   * @param actions
+   * Constructor of persistent user.
+   *
+   * @param id       Id of persistent user.
+   * @param username Username of persistent user.
+   * @throws DtoException If user is null.
    */
-  static void addDestroyedLines(UserDto user, Map<Action, Integer> actions) {
-    try {
-      TetriminoStatsTable.addDestroyedLines(user, actions);
-    } catch (Exception e) {
-      System.err.println("Cannot set number of tetriminos in database \n" + e.getMessage());
-    }
-  }
-
-  static HashMap<String, Integer> selectAll(UserDto user) {
-    try {
-      return TetriminoStatsTable.selectAll(user);
-    } catch (Exception e) {
-      System.err.println("Cannot select all of tetriminos in database \n" + e.getMessage());
-    }
-    return null;
+  public UserDto(Integer id, String username) throws DtoException {
+    this(username);
+    this.id = id;
   }
 
   /**
-   * @param user
-   * @param increase
+   * Constructor for non-persistent user.
+   *
+   * @param username Username of non-persistent user.
+   * @throws DtoException If user is null.
    */
-  static void addBurns(UserDto user, int increase) {
-    try {
-      TetriminoStatsTable.addNbBurns(user, increase);
-    } catch (Exception e) {
-      System.err.println("Cannot set number of burns in database \n" + e.getMessage());
+  public UserDto(String username) throws DtoException {
+    if (username == null) {
+      throw new DtoException("username cannot be null");
     }
+    this.username = username;
   }
 
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public void set(UserDto user) {
+    this.id = user.getId();
+    this.username = user.getUsername();
+  }
+
+  /**
+   * Getter for username of player.
+   *
+   * @return Username of player.
+   */
+  public String getUsername() {
+    return username;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String toString() {
+    return "[User]" + "(" + getId() + ", " + getUsername() + " )";
+  }
 }

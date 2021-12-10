@@ -22,47 +22,16 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.database.business;
+package esi.acgt.atlj.database.dto;
 
-import esi.acgt.atlj.database.db.TetriminoStatsTable;
-import esi.acgt.atlj.database.dto.UserDto;
-import esi.acgt.atlj.model.game.Action;
-import java.util.HashMap;
-import java.util.Map;
 
-public class TetriminoStatsBusinessLogic {
+public class TetriminoDto extends EntityDto<Integer> {
 
-  /**
-   * @param user
-   * @param actions
-   */
-  static void addDestroyedLines(UserDto user, Map<Action, Integer> actions) {
-    try {
-      TetriminoStatsTable.addDestroyedLines(user, actions);
-    } catch (Exception e) {
-      System.err.println("Cannot set number of tetriminos in database \n" + e.getMessage());
-    }
-  }
-
-  static HashMap<String, Integer> selectAll(UserDto user) {
-    try {
-      return TetriminoStatsTable.selectAll(user);
-    } catch (Exception e) {
-      System.err.println("Cannot select all of tetriminos in database \n" + e.getMessage());
-    }
-    return null;
-  }
-
-  /**
-   * @param user
-   * @param increase
-   */
-  static void addBurns(UserDto user, int increase) {
-    try {
-      TetriminoStatsTable.addNbBurns(user, increase);
-    } catch (Exception e) {
-      System.err.println("Cannot set number of burns in database \n" + e.getMessage());
-    }
-  }
+  int single;
+  int doubles;
+  int triple;
+  int tetris;
+  int harddrop;
+  int softdrop;
 
 }

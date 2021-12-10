@@ -26,11 +26,8 @@ package esi.acgt.atlj.server;
 
 import esi.acgt.atlj.database.business.BusinessInterface;
 import esi.acgt.atlj.database.business.BusinessModel;
-import esi.acgt.atlj.database.dto.User;
+import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
-import esi.acgt.atlj.message.Message;
-import esi.acgt.atlj.message.PlayerStatus;
-import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import esi.acgt.atlj.server.utils.MatchUpGenerator;
 import java.io.IOException;
@@ -40,7 +37,6 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
@@ -191,9 +187,9 @@ public class Server extends AbstractServer {
    * {@inheritDoc}
    */
   @Override
-  protected synchronized void checkUser(User user) {
+  protected synchronized void checkUser(UserDto user) {
     try {
-      User persistentUser = interactDatabase.getUser(user.getUsername());
+      UserDto persistentUser = interactDatabase.getUser(user.getUsername());
       if (persistentUser != null) {
         user.set(persistentUser);
       } else {

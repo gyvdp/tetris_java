@@ -25,7 +25,7 @@
 package esi.acgt.atlj.database.business;
 
 import esi.acgt.atlj.database.db.DataBaseManager;
-import esi.acgt.atlj.database.dto.User;
+import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.database.exceptions.DbException;
 import esi.acgt.atlj.database.exceptions.DtoException;
@@ -43,10 +43,10 @@ public class BusinessModel implements BusinessInterface {
    * {@inheritDoc}
    */
   @Override
-  public User getUser(int id) throws BusinessException {
+  public UserDto getUser(int id) throws BusinessException {
     try {
       DataBaseManager.startTransaction();
-      User user = UserBusinessLogic.findById(id);
+      UserDto user = UserBusinessLogic.findById(id);
       DataBaseManager.validateTransacation();
       return user;
     } catch (DbException e) {
@@ -64,10 +64,10 @@ public class BusinessModel implements BusinessInterface {
    * {@inheritDoc}
    */
   @Override
-  public User getUser(String username) throws BusinessException {
+  public UserDto getUser(String username) throws BusinessException {
     try {
       DataBaseManager.startTransaction();
-      User user = UserBusinessLogic.findByUsername(username);
+      UserDto user = UserBusinessLogic.findByUsername(username);
       DataBaseManager.validateTransacation();
       return user;
     } catch (DbException e) {
@@ -88,7 +88,7 @@ public class BusinessModel implements BusinessInterface {
   public int addUser(String username) throws BusinessException {
     try {
       DataBaseManager.startTransaction();
-      User user = new User(username);
+      UserDto user = new UserDto(username);
       int id = UserBusinessLogic.add(user);
       DataBaseManager.validateTransacation();
       return id;
@@ -107,7 +107,7 @@ public class BusinessModel implements BusinessInterface {
    * {@inheritDoc}
    */
   @Override
-  public void removeUser(User user) throws BusinessException {
+  public void removeUser(UserDto user) throws BusinessException {
     try {
       if (user.isPersistant()) {
         DataBaseManager.startTransaction();
@@ -132,7 +132,7 @@ public class BusinessModel implements BusinessInterface {
    * {@inheritDoc}
    */
   @Override
-  public HashMap<String, Integer> selectAllFromGameHistory(User user) throws BusinessException {
+  public HashMap<String, Integer> selectAllFromGameHistory(UserDto user) throws BusinessException {
     HashMap<String, Integer> statistics;
     try {
       DataBaseManager.startTransaction();
@@ -155,7 +155,7 @@ public class BusinessModel implements BusinessInterface {
    * {@inheritDoc}
    */
   @Override
-  public void updateUser(User user) throws BusinessException {
+  public void updateUser(UserDto user) throws BusinessException {
     try {
       DataBaseManager.startTransaction();
       UserBusinessLogic.update(user);
@@ -176,7 +176,7 @@ public class BusinessModel implements BusinessInterface {
    * {@inheritDoc}
    */
   @Override
-  public int getUserHighScore(User user) throws BusinessException {
+  public int getUserHighScore(UserDto user) throws BusinessException {
     try {
       DataBaseManager.startTransaction();
       int highScore = GameStatsBusinessLogic.getHighScore(user);
@@ -201,7 +201,7 @@ public class BusinessModel implements BusinessInterface {
    * @param newHighScore New high score of the user.
    * @throws BusinessException If query to set new high score has failed
    */
-  public void setUserHighScore(User user, int newHighScore) throws BusinessException {
+  public void setUserHighScore(UserDto user, int newHighScore) throws BusinessException {
     try {
       DataBaseManager.startTransaction();
       GameStatsBusinessLogic.setHighScore(user, newHighScore);
@@ -219,7 +219,7 @@ public class BusinessModel implements BusinessInterface {
   }
 
   @Override
-  public void addLostGame(User user) throws BusinessException {
+  public void addLostGame(UserDto user) throws BusinessException {
     try {
       DataBaseManager.startTransaction();
       GameStatsBusinessLogic.incrementLostGame(user);
@@ -237,7 +237,7 @@ public class BusinessModel implements BusinessInterface {
   }
 
   @Override
-  public void addWonGame(User user) throws BusinessException {
+  public void addWonGame(UserDto user) throws BusinessException {
     try {
       DataBaseManager.startTransaction();
       GameStatsBusinessLogic.incrementWonGame(user);
@@ -255,7 +255,7 @@ public class BusinessModel implements BusinessInterface {
   }
 
   @Override
-  public void setHighestLevel(User user, int level) throws BusinessException {
+  public void setHighestLevel(UserDto user, int level) throws BusinessException {
     try {
       DataBaseManager.startTransaction();
       GameStatsBusinessLogic.setHighestLevel(user, level);
@@ -273,7 +273,7 @@ public class BusinessModel implements BusinessInterface {
   }
 
   @Override
-  public void addBurns(User user, int increase) throws BusinessException {
+  public void addBurns(UserDto user, int increase) throws BusinessException {
     try {
       DataBaseManager.startTransaction();
       TetriminoStatsBusinessLogic.addBurns(user, increase);
@@ -291,7 +291,7 @@ public class BusinessModel implements BusinessInterface {
   }
 
   @Override
-  public void addDestroyedLines(User user, Map<Action, Integer> actions)
+  public void addDestroyedLines(UserDto user, Map<Action, Integer> actions)
       throws BusinessException {
     try {
       DataBaseManager.startTransaction();
@@ -310,7 +310,7 @@ public class BusinessModel implements BusinessInterface {
   }
 
   @Override
-  public HashMap<String, Integer> selectAllFromTetriminoHistory(User user)
+  public HashMap<String, Integer> selectAllFromTetriminoHistory(UserDto user)
       throws BusinessException {
     HashMap<String, Integer> statistics;
     try {
@@ -334,7 +334,7 @@ public class BusinessModel implements BusinessInterface {
    * {@inheritDoc}
    */
   @Override
-  public int getNumberOfGamesWon(User user) throws BusinessException {
+  public int getNumberOfGamesWon(UserDto user) throws BusinessException {
     try {
       DataBaseManager.startTransaction();
       int highScore = GameStatsBusinessLogic.getNbGamesWon(user);
@@ -356,7 +356,7 @@ public class BusinessModel implements BusinessInterface {
    * {@inheritDoc}
    */
   @Override
-  public int getNumberOfGamesLost(User user) throws BusinessException {
+  public int getNumberOfGamesLost(UserDto user) throws BusinessException {
     try {
       DataBaseManager.startTransaction();
       int nbLost = GameStatsBusinessLogic.getNbGamesLost(user);

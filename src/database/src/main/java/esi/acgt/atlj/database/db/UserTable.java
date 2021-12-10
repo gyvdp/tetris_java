@@ -24,7 +24,7 @@
 
 package esi.acgt.atlj.database.db;
 
-import esi.acgt.atlj.database.dto.User;
+import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.DbException;
 import esi.acgt.atlj.database.exceptions.DtoException;
 import java.sql.ResultSet;
@@ -42,7 +42,7 @@ public class UserTable {
    * @return unique id of user.
    * @throws DbException If failed to add player.
    */
-  public static int insert(User user) throws DbException {
+  public static int insert(UserDto user) throws DbException {
     try {
       java.sql.Connection connection = DataBaseManager.getConnection();
       java.sql.PreparedStatement insert;
@@ -68,7 +68,7 @@ public class UserTable {
    * @param user User to delete
    * @throws DbException If failed to delete player
    */
-  public static void delete(User user) throws DbException {
+  public static void delete(UserDto user) throws DbException {
     try {
       java.sql.Connection connection = DataBaseManager.getConnection();
       java.sql.PreparedStatement alter;
@@ -86,7 +86,7 @@ public class UserTable {
    * @param user User to update in database.
    * @throws DbException If failed to update user.
    */
-  public static void update(User user) throws DbException {
+  public static void update(UserDto user) throws DbException {
     try {
       java.sql.Connection connection = DataBaseManager.getConnection();
       java.sql.PreparedStatement update;
@@ -123,18 +123,19 @@ public class UserTable {
   }
 
 
-  public static User findUsername(String username) throws DbException, SQLException, DtoException {
+  public static UserDto findUsername(String username)
+      throws DbException, SQLException, DtoException {
     ResultSet rs = select(username);
     if (rs.next()) {
-      return new User(rs.getInt(1), rs.getString(2));
+      return new UserDto(rs.getInt(1), rs.getString(2));
     }
     return null;
   }
 
-  public static User findId(int id) throws DbException, SQLException, DtoException {
+  public static UserDto findId(int id) throws DbException, SQLException, DtoException {
     ResultSet rs = select(id);
     if (rs.next()) {
-      return new User(rs.getInt("id"), rs.getString("username"));
+      return new UserDto(rs.getInt("id"), rs.getString("username"));
     }
     return null;
   }

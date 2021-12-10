@@ -25,7 +25,7 @@
 package esi.acgt.atlj.database.business;
 
 import esi.acgt.atlj.database.db.GameStatsTable;
-import esi.acgt.atlj.database.dto.User;
+import esi.acgt.atlj.database.dto.UserDto;
 import java.util.HashMap;
 
 class GameStatsBusinessLogic {
@@ -37,7 +37,7 @@ class GameStatsBusinessLogic {
    * @param user User to get high score from.
    * @return High score of the user.
    */
-  static int getHighScore(User user) {
+  static int getHighScore(UserDto user) {
     try {
       return GameStatsTable.getHighScore(user);
     } catch (Exception e) {
@@ -50,7 +50,7 @@ class GameStatsBusinessLogic {
    * @param user
    * @param level
    */
-  static void setHighestLevel(User user, int level) {
+  static void setHighestLevel(UserDto user, int level) {
     try {
       GameStatsTable.setHighestLevel(user, level);
     } catch (Exception e) {
@@ -63,7 +63,7 @@ class GameStatsBusinessLogic {
    *
    * @param user User to set high score from.
    */
-  static void setHighScore(User user, int newHighScore) {
+  static void setHighScore(UserDto user, int newHighScore) {
     try {
       GameStatsTable.setHighScore(user, newHighScore);
     } catch (Exception e) {
@@ -77,7 +77,7 @@ class GameStatsBusinessLogic {
    * @param user User to get number of games won.
    * @return Number of games won by the user.
    */
-  static int getNbGamesWon(User user) {
+  static int getNbGamesWon(UserDto user) {
     try {
       return GameStatsTable.getNbGameWon(user);
     } catch (Exception e) {
@@ -91,7 +91,7 @@ class GameStatsBusinessLogic {
    *
    * @param user User to modify
    */
-  static void incrementWonGame(User user) {
+  static void incrementWonGame(UserDto user) {
     try {
       GameStatsTable.addWonGame(user);
     } catch (Exception e) {
@@ -104,7 +104,7 @@ class GameStatsBusinessLogic {
    *
    * @param user User to select all from.
    */
-  static HashMap<String, Integer> selectAll(User user) {
+  static HashMap<String, Integer> selectAll(UserDto user) {
     try {
       return GameStatsTable.selectAllColumnsOfTable(user);
     } catch (Exception e) {
@@ -119,7 +119,7 @@ class GameStatsBusinessLogic {
    *
    * @param user User to modify
    */
-  static void incrementLostGame(User user) {
+  static void incrementLostGame(UserDto user) {
     try {
       GameStatsTable.addLostGame(user);
     } catch (Exception e) {
@@ -133,7 +133,7 @@ class GameStatsBusinessLogic {
    * @param user User to get number of games won.
    * @return Number of games won by the user.
    */
-  static int getNbGamesLost(User user) {
+  static int getNbGamesLost(UserDto user) {
     try {
       return GameStatsTable.getNbGameLost(user);
     } catch (Exception e) {

@@ -24,7 +24,7 @@
 
 package esi.acgt.atlj.server;
 
-import esi.acgt.atlj.database.dto.User;
+import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.DtoException;
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.PlayerAction;
@@ -71,7 +71,7 @@ public class CustomClientThread extends Thread {
   /**
    * User object of player current player for database.
    */
-  private User user;
+  private UserDto user;
   /**
    * Handle message from client.
    */
@@ -260,7 +260,7 @@ public class CustomClientThread extends Thread {
   protected boolean handleMessageFromClient(Object message) {
     if (message instanceof SendName s) {
       try {
-        user = new User(s.getUsername());
+        user = new UserDto(s.getUsername());
         server.checkUser(user);
         return false;
       } catch (DtoException e) {
@@ -322,7 +322,7 @@ public class CustomClientThread extends Thread {
    *
    * @return User token of client.
    */
-  public User getUser() {
+  public UserDto getUser() {
     return this.user;
   }
 

@@ -24,13 +24,12 @@
 
 package esi.acgt.atlj.database.db;
 
-import esi.acgt.atlj.database.dto.User;
+import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.DbException;
 import esi.acgt.atlj.model.game.Action;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +45,7 @@ public class TetriminoStatsTable {
    * @param actions
    * @throws DbException
    */
-  public static void addDestroyedLines(User user, Map<Action, Integer> actions)
+  public static void addDestroyedLines(UserDto user, Map<Action, Integer> actions)
       throws DbException {
     try {
       java.sql.Connection connection = DataBaseManager.getConnection();
@@ -99,7 +98,7 @@ public class TetriminoStatsTable {
    * @param increase Numbers to increase total number of burns to the user.
    * @throws DbException If query to add number of burns has failed.
    */
-  public static void addNbBurns(User user, int increase) throws DbException {
+  public static void addNbBurns(UserDto user, int increase) throws DbException {
     try {
       java.sql.Connection connection = DataBaseManager.getConnection();
       java.sql.PreparedStatement addBurns;
@@ -122,7 +121,7 @@ public class TetriminoStatsTable {
    * @param user User to select all columns from.
    * @throws DbException If query to select all has failed.
    */
-  public static HashMap<String, Integer> selectAll(User user) throws DbException {
+  public static HashMap<String, Integer> selectAll(UserDto user) throws DbException {
     try {
       java.sql.Connection connection = DataBaseManager.getConnection();
       java.sql.PreparedStatement selectAll;

@@ -25,8 +25,7 @@
 package esi.acgt.atlj.server;
 
 
-import esi.acgt.atlj.database.dto.User;
-import esi.acgt.atlj.message.Message;
+import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import java.io.IOException;
 import java.io.InterruptedIOException;
@@ -34,7 +33,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * All necessary definition to run a server.
@@ -186,7 +184,7 @@ public abstract class AbstractServer implements Runnable {
    *
    * @param user User to check or create.
    */
-  synchronized protected void checkUser(User user) {
+  synchronized protected void checkUser(UserDto user) {
   }
 
   /**

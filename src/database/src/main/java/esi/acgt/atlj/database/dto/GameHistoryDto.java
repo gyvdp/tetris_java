@@ -24,61 +24,43 @@
 
 package esi.acgt.atlj.database.dto;
 
-import esi.acgt.atlj.database.exceptions.DtoException;
+public class GameHistoryDto extends EntityDto<Integer> {
 
-public class User extends EntityDto<Integer> {
+  int highestLevel;
+  int highScore;
+  int nbWon;
+  int nbLost;
 
-  private String username;
-
-
-  /**
-   * Constructor of persistent user.
-   *
-   * @param id       Id of persistent user.
-   * @param username Username of persistent user.
-   * @throws DtoException If user is null.
-   */
-  public User(Integer id, String username) throws DtoException {
-    this(username);
+  public GameHistoryDto(Integer id, int highestLevel, int highScore, int nbLost, int nbWon) {
+    this(highestLevel, highScore, nbLost, nbWon);
     this.id = id;
   }
 
-  /**
-   * Constructor for non-persistent user.
-   *
-   * @param username Username of non-persistent user.
-   * @throws DtoException If user is null.
-   */
-  public User(String username) throws DtoException {
-    if (username == null) {
-      throw new DtoException("username cannot be null");
-    }
-    this.username = username;
+  public GameHistoryDto(int highestLevel, int highScore, int nbLost, int nbWon) {
+    this.highestLevel = highestLevel;
+    this.highScore = highScore;
+    this.nbLost = nbLost;
+    this.nbWon = nbWon;
   }
 
-  public void setId(int id) {
-    this.id = id;
+  public int getHighestLevel() {
+    return highestLevel;
   }
 
-  public void set(User user) {
-    this.id = user.getId();
-    this.username = user.getUsername();
+  public int getHighScore() {
+    return highScore;
   }
 
-  /**
-   * Getter for username of player.
-   *
-   * @return Username of player.
-   */
-  public String getUsername() {
-    return username;
+  public int getNbWon() {
+    return nbWon;
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
+  public int getNbLost() {
+    return nbLost;
+  }
+
   public String toString() {
-    return "[User]" + "(" + getId() + ", " + getUsername() + " )";
+    return " [User]" + "(" + this.id + ") [ " + highestLevel + ", " + highScore + ", " + nbLost
+        + ", " + nbWon + " ]";
   }
 }

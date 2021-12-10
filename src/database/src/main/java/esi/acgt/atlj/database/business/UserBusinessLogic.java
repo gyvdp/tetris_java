@@ -25,7 +25,7 @@
 package esi.acgt.atlj.database.business;
 
 import esi.acgt.atlj.database.db.UserTable;
-import esi.acgt.atlj.database.dto.User;
+import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.DbException;
 
 /**
@@ -40,7 +40,7 @@ class UserBusinessLogic {
    * @return Id of user in database.
    * @throws DbException If failed to add user.
    */
-  static int add(User user) throws DbException {
+  static int add(UserDto user) throws DbException {
     return UserTable.insert(user);
   }
 
@@ -51,7 +51,7 @@ class UserBusinessLogic {
    * @param user User to remove from database.
    * @throws DbException If failed to remove user.
    */
-  static void remove(User user) throws DbException {
+  static void remove(UserDto user) throws DbException {
     UserTable.delete(user);
   }
 
@@ -61,7 +61,7 @@ class UserBusinessLogic {
    * @param user User to update in the database.
    * @throws DbException If failed to update user.
    */
-  static void update(User user) throws DbException {
+  static void update(UserDto user) throws DbException {
     UserTable.update(user);
   }
 
@@ -71,7 +71,7 @@ class UserBusinessLogic {
    * @param id Id to find user by.
    * @return User that match the id or null if error has occurred.
    */
-  static User findById(int id) {
+  static UserDto findById(int id) {
     try {
       return UserTable.findId(id);
     } catch (Exception e) {
@@ -86,7 +86,7 @@ class UserBusinessLogic {
    * @param username Username to find user by.
    * @return User that match the id or null if error has occurred.
    */
-  static User findByUsername(String username) {
+  static UserDto findByUsername(String username) {
     try {
       return UserTable.findUsername(username);
     } catch (Exception e) {

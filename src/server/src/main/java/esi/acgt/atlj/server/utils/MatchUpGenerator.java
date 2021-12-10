@@ -25,12 +25,11 @@
 package esi.acgt.atlj.server.utils;
 
 import esi.acgt.atlj.database.business.BusinessInterface;
-import esi.acgt.atlj.database.dto.User;
+import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.message.Message;
 import esi.acgt.atlj.message.PlayerStatus;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
-import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.SendGameStats;
 import esi.acgt.atlj.message.messageTypes.SendHighScore;
 import esi.acgt.atlj.message.messageTypes.SendName;
@@ -176,7 +175,7 @@ public class MatchUpGenerator extends Thread {
     return highScores;
   }
 
-  private void setGameStats(GameStatInterface statistics, User user) {
+  private void setGameStats(GameStatInterface statistics, UserDto user) {
     try {
       interactDatabase.addBurns(user, statistics.getBurns());
       interactDatabase.setHighestLevel(user, statistics.getLevel());

@@ -24,7 +24,7 @@
 
 package esi.acgt.atlj.database.business;
 
-import esi.acgt.atlj.database.dto.User;
+import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.model.game.Action;
 import java.util.HashMap;
@@ -42,7 +42,7 @@ public interface BusinessInterface {
    * @return User of the given id.
    * @throws BusinessException If the query for getting the user has failed.
    */
-  User getUser(int id) throws BusinessException;
+  UserDto getUser(int id) throws BusinessException;
 
   /**
    * Gets a specific user in the database.
@@ -51,7 +51,7 @@ public interface BusinessInterface {
    * @return User of the given username.
    * @throws BusinessException If the query for getting the user has failed.
    */
-  User getUser(String username) throws BusinessException;
+  UserDto getUser(String username) throws BusinessException;
 
   /**
    * Adds a user to the database.
@@ -70,7 +70,7 @@ public interface BusinessInterface {
    * @return High score of user, -1 if user does not exist.
    * @throws BusinessException If query from high score failed.
    */
-  int getUserHighScore(User user) throws BusinessException;
+  int getUserHighScore(UserDto user) throws BusinessException;
 
 
   /**
@@ -80,7 +80,7 @@ public interface BusinessInterface {
    * @return Number of lost games, -1 if user does not exist.
    * @throws BusinessException If query from number of lost game failed.
    */
-  int getNumberOfGamesLost(User user) throws BusinessException;
+  int getNumberOfGamesLost(UserDto user) throws BusinessException;
 
   /**
    * Gets the number of games won by the user.
@@ -89,7 +89,7 @@ public interface BusinessInterface {
    * @return Number of games won by the user, -1 if user does not exist.
    * @throws BusinessException If query from number of games failed.
    */
-  int getNumberOfGamesWon(User user) throws BusinessException;
+  int getNumberOfGamesWon(UserDto user) throws BusinessException;
 
   /**
    * Removes user from the database.
@@ -97,7 +97,7 @@ public interface BusinessInterface {
    * @param user Persistent user to remove from database.
    * @throws BusinessException If query to remove user has failed.
    */
-  void removeUser(User user) throws BusinessException;
+  void removeUser(UserDto user) throws BusinessException;
 
   /**
    * Selects all information from game history of user.
@@ -105,7 +105,7 @@ public interface BusinessInterface {
    * @param user User to select from.
    * @return HashMap contain statistics
    */
-  HashMap<String, Integer> selectAllFromGameHistory(User user) throws BusinessException;
+  HashMap<String, Integer> selectAllFromGameHistory(UserDto user) throws BusinessException;
 
   /**
    * Updates user in the database.
@@ -113,19 +113,19 @@ public interface BusinessInterface {
    * @param user User to update in database.
    * @throws BusinessException If query for updating user has failed.
    */
-  void updateUser(User user) throws BusinessException;
+  void updateUser(UserDto user) throws BusinessException;
 
-  void setUserHighScore(User user, int newHighScore) throws BusinessException;
+  void setUserHighScore(UserDto user, int newHighScore) throws BusinessException;
 
-  void addLostGame(User user) throws BusinessException;
+  void addLostGame(UserDto user) throws BusinessException;
 
-  void addWonGame(User user) throws BusinessException;
+  void addWonGame(UserDto user) throws BusinessException;
 
-  void setHighestLevel(User user, int level) throws BusinessException;
+  void setHighestLevel(UserDto user, int level) throws BusinessException;
 
-  void addBurns(User user, int increase) throws BusinessException;
+  void addBurns(UserDto user, int increase) throws BusinessException;
 
-  void addDestroyedLines(User user, Map<Action, Integer> actions) throws BusinessException;
+  void addDestroyedLines(UserDto user, Map<Action, Integer> actions) throws BusinessException;
 
-  HashMap<String, Integer> selectAllFromTetriminoHistory(User user) throws BusinessException;
+  HashMap<String, Integer> selectAllFromTetriminoHistory(UserDto user) throws BusinessException;
 }

@@ -24,12 +24,11 @@
 
 package esi.acgt.atlj.database.db;
 
-import esi.acgt.atlj.database.dto.User;
+import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.DbException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Hashtable;
 
 
 /**
@@ -49,7 +48,7 @@ public class GameStatsTable {
    * @return High score of the user.
    * @throws DbException If query for getting high score from user has failed.
    */
-  public static int getHighScore(User user) throws DbException {
+  public static int getHighScore(UserDto user) throws DbException {
     try {
       java.sql.Connection connection = DataBaseManager.getConnection();
       java.sql.PreparedStatement highScore;
@@ -73,7 +72,7 @@ public class GameStatsTable {
    * @param user User to select all columns.
    * @throws DbException If query to select all has failed.
    */
-  public static HashMap<String, Integer> selectAllColumnsOfTable(User user) throws DbException {
+  public static HashMap<String, Integer> selectAllColumnsOfTable(UserDto user) throws DbException {
     try {
       java.sql.Connection connection = DataBaseManager.getConnection();
       java.sql.PreparedStatement selectAll;
@@ -117,7 +116,7 @@ public class GameStatsTable {
    * @param newHighScore New high score to set.
    * @throws DbException If query for setting high score from user has failed.
    */
-  public static void setHighScore(User user, int newHighScore) throws DbException {
+  public static void setHighScore(UserDto user, int newHighScore) throws DbException {
     if (getHighScore(user) < newHighScore) {
       try {
         java.sql.Connection connection = DataBaseManager.getConnection();
@@ -143,7 +142,7 @@ public class GameStatsTable {
    * @param level
    * @throws DbException
    */
-  public static void setHighestLevel(User user, int level) throws DbException {
+  public static void setHighestLevel(UserDto user, int level) throws DbException {
     //todo if (level > getLevel(user)){
     try {
       java.sql.Connection connection = DataBaseManager.getConnection();
@@ -167,7 +166,7 @@ public class GameStatsTable {
    *
    * @param user User to increment from.
    */
-  public static void addWonGame(User user) throws DbException {
+  public static void addWonGame(UserDto user) throws DbException {
     try {
       java.sql.Connection connection = DataBaseManager.getConnection();
       java.sql.PreparedStatement updateNbWonGame;
@@ -190,7 +189,7 @@ public class GameStatsTable {
    * @return Number of games won by the user, if user does not exist in database returns -1.
    * @throws DbException If query for getting number of games won has failed.
    */
-  public static int getNbGameWon(User user) throws DbException {
+  public static int getNbGameWon(UserDto user) throws DbException {
     try {
       java.sql.Connection connection = DataBaseManager.getConnection();
       java.sql.PreparedStatement nbGames;
@@ -208,7 +207,7 @@ public class GameStatsTable {
     return -1;
   }
 
-  public static void addLostGame(User user) throws DbException {
+  public static void addLostGame(UserDto user) throws DbException {
     try {
       java.sql.Connection connection = DataBaseManager.getConnection();
       java.sql.PreparedStatement updateNbWonGame;
@@ -232,7 +231,7 @@ public class GameStatsTable {
    * @return Number of games won by the user.
    * @throws DbException If query for getting number of games won has failed.
    */
-  public static int getNbGameLost(User user) throws DbException {
+  public static int getNbGameLost(UserDto user) throws DbException {
     try {
       java.sql.Connection connection = DataBaseManager.getConnection();
       java.sql.PreparedStatement nbLost;
