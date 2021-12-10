@@ -31,9 +31,9 @@ import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
-import esi.acgt.atlj.message.messageTypes.SendGameStats;
+import esi.acgt.atlj.message.messageTypes.GameStat;
 import esi.acgt.atlj.message.messageTypes.HighScore;
-import esi.acgt.atlj.message.messageTypes.ConnectionMessage;
+import esi.acgt.atlj.message.messageTypes.Connection;
 import esi.acgt.atlj.message.messageTypes.NextMino;
 import esi.acgt.atlj.message.messageTypes.StartGame;
 import esi.acgt.atlj.model.player.PlayerStatInterface;
@@ -96,7 +96,7 @@ public class MatchUpGenerator extends Thread {
     this.bagGenerator = new BagGenerator();
     this.id = idGeneratedMatchUp;
     for (CustomClientThread client : clients) {
-      getOpposingClient(client).sendMessage(new ConnectionMessage(client.getUsername()));
+      getOpposingClient(client).sendMessage(new Connection(client.getUsername()));
       clientLambdaConnections(client);
     }
     this.start();
@@ -120,7 +120,7 @@ public class MatchUpGenerator extends Thread {
         Mino mino = client.getMino();
         client.sendMessage(new NextMino(mino, client.getUsername()));
         opPlayer.sendMessage(new NextMino(mino, opPlayer.getUsername()));
-      } else if (m instanceof SendGameStats stats) {
+      } else if (m instanceof GameStat stats) {
         setGameStats(stats.getGameStats(), client.getUser());
       } else {
         opPlayer.sendMessage(m);

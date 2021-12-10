@@ -27,11 +27,11 @@ package esi.acgt.atlj.message.messageTypes;
 import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.ServerRequest;
 
-public class SendRequest extends AbstractMessage {
+public class Request extends AbstractMessage {
 
-  ServerRequest action;
+  private ServerRequest action;
 
-  public SendRequest() {
+  public Request() {
     super();
   }
 
@@ -44,6 +44,11 @@ public class SendRequest extends AbstractMessage {
     return this.action;
   }
 
+  /**
+   * Sets the action to request.
+   *
+   * @param e Action.
+   */
   public void setAction(ServerRequest e) {
     this.action = e;
   }

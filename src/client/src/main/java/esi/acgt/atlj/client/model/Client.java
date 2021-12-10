@@ -31,10 +31,10 @@ import esi.acgt.atlj.message.ServerRequest;
 import esi.acgt.atlj.message.messageTypes.SetFallingTetrimino;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.LockTetrimino;
-import esi.acgt.atlj.message.messageTypes.SendRequest;
+import esi.acgt.atlj.message.messageTypes.Request;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
-import esi.acgt.atlj.message.messageTypes.SendGameStats;
-import esi.acgt.atlj.message.messageTypes.ConnectionMessage;
+import esi.acgt.atlj.message.messageTypes.GameStat;
+import esi.acgt.atlj.message.messageTypes.Connection;
 import esi.acgt.atlj.message.messageTypes.Score;
 import esi.acgt.atlj.message.messageTypes.Hold;
 import esi.acgt.atlj.model.Game;
@@ -154,7 +154,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   @Override
   public void sendAllGameStats(PlayerStatInterface gameStats) {
     try {
-      sendToServer(new SendGameStats(gameStats));
+      sendToServer(new GameStat(gameStats));
     } catch (IOException e) {
       System.err.println("Cannot send game stats to server");
     }
@@ -197,7 +197,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   @Override
   public void sendAction(ServerRequest a) {
     try {
-      SendRequest action = new SendRequest();
+      Request action = new Request();
       action.setAction(a);
       sendToServer(action);
     } catch (IOException e) {
@@ -232,7 +232,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   @Override
   public void sendNameToServer(String name) {
     try {
-      sendToServer(new ConnectionMessage(name));
+      sendToServer(new Connection(name));
     } catch (IOException e) {
       System.err.println("Cannot send name to server");
     }
