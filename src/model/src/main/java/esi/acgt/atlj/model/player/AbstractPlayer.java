@@ -30,12 +30,11 @@ import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class AbstractPlayer implements PlayerInterface, Serializable {
+public abstract class AbstractPlayer implements PlayerInterface {
 
   /**
    * The matrix of the board
