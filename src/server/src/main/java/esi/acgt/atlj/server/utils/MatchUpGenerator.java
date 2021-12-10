@@ -100,11 +100,6 @@ public class MatchUpGenerator extends Thread {
     for (CustomClientThread client : clients) {
       getOpposingClient(client).sendMessage(new Connection(client.getUsername()));
       clientLambdaConnections(client);
-      try {
-        client.sendMessage(new SendHighScore(getBothPlayersHighScoreDB()));
-      } catch (BusinessException e) {
-        System.err.println("Cannot get user high score");
-      }
     }
     this.start();
   }
@@ -288,5 +283,12 @@ public class MatchUpGenerator extends Thread {
   public void run() {
     refillBags();
     sendGreenLight();
+    for (CustomClientThread clientThread : clients) {
+      try {
+        clientThread.sendMessage(new SendHighScore(getBothPlayersHighScoreDB()));
+      } catch (BusinessException e) {
+        System.err.println("Cannot get user high score");
+      }
+    }
   }
 }
