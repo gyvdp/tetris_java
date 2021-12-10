@@ -27,8 +27,6 @@ package esi.acgt.atlj.model.player;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 
 /**
@@ -197,12 +195,6 @@ public class ManagedPlayer extends AbstractPlayer {
     setActualTetrimino(this.nextTetrimino);
     setNextTetrimino(null);
 
-    List<Integer> lines = getFullLines();
-    if (lines.size() != 0) {
-      removeLines(lines);
-      this.stats.applyAction(Action.getActionByFullLines(lines.size()));
-    }
-
     if (outOfBound()) {
       setActualTetrimino(null);
       setStatus(PlayerStatus.LOCK_OUT);
@@ -210,30 +202,6 @@ public class ManagedPlayer extends AbstractPlayer {
       setStatus(PlayerStatus.TETRIMINO_FALLING);
     }
 
-  }
-
-  /**
-   * Gets all the line of the whole board
-   *
-   * @return All the line
-   */
-  private synchronized List<Integer> getFullLines() {
-    List<Integer> lines = new ArrayList<>();
-    for (int i = 0; i < matrix.length; ++i) {
-      boolean full = true;
-      for (int j = 0; j < matrix[i].length; ++j) {
-        if (matrix[i][j] == null) {
-          full = false;
-          break;
-        }
-      }
-
-      if (full) {
-        lines.add(i);
-      }
-    }
-
-    return lines;
   }
 
   private synchronized boolean outOfBound() {

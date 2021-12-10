@@ -30,6 +30,7 @@ import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -278,6 +279,13 @@ public abstract class AbstractPlayer implements PlayerInterface {
         }
       }
     }
+
+    List<Integer> lines = getFullLines();
+    if (lines.size() != 0) {
+      removeLines(lines);
+      this.stats.applyAction(Action.getActionByFullLines(lines.size()));
+    }
+
     this.pcs.firePropertyChange("board", oldBoard, getMatrix());
   }
 
@@ -287,5 +295,29 @@ public abstract class AbstractPlayer implements PlayerInterface {
   @Override
   public synchronized PlayerStat getStats() {
     return this.stats;
+  }
+
+  /**
+   * Gets all the line of the whole board
+   *
+   * @return All the line
+   */
+  protected synchronized List<Integer> getFullLines() {
+    List<Integer> lines = new ArrayList<>();
+    for (int i = 0; i < matrix.length; ++i) {
+      boolean full = true;
+      for (int j = 0; j < matrix[i].length; ++j) {
+        if (matrix[i][j] == null) {
+          full = false;
+          break;
+        }
+      }
+
+      if (full) {
+        lines.add(i);
+      }
+    }
+
+    return lines;
   }
 }
