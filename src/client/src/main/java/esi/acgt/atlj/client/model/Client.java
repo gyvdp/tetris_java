@@ -63,6 +63,7 @@ import javafx.scene.input.KeyCode;
 public class Client extends AbstractClient implements ClientInterface, PropertyChangeListener {
 
   private ClientStatus status;
+  private final String username;
 
   private Game game;
 
@@ -72,9 +73,16 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
    * @param port Port client must look for.
    * @param host Host client must connect to.
    */
-  public Client(int port, String host) {
+  public Client(int port, String host, String username) throws ConnectException {
     super(port, host);
     this.status = ClientStatus.CONNECTED;
+    this.username = username;
+    connect();
+    sendNameToServer(username);
+  }
+
+  public String getUsername() {
+    return this.username;
   }
 
   /**

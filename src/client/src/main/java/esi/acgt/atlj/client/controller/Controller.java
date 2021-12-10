@@ -71,9 +71,7 @@ public class Controller extends Application {
    */
   public void connexion(String host, int port, String username) {
     try {
-      this.client = new Client(port, host);
-      this.client.connect();
-      this.client.sendNameToServer(username);
+      this.client = new Client(port, host, username);
       this.startMenu(username);
     } catch (Exception e) {
       this.view.displayError(e);
