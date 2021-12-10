@@ -25,6 +25,8 @@
 package esi.acgt.atlj.model;
 
 import esi.acgt.atlj.model.player.PlayerInterface;
+import esi.acgt.atlj.model.player.PlayerStat;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -59,4 +61,13 @@ public abstract class Game implements GameInterface {
   public void addPlayer(PlayerInterface board) {
     this.players.add(board);
   }
+
+  void setHighScores(HashMap<String, Integer> highScores) {
+    var usernames = getUsernames();
+    for (var username : usernames) {
+      ((PlayerStat) getBoard(username).getStats()).setHighScore(
+          highScores.getOrDefault(username, 0));
+    }
+  }
+
 }
