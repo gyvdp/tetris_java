@@ -64,7 +64,7 @@ public class TickHandler extends TimerTask {
       case ROTATING_ANTI_CLOCKWISE -> managedBoard.rotate(false);
       case SOFT_DROPPING -> {
         if (managedBoard.move(Direction.DOWN)) {
-          managedBoard.getStats().increaseScore(1);
+          managedBoard.getStats().applyAction(Action.SOFT_DROP);
           managedBoard.setStatus(PlayerStatus.TETRIMINO_FALLING);
         } else {
           managedBoard.setStatus(PlayerStatus.LOCK_DOWN);

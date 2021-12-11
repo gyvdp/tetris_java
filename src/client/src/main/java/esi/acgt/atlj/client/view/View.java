@@ -25,38 +25,29 @@
 package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
-import esi.acgt.atlj.client.view.controllers.ConnexionController;
-import esi.acgt.atlj.client.view.controllers.GameMenuController;
-import esi.acgt.atlj.client.view.controllers.MultiplayerGameController;
+import esi.acgt.atlj.client.view.scenes.ConnectionScene;
+import esi.acgt.atlj.client.view.scenes.GameMenuScene;
+import esi.acgt.atlj.client.view.scenes.MultiplayerScene;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.util.Objects;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class View implements ViewInterface {
 
-  private Stage primaryStage;
+  private final Stage primaryStage;
+
   private Controller controller;
-  private HBox layout;
-  private MultiplayerGameController mpgController;
-  private GameMenuController menuController;
-  private ConnexionController connexionController;
 
   /**
    * Constructor of view.
    */
-  public View() {
-    this.connexionController = null;
+  public View(Stage stage) {
     this.controller = null;
-    this.mpgController = null;
-    this.menuController = null;
+    this.primaryStage = stage;
   }
 
   /**
@@ -64,10 +55,13 @@ public class View implements ViewInterface {
    */
   @Override
   public void displayConnexion() {
-    this.primaryStage = new Stage();
-    this.connexionController = new ConnexionController(this.controller, this.primaryStage);
-    this.primaryStage.setResizable(false);
-    this.show();
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Connexion.fxml"));
+    try {
+      this.primaryStage.setScene(
+          new ConnectionScene(loader.load(), loader.getController(), this.controller));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -75,28 +69,14 @@ public class View implements ViewInterface {
    */
   @Override
   public void displayBoard(String username) {
-    this.primaryStage.close();
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MultiplayerGame.fxml"));
-
-    this.primaryStage = new Stage();
-    this.primaryStage.getIcons()
-        .add(new Image(Objects.requireNonNull(
-            ConnexionController.class.getResourceAsStream("/image/tetris-icon-32.png"))));
-    this.primaryStage.setTitle("Tetris");
-    this.primaryStage.setOnCloseRequest(event -> {
-      this.controller.leaveMatch();
-      this.controller.startMenu(username);
-      this.show();
-    });
     try {
-      this.layout = loader.load();
-      this.mpgController = loader.getController();
-      this.mpgController.setMainPlayerUsername(username);
+      this.primaryStage.setScene(
+          new MultiplayerScene(loader.load(), loader.getController(), username));
     } catch (IOException e) {
       e.printStackTrace();
     }
-    this.primaryStage.setScene(new Scene(this.layout));
-    this.primaryStage.show();
+
     primaryStage.getScene()
         .addEventFilter(KeyEvent.KEY_PRESSED, (key) -> controller.keyBoardInput(key.getCode()));
   }
@@ -134,23 +114,19 @@ public class View implements ViewInterface {
    */
   @Override
   public PropertyChangeListener[] getBoardListeners() {
-    return new PropertyChangeListener[]{this.mpgController.getPlayer1(),
-        this.mpgController.getPlayer2()};
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public PropertyChangeListener getMenuListener() {
-    return this.menuController;
+    var scene = this.primaryStage.getScene();
+    return scene instanceof MultiplayerScene ? ((MultiplayerScene) scene).getBoardListeners()
+        : null;
   }
 
   @Override
   public void displayMenu(String username) {
-    this.mpgController = null;
-    this.primaryStage.close();
-    this.primaryStage = new Stage();
-    this.menuController = new GameMenuController(username, primaryStage, controller);
-    this.primaryStage.setResizable(false);
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GameMenu.fxml"));
+    try {
+      this.primaryStage.setScene(
+          new GameMenuScene(loader.load(), loader.getController(), this.controller, username));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }

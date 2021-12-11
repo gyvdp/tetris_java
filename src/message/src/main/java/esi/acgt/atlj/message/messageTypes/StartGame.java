@@ -25,9 +25,10 @@
 package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.AbstractMessage;
+import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.model.Game;
+import esi.acgt.atlj.model.player.AbstractPlayer;
 import esi.acgt.atlj.model.player.ManagedPlayer;
-import esi.acgt.atlj.model.player.UnmanagedPlayer;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 
@@ -50,6 +51,7 @@ public class StartGame extends AbstractMessage {
    * @param next        First next mino of the game.
    */
   public StartGame(String usernameOpp, String username, Mino actual, Mino next) {
+    this.messageType = MessageType.NEW_GAME;
     this.username = username;
     this.usernameOpp = usernameOpp;
     this.actualMino = actual;
@@ -62,13 +64,15 @@ public class StartGame extends AbstractMessage {
    * @param game Current game to modify.
    */
   public void execute(Game game) {
-    var playerOpp = (UnmanagedPlayer) game.getBoard("search");
+    System.out.printf("startGame: %s, %s", this.username, this.usernameOpp);
+    var playerOpp = (AbstractPlayer) game.getBoard("search");
     playerOpp.setUsername(this.usernameOpp);
-    var player = (ManagedPlayer) game.getBoard(this.username);
-    player.setActualTetrimino(Tetrimino.createTetrimino(actualMino));
-    player.setNextTetrimino(nextMino);
     playerOpp.setActualTetrimino(Tetrimino.createTetrimino(actualMino));
     playerOpp.setNextTetrimino(nextMino);
-    player.start();
+    var player = (AbstractPlayer) game.getBoard(this.username);
+    player.setActualTetrimino(Tetrimino.createTetrimino(actualMino));
+    player.setNextTetrimino(nextMino);
+
+    ((ManagedPlayer) player).start();
   }
 }

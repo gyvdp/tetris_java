@@ -37,7 +37,9 @@
 <?import javafx.scene.text.Font?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
   prefHeight="550.0" prefWidth="600.0" style="-fx-background-color: #121212;"
-  xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+  xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="esi.acgt.atlj.client.view.controllers.GameMenuController"
+>
   <GridPane layoutX="15.0" layoutY="25.0" prefHeight="500.0" prefWidth="570.0"
     AnchorPane.leftAnchor="15.0">
     <columnConstraints>

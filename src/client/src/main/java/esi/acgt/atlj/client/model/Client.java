@@ -28,16 +28,18 @@ import esi.acgt.atlj.client.model.game.MultiplayerGame;
 import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.GameMessage;
 import esi.acgt.atlj.message.ServerRequest;
-import esi.acgt.atlj.message.messageTypes.SetFallingTetrimino;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
+import esi.acgt.atlj.message.messageTypes.Connection;
+import esi.acgt.atlj.message.messageTypes.GameStat;
+import esi.acgt.atlj.message.messageTypes.GameStatAction;
+import esi.acgt.atlj.message.messageTypes.Hold;
 import esi.acgt.atlj.message.messageTypes.LockTetrimino;
 import esi.acgt.atlj.message.messageTypes.Request;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
-import esi.acgt.atlj.message.messageTypes.GameStat;
-import esi.acgt.atlj.message.messageTypes.Connection;
-import esi.acgt.atlj.message.messageTypes.Score;
-import esi.acgt.atlj.message.messageTypes.Hold;
+import esi.acgt.atlj.message.messageTypes.SetFallingTetrimino;
+import esi.acgt.atlj.message.messageTypes.StartGame;
 import esi.acgt.atlj.model.Game;
+import esi.acgt.atlj.model.player.Action;
 import esi.acgt.atlj.model.player.Direction;
 import esi.acgt.atlj.model.player.PlayerStatInterface;
 import esi.acgt.atlj.model.player.PlayerStatus;
@@ -47,6 +49,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.input.KeyCode;
 
 
@@ -57,6 +61,8 @@ import javafx.scene.input.KeyCode;
  * @see AbstractClient
  */
 public class Client extends AbstractClient implements ClientInterface, PropertyChangeListener {
+
+  private static final Logger logger = Logger.getLogger(Client.class.getName());
 
   private ClientStatus status;
 
@@ -89,6 +95,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   protected void handleServerMessage(Object information) {
     AbstractMessage message = (AbstractMessage) (information);
     switch (message.getType()) {
+      case NEW_GAME -> ((StartGame) message).execute(game);
       case GAME -> ((GameMessage) message).execute(game);
       case STATISTICS -> System.out.println("stats");
     }
@@ -184,6 +191,8 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   public void requestNextMino() {
     try {
       sendToServer(new AskPiece());
+      logger.log(Level.INFO,
+          "Successfully requested a mino to server (%s)");
     } catch (IOException e) {
       System.err.println("cannot ask piece to server");
     }
@@ -200,8 +209,10 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
       Request action = new Request();
       action.setAction(a);
       sendToServer(action);
+      logger.log(Level.INFO,
+          String.format("Successfully sent action to server (%s)", a.name()));
     } catch (IOException e) {
-      System.err.println("Cannot send action to server");
+      logger.log(Level.SEVERE, e.getMessage());
     }
   }
 
@@ -212,8 +223,10 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   public void sendHoldMino(Mino m) {
     try {
       sendToServer(new Hold(m, this.username));
+      logger.log(Level.INFO,
+          String.format("Successfully sent hold tetrimino to server (%s)", m.name()));
     } catch (IOException e) {
-      System.err.println("Cannot send hold piece");
+      logger.log(Level.SEVERE, e.getMessage());
     }
   }
 
@@ -221,8 +234,10 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   public void lockTetrimino(TetriminoInterface m) {
     try {
       sendToServer(new LockTetrimino(m, this.username));
+      logger.log(Level.INFO,
+          String.format("Successfully sent locked tetrimino to server (%s)", m.getType().name()));
     } catch (IOException e) {
-      System.err.println("Cannot send name to server");
+      logger.log(Level.SEVERE, e.getMessage());
     }
   }
 
@@ -233,27 +248,39 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   public void sendNameToServer(String name) {
     try {
       sendToServer(new Connection(name));
+      logger.log(Level.INFO, String.format("Successfully sent username to server (%s)", name));
     } catch (IOException e) {
-      System.err.println("Cannot send name to server");
+      logger.log(Level.SEVERE, e.getMessage());
     }
   }
 
   /**
    * {@inheritDoc}
+   *
+   * @param action
    */
   @Override
-  public void sendScore(int score) {
-    try {
-      sendToServer(new Score(score, this.username));
-    } catch (IOException e) {
-      System.err.println("Cannot send score to server");
+  public void sendStatAction(Action action) {
+    if (action == Action.SOFT_DROP || action == Action.HARD_DROP) {
+      try {
+        sendToServer(new GameStatAction(action, this.username));
+        logger.log(Level.INFO,
+            String.format("Successfully sent stat action to server (%s)", action.name()));
+      } catch (IOException e) {
+        System.err.println("Cannot send action to server");
+      }
     }
   }
 
   @Override
-  public void startMultiplayerGame(String username) {
+  public void startMultiplayerGame(String username, PropertyChangeListener[] listeners) {
     this.game = new MultiplayerGame(username);
-    ((MultiplayerGame) this.game).addPCLToPlayer(this);
+    game.addPropertyChangeListenerToBoards(listeners);
+    ((MultiplayerGame) this.game).addPCSToPlayer(this);
+    logger.log(Level.INFO,
+        String.format("Successfully initiated multiplayer game for %s with %d listeners", username,
+            listeners.length));
+
     sendAction(ServerRequest.MULTIPLAYER);
   }
 
@@ -293,13 +320,12 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
 
   }
 
-
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
     switch (evt.getPropertyName()) {
       case "hold" -> sendHoldMino((Mino) evt.getNewValue());
       case "ACTUAL" -> sendTetriminoToOtherPlayer((TetriminoInterface) evt.getNewValue());
-      case "SCORE" -> sendScore((int) evt.getNewValue());
+      case "ACTION" -> sendStatAction((Action) evt.getNewValue());
       case "PLACE_TETRIMINO" -> lockTetrimino((TetriminoInterface) evt.getNewValue());
       case "next" -> {
         if (evt.getNewValue() == null) {

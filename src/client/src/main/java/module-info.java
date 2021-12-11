@@ -6,6 +6,7 @@ module atlj.client {
   requires javafx.controls;
   requires javafx.fxml;
   requires java.desktop;
+  requires java.logging;
 
   exports esi.acgt.atlj.client;
   exports esi.acgt.atlj.client.model;

@@ -25,7 +25,6 @@
 package esi.acgt.atlj.model.player;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
-import esi.acgt.atlj.model.tetrimino.TTetrimino;
 import esi.acgt.atlj.model.tetrimino.Tetrimino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
@@ -81,7 +80,7 @@ public abstract class AbstractPlayer implements PlayerInterface {
    */
   public AbstractPlayer(String username) {
     this.username = username;
-    this.actualTetrimino = new TTetrimino();
+    this.actualTetrimino = null;
     this.nextTetrimino = null;
     this.pcs = new PropertyChangeSupport(this);
     this.matrix = new Mino[HEIGHT][WIDTH];
@@ -260,7 +259,6 @@ public abstract class AbstractPlayer implements PlayerInterface {
    * @param lines The list of indexes of lines to remove
    */
   public synchronized void removeLines(List<Integer> lines) {
-    var oldBoard = getMatrix();
     lines.sort(Collections.reverseOrder());
     int removed = 0;
     for (var line : lines) {
@@ -275,7 +273,6 @@ public abstract class AbstractPlayer implements PlayerInterface {
       }
       removed++;
     }
-    this.pcs.firePropertyChange("board", oldBoard, getMatrix());
   }
 
   /**
@@ -284,7 +281,6 @@ public abstract class AbstractPlayer implements PlayerInterface {
    * @param tetrimino The tetrimino to place
    */
   public synchronized void placeTetrimino(TetriminoInterface tetrimino) {
-    var oldBoard = getMatrix();
     var tMinos = tetrimino.getMinos();
     for (var i = 0; i < tMinos.length; ++i) {
       for (var j = 0; j < tMinos[i].length; ++j) {
@@ -303,10 +299,9 @@ public abstract class AbstractPlayer implements PlayerInterface {
     List<Integer> lines = getFullLines();
     if (lines.size() != 0) {
       removeLines(lines);
-      this.stats.applyAction(Action.getActionByFullLines(lines.size()));
+      applyStatAction(Action.getActionByFullLines(lines.size()));
     }
-
-    this.pcs.firePropertyChange("board", oldBoard, getMatrix());
+    this.pcs.firePropertyChange("board", null, getMatrix());
   }
 
   /**
@@ -315,6 +310,10 @@ public abstract class AbstractPlayer implements PlayerInterface {
   @Override
   public synchronized PlayerStat getStats() {
     return this.stats;
+  }
+
+  public void applyStatAction(Action action) {
+    this.stats.applyAction(action);
   }
 
   /**

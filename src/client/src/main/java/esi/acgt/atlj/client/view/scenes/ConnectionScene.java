@@ -22,14 +22,23 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message;
+package esi.acgt.atlj.client.view.scenes;
 
-/**
- * All different type of message that are possible to send/receive from client/server
- */
-public enum MessageType {
-  GAME,
-  STATISTICS,
-  SERVER,
-  NEW_GAME
+import esi.acgt.atlj.client.controller.Controller;
+import esi.acgt.atlj.client.view.controllers.ConnexionController;
+import java.util.Objects;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+
+public class ConnectionScene extends Scene {
+
+  private final ConnexionController controller;
+
+  public ConnectionScene(Parent root, ConnexionController controller, Controller rootController) {
+    super(root);
+
+    Objects.requireNonNull(controller);
+    this.controller = controller;
+    this.controller.setController(rootController);
+  }
 }

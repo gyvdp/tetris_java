@@ -25,23 +25,15 @@
 package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.client.controller.Controller;
-import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 
 /**
  * Connexion Scene
@@ -52,8 +44,9 @@ public class ConnexionController implements Initializable {
    * Pattern of a adress IP
    */
   private static final Pattern regex = Pattern.compile("^(?:[0-9]{1,3}.){3}[0-9]{1,3}$");
-  private final Controller controller;
-  private final Stage stage;
+
+  private Controller controller;
+
   @FXML
   public TextField ip;
   @FXML
@@ -61,34 +54,8 @@ public class ConnexionController implements Initializable {
   @FXML
   public TextField port;
 
-  /**
-   * Constructor of Connexion
-   *
-   * @param controller controller wich we interact with
-   * @param stage      stage of the window for this scene
-   */
-  public ConnexionController(Controller controller, Stage stage) {
+  public void setController(Controller controller) {
     this.controller = controller;
-    this.stage = stage;
-
-    this.stage.getIcons()
-        .add(new Image(Objects.requireNonNull(
-            ConnexionController.class.getResourceAsStream("/image/tetris-icon-32.png"))));
-    this.stage.setTitle("Tetris connexion");
-
-    FXMLLoader loader = new FXMLLoader(
-        getClass().getResource("/fxml/Connexion.fxml"));
-    loader.setController(this);
-    try {
-      stage.setScene(new Scene(loader.load()));
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    this.stage.getScene().addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-      if (key.getCode() == KeyCode.ENTER) {
-        this.connexion();
-      }
-    });
   }
 
   /**
@@ -117,7 +84,6 @@ public class ConnexionController implements Initializable {
     if (informationComplete()) {
       this.controller.connexion(ip.getText(), Integer.parseInt(port.getText()),
           username.getText());
-      this.stage.close();
     }
   }
 
@@ -125,7 +91,7 @@ public class ConnexionController implements Initializable {
    * Action when you press on the button to leave the application
    */
   public void leavePressed() {
-    this.stage.close();
+    // todo : this.stage.close();
   }
 
   /**

@@ -45,14 +45,6 @@ public class MultiplayerGame extends Game {
   }
 
   /**
-   * Starts a new game.
-   */
-  public void start() {
-    this.player.start();
-    this.otherPlayer.playerStatus("", 0);
-  }
-
-  /**
    * {@inheritDoc}
    */
   @Override
@@ -61,7 +53,7 @@ public class MultiplayerGame extends Game {
     this.otherPlayer.addPropertyChangeListener(listener[1]);
   }
 
-  public void addPCLToPlayer(PropertyChangeListener listener) {
+  public void addPCSToPlayer(PropertyChangeListener listener) {
     this.player.addPropertyChangeListener(listener);
   }
 

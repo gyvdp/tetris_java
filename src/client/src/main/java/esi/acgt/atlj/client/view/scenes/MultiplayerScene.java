@@ -22,14 +22,25 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message;
+package esi.acgt.atlj.client.view.scenes;
 
-/**
- * All different type of message that are possible to send/receive from client/server
- */
-public enum MessageType {
-  GAME,
-  STATISTICS,
-  SERVER,
-  NEW_GAME
+import esi.acgt.atlj.client.view.controllers.MultiplayerGameController;
+import java.beans.PropertyChangeListener;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+
+public class MultiplayerScene extends Scene {
+
+  private MultiplayerGameController controller;
+
+  public MultiplayerScene(Parent root, MultiplayerGameController controller, String username) {
+    super(root);
+    this.controller = controller;
+    this.controller.setMainPlayerUsername(username);
+  }
+
+  public PropertyChangeListener[] getBoardListeners() {
+    return new PropertyChangeListener[]{this.controller.getPlayer1(),
+        this.controller.getPlayer2()};
+  }
 }

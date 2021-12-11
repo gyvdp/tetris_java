@@ -24,28 +24,27 @@
 
 package esi.acgt.atlj.message.messageTypes;
 
-import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.GameMessage;
-import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.model.Game;
-import esi.acgt.atlj.model.player.UnmanagedPlayer;
+import esi.acgt.atlj.model.player.AbstractPlayer;
+import esi.acgt.atlj.model.player.Action;
 
 /**
  * Sends score to server.
  */
-public class Score extends GameMessage {
+public class GameStatAction extends GameMessage {
 
-  private final int score;
+  private final Action action;
 
   /**
    * Adds the score to a player.
    *
-   * @param score Score to send.
-   * @param name  Player that has sent the message.
+   * @param action action to send.
+   * @param name   Player that has sent the message.
    */
-  public Score(int score, String name) {
+  public GameStatAction(Action action, String name) {
     super(name);
-    this.score = score;
+    this.action = action;
   }
 
   /**
@@ -53,7 +52,7 @@ public class Score extends GameMessage {
    */
   @Override
   public void execute(Game game) {
-    var player = (UnmanagedPlayer) (game.getBoard(this.userName));
-    player.setScore(this.score);
+    var player = (AbstractPlayer) (game.getBoard(this.userName));
+    player.applyStatAction(this.action);
   }
 }

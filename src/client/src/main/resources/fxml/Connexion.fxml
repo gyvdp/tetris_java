@@ -39,6 +39,7 @@
 <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
   minWidth="-Infinity" prefHeight="330.0" prefWidth="651.0" spacing="10.0"
   style="-fx-background-color: #121212;" xmlns="http://javafx.com/javafx/16"
+  fx:controller="esi.acgt.atlj.client.view.controllers.ConnexionController"
   xmlns:fx="http://javafx.com/fxml/1">
   <HBox alignment="CENTER" prefHeight="180.0" prefWidth="651.0"
     style="-fx-border-color: black; -fx-border-width: 2px;">

@@ -27,25 +27,19 @@ package esi.acgt.atlj.client.view.controllers;
 import esi.acgt.atlj.client.controller.Controller;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
 
 public class GameMenuController implements Initializable, PropertyChangeListener {
 
   private String username;
   private Controller controller;
-  private Stage stage;
+
 
   @FXML
   public Label connectedUsername;
@@ -70,42 +64,19 @@ public class GameMenuController implements Initializable, PropertyChangeListener
   @FXML
   public Label winningPercent;
 
-  /**
-   * Constructor of GameMenuController
-   *
-   * @param username   username of the connected player
-   * @param stage      stage of this controller
-   * @param controller controller that this class will interact with to contact with model
-   */
-  public GameMenuController(String username, Stage stage, Controller controller) {
-    this.username = username;
+  public void setRootController(Controller controller) {
     this.controller = controller;
-    this.stage = stage;
+  }
 
-    this.stage.setOnCloseRequest(windowEvent -> {
-      this.stage.close();
-      this.controller.disconnect();
-    });
-    this.stage.getIcons()
-        .add(new Image(Objects.requireNonNull(
-            ConnexionController.class.getResourceAsStream("/image/tetris-icon-32.png"))));
-    this.stage.setTitle("Tetris");
-
-    FXMLLoader loader = new FXMLLoader(
-        getClass().getResource("/fxml/GameMenu.fxml"));
-    loader.setController(this);
-    try {
-      this.stage.setScene(new Scene(loader.load()));
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  public void setUsername(String username) {
+    this.username = username;
+    this.connectedUsername.setText(username);
   }
 
   /**
    * Action when you click on the disconnect button
    */
   public void disconnect() {
-    this.stage.close();
     this.controller.disconnect();
   }
 

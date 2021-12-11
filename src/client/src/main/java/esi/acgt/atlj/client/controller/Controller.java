@@ -49,17 +49,18 @@ public class Controller extends Application {
 
   @Override
   public void start(Stage stage) {
-    this.view = new View();
+    this.view = new View(stage);
     view.setController(this);
-    view.displayConnexion();
 
     final Parameters params = getParameters();
     for (var param : params.getRaw()) {
       switch (param) {
         case "--localhost" -> this.connexion("127.0.0.1", 6969, "Pacliclown");
-        // todo : case "--client" -> this.solo("Andrew");
       }
+      return;
     }
+    view.displayConnexion();
+    view.show();
   }
 
   /**
@@ -119,9 +120,8 @@ public class Controller extends Application {
    * @param username username of the player
    */
   public void startMultiplayerGame(String username) {
-    this.client.startMultiplayerGame(username);
     this.view.displayBoard(username);
-    this.client.addPCSToBoard(this.view.getBoardListeners());
+    this.client.startMultiplayerGame(username, this.view.getBoardListeners());
   }
 
 }

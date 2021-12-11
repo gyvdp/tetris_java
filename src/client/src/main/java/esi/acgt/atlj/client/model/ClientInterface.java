@@ -26,6 +26,7 @@ package esi.acgt.atlj.client.model;
 
 import esi.acgt.atlj.message.ServerRequest;
 import esi.acgt.atlj.model.Game;
+import esi.acgt.atlj.model.player.Action;
 import esi.acgt.atlj.model.player.PlayerStatInterface;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
@@ -104,9 +105,9 @@ public interface ClientInterface {
   /**
    * Sends your score to the server.
    *
-   * @param Score Score of the current player.
+   * @param action Score of the current player.
    */
-  void sendScore(int Score);
+  void sendStatAction(Action action);
 
 //  /**
 //   * Add a propertyChangeListener to the propertyChangerSupport that's used for the Menu's data
@@ -123,7 +124,7 @@ public interface ClientInterface {
 //   */
 //  void fireDataToMenu(HashMap<String, Integer> gameStats, HashMap<String, Integer> tetriminoStats);
 
-  void startMultiplayerGame(String username);
+  void startMultiplayerGame(String username, PropertyChangeListener[] listeners);
 
   void addPCSToBoard(PropertyChangeListener[] listeners);
 
