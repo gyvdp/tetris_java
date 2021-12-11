@@ -32,6 +32,9 @@ import esi.acgt.atlj.client.view.View;
 import esi.acgt.atlj.client.view.ViewInterface;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -57,6 +60,7 @@ public class Controller extends Application {
     String host = null;
     String port = null;
     String username = null;
+    Level logLevel = Level.WARNING;
 
     final Parameters params = getParameters();
     for (Map.Entry<String, String> entry : params.getNamed().entrySet()) {
@@ -64,11 +68,21 @@ public class Controller extends Application {
         case "host" -> host = entry.getValue();
         case "port" -> port = entry.getValue();
         case "username" -> username = entry.getValue();
+        case "log" -> logLevel = Level.parse(entry.getValue());
       }
     }
 
+    setLogLevel(logLevel);
     view.displayConnexion(host, port, username);
     view.show();
+  }
+
+  public static void setLogLevel(Level targetLevel) {
+    Logger root = Logger.getLogger("");
+    root.setLevel(targetLevel);
+    for (Handler handler : root.getHandlers()) {
+      handler.setLevel(targetLevel);
+    }
   }
 
   /**
