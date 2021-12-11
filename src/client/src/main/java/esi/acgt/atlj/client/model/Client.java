@@ -31,7 +31,6 @@ import esi.acgt.atlj.message.ServerRequest;
 import esi.acgt.atlj.message.StatisticMessage;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.Connection;
-import esi.acgt.atlj.message.messageTypes.GameStat;
 import esi.acgt.atlj.message.messageTypes.GameStatAction;
 import esi.acgt.atlj.message.messageTypes.Hold;
 import esi.acgt.atlj.message.messageTypes.LockTetrimino;
@@ -42,7 +41,6 @@ import esi.acgt.atlj.message.messageTypes.SetFallingTetrimino;
 import esi.acgt.atlj.model.Game;
 import esi.acgt.atlj.model.player.Action;
 import esi.acgt.atlj.model.player.Direction;
-import esi.acgt.atlj.model.player.PlayerStatInterface;
 import esi.acgt.atlj.model.player.PlayerStatus;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
@@ -167,15 +165,6 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   @Override
   protected void connexionException(Exception e) {
 
-  }
-
-  @Override
-  public void sendAllGameStats(PlayerStatInterface gameStats) {
-    try {
-      sendToServer(new GameStat(gameStats));
-    } catch (IOException e) {
-      System.err.println("Cannot send game stats to server");
-    }
   }
 
   /**

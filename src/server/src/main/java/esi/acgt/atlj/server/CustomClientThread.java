@@ -27,31 +27,21 @@ package esi.acgt.atlj.server;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.DtoException;
 import esi.acgt.atlj.message.AbstractMessage;
-import esi.acgt.atlj.message.GameMessage;
-import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.message.ServerRequest;
 import esi.acgt.atlj.message.messageTypes.Request;
-import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import esi.acgt.atlj.message.messageTypes.Connection;
-import esi.acgt.atlj.model.player.PlayerStatus;
-import esi.acgt.atlj.model.tetrimino.Mino;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.Arrays;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 /**
  * Custom thread for each client of the server.
  */
 public class CustomClientThread extends Thread {
-
 
   /**
    * Unique id of client.
@@ -70,15 +60,7 @@ public class CustomClientThread extends Thread {
    * Handle message from client.
    */
   private BiConsumer<AbstractMessage, CustomClientThread> handleMessage;
-  /**
-   * Sends disconnect message to other player.
-   */
-  private Consumer<CustomClientThread> disconnect;
 
-  /**
-   * Runs when need to refill bag
-   */
-  private Runnable refillBag;
   /**
    * Sockets are used in the operating system as channels of communication between two processes.
    *
@@ -101,11 +83,6 @@ public class CustomClientThread extends Thread {
    * initiated.
    */
   private boolean readyToStop;
-
-  /**
-   * Quits a match up.
-   */
-  private Consumer<CustomClientThread> quit;
 
 
   /**
@@ -136,7 +113,7 @@ public class CustomClientThread extends Thread {
       throw ex;
     }
     readyToStop = false;
-    setName("Client connection" + getIdOfClient());
+    setName("Client connection" + getClientNumber());
     this.start();
   }
 
@@ -145,7 +122,7 @@ public class CustomClientThread extends Thread {
    *
    * @return Id of client.
    */
-  public int getIdOfClient() {
+  public int getClientNumber() {
     return this.id;
   }
 
@@ -200,6 +177,10 @@ public class CustomClientThread extends Thread {
     return this.user.getUsername();
   }
 
+  public int getUserId() {
+    return this.user.getId();
+  }
+
   /**
    * Hook method called each time a new message is received by this client. If this method return
    * true, then the method
@@ -221,26 +202,14 @@ public class CustomClientThread extends Thread {
       if (((Request) message).getAction() == ServerRequest.MULTIPLAYER) {
         server.addPlayer(this);
       }
-      if (((Request) message).getAction() == ServerRequest.QUIT) {
-        if (quit == null) {
-          server.playerQuit(this);
-        } else {
-          quit.accept(this);
-        }
-      }
     } else {
       return true;
     }
     return false;
   }
 
-
-  public void connectQuit(Consumer<CustomClientThread> quit) {
-    this.quit = quit;
-  }
-
   /**
-   * Sends an object to the client. This method can be overriden, but if so it should still perform
+   * Sends an object to the client. This method can be overridden, but if so it should still perform
    * the general function of sending to client, by calling the <code>super.sendToClient()</code>
    * method perhaps after some kind of filtering is done.
    *
@@ -273,30 +242,12 @@ public class CustomClientThread extends Thread {
   }
 
   /**
-   * Connects disconnect lambda.
-   *
-   * @param disconnect Lambda to connect with.
-   */
-  public synchronized void connectDisconnect(Consumer<CustomClientThread> disconnect) {
-    this.disconnect = disconnect;
-  }
-
-  /**
    * Return true if the client is connected.
    *
    * @return true if the client is connected.
    */
   final public synchronized boolean isConnected() {
     return clientSocket != null && output != null;
-  }
-
-  /**
-   * Connects lambda to refill bag from match-up generator.
-   *
-   * @param refillBag RefillBag lambda to connect.
-   */
-  public synchronized void connectRefillBag(Runnable refillBag) {
-    this.refillBag = refillBag;
   }
 
   /**
@@ -326,16 +277,15 @@ public class CustomClientThread extends Thread {
       if (!readyToStop) {
         try {
           System.out.println(
-              "Client " + this.getIdOfClient() + " has disconnected with" + this.getInetAddress());
+              "Client " + this.getClientNumber() + " has disconnected with"
+                  + this.getInetAddress());
           closeAll();
         } catch (Exception ignored) {
         }
         server.clientException(this, exception);
       }
     } finally {
-      if (this.disconnect != null) {
-        disconnect.accept(this);
-      }
+      server.clientDisconnected(this);
     }
   }
 

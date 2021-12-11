@@ -43,6 +43,10 @@ public class PlayerState extends GameMessage {
     this.playerStatus = playerStatus;
   }
 
+  public PlayerStatus getPlayerStatus() {
+    return playerStatus;
+  }
+
   /**
    * {@inheritDoc}
    */

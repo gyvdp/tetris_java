@@ -24,21 +24,60 @@
 
 package esi.acgt.atlj.server.utils.game;
 
+import esi.acgt.atlj.message.AbstractMessage;
+import esi.acgt.atlj.message.GameMessage;
+import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.model.Game;
 import esi.acgt.atlj.model.player.ManagedPlayer;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Keeps track of an ongoing multiplayer game.
+ */
 public class MultiplayerGame extends Game {
 
-  private final ManagedPlayer playerOne;
-  private final ManagedPlayer playerTwo;
-
+  /**
+   * Constructor for a multiplayer game.
+   *
+   * @param usernameOne Name of first player.
+   * @param usernameTwo Name of second player.
+   */
   public MultiplayerGame(String usernameOne, String usernameTwo) {
     super();
-    playerOne = new ManagedPlayer(usernameOne);
-    playerTwo = new ManagedPlayer(usernameTwo);
+    ManagedPlayer playerOne = new ManagedPlayer(usernameOne);
+    ManagedPlayer playerTwo = new ManagedPlayer(usernameTwo);
     players.add(playerOne);
     players.add(playerTwo);
+  }
+
+  /**
+   * Executes the message if it updates in some sort of way the game.
+   *
+   * @param m Message to execute.
+   */
+  public void handleMessage(AbstractMessage m) {
+    if (m.getType() == MessageType.GAME) {
+      ((GameMessage) m).execute(this);
+    }
+  }
+
+  /**
+   * Finds the winner and loser of a multiplayer game;
+   *
+   * @return List with the username of the winner and the loser.
+   */
+  public List<String> getStandings() {
+    List<String> standings = new ArrayList<>();
+    if (players.get(0).getStats().getScore() > players.get(1).getStats().getScore()) {
+      standings.add(players.get(0).getUsername());
+      standings.add(players.get(1).getUsername());
+    } else {
+      standings.add(players.get(1).getUsername());
+      standings.add(players.get(0).getUsername());
+    }
+    return standings;
   }
 
   @Override

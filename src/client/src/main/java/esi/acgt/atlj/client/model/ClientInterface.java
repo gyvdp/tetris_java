@@ -41,13 +41,6 @@ import javafx.scene.input.KeyCode;
 public interface ClientInterface {
 
   /**
-   * Sends all game stats to user.
-   *
-   * @param gameStats Game stats interface to send to model.
-   */
-  void sendAllGameStats(PlayerStatInterface gameStats);
-
-  /**
    * Tries to establish a connexion with server.
    */
   void connect() throws ConnectException;

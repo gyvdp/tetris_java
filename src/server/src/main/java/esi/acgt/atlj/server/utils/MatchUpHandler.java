@@ -32,15 +32,16 @@ import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.ServerRequest;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
-import esi.acgt.atlj.message.messageTypes.GameStat;
 import esi.acgt.atlj.message.messageTypes.HighScore;
 import esi.acgt.atlj.message.messageTypes.NextMino;
+import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.SendStartGame;
 import esi.acgt.atlj.model.Game;
 import esi.acgt.atlj.model.player.PlayerStatInterface;
 import esi.acgt.atlj.message.messageTypes.Request;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import esi.acgt.atlj.model.player.Action;
+import esi.acgt.atlj.model.player.PlayerStatus;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.server.AbstractServer;
 import esi.acgt.atlj.server.CustomClientThread;
@@ -49,7 +50,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 
 /**
@@ -57,7 +57,7 @@ import java.util.function.Consumer;
  */
 public class MatchUpHandler extends Thread {
 
-  private Game game;
+  private final Game game;
 
   /**
    * Generator for new bags of tetriminos.
@@ -72,6 +72,15 @@ public class MatchUpHandler extends Thread {
    */
   HashMap<String, CustomClientThread> clients;
 
+  /**
+   * List of users
+   */
+  HashMap<String, UserDto> users;
+
+
+  /**
+   * Server match up belongs to.
+   */
   AbstractServer server;
   /**
    * Unique id of generated match-up.
@@ -89,8 +98,11 @@ public class MatchUpHandler extends Thread {
   public MatchUpHandler(List<CustomClientThread> clients, int idGeneratedMatchUp,
       BusinessInterface interactDatabase, AbstractServer server) {
     this.clients = new HashMap<>();
+    this.users = new HashMap<>();
     this.clients.put(clients.get(0).getUsername(), clients.get(0));
     this.clients.put(clients.get(1).getUsername(), clients.get(1));
+    this.users.put(clients.get(0).getUsername(), clients.get(0).getUser());
+    this.users.put(clients.get(1).getUsername(), clients.get(1).getUser());
     this.game = new MultiplayerGame(clients.get(0).getUsername(), clients.get(1).getUsername());
     this.server = server;
     this.interactDatabase = interactDatabase;
@@ -98,7 +110,7 @@ public class MatchUpHandler extends Thread {
         clients.get(1).getUsername());
     this.id = idGeneratedMatchUp;
     for (CustomClientThread client : clients) {
-      clientLambdaConnections(client);
+      client.connectHandleMessage(this.handleMessage);
     }
     this.start();
   }
@@ -120,6 +132,12 @@ public class MatchUpHandler extends Thread {
     }
   }
 
+  /**
+   * Gets the username of all the other players.
+   *
+   * @param client Client that needs to be excluded from usernames.
+   * @return Array of all other usernames.
+   */
   public String[] getOtherPlayerUsername(CustomClientThread client) {
     String[] usernames = new String[1];
     for (var entry : clients.entrySet()) {
@@ -140,23 +158,32 @@ public class MatchUpHandler extends Thread {
       Mino mino = bagGenerator.takeMino(client.getUsername());
       client.sendMessage(new NextMino(mino, client.getUsername()));
       sendToAllOthers(client, new NextMino(mino, client.getUsername()));
-    } else if (m instanceof GameStat stats) {
-      setGameStats(stats.getGameStats(), client.getUser());
     } else if (m instanceof Request request) {
       if (request.getAction() == ServerRequest.GET_STATS) {
         server.getStatOfPlayer(new SendAllStatistics(), client);
       }
+    } else if (m instanceof PlayerState) {
+      if (((PlayerState) m).getPlayerStatus().equals(PlayerStatus.LOCK_OUT))//todo add discon quit
+      {
+        updateDb();
+      } else if (((PlayerState) m).getPlayerStatus().equals(PlayerStatus.STOPPED)) {
+        System.out.println('h');
+        quit(client);
+      }
+      sendToAllOthers(client, m);
     } else {
       sendToAllOthers(client, m);
     }
   };
 
+
   /**
-   * Decrements the id of match-up in server when this closes.
+   * Sends a message to all other entities participating in the match up except the client that has
+   * sent the message.
+   *
+   * @param client  Client that has sent the message.
+   * @param message Message that has been sent.
    */
-  private Runnable decrementMatchUpId;
-
-
   public void sendToAllOthers(CustomClientThread client, AbstractMessage message) {
     for (var entry : clients.entrySet()) {
       if (!Objects.equals(entry.getValue().getUsername(), client.getUsername())) {
@@ -166,50 +193,16 @@ public class MatchUpHandler extends Thread {
     sendMessageToModel(message, client);
   }
 
-  /**
-   * Removes client from list of clients.
-   */
-  Consumer<CustomClientThread> quit = (CustomClientThread clientThread) -> {
-    System.out.println("Client " + clientThread.getIdOfClient() + " has quit the match-up");
-    this.clients.remove(clientThread.getUsername());
-    server.addClientToWaitingList(clientThread);
+  public void quit(CustomClientThread client) {
+    this.clients.remove(client.getUsername());
+    server.addClientToWaitingList(client);
     checkEndOfMatchUp();
-  };
+  }
 
   private void checkEndOfMatchUp() {
     if (clients.size() == 0) {
-      //updateDb();
+      updateDb();
       System.out.println("Match-up " + (this.id + 1) + " has ended");
-      decrementMatchUpId.run();
-    }
-  }
-
-  /**
-   * Updates the database with specific values of the game
-
-   public void updateDb() {
-   todo CustomClientThread loser = model.getLoser();
-   GameHistoryDto dtoLost = new GameHistoryDto(loser.getUser().getId(), 0, 0, 1, 0);
-   GameHistoryDto dtoWon = new GameHistoryDto(getOpposingClient(loser).getUser().getId(), 0, 0, 0,
-   1);
-   try {
-   interactDatabase.setGameStatEntity(dtoLost);
-   interactDatabase.setGameStatEntity(dtoWon);
-   } catch (BusinessException e) {
-   System.err.println("Cannot send won and lost games to database \n" + e.getMessage());
-   }
-   }*/
-
-  /**
-   * Connects all necessary lambdas to client.
-   *
-   * @param client Client to connect lambdas to.
-   */
-  public void clientLambdaConnections(CustomClientThread client) {
-    if (client != null) {
-      client.connectHandleMessage(this.handleMessage);
-      //client.connectDisconnect(this.disconnect);
-      client.connectQuit(this.quit); //todo should autodetect
     }
   }
 
@@ -221,7 +214,7 @@ public class MatchUpHandler extends Thread {
    * @param c Client that sent the message.
    */
   public void sendMessageToModel(AbstractMessage m, CustomClientThread c) {
-    //model.receiveMessage(m, c);
+    ((MultiplayerGame) game).handleMessage(m);
   }
 
   /**
@@ -230,20 +223,6 @@ public class MatchUpHandler extends Thread {
   @Override
   public void run() {
     startGame();
-    //While is active => handles messages
-
-    // Other system than opposing player to be generic
-
-  }
-
-
-  /**
-   * Connects decrement match up id from server
-   *
-   * @param dec Lambda to connect.
-   */
-  public void connectDecrementMatchUpId(Runnable dec) {
-    this.decrementMatchUpId = dec;
   }
 
   /**
@@ -286,6 +265,18 @@ public class MatchUpHandler extends Thread {
       interactDatabase.setTetriminoEntity(tetriminoDto);
     } catch (BusinessException e) {
       System.out.println("Cannot set user in database.");
+    }
+  }
+
+  public void updateDb() {
+    var result = ((MultiplayerGame) game).getStandings();
+    GameHistoryDto dtoLost = new GameHistoryDto(users.get(result.get(0)).getId(), 0, 0, 1, 0);
+    GameHistoryDto dtoWon = new GameHistoryDto(users.get(result.get(1)).getId(), 0, 0, 0, 1);
+    try {
+      interactDatabase.setGameStatEntity(dtoLost);
+      interactDatabase.setGameStatEntity(dtoWon);
+    } catch (BusinessException e) {
+      System.err.println("Cannot send won and lost games to database \n" + e.getMessage());
     }
   }
 
