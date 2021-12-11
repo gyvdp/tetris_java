@@ -28,9 +28,9 @@ import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.DtoException;
 import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.ServerRequest;
+import esi.acgt.atlj.message.messageTypes.Connection;
 import esi.acgt.atlj.message.messageTypes.Request;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
-import esi.acgt.atlj.message.messageTypes.Connection;
 import esi.acgt.atlj.model.player.PlayerStatus;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import java.io.IOException;
@@ -216,7 +216,7 @@ public class CustomClientThread extends Thread {
     } catch (InterruptedException e) {
       System.err.println("Cannot give tetrimino");
     }
-    return Mino.O_MINO;
+    return Mino.L_MINO;
   }
 
   /**
@@ -278,10 +278,9 @@ public class CustomClientThread extends Thread {
           quit.accept(this);
         }
       }
-      return false;
-    }
-    if (message instanceof SendAllStatistics e) {
-      server.getStatOfPlayer(e, this);
+      if (e.getAction() == ServerRequest.GET_STATS) {
+        server.getStatOfPlayer(new SendAllStatistics(), this);
+      }
       return false;
     }
     return true;

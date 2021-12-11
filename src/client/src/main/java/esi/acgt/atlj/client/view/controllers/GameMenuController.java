@@ -25,17 +25,14 @@
 package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.client.controller.Controller;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.net.URL;
-import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
-public class GameMenuController implements Initializable, PropertyChangeListener {
+public class GameMenuController implements Initializable {
 
   private String username;
   private Controller controller;
@@ -73,6 +70,21 @@ public class GameMenuController implements Initializable, PropertyChangeListener
     this.connectedUsername.setText(username);
   }
 
+  public void setStats(HashMap<String, Integer> stats) {
+    highestScore.setText(String.valueOf(stats.getOrDefault("SCORE", 0)));
+    var lost = stats.getOrDefault("LOST", 0);
+    var won = stats.getOrDefault("WON", 0);
+    loses.setText(String.valueOf(lost));
+    wins.setText(String.valueOf(won));
+    winningPercent.setText(String.format("%.2f%%", ((double) won) / (won + lost) * 100));
+    singleLabel.setText(String.valueOf(stats.getOrDefault("SINGLE", 0)));
+    doubleLabel.setText(String.valueOf(stats.getOrDefault("DOUBLE", 0)));
+    tripleLabel.setText(String.valueOf(stats.getOrDefault("TRIPLE", 0)));
+    tetrisLabel.setText(String.valueOf(stats.getOrDefault("TETRIS", 0)));
+    hardDrop.setText(String.valueOf(stats.getOrDefault("HARD_DROP", 0)));
+    destroyedLine.setText(String.valueOf(stats.getOrDefault("BURN", 0)));
+  }
+
   /**
    * Action when you click on the disconnect button
    */
@@ -85,124 +97,6 @@ public class GameMenuController implements Initializable, PropertyChangeListener
    */
   public void play() {
     this.controller.startMultiplayerGame(this.username);
-  }
-
-  /**
-   * Change the information on the view
-   *
-   * @param evt event of the change
-   */
-  @Override
-  public void propertyChange(PropertyChangeEvent evt) {
-    Platform.runLater(() -> {
-      switch (evt.getPropertyName()) {
-        case "BURN" -> updateLineLabel((int) evt.getNewValue());
-        case "HARD" -> updateHardDropLabel((int) evt.getNewValue());
-        case "WON" -> updateWinsLabel((int) evt.getNewValue());
-        case "LOST" -> updateLosesLabel((int) evt.getNewValue());
-        case "SCORE" -> updateHighestScoreLabel((int) evt.getNewValue());
-        case "PERCENT" -> updateWinsPercentLabel((double) evt.getNewValue());
-        case "SINGLE" -> updateSingleLabel((int) evt.getNewValue());
-        case "DOUBLE" -> updateDoubleLabel((int) evt.getNewValue());
-        case "TRIPLE" -> updateTripleLabel((int) evt.getNewValue());
-        case "TETRIS" -> updateTetrisLabel((int) evt.getNewValue());
-      }
-    });
-  }
-
-  /**
-   * Update highestScore label
-   *
-   * @param score new value of highestScore
-   */
-  private void updateHighestScoreLabel(int score) {
-    this.highestScore.setText(Integer.toString(score));
-  }
-
-  /**
-   * Update loses
-   *
-   * @param loses new value of loses
-   */
-  private void updateLosesLabel(int loses) {
-    this.loses.setText(Integer.toString(loses));
-  }
-
-  /**
-   * Update winningPercent
-   *
-   * @param percent new value of winningPercent
-   */
-  private void updateWinsPercentLabel(double percent) {
-    if (percent >= 0) {
-      var temp = new DecimalFormat("#.##").format(percent);
-      this.winningPercent.setText(temp.toString() + "%");
-    } else {
-      this.winningPercent.setText("N/A");
-    }
-  }
-
-  /**
-   * Update wins
-   *
-   * @param wins new value of wins
-   */
-  private void updateWinsLabel(int wins) {
-    this.wins.setText(Integer.toString(wins));
-  }
-
-  /**
-   * Update hardDrop label
-   *
-   * @param hardD new value of hardDrop
-   */
-  private void updateHardDropLabel(int hardD) {
-    this.hardDrop.setText(Integer.toString(hardD));
-  }
-
-  /**
-   * Update single label
-   *
-   * @param single new value of hardDrop
-   */
-  private void updateSingleLabel(int single) {
-    this.singleLabel.setText(Integer.toString(single));
-  }
-
-  /**
-   * Update double label
-   *
-   * @param doubleL new value of hardDrop
-   */
-  private void updateDoubleLabel(int doubleL) {
-    this.doubleLabel.setText(Integer.toString(doubleL));
-  }
-
-  /**
-   * Update triple label
-   *
-   * @param triple new value of hardDrop
-   */
-  private void updateTripleLabel(int triple) {
-    this.tripleLabel.setText(Integer.toString(triple));
-  }
-
-  /**
-   * Update double label
-   *
-   * @param tetris new value of hardDrop
-   */
-  private void updateTetrisLabel(int tetris) {
-    this.tetrisLabel.setText(Integer.toString(tetris));
-  }
-
-  /**
-   * Update destrouedLine
-   *
-   * @param destroyedLine new value of destroyedLine
-   */
-  private void updateLineLabel(int destroyedLine) {
-    this.destroyedLine.setText(Integer.toString(destroyedLine));
   }
 
 

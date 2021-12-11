@@ -26,6 +26,7 @@ package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
 import java.beans.PropertyChangeListener;
+import java.util.HashMap;
 
 public interface ViewInterface {
 
@@ -67,5 +68,5 @@ public interface ViewInterface {
    */
   PropertyChangeListener[] getBoardListeners();
 
-  void displayMenu(String username);
+  void displayMenu(String username, HashMap<String, Integer> stats);
 }

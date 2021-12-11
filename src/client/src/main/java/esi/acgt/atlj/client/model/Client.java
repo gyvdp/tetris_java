@@ -28,6 +28,7 @@ import esi.acgt.atlj.client.model.game.MultiplayerGame;
 import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.GameMessage;
 import esi.acgt.atlj.message.ServerRequest;
+import esi.acgt.atlj.message.StatisticMessage;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.Connection;
 import esi.acgt.atlj.message.messageTypes.GameStat;
@@ -35,7 +36,6 @@ import esi.acgt.atlj.message.messageTypes.GameStatAction;
 import esi.acgt.atlj.message.messageTypes.Hold;
 import esi.acgt.atlj.message.messageTypes.LockTetrimino;
 import esi.acgt.atlj.message.messageTypes.Request;
-import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import esi.acgt.atlj.message.messageTypes.SetFallingTetrimino;
 import esi.acgt.atlj.message.messageTypes.StartGame;
 import esi.acgt.atlj.model.Game;
@@ -49,6 +49,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.input.KeyCode;
@@ -66,6 +67,8 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
 
   private ClientStatus status;
 
+  private HashMap<String, Integer> stats;
+
   private final String username;
 
   private Game game;
@@ -80,6 +83,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
     super(port, host);
     this.status = ClientStatus.CONNECTED;
     this.username = username;
+    this.stats = new HashMap<>();
     connect();
     sendNameToServer(username);
   }
@@ -88,16 +92,22 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
     return this.username;
   }
 
+  public HashMap<String, Integer> getStats() {
+    return this.stats;
+  }
+
   /**
    * {@inheritDoc}
    */
   @Override
   protected void handleServerMessage(Object information) {
     AbstractMessage message = (AbstractMessage) (information);
+    logger.log(Level.INFO,
+        String.format("Received %s message type from server", message.getType().name()));
     switch (message.getType()) {
       case NEW_GAME -> ((StartGame) message).execute(game);
       case GAME -> ((GameMessage) message).execute(game);
-      case STATISTICS -> System.out.println("stats");
+      case STATISTICS -> ((StatisticMessage) message).execute(stats);
     }
   }
 
@@ -178,9 +188,11 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   @Override
   public void askAllStatistics() {
     try {
-      sendToServer(new SendAllStatistics());
+      sendToServer(new Request(ServerRequest.GET_STATS));
+      logger.log(Level.INFO,
+          "Successfully requested stats to server");
     } catch (IOException e) {
-      System.err.println("Cannot send game stats to server");
+      logger.log(Level.SEVERE, e.getMessage());
     }
   }
 
@@ -192,9 +204,9 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
     try {
       sendToServer(new AskPiece());
       logger.log(Level.INFO,
-          "Successfully requested a mino to server (%s)");
+          "Successfully requested a mino to server");
     } catch (IOException e) {
-      System.err.println("cannot ask piece to server");
+      logger.log(Level.SEVERE, e.getMessage());
     }
   }
 
@@ -206,8 +218,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   @Override
   public void sendAction(ServerRequest a) {
     try {
-      Request action = new Request();
-      action.setAction(a);
+      Request action = new Request(a);
       sendToServer(action);
       logger.log(Level.INFO,
           String.format("Successfully sent action to server (%s)", a.name()));
@@ -305,7 +316,8 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   public void keyBoardInput(KeyCode input) {
     if (game instanceof MultiplayerGame) {
       var multiplayerGame = (MultiplayerGame) game;
-      if (multiplayerGame.getStatus() != PlayerStatus.LOCK_OUT) {
+      if (multiplayerGame.getStatus() != PlayerStatus.LOCK_OUT
+          && multiplayerGame.getStatus() != PlayerStatus.NOT_STARTED) {
         switch (input) {
           case LEFT, NUMPAD4 -> multiplayerGame.move(Direction.LEFT);
           case RIGHT, NUMPAD6 -> multiplayerGame.move(Direction.RIGHT);

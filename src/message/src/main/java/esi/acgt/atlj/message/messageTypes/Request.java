@@ -31,8 +31,9 @@ public class Request extends AbstractMessage {
 
   private ServerRequest action;
 
-  public Request() {
+  public Request(ServerRequest request) {
     super();
+    this.action = request;
   }
 
   /**

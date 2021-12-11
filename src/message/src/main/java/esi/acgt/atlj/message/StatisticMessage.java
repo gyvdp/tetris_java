@@ -25,6 +25,8 @@
 package esi.acgt.atlj.message;
 
 
+import java.util.HashMap;
+
 public abstract class StatisticMessage extends AbstractMessage {
 
   public StatisticMessage() {
@@ -34,5 +36,5 @@ public abstract class StatisticMessage extends AbstractMessage {
   /**
    * Displays the statistics in the view.
    */
-  public abstract void execute();
+  public abstract void execute(HashMap<String, Integer> stats);
 }

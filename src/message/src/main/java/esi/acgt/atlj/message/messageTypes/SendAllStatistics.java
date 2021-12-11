@@ -24,9 +24,7 @@
 
 package esi.acgt.atlj.message.messageTypes;
 
-import esi.acgt.atlj.message.GameMessage;
 import esi.acgt.atlj.message.StatisticMessage;
-import esi.acgt.atlj.model.Game;
 import java.util.HashMap;
 
 /**
@@ -53,25 +51,8 @@ public class SendAllStatistics extends StatisticMessage {
     this.tetrimino_history = tetrimino_history;
   }
 
-  /**
-   * Getter for game history.
-   *
-   * @return Hashmap for game history.
-   */
-  public HashMap<String, Integer> getGame_history() {
-    return game_history;
-  }
-
-  /**
-   * Getter for tetrimino history.
-   *
-   * @return Hashmap for tetrimino history.
-   */
-  public HashMap<String, Integer> getTetrimino_history() {
-    return tetrimino_history;
-  }
-
-  public void execute() {
-
+  public void execute(HashMap<String, Integer> stats) {
+    stats.putAll(game_history);
+    stats.putAll(tetrimino_history);
   }
 }

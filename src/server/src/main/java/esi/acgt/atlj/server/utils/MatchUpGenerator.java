@@ -30,14 +30,17 @@ import esi.acgt.atlj.database.dto.TetriminoDto;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.message.AbstractMessage;
+import esi.acgt.atlj.message.ServerRequest;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
+import esi.acgt.atlj.message.messageTypes.Connection;
 import esi.acgt.atlj.message.messageTypes.GameStat;
 import esi.acgt.atlj.message.messageTypes.HighScore;
-import esi.acgt.atlj.message.messageTypes.Connection;
 import esi.acgt.atlj.message.messageTypes.NextMino;
+import esi.acgt.atlj.message.messageTypes.Request;
+import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import esi.acgt.atlj.message.messageTypes.StartGame;
-import esi.acgt.atlj.model.player.PlayerStatInterface;
 import esi.acgt.atlj.model.player.Action;
+import esi.acgt.atlj.model.player.PlayerStatInterface;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.server.AbstractServer;
 import esi.acgt.atlj.server.CustomClientThread;
@@ -115,18 +118,21 @@ public class MatchUpGenerator extends Thread {
   {
     sendMessageToModel(m, client);
     CustomClientThread opPlayer = getOpposingClient(client);
-    if (opPlayer != null) {
-      if (m instanceof AskPiece) {
-        Mino mino = client.getMino();
-        client.sendMessage(new NextMino(mino, client.getUsername()));
+
+    if (m instanceof AskPiece) {
+      Mino mino = client.getMino();
+      client.sendMessage(new NextMino(mino, client.getUsername()));
+      if (opPlayer != null) {
         opPlayer.sendMessage(new NextMino(mino, opPlayer.getUsername()));
-      } else if (m instanceof GameStat stats) {
-        setGameStats(stats.getGameStats(), client.getUser());
-      } else {
-        opPlayer.sendMessage(m);
+      }
+    } else if (m instanceof GameStat stats) {
+      setGameStats(stats.getGameStats(), client.getUser());
+    } else if (m instanceof Request request) {
+      if (request.getAction() == ServerRequest.GET_STATS) {
+        server.getStatOfPlayer(new SendAllStatistics(), client);
       }
     } else {
-      System.err.println("Message dropped " + m.toString() + " from " + client.getInetAddress());
+      opPlayer.sendMessage(m);
     }
   };
 

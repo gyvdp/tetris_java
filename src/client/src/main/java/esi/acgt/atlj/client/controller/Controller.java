@@ -30,6 +30,7 @@ import esi.acgt.atlj.client.model.Client;
 import esi.acgt.atlj.client.model.ClientInterface;
 import esi.acgt.atlj.client.view.View;
 import esi.acgt.atlj.client.view.ViewInterface;
+import java.util.HashMap;
 import javafx.application.Application;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -73,7 +74,7 @@ public class Controller extends Application {
   public void connexion(String host, int port, String username) {
     try {
       this.client = new Client(port, host, username);
-      this.startMenu(username);
+      this.startMenu(username, client.getStats());
     } catch (Exception e) {
       this.view.displayError(e);
       this.view.displayConnexion();
@@ -94,10 +95,9 @@ public class Controller extends Application {
    *
    * @param username username of the player
    */
-  public void startMenu(String username) {
-    this.view.displayMenu(username);
-    // todo : this.model.addPropertyChangeListenerToClient(this.view.getMenuListener());
+  public void startMenu(String username, HashMap<String, Integer> stats) {
     this.client.askAllStatistics();
+    this.view.displayMenu(username, stats);
   }
 
   public void leaveMatch() {

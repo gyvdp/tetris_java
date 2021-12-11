@@ -32,6 +32,7 @@ import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
 import java.net.ConnectException;
+import java.util.HashMap;
 import javafx.scene.input.KeyCode;
 
 /**
@@ -56,6 +57,8 @@ public interface ClientInterface {
    *
    */
   void askAllStatistics();
+
+  HashMap<String, Integer> getStats();
 
   /**
    * Request the next color of Tetrimino.
