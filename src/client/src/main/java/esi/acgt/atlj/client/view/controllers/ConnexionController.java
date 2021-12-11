@@ -58,6 +58,18 @@ public class ConnexionController implements Initializable {
     this.controller = controller;
   }
 
+  public void setHost(String host) {
+    this.ip.setText(host);
+  }
+
+  public void setPort(String port) {
+    this.port.setText(port);
+  }
+
+  public void setUsername(String username) {
+    this.username.setText(username);
+  }
+
   /**
    * Verify if the information of the connection are complete and if it's correct information
    *

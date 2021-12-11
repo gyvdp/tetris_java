@@ -52,7 +52,7 @@ public interface ViewInterface {
   /**
    * Create and display a Stage where you put information about the server
    */
-  void displayConnexion();
+  void displayConnexion(String host, String port, String username);
 
   /**
    * Display the board of your tetris game and opponent one

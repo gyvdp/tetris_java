@@ -2,7 +2,7 @@
   <configuration default="false" name="Client (127.0.0.1)" type="Application" factoryName="Application" folderName="Client" singleton="false">
     <option name="MAIN_CLASS_NAME" value="esi.acgt.atlj.client.TetrisClient" />
     <module name="atlj.client" />
-    <option name="PROGRAM_PARAMETERS" value="--localhost" />
+    <option name="PROGRAM_PARAMETERS" value="--host=127.0.0.1 --port=6969 --username=Pacliclown" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="esi.acgt.atlj.client.controller.*" />
@@ -10,7 +10,7 @@
       </pattern>
     </extension>
     <method v="2">
-      <option name="Make" enabled="true" />
+      <option name="MakeProject" enabled="true" />
     </method>
   </configuration>
 </component>

@@ -56,11 +56,12 @@ public class View implements ViewInterface {
    * {@inheritDoc}
    */
   @Override
-  public void displayConnexion() {
+  public void displayConnexion(String host, String port, String username) {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Connexion.fxml"));
     try {
       this.primaryStage.setScene(
-          new ConnectionScene(loader.load(), loader.getController(), this.controller));
+          new ConnectionScene(loader.load(), loader.getController(), this.controller, host, port,
+              username));
     } catch (IOException e) {
       e.printStackTrace();
     }

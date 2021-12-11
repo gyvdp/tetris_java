@@ -31,6 +31,7 @@ import esi.acgt.atlj.client.model.ClientInterface;
 import esi.acgt.atlj.client.view.View;
 import esi.acgt.atlj.client.view.ViewInterface;
 import java.util.HashMap;
+import java.util.Map;
 import javafx.application.Application;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -53,14 +54,20 @@ public class Controller extends Application {
     this.view = new View(stage);
     view.setController(this);
 
+    String host = null;
+    String port = null;
+    String username = null;
+
     final Parameters params = getParameters();
-    for (var param : params.getRaw()) {
-      switch (param) {
-        case "--localhost" -> this.connexion("127.0.0.1", 6969, "Pacliclown");
+    for (Map.Entry<String, String> entry : params.getNamed().entrySet()) {
+      switch (entry.getKey()) {
+        case "host" -> host = entry.getValue();
+        case "port" -> port = entry.getValue();
+        case "username" -> username = entry.getValue();
       }
-      return;
     }
-    view.displayConnexion();
+
+    view.displayConnexion(host, port, username);
     view.show();
   }
 
@@ -77,7 +84,7 @@ public class Controller extends Application {
       this.startMenu(username, client.getStats());
     } catch (Exception e) {
       this.view.displayError(e);
-      this.view.displayConnexion();
+      this.view.displayConnexion(host, String.valueOf(port), username);
     }
     this.view.show();
   }
@@ -86,8 +93,8 @@ public class Controller extends Application {
    * End the Programme
    */
   public void disconnect() {
-    view.displayConnexion();
-    view.show();
+    client.closeConnectionToServer();
+    // todo : close view
   }
 
   /**

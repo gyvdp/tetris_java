@@ -13,5 +13,8 @@
         <module name="atlj.database" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="esi-atlir5-atlj-project" target="16" />
+    </bytecodeTargetLevel>
   </component>
 </project>

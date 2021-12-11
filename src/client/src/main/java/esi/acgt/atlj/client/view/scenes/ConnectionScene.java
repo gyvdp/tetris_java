@@ -34,11 +34,19 @@ public class ConnectionScene extends Scene {
 
   private final ConnexionController controller;
 
-  public ConnectionScene(Parent root, ConnexionController controller, Controller rootController) {
+  public ConnectionScene(Parent root, ConnexionController controller, Controller rootController,
+      String host, String port, String username) {
     super(root);
 
     Objects.requireNonNull(controller);
     this.controller = controller;
     this.controller.setController(rootController);
+    setFields(host, port, username);
+  }
+
+  public void setFields(String host, String port, String username) {
+    this.controller.setHost(host);
+    this.controller.setPort(port);
+    this.controller.setUsername(username);
   }
 }
