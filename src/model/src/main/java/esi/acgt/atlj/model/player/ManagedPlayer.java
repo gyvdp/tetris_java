@@ -61,6 +61,10 @@ public class ManagedPlayer extends AbstractPlayer {
     setStatus(PlayerStatus.TETRIMINO_FALLING);
   }
 
+  public synchronized void stop() {
+    setStatus(PlayerStatus.STOPPED);
+  }
+
   /**
    * Moves a tetrimino in the direction.
    *

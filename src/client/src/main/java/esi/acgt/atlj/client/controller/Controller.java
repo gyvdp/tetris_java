@@ -24,10 +24,9 @@
 
 package esi.acgt.atlj.client.controller;
 
-import static esi.acgt.atlj.message.ServerRequest.QUIT;
-
 import esi.acgt.atlj.client.model.Client;
 import esi.acgt.atlj.client.model.ClientInterface;
+import esi.acgt.atlj.client.model.game.MultiplayerGame;
 import esi.acgt.atlj.client.view.View;
 import esi.acgt.atlj.client.view.ViewInterface;
 import java.util.HashMap;
@@ -106,9 +105,13 @@ public class Controller extends Application {
   /**
    * End the Programme
    */
-  public void disconnect() {
-    client.closeConnectionToServer();
-    // todo : close view
+  public void stop() {
+    view.quit();
+    if (client != null) {
+      client.closeConnectionToServer();
+      client = null;
+    }
+
   }
 
   /**
@@ -122,8 +125,9 @@ public class Controller extends Application {
   }
 
   public void leaveMatch() {
-    //todo stop real game.
-    client.sendAction(QUIT);
+    ((MultiplayerGame) client.getActualGame()).getPlayer().stop();
+    startMenu(((MultiplayerGame) client.getActualGame()).getPlayer().getUsername(),
+        client.getStats());
   }
 
   /**

@@ -33,5 +33,6 @@ public enum PlayerStatus {
   SOFT_DROPPING,
   TETRIMINO_LOCKED,
   LOCK_DOWN,
-  LOCK_OUT
+  LOCK_OUT,
+  STOPPED
 }

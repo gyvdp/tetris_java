@@ -83,13 +83,15 @@ public class GameMenuController implements Initializable {
     tetrisLabel.setText(String.valueOf(stats.getOrDefault("TETRIS", 0)));
     hardDrop.setText(String.valueOf(stats.getOrDefault("HARD_DROP", 0)));
     destroyedLine.setText(String.valueOf(stats.getOrDefault("BURN", 0)));
+
+
   }
 
   /**
    * Action when you click on the disconnect button
    */
   public void disconnect() {
-    this.controller.disconnect();
+    this.controller.stop();
   }
 
   /**

@@ -69,4 +69,6 @@ public interface ViewInterface {
   PropertyChangeListener[] getBoardListeners();
 
   void displayMenu(String username, HashMap<String, Integer> stats);
+
+  void quit();
 }

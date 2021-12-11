@@ -65,6 +65,15 @@ public class View implements ViewInterface {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    primaryStage.setOnCloseRequest(event -> {
+      event.consume();
+      if (primaryStage.getScene() instanceof MultiplayerScene) {
+        controller.leaveMatch();
+      } else if (primaryStage.getScene() instanceof GameMenuScene) {
+        controller.stop();
+      }
+    });
   }
 
   /**
@@ -132,5 +141,11 @@ public class View implements ViewInterface {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  @Override
+  public void quit() {
+    this.primaryStage.setScene(null);
+    this.primaryStage.close();
   }
 }
