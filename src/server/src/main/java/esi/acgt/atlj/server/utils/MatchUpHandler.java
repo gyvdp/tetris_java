@@ -57,7 +57,7 @@ import java.util.function.BiConsumer;
  */
 public class MatchUpHandler extends Thread {
 
-  private final Game game;
+  private Game game = null;
 
   /**
    * Generator for new bags of tetriminos.
@@ -163,11 +163,9 @@ public class MatchUpHandler extends Thread {
         server.getStatOfPlayer(new SendAllStatistics(), client);
       }
     } else if (m instanceof PlayerState) {
-      if (((PlayerState) m).getPlayerStatus().equals(PlayerStatus.LOCK_OUT))//todo add discon quit
-      {
-        updateDb();
+      if (((PlayerState) m).getPlayerStatus().equals(PlayerStatus.LOCK_OUT)) {
+        setGameStats(game.getBoard(client.getUsername()).getStats(), client.getUser());
       } else if (((PlayerState) m).getPlayerStatus().equals(PlayerStatus.STOPPED)) {
-        System.out.println('h');
         quit(client);
       }
       sendToAllOthers(client, m);
@@ -190,18 +188,26 @@ public class MatchUpHandler extends Thread {
         entry.getValue().sendMessage(message);
       }
     }
-    sendMessageToModel(message, client);
+    sendMessageToModel(message);
   }
 
+  /**
+   * When a player quit a match up. Check if match up has ended and updates user specific
+   *
+   * @param client Client that has quit the match up.
+   */
   public void quit(CustomClientThread client) {
     this.clients.remove(client.getUsername());
     server.addClientToWaitingList(client);
     checkEndOfMatchUp();
   }
 
+  /**
+   * Checks if the match up has ended.
+   */
   private void checkEndOfMatchUp() {
     if (clients.size() == 0) {
-      updateDb();
+      updateStandings();
       System.out.println("Match-up " + (this.id + 1) + " has ended");
     }
   }
@@ -211,9 +217,8 @@ public class MatchUpHandler extends Thread {
    * Sends a received message to the model to be treated.
    *
    * @param m Message that needs to be sent.
-   * @param c Client that sent the message.
    */
-  public void sendMessageToModel(AbstractMessage m, CustomClientThread c) {
+  public void sendMessageToModel(AbstractMessage m) {
     ((MultiplayerGame) game).handleMessage(m);
   }
 
@@ -268,7 +273,10 @@ public class MatchUpHandler extends Thread {
     }
   }
 
-  public void updateDb() {
+  /**
+   * Updates the standings of the database.
+   */
+  public void updateStandings() {
     var result = ((MultiplayerGame) game).getStandings();
     GameHistoryDto dtoLost = new GameHistoryDto(users.get(result.get(0)).getId(), 0, 0, 1, 0);
     GameHistoryDto dtoWon = new GameHistoryDto(users.get(result.get(1)).getId(), 0, 0, 0, 1);
@@ -279,5 +287,4 @@ public class MatchUpHandler extends Thread {
       System.err.println("Cannot send won and lost games to database \n" + e.getMessage());
     }
   }
-
 }
