@@ -35,6 +35,7 @@ import esi.acgt.atlj.message.messageTypes.GameStat;
 import esi.acgt.atlj.message.messageTypes.GameStatAction;
 import esi.acgt.atlj.message.messageTypes.Hold;
 import esi.acgt.atlj.message.messageTypes.LockTetrimino;
+import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.Request;
 import esi.acgt.atlj.message.messageTypes.SendStartGame;
 import esi.acgt.atlj.message.messageTypes.SetFallingTetrimino;
@@ -302,6 +303,16 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
     }
   }
 
+  public void sendStatusUpdate(PlayerStatus status) {
+    try {
+      sendToServer(new PlayerState(this.username, status));
+      logger.log(Level.INFO,
+          String.format("Successfully sent status update to server (%s)", status.name()));
+    } catch (IOException e) {
+      logger.log(Level.SEVERE, e.getMessage());
+    }
+  }
+
   @Override
   public Game getActualGame() {
     return game;
@@ -339,6 +350,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
       case "ACTUAL" -> sendTetriminoToOtherPlayer((TetriminoInterface) evt.getNewValue());
       case "ACTION" -> sendStatAction((Action) evt.getNewValue());
       case "PLACE_TETRIMINO" -> lockTetrimino((TetriminoInterface) evt.getNewValue());
+      case "STATUS" -> sendStatusUpdate((PlayerStatus) evt.getNewValue());
       case "next" -> {
         if (evt.getNewValue() == null) {
           requestNextMino();
