@@ -32,21 +32,22 @@ import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.ServerRequest;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
-import esi.acgt.atlj.message.messageTypes.Connection;
 import esi.acgt.atlj.message.messageTypes.GameStat;
 import esi.acgt.atlj.message.messageTypes.HighScore;
 import esi.acgt.atlj.message.messageTypes.NextMino;
+import esi.acgt.atlj.message.messageTypes.SendStartGame;
+import esi.acgt.atlj.model.Game;
+import esi.acgt.atlj.model.player.PlayerStatInterface;
 import esi.acgt.atlj.message.messageTypes.Request;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
-import esi.acgt.atlj.message.messageTypes.StartGame;
 import esi.acgt.atlj.model.player.Action;
-import esi.acgt.atlj.model.player.PlayerStatInterface;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.server.AbstractServer;
 import esi.acgt.atlj.server.CustomClientThread;
-import java.util.ArrayList;
+import esi.acgt.atlj.server.utils.game.MultiplayerGame;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -54,16 +55,14 @@ import java.util.function.Consumer;
 /**
  * Starts and manages a match-up between two clients.
  */
-public class MatchUpGenerator extends Thread {
+public class MatchUpHandler extends Thread {
 
-  /**
-   * Game server side
-   */
-  private final MatchUpModel model;
+  private Game game;
+
   /**
    * Generator for new bags of tetriminos.
    */
-  private final BagGenerator bagGenerator;
+  private BagGenerator bagGenerator;
   /**
    * Interaction with database
    */
@@ -71,9 +70,7 @@ public class MatchUpGenerator extends Thread {
   /**
    * List of clients.
    */
-  List<CustomClientThread> clients;
-
-  List<CustomClientThread> persistantClient;
+  HashMap<String, CustomClientThread> clients;
 
   AbstractServer server;
   /**
@@ -89,26 +86,49 @@ public class MatchUpGenerator extends Thread {
    * @param idGeneratedMatchUp Id of generated match-up.
    * @param interactDatabase   Interface to interact with database.
    */
-  public MatchUpGenerator(List<CustomClientThread> clients, int idGeneratedMatchUp,
+  public MatchUpHandler(List<CustomClientThread> clients, int idGeneratedMatchUp,
       BusinessInterface interactDatabase, AbstractServer server) {
-    this.clients = clients;
+    this.clients = new HashMap<>();
+    this.clients.put(clients.get(0).getUsername(), clients.get(0));
+    this.clients.put(clients.get(1).getUsername(), clients.get(1));
+    this.game = new MultiplayerGame(clients.get(0).getUsername(), clients.get(1).getUsername());
     this.server = server;
-    this.persistantClient = new ArrayList<>(clients);
     this.interactDatabase = interactDatabase;
-    this.model = new MatchUpModel(new ArrayList<>(clients));
-    this.bagGenerator = new BagGenerator();
+    this.bagGenerator = new BagGenerator(clients.get(0).getUsername(),
+        clients.get(1).getUsername());
     this.id = idGeneratedMatchUp;
     for (CustomClientThread client : clients) {
-      getOpposingClient(client).sendMessage(new Connection(client.getUsername()));
       clientLambdaConnections(client);
     }
     this.start();
   }
 
+
   /**
-   * Lambda expression to refill bags.
+   * Sends to each player inside match up that game is ready to start and high score of all
+   * players.
    */
-  Runnable refillBag = this::refillBags;
+  public void startGame() {
+    for (var entry : clients.entrySet()) {
+      CustomClientThread client = entry.getValue();
+      var username = client.getUsername();
+      var usernamesOther = getOtherPlayerUsername(client);
+      client.sendMessage(new SendStartGame
+          (usernamesOther[0], username, bagGenerator.takeMino(username),
+              bagGenerator.takeMino(username)));
+      client.sendMessage(new HighScore(getHighScores()));
+    }
+  }
+
+  public String[] getOtherPlayerUsername(CustomClientThread client) {
+    String[] usernames = new String[1];
+    for (var entry : clients.entrySet()) {
+      if (!Objects.equals(entry.getValue().getUsername(), client.getUsername())) {
+        usernames[0] = entry.getValue().getUsername();
+      }
+    }
+    return usernames;
+  }
 
 
   /**
@@ -116,15 +136,10 @@ public class MatchUpGenerator extends Thread {
    */
   BiConsumer<AbstractMessage, CustomClientThread> handleMessage = (AbstractMessage m, CustomClientThread client) ->
   {
-    sendMessageToModel(m, client);
-    CustomClientThread opPlayer = getOpposingClient(client);
-
     if (m instanceof AskPiece) {
-      Mino mino = client.getMino();
+      Mino mino = bagGenerator.takeMino(client.getUsername());
       client.sendMessage(new NextMino(mino, client.getUsername()));
-      if (opPlayer != null) {
-        opPlayer.sendMessage(new NextMino(mino, opPlayer.getUsername()));
-      }
+      sendToAllOthers(client, new NextMino(mino, client.getUsername()));
     } else if (m instanceof GameStat stats) {
       setGameStats(stats.getGameStats(), client.getUser());
     } else if (m instanceof Request request) {
@@ -132,7 +147,7 @@ public class MatchUpGenerator extends Thread {
         server.getStatOfPlayer(new SendAllStatistics(), client);
       }
     } else {
-      opPlayer.sendMessage(m);
+      sendToAllOthers(client, m);
     }
   };
 
@@ -142,38 +157,119 @@ public class MatchUpGenerator extends Thread {
   private Runnable decrementMatchUpId;
 
 
+  public void sendToAllOthers(CustomClientThread client, AbstractMessage message) {
+    for (var entry : clients.entrySet()) {
+      if (!Objects.equals(entry.getValue().getUsername(), client.getUsername())) {
+        entry.getValue().sendMessage(message);
+      }
+    }
+    sendMessageToModel(message, client);
+  }
+
   /**
    * Removes client from list of clients.
    */
   Consumer<CustomClientThread> quit = (CustomClientThread clientThread) -> {
     System.out.println("Client " + clientThread.getIdOfClient() + " has quit the match-up");
-    this.clients.remove(clientThread);
+    this.clients.remove(clientThread.getUsername());
     server.addClientToWaitingList(clientThread);
     checkEndOfMatchUp();
   };
 
   private void checkEndOfMatchUp() {
     if (clients.size() == 0) {
-      updateDb();
+      //updateDb();
       System.out.println("Match-up " + (this.id + 1) + " has ended");
       decrementMatchUpId.run();
     }
   }
 
   /**
+   * Updates the database with specific values of the game
+
+   public void updateDb() {
+   todo CustomClientThread loser = model.getLoser();
+   GameHistoryDto dtoLost = new GameHistoryDto(loser.getUser().getId(), 0, 0, 1, 0);
+   GameHistoryDto dtoWon = new GameHistoryDto(getOpposingClient(loser).getUser().getId(), 0, 0, 0,
+   1);
+   try {
+   interactDatabase.setGameStatEntity(dtoLost);
+   interactDatabase.setGameStatEntity(dtoWon);
+   } catch (BusinessException e) {
+   System.err.println("Cannot send won and lost games to database \n" + e.getMessage());
+   }
+   }*/
+
+  /**
+   * Connects all necessary lambdas to client.
+   *
+   * @param client Client to connect lambdas to.
+   */
+  public void clientLambdaConnections(CustomClientThread client) {
+    if (client != null) {
+      client.connectHandleMessage(this.handleMessage);
+      //client.connectDisconnect(this.disconnect);
+      client.connectQuit(this.quit); //todo should autodetect
+    }
+  }
+
+
+  /**
+   * Sends a received message to the model to be treated.
+   *
+   * @param m Message that needs to be sent.
+   * @param c Client that sent the message.
+   */
+  public void sendMessageToModel(AbstractMessage m, CustomClientThread c) {
+    //model.receiveMessage(m, c);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void run() {
+    startGame();
+    //While is active => handles messages
+
+    // Other system than opposing player to be generic
+
+  }
+
+
+  /**
+   * Connects decrement match up id from server
+   *
+   * @param dec Lambda to connect.
+   */
+  public void connectDecrementMatchUpId(Runnable dec) {
+    this.decrementMatchUpId = dec;
+  }
+
+  /**
    * Gets high score of both players.
    *
    * @return A hashmap where the high score is identified by the username.
-   * @throws BusinessException If query to get user high score has failed.
    */
-  private HashMap<String, Integer> getBothPlayersHighScoreDB() throws BusinessException {
+  private HashMap<String, Integer> getHighScores() {
     HashMap<String, Integer> highScores = new HashMap<>();
-    for (CustomClientThread client : clients) {
-      highScores.put(client.getUsername(), interactDatabase.getUserHighScore(client.getUser()));
+    for (var entry : clients.entrySet()) {
+      CustomClientThread client = entry.getValue();
+      try {
+        highScores.put(client.getUsername(), interactDatabase.getUserHighScore(client.getUser()));
+      } catch (BusinessException e) {
+        System.err.println("Cannot get both player high score \n" + e);
+      }
     }
     return highScores;
   }
 
+  /**
+   * Sets the game statistics to a given user.
+   *
+   * @param statistics Statistics to set to user.
+   * @param user       User to set statistics to.
+   */
   private void setGameStats(PlayerStatInterface statistics, UserDto user) {
     try {
       GameHistoryDto gameDto = new GameHistoryDto(user.getId(), statistics.getLevel(),
@@ -191,108 +287,6 @@ public class MatchUpGenerator extends Thread {
     } catch (BusinessException e) {
       System.out.println("Cannot set user in database.");
     }
-
   }
 
-
-  /**
-   * Updates the database with specific values of the game
-   */
-  public void updateDb() {
-    CustomClientThread loser = model.getLoser();
-    GameHistoryDto dtoLost = new GameHistoryDto(loser.getUser().getId(), 0, 0, 1, 0);
-    GameHistoryDto dtoWon = new GameHistoryDto(getOpposingClient(loser).getUser().getId(), 0, 0, 0,
-        1);
-    try {
-      interactDatabase.setGameStatEntity(dtoLost);
-      interactDatabase.setGameStatEntity(dtoWon);
-    } catch (BusinessException e) {
-      System.err.println("Cannot send won and lost games to database \n" + e.getMessage());
-    }
-  }
-
-  /**
-   * Connects all necessary lambdas to client.
-   *
-   * @param client Client to connect lambdas to.
-   */
-  public void clientLambdaConnections(CustomClientThread client) {
-    if (client != null) {
-      client.connectRefillBag(this.refillBag);
-      client.connectHandleMessage(this.handleMessage);
-      //client.connectDisconnect(this.disconnect);
-      client.connectQuit(this.quit);
-    }
-  }
-
-  /**
-   * Connects decrement match up id from server
-   *
-   * @param dec Lambda to connect.
-   */
-  public void connectDecrementMatchUpId(Runnable dec) {
-    this.decrementMatchUpId = dec;
-  }
-
-  /**
-   * Sends a received message to the model to be treated.
-   *
-   * @param m Message that needs to be sent.
-   * @param c Client that sent the message.
-   */
-  public void sendMessageToModel(AbstractMessage m, CustomClientThread c) {
-    model.receiveMessage(m, c);
-  }
-
-  /**
-   * Gets the opposing client of the given client.
-   *
-   * @param client Client to get adversary of.
-   * @return Opposing client of given client.
-   */
-  private CustomClientThread getOpposingClient(CustomClientThread client) {
-    return persistantClient.get(0).equals(client) ? persistantClient.get(1)
-        : persistantClient.get(0);
-  }
-
-  /**
-   * Asks bag generator to refill bag for each client with same mino.
-   */
-  synchronized void refillBags() {
-    Mino[] bag = bagGenerator.regenBag();
-    for (CustomClientThread client : clients) {
-      for (Mino m : bag) {
-        client.addMino(m);
-      }
-    }
-  }
-
-
-  /**
-   * Updates the player state for every player.
-   */
-  public void sendGreenLight() {
-    for (CustomClientThread client : clients) {
-      client.sendMessage(
-          new StartGame
-              (getOpposingClient(client).getUsername(), client.getUsername(), client.getMino(),
-                  client.getMino()));
-    }
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void run() {
-    refillBags();
-    sendGreenLight();
-    for (CustomClientThread clientThread : clients) {
-      try {
-        clientThread.sendMessage(new HighScore(getBothPlayersHighScoreDB()));
-      } catch (BusinessException e) {
-        System.err.println("Cannot get user high score");
-      }
-    }
-  }
 }

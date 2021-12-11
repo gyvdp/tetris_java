@@ -56,5 +56,4 @@ public class GameStat extends ServerMessage {
   public PlayerStatInterface getGameStats() {
     return gameStats;
   }
-
 }

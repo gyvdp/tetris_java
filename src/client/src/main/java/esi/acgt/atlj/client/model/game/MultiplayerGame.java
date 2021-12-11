@@ -33,8 +33,8 @@ import java.beans.PropertyChangeListener;
 
 public class MultiplayerGame extends Game {
 
-  private ManagedPlayer player;
-  private UnmanagedPlayer otherPlayer;
+  private final ManagedPlayer player;
+  private final UnmanagedPlayer otherPlayer;
 
   public MultiplayerGame(String username) {
     super();

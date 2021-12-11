@@ -26,6 +26,7 @@ package esi.acgt.atlj.server;
 
 
 import esi.acgt.atlj.database.dto.UserDto;
+import esi.acgt.atlj.message.messageTypes.Request;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import java.io.IOException;
 import java.io.InterruptedIOException;

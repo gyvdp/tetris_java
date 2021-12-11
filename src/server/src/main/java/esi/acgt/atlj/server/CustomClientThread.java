@@ -27,10 +27,12 @@ package esi.acgt.atlj.server;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.DtoException;
 import esi.acgt.atlj.message.AbstractMessage;
+import esi.acgt.atlj.message.GameMessage;
+import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.message.ServerRequest;
-import esi.acgt.atlj.message.messageTypes.Connection;
 import esi.acgt.atlj.message.messageTypes.Request;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
+import esi.acgt.atlj.message.messageTypes.Connection;
 import esi.acgt.atlj.model.player.PlayerStatus;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import java.io.IOException;
@@ -39,6 +41,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.BiConsumer;
@@ -49,12 +52,7 @@ import java.util.function.Consumer;
  */
 public class CustomClientThread extends Thread {
 
-  /**
-   * List of next tetriminos of player.
-   */
-  private final BlockingQueue<Mino> myTetriminos;
 
-  private boolean playingInsideMatchUp;
   /**
    * Unique id of client.
    */
@@ -63,10 +61,7 @@ public class CustomClientThread extends Thread {
    * A reference to the Server that created this instance.
    */
   private final AbstractServer server;
-  /**
-   * State of current player.
-   */
-  private PlayerStatus clientStatus;
+
   /**
    * User object of player current player for database.
    */
@@ -107,6 +102,9 @@ public class CustomClientThread extends Thread {
    */
   private boolean readyToStop;
 
+  /**
+   * Quits a match up.
+   */
   private Consumer<CustomClientThread> quit;
 
 
@@ -122,8 +120,6 @@ public class CustomClientThread extends Thread {
     this.clientSocket = clientSocket;
     this.id = id;
     this.server = server;
-    this.clientStatus = PlayerStatus.NOT_STARTED;
-    myTetriminos = new LinkedBlockingQueue<>();
     try {
       clientSocket.setSoTimeout(0);
     } catch (SocketException e) {
@@ -140,7 +136,6 @@ public class CustomClientThread extends Thread {
       throw ex;
     }
     readyToStop = false;
-    playingInsideMatchUp = false;
     setName("Client connection" + getIdOfClient());
     this.start();
   }
@@ -175,48 +170,6 @@ public class CustomClientThread extends Thread {
       input = null;
       clientSocket = null;
     }
-  }
-
-  /**
-   * Sets flag of player inside match up to true.
-   */
-  public void addedToMatchUp() {
-    this.playingInsideMatchUp = true;
-  }
-
-  /**
-   * Checks if a player is currently playing inside a match-up
-   *
-   * @return True if player is playing inside a match-up.
-   */
-  public boolean playing() {
-    return this.playingInsideMatchUp;
-  }
-
-  /**
-   * Adds a mino to the current list of tetriminos of the client.
-   *
-   * @param e Mino to add to current list of minos.
-   */
-  public void addMino(Mino e) {
-    this.myTetriminos.add(e);
-  }
-
-  /**
-   * Gets the head of list of client's current mino.
-   *
-   * @return Head of list unless it throws exception than returns default O.MINO.
-   */
-  public Mino getMino() {
-    if (this.myTetriminos.isEmpty()) {
-      refillBag.run();
-    }
-    try {
-      return this.myTetriminos.take();
-    } catch (InterruptedException e) {
-      System.err.println("Cannot give tetrimino");
-    }
-    return Mino.L_MINO;
   }
 
   /**
@@ -257,33 +210,28 @@ public class CustomClientThread extends Thread {
    * @return True if the message needs to be handled by server.
    */
   protected boolean handleMessageFromClient(Object message) {
-    if (message instanceof Connection s) {
+    if (message instanceof Connection) {
       try {
-        user = new UserDto(s.getUsername());
+        user = new UserDto(((Connection) message).getUsername());
         server.checkUser(user);
-        return false;
       } catch (DtoException e) {
         System.err.println("Need valid username to start a game");
       }
-    }
-    if (message instanceof Request e) {
-      if (e.getAction() == ServerRequest.MULTIPLAYER) {
+    } else if (message instanceof Request) {
+      if (((Request) message).getAction() == ServerRequest.MULTIPLAYER) {
         server.addPlayer(this);
       }
-      if (e.getAction() == ServerRequest.QUIT) {
-        playingInsideMatchUp = false;
+      if (((Request) message).getAction() == ServerRequest.QUIT) {
         if (quit == null) {
           server.playerQuit(this);
         } else {
           quit.accept(this);
         }
       }
-      if (e.getAction() == ServerRequest.GET_STATS) {
-        server.getStatOfPlayer(new SendAllStatistics(), this);
-      }
-      return false;
+    } else {
+      return true;
     }
-    return true;
+    return false;
   }
 
 
@@ -331,15 +279,6 @@ public class CustomClientThread extends Thread {
    */
   public synchronized void connectDisconnect(Consumer<CustomClientThread> disconnect) {
     this.disconnect = disconnect;
-  }
-
-  /**
-   * Getter for status of client.
-   *
-   * @return Status of current client.
-   */
-  public PlayerStatus getClientStatus() {
-    return this.clientStatus;
   }
 
   /**

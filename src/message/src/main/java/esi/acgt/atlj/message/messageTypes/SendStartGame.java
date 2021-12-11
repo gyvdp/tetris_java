@@ -35,7 +35,7 @@ import esi.acgt.atlj.model.tetrimino.Tetrimino;
 /**
  * Starts a game when message is received by client
  */
-public class StartGame extends AbstractMessage {
+public class SendStartGame extends AbstractMessage {
 
   String username;
   String usernameOpp;
@@ -50,7 +50,7 @@ public class StartGame extends AbstractMessage {
    * @param actual      Fist mino of the game.
    * @param next        First next mino of the game.
    */
-  public StartGame(String usernameOpp, String username, Mino actual, Mino next) {
+  public SendStartGame(String usernameOpp, String username, Mino actual, Mino next) {
     this.messageType = MessageType.NEW_GAME;
     this.username = username;
     this.usernameOpp = usernameOpp;

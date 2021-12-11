@@ -36,8 +36,8 @@ import esi.acgt.atlj.message.messageTypes.GameStatAction;
 import esi.acgt.atlj.message.messageTypes.Hold;
 import esi.acgt.atlj.message.messageTypes.LockTetrimino;
 import esi.acgt.atlj.message.messageTypes.Request;
+import esi.acgt.atlj.message.messageTypes.SendStartGame;
 import esi.acgt.atlj.message.messageTypes.SetFallingTetrimino;
-import esi.acgt.atlj.message.messageTypes.StartGame;
 import esi.acgt.atlj.model.Game;
 import esi.acgt.atlj.model.player.Action;
 import esi.acgt.atlj.model.player.Direction;
@@ -105,7 +105,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
     logger.log(Level.INFO,
         String.format("Received %s message type from server", message.getType().name()));
     switch (message.getType()) {
-      case NEW_GAME -> ((StartGame) message).execute(game);
+      case NEW_GAME -> ((SendStartGame) message).execute(game);
       case GAME -> ((GameMessage) message).execute(game);
       case STATISTICS -> ((StatisticMessage) message).execute(stats);
     }

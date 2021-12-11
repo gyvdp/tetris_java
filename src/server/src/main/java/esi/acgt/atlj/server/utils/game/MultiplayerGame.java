@@ -22,31 +22,27 @@
  * SOFTWARE.
  */
 
-package esi.acgt.atlj.message.messageTypes;
+package esi.acgt.atlj.server.utils.game;
 
+import esi.acgt.atlj.model.Game;
+import esi.acgt.atlj.model.player.ManagedPlayer;
+import java.beans.PropertyChangeListener;
 
-import esi.acgt.atlj.message.MessageType;
-import esi.acgt.atlj.message.ServerMessage;
+public class MultiplayerGame extends Game {
 
-/**
- * Sends its name to the server
- */
-public class Connection extends ServerMessage {
+  private final ManagedPlayer playerOne;
+  private final ManagedPlayer playerTwo;
 
-
-  private final String username;
-
-  /**
-   * Constructor for sending username and connection to server.
-   *
-   * @param username Username of player sending the message.
-   */
-  public Connection(String username) {
-    this.username = username;
-    this.messageType = MessageType.SERVER;
+  public MultiplayerGame(String usernameOne, String usernameTwo) {
+    super();
+    playerOne = new ManagedPlayer(usernameOne);
+    playerTwo = new ManagedPlayer(usernameTwo);
+    players.add(playerOne);
+    players.add(playerTwo);
   }
 
-  public String getUsername() {
-    return username;
+  @Override
+  public void addPropertyChangeListenerToBoards(PropertyChangeListener[] listener) {
+
   }
 }

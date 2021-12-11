@@ -25,6 +25,12 @@
 package esi.acgt.atlj.server.utils;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -32,31 +38,43 @@ import java.util.Random;
  */
 public class BagGenerator {
 
-  /**
-   * First random bag of tetriminos of game.
-   */
-  private final Mino[] firstBag;
+
+  private final HashMap<String, List<Mino>> playerTetrimino;
 
   /**
    * Constructor for server model.
    */
-  public BagGenerator() {  //TODO get pair of players
-    this.firstBag = regenBag();
+  public BagGenerator(String usernameOne, String usernameTwo) {
+    List<Mino> firstBag = regenBag();
+    this.playerTetrimino = new HashMap<>();
+    playerTetrimino.put(usernameOne, firstBag);
+    playerTetrimino.put(usernameTwo, firstBag);
   }
 
   /**
-   * Shuffles an array with the Fisher-Yates algorithm.
+   * Takes the first mino of the array from a specific user.
    *
-   * @param array Shuffled array.
+   * @param username Username of player to take.
+   * @return First mino of array.
    */
-  private static void shuffleTetriminos(Mino[] array) {
-    int n = array.length;
-    Random random = new Random(System.currentTimeMillis());
-    for (int i = 0; i < array.length; i++) {
-      int randomValue = i + random.nextInt(n - i);
-      Mino randomElement = array[randomValue];
-      array[randomValue] = array[i];
-      array[i] = randomElement;
+  public Mino takeMino(String username) {
+    List<Mino> mino = this.playerTetrimino.get(username);
+    if (mino.size() < 2) {
+      refillBags();
+    }
+    Mino m = mino.remove(0);
+    System.out.println(m);
+    return m;
+  }
+
+  /**
+   * Refills bag of both players.
+   */
+  private void refillBags() {
+    System.out.println("refill");
+    var bag = regenBag();
+    for (var entry : playerTetrimino.entrySet()) {
+      entry.getValue().addAll(bag);
     }
   }
 
@@ -66,12 +84,12 @@ public class BagGenerator {
    *
    * @return Array of shuffled minos.
    */
-  public Mino[] regenBag() {
-    Mino[] bag = new Mino[]{
+  public List<Mino> regenBag() {
+    System.out.println("regen");
+    List<Mino> bag = new ArrayList<>(Arrays.asList(
         Mino.S_MINO, Mino.Z_MINO, Mino.O_MINO, Mino.J_MINO, Mino.T_MINO,
-        Mino.I_MINO, Mino.L_MINO
-    };
-    shuffleTetriminos(bag);
+        Mino.I_MINO, Mino.L_MINO));
+    Collections.shuffle(bag);
     return bag;
   }
 

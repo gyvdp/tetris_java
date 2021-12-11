@@ -31,7 +31,7 @@ import esi.acgt.atlj.database.dto.TetriminoDto;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
-import esi.acgt.atlj.server.utils.MatchUpGenerator;
+import esi.acgt.atlj.server.utils.MatchUpHandler;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
@@ -61,7 +61,7 @@ public class Server extends AbstractServer {
   /**
    * All match-ups with their id.
    */
-  private final HashMap<Integer, MatchUpGenerator> matchUps;
+  private final HashMap<Integer, MatchUpHandler> matchUps;
 
   /**
    * Database interaction
@@ -252,7 +252,7 @@ public class Server extends AbstractServer {
   public synchronized void addPlayer(CustomClientThread client) {
     addClientToWaitingList(client);
     if (waitingList.size() % 2 == 0) {
-      MatchUpGenerator matchUp = new MatchUpGenerator(
+      MatchUpHandler matchUp = new MatchUpHandler(
           waitingList.stream().limit(2).collect(Collectors.toList()), this.matchUpId,
           interactDatabase, this);
       matchUp.connectDecrementMatchUpId(this.decrementMatchUpId);
@@ -268,9 +268,11 @@ public class Server extends AbstractServer {
 
 
   public void addClientToWaitingList(CustomClientThread client) {
-    waitingList.add(client);
-    System.out.println(
-        "Client " + client.getIdOfClient() + " is in the waiting list");
+    if (!waitingList.contains(client)) {
+      waitingList.add(client);
+      System.out.println(
+          "Client " + client.getIdOfClient() + " is in the waiting list");
+    }
   }
 
   @Override
