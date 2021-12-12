@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.model;
 
 import esi.acgt.atlj.client.model.game.MultiplayerGame;
@@ -58,7 +57,6 @@ import javafx.beans.property.MapProperty;
 import javafx.beans.property.SimpleMapProperty;
 import javafx.collections.FXCollections;
 import javafx.scene.input.KeyCode;
-
 
 /**
  * Sets up a specialized client with overridden methods from AbstractClient on which application
@@ -125,7 +123,6 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
     super.closeConnectionToServer();
     logger.log(Level.INFO, "Closing connection to server");
   }
-
 
   /**
    * {@inheritDoc}
@@ -272,13 +269,6 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
     sendAction(ServerRequest.MULTIPLAYER);
   }
 
-  @Override
-  public void addPCSToBoard(PropertyChangeListener[] listeners) {
-    if (game != null) {
-      game.addPropertyChangeListenerToBoards(listeners);
-    }
-  }
-
   public void sendStatusUpdate(PlayerStatus status) {
     try {
       sendToServer(new PlayerState(this.username, status));
@@ -327,4 +317,5 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
       }
     }
   }
+
 }

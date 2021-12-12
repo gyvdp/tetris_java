@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client;
 
 import esi.acgt.atlj.client.controller.Controller;
@@ -31,4 +30,5 @@ public class TetrisClient {
   public static void main(String[] args) {
     Controller.main(args);
   }
+
 }

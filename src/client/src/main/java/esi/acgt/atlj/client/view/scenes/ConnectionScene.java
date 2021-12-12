@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.view.scenes;
 
 import esi.acgt.atlj.client.controller.Controller;
@@ -49,4 +48,5 @@ public class ConnectionScene extends Scene {
     this.controller.setPort(port);
     this.controller.setUsername(username);
   }
+
 }

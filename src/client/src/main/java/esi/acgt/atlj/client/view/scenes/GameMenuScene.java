@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.view.scenes;
 
 import esi.acgt.atlj.client.controller.Controller;
@@ -32,7 +31,7 @@ import javafx.scene.Scene;
 
 public class GameMenuScene extends Scene {
 
-  GameMenuController controller;
+  final GameMenuController controller;
 
   public GameMenuScene(Parent root, GameMenuController controller, Controller rootController,
       String username, MapProperty<String, Integer> stats) {
@@ -42,4 +41,5 @@ public class GameMenuScene extends Scene {
     this.controller.setUsername(username);
     this.controller.bindStats(stats);
   }
+
 }

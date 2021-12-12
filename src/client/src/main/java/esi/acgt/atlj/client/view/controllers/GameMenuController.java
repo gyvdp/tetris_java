@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.client.controller.Controller;
@@ -36,28 +35,39 @@ import javafx.scene.control.Label;
 public class GameMenuController implements Initializable {
 
   private String username;
+
   private Controller controller;
 
   @FXML
   public Label usernameValue;
+
   @FXML
   public Label singleValue;
+
   @FXML
   public Label doubleValue;
+
   @FXML
   public Label tripleValue;
+
   @FXML
   public Label tetrisValue;
+
   @FXML
   public Label burnsValue;
+
   @FXML
   public Label levelValue;
+
   @FXML
   public Label wonValue;
+
   @FXML
   public Label lostValue;
+
   @FXML
   public Label highScoreValue;
+
   @FXML
   public Label winningPercentValue;
 
@@ -122,9 +132,9 @@ public class GameMenuController implements Initializable {
     this.controller.startMultiplayerGame(this.username);
   }
 
-
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     this.usernameValue.setText(this.usernameValue.getText() + this.username);
   }
+
 }

@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -37,9 +36,9 @@ import javafx.scene.layout.VBox;
 
 public class BoardController implements Initializable, PropertyChangeListener {
 
-  public final static int H = BoardMainController.H;
-  public final static int W = BoardMainController.L + BoardAsideController.L;
+  public final static int HEIGHT = BoardMainController.HEIGHT;
 
+  public final static int WIDTH = BoardMainController.WIDTH + BoardAsideController.WIDTH;
 
   @FXML
   public HBox container;
@@ -55,17 +54,16 @@ public class BoardController implements Initializable, PropertyChangeListener {
   @FXML
   public BoardAsideController asideController;
 
-
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    container.prefWidthProperty().bind(container.heightProperty().divide(H).multiply(W));
-    container.prefHeightProperty().bind(container.widthProperty().divide(W).multiply(H));
+    container.prefWidthProperty().bind(container.heightProperty().divide(HEIGHT).multiply(WIDTH));
+    container.prefHeightProperty().bind(container.widthProperty().divide(WIDTH).multiply(HEIGHT));
 
     boardMain.maxWidthProperty()
-        .bind(container.widthProperty().divide(W).multiply(BoardMainController.L));
+        .bind(container.widthProperty().divide(WIDTH).multiply(BoardMainController.WIDTH));
 
     aside.maxWidthProperty()
-        .bind(container.widthProperty().divide(W).multiply(BoardAsideController.L));
+        .bind(container.widthProperty().divide(WIDTH).multiply(BoardAsideController.WIDTH));
   }
 
   public void setMatrix(Mino[][] minos) {
@@ -97,7 +95,7 @@ public class BoardController implements Initializable, PropertyChangeListener {
   }
 
   /**
-   * PropertyChange that will change the view on base of what he receive
+   * PropertyChange that will change the view on base of what he received
    *
    * @param evt evt that has been fired
    */
@@ -112,9 +110,8 @@ public class BoardController implements Initializable, PropertyChangeListener {
         case "username" -> setUsername(evt.getNewValue().toString());
         case "hold" -> setHoldTetrimino(((Mino) evt.getNewValue()));
         case "next" -> setNextTetrimino((Mino) evt.getNewValue());
-//        case "winner" -> displayWinner((String) evt.getOldValue(), (String) evt.getNewValue());
-//        case "status" -> updateStatusLabel((String) evt.getOldValue(), (double) evt.getNewValue());
       }
     });
   }
+
 }

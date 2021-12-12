@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.model.game;
 
 import esi.acgt.atlj.model.Game;
@@ -34,6 +33,7 @@ import java.beans.PropertyChangeListener;
 public class MultiplayerGame extends Game {
 
   private final ManagedPlayer player;
+
   private final UnmanagedPlayer otherPlayer;
 
   public MultiplayerGame(String username) {
@@ -107,10 +107,6 @@ public class MultiplayerGame extends Game {
 
   public ManagedPlayer getPlayer() {
     return this.player;
-  }
-
-  public UnmanagedPlayer getOtherPlayer() {
-    return this.otherPlayer;
   }
 
 }

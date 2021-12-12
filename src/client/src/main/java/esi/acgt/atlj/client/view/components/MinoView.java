@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.view.components;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -32,10 +31,15 @@ import javafx.scene.layout.Pane;
 
 public class MinoView extends Pane {
 
-  public static final int H = 7;
-  public static final int W = 7;
+  //Todo ces champs ne sont pas utilisé
+  public static final int HEIGHT = 7;
+
+  public static final int WEIGHT = 7;
+
   private final static Image A1;
+
   private final static Image B1;
+
   private final static Image C1;
 
   static {
@@ -48,7 +52,7 @@ public class MinoView extends Pane {
 
   }
 
-  private ImageView image;
+  private final ImageView image;
 
   public MinoView() {
     image = new ImageView();
@@ -70,4 +74,5 @@ public class MinoView extends Pane {
       default -> image.setImage(null);
     }
   }
+
 }

@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.model;
 
 import esi.acgt.atlj.message.ServerRequest;
@@ -63,7 +62,6 @@ public interface ClientInterface {
    */
   void sendHoldMino(Mino m);
 
-
   /**
    * Sends a locked tetrimino message to server.
    *
@@ -77,7 +75,6 @@ public interface ClientInterface {
   void closeConnectionToServer();
 
   void sendNameToServer(String name);
-
 
   /**
    * Sends a tetrimino to the opposing player
@@ -95,9 +92,8 @@ public interface ClientInterface {
 
   void startMultiplayerGame(String username, PropertyChangeListener[] listeners);
 
-  void addPCSToBoard(PropertyChangeListener[] listeners);
-
   Game getActualGame();
 
   void keyBoardInput(KeyCode input);
+
 }

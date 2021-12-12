@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
@@ -36,16 +35,16 @@ public interface ViewInterface {
   void show();
 
   /**
-   * Setter of controller so that View will be interact with the Controller
+   * Setter of controller so that View will be interacted with the Controller
    *
    * @param controller Controller to interact with
    */
   void setController(Controller controller);
 
   /**
-   * Show a pop up with the exception message inside
+   * Show a pop-up with the exception message inside
    *
-   * @param e excption to display
+   * @param e exception to display
    */
   void displayError(Exception e);
 
@@ -62,13 +61,14 @@ public interface ViewInterface {
   void displayBoard(String username);
 
   /**
-   * Getter of Player1 and 2 casted in PropertyListener
+   * Getter of Player1 and 2 cast in PropertyListener
    *
-   * @return Listerners
+   * @return Listeners
    */
   PropertyChangeListener[] getBoardListeners();
 
   void displayMenu(String username, MapProperty<String, Integer> stats);
 
   void quit();
+
 }

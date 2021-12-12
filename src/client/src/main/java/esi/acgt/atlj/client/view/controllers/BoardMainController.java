@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -34,8 +33,9 @@ import javafx.scene.layout.VBox;
 
 public class BoardMainController implements Initializable {
 
-  public final static int H = (InfoBoxController.H * 2) + MatrixController.H;
-  public final static int L = MatrixController.L;
+  public final static int HEIGHT = (InfoBoxController.HEIGHT * 2) + MatrixController.HEIGHT;
+
+  public final static int WIDTH = MatrixController.WIDTH;
 
   @FXML
   public VBox container;
@@ -58,6 +58,7 @@ public class BoardMainController implements Initializable {
   @FXML
   public InfoBoxController bottomBoxController;
 
+  //Todo Andrew regarde
   private int lines;
 
   public static String linesToText(int lines) {
@@ -70,20 +71,20 @@ public class BoardMainController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    container.prefWidthProperty().bind(container.heightProperty().divide(H).multiply(L));
-    container.prefHeightProperty().bind(container.widthProperty().divide(L).multiply(H));
+    container.prefWidthProperty().bind(container.heightProperty().divide(HEIGHT).multiply(WIDTH));
+    container.prefHeightProperty().bind(container.widthProperty().divide(WIDTH).multiply(HEIGHT));
 
     topBox.maxWidthProperty().bind(container.widthProperty());
     topBox.maxHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(InfoBoxController.H));
+        .bind(container.heightProperty().divide(HEIGHT).multiply(InfoBoxController.HEIGHT));
 
     matrix.maxWidthProperty().bind(container.widthProperty());
     matrix.maxHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(MatrixController.H));
+        .bind(container.heightProperty().divide(HEIGHT).multiply(MatrixController.HEIGHT));
 
     bottomBox.maxWidthProperty().bind(container.widthProperty());
     bottomBox.maxHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(InfoBoxController.H));
+        .bind(container.heightProperty().divide(HEIGHT).multiply(InfoBoxController.HEIGHT));
 
     setUsername("Recherche");
     setLines(0);
@@ -104,4 +105,5 @@ public class BoardMainController implements Initializable {
   public void setMatrix(Mino[][] minos) {
     matrixController.set(minos);
   }
+
 }

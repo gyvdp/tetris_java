@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.client.view.components.MinoView;
@@ -38,9 +37,11 @@ import javafx.scene.layout.StackPane;
 
 public class MatrixController implements Initializable {
 
-  public final static int H = 174;
-  public final static int L = 93;
-  public final static int P = 7;
+  public final static int HEIGHT = 174;
+
+  public final static int WIDTH = 93;
+
+  public final static int PADDING = 7;
 
   @FXML
   public StackPane container;
@@ -48,7 +49,7 @@ public class MatrixController implements Initializable {
   @FXML
   public GridPane grid;
 
-  public MinoView[][] minos;
+  public final MinoView[][] minos;
 
   public ImageView background;
 
@@ -58,18 +59,19 @@ public class MatrixController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    grid.prefHeightProperty().bind(grid.widthProperty().divide(L).multiply(H));
+    grid.prefHeightProperty().bind(grid.widthProperty().divide(WIDTH).multiply(HEIGHT));
     grid.prefWidthProperty().bind(container.widthProperty());
 
-    background.fitHeightProperty().bind(background.fitWidthProperty().divide(L).multiply(H));
+    background.fitHeightProperty()
+        .bind(background.fitWidthProperty().divide(WIDTH).multiply(HEIGHT));
     background.fitWidthProperty().bind(grid.widthProperty());
 
     grid.paddingProperty().bind(Bindings.createObjectBinding(
-        () -> new Insets(grid.widthProperty().divide(L).multiply(P).doubleValue()),
+        () -> new Insets(grid.widthProperty().divide(WIDTH).multiply(PADDING).doubleValue()),
         grid.widthProperty()));
 
-    grid.hgapProperty().bind(grid.widthProperty().divide(L));
-    grid.vgapProperty().bind(grid.heightProperty().divide(H));
+    grid.hgapProperty().bind(grid.widthProperty().divide(WIDTH));
+    grid.vgapProperty().bind(grid.heightProperty().divide(HEIGHT));
 
     for (int i = 0; i < 10; ++i) {
       for (int j = 0; j < 20; ++j) {
@@ -94,4 +96,5 @@ public class MatrixController implements Initializable {
       }
     }
   }
+
 }

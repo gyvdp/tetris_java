@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -34,11 +33,13 @@ import javafx.scene.layout.VBox;
 
 public class BoardAsideController implements Initializable {
 
-  public final static int H = BoardMainController.H;
-  public final static int L = ScoreController.W;
+  public final static int HEIGHT = BoardMainController.HEIGHT;
+
+  public final static int WIDTH = ScoreController.WIDTH;
 
   @FXML
   public VBox container;
+
   public StackPane next;
 
   public TetriminoHolderController nextController;
@@ -48,25 +49,25 @@ public class BoardAsideController implements Initializable {
   public TetriminoHolderController holdController;
 
   public StackPane score;
-  public ScoreController scoreController;
 
+  public ScoreController scoreController;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    container.prefWidthProperty().bind(container.heightProperty().divide(H).multiply(L));
-    container.prefHeightProperty().bind(container.widthProperty().divide(L).multiply(H));
+    container.prefWidthProperty().bind(container.heightProperty().divide(HEIGHT).multiply(WIDTH));
+    container.prefHeightProperty().bind(container.widthProperty().divide(WIDTH).multiply(HEIGHT));
 
     score.maxWidthProperty().bind(container.widthProperty());
     score.maxHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(ScoreController.H));
+        .bind(container.heightProperty().divide(HEIGHT).multiply(ScoreController.HEIGHT));
 
-    next.maxWidthProperty().bind(container.widthProperty().divide(L).multiply(45));
+    next.maxWidthProperty().bind(container.widthProperty().divide(WIDTH).multiply(45));
     next.maxHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(TetriminoHolderController.H));
+        .bind(container.heightProperty().divide(HEIGHT).multiply(TetriminoHolderController.HEIGHT));
 
-    hold.maxWidthProperty().bind(container.widthProperty().divide(L).multiply(45));
+    hold.maxWidthProperty().bind(container.widthProperty().divide(WIDTH).multiply(45));
     hold.maxHeightProperty()
-        .bind(container.heightProperty().divide(H).multiply(TetriminoHolderController.H));
+        .bind(container.heightProperty().divide(HEIGHT).multiply(TetriminoHolderController.HEIGHT));
 
     nextController.setType("Next");
     holdController.setType("Hold");
@@ -87,4 +88,5 @@ public class BoardAsideController implements Initializable {
   public void setHoldTetrimino(Mino mino) {
     holdController.setTetrimino(mino);
   }
+
 }

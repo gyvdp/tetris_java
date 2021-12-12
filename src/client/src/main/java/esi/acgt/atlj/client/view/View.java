@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
@@ -148,4 +147,5 @@ public class View implements ViewInterface {
     this.primaryStage.setScene(null);
     this.primaryStage.close();
   }
+
 }

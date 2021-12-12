@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.view.controllers;
 
 import java.beans.PropertyChangeListener;
@@ -32,22 +31,24 @@ import javafx.scene.layout.HBox;
 
 public class MultiplayerGameController implements Initializable {
 
-  public static final int H = BoardController.H;
-  public static final int L = BoardMainController.L * 2;
+  public static final int HEIGHT = BoardController.HEIGHT;
+
+  public static final int WIDTH = BoardMainController.WIDTH * 2;
 
   public HBox container;
 
   public HBox left;
+
   public BoardController leftController;
 
   public HBox right;
-  public BoardController rightController;
 
+  public BoardController rightController;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    container.prefWidthProperty().bind(container.heightProperty().divide(H).multiply(L));
-    container.prefHeightProperty().bind(container.widthProperty().divide(L).multiply(H));
+    container.prefWidthProperty().bind(container.heightProperty().divide(HEIGHT).multiply(WIDTH));
+    container.prefHeightProperty().bind(container.widthProperty().divide(WIDTH).multiply(HEIGHT));
 
     left.maxWidthProperty().bind(container.widthProperty().divide(2));
     left.maxHeightProperty().bind(container.heightProperty());
@@ -67,4 +68,5 @@ public class MultiplayerGameController implements Initializable {
   public PropertyChangeListener getPlayer2() {
     return rightController;
   }
+
 }

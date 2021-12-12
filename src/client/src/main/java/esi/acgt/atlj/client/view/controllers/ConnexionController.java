@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.client.controller.Controller;
@@ -41,7 +40,7 @@ import javafx.scene.control.TextField;
 public class ConnexionController implements Initializable {
 
   /**
-   * Pattern of a adress IP
+   * Pattern of an address IP
    */
   private static final Pattern regex = Pattern.compile("^(?:[0-9]{1,3}.){3}[0-9]{1,3}$");
 
@@ -49,8 +48,10 @@ public class ConnexionController implements Initializable {
 
   @FXML
   public TextField ip;
+
   @FXML
   public TextField username;
+
   @FXML
   public TextField port;
 
@@ -106,11 +107,13 @@ public class ConnexionController implements Initializable {
     this.controller.stop();
   }
 
+  //todo methode vide
+
   /**
    * Initiale of the Connexion.fxml
    */
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-
   }
+
 }

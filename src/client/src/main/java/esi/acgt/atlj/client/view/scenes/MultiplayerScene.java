@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.view.scenes;
 
 import esi.acgt.atlj.client.view.controllers.MultiplayerGameController;
@@ -31,7 +30,7 @@ import javafx.scene.Scene;
 
 public class MultiplayerScene extends Scene {
 
-  private MultiplayerGameController controller;
+  private final MultiplayerGameController controller;
 
   public MultiplayerScene(Parent root, MultiplayerGameController controller, String username) {
     super(root);
@@ -43,4 +42,5 @@ public class MultiplayerScene extends Scene {
     return new PropertyChangeListener[]{this.controller.getPlayer1(),
         this.controller.getPlayer2()};
   }
+
 }

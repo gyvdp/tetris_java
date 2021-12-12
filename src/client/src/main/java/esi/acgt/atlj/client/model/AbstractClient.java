@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.model;
 
 import esi.acgt.atlj.message.AbstractMessage;
@@ -31,7 +30,6 @@ import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketException;
-
 
 /**
  * Contains all necessary methods to set up a client for a client-server architecture. When a client
@@ -48,22 +46,27 @@ public abstract class AbstractClient implements Runnable {
    * Port number of server wishing to connect to.
    */
   private final int port;
+
   /**
    * Socket that will establish a connection with server
    */
   private Socket clientSocket;
+
   /**
    * Output stream from clientSocket.
    */
   private ObjectOutputStream output;
+
   /**
    * Input stream from clientSocket.
    */
   private ObjectInputStream input;
+
   /**
    * Thread of client.
    */
   private Thread clientThread;
+
   /**
    * Indicator of active connection
    */
@@ -133,7 +136,6 @@ public abstract class AbstractClient implements Runnable {
    */
   protected abstract void handleServerMessage(Object information);
 
-
   /**
    * Establishes a connection to the server.
    */
@@ -168,7 +170,6 @@ public abstract class AbstractClient implements Runnable {
   protected void closeConnection() {
   }
 
-
   /**
    * Hook function when connection to server throws exception. Need to be overridden for specific
    * behaviour.
@@ -201,24 +202,6 @@ public abstract class AbstractClient implements Runnable {
       }
       connexionException(e);
     }
-  }
-
-  /**
-   * Getter for hostname of server wishing to connect to.
-   *
-   * @return Host name of server.
-   */
-  public String getHost() {
-    return host;
-  }
-
-  /**
-   * Getter of port of that server is listening on.
-   *
-   * @return Port name of server
-   */
-  public int getPort() {
-    return port;
   }
 
 }

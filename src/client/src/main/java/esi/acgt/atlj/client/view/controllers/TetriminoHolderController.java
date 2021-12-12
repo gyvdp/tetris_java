@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -40,9 +39,11 @@ import javafx.scene.text.Font;
 
 public class TetriminoHolderController implements Initializable {
 
-  public static final int W = 45;
-  public static final int H = 54;
-  public static final int P = 7;
+  public static final int WEIGHT = 45;
+
+  public static final int HEIGHT = 54;
+
+  public static final int PADDING = 7;
 
   public static final Map<Mino, Image> imageMap = Map.of(
       Mino.L_MINO,
@@ -74,14 +75,18 @@ public class TetriminoHolderController implements Initializable {
   );
 
   public StackPane container;
+
   public ImageView background;
+
   public Label typeText;
+
   public ImageView tetrimino;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     background.fitWidthProperty().bind(container.widthProperty());
-    background.fitHeightProperty().bind(background.fitWidthProperty().divide(W).multiply(H));
+    background.fitHeightProperty().bind(background.fitWidthProperty().divide(WEIGHT).multiply(
+        HEIGHT));
 
     background.fitWidthProperty().bind(container.widthProperty());
 
@@ -90,19 +95,20 @@ public class TetriminoHolderController implements Initializable {
             () -> Font.loadFont(
                 Objects.requireNonNull(getClass().getResource("/fonts/Pixel_NES.otf"))
                     .openStream(),
-                container.heightProperty().divide(H).multiply(7).doubleValue()),
+                container.heightProperty().divide(HEIGHT).multiply(7).doubleValue()),
             container.heightProperty()));
 
     typeText.paddingProperty().bind(Bindings.createObjectBinding(
-        () -> new Insets(container.heightProperty().divide(H).multiply(7).doubleValue()),
+        () -> new Insets(container.heightProperty().divide(HEIGHT).multiply(7).doubleValue()),
         container.heightProperty()));
 
-    tetrimino.fitWidthProperty().bind(container.widthProperty().divide(W).multiply(W - (2 * P)));
+    tetrimino.fitWidthProperty().bind(container.widthProperty().divide(WEIGHT).multiply(
+        WEIGHT - (2 * PADDING)));
     tetrimino.fitHeightProperty().bind(tetrimino.fitWidthProperty());
 
     container.heightProperty().addListener((observable) ->
         StackPane.setMargin(tetrimino,
-            new Insets(container.heightProperty().divide(H).multiply(7).doubleValue())));
+            new Insets(container.heightProperty().divide(HEIGHT).multiply(7).doubleValue())));
   }
 
   public void setTetrimino(Mino mino) {
@@ -112,4 +118,5 @@ public class TetriminoHolderController implements Initializable {
   public void setType(String type) {
     typeText.setText(type.toUpperCase());
   }
+
 }

@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.view.controllers;
 
 import java.net.URL;
@@ -36,32 +35,39 @@ import javafx.scene.text.Font;
 
 public class InfoBoxController implements Initializable {
 
-  public final static int H = 24;
-  public final static int W = 93;
-  public final static int P = 8;
+  public final static int HEIGHT = 24;
 
+  public final static int WIDTH = 93;
+
+  //todo never used
+  public final static int PADDING = 8;
 
   public Label infoBoxText;
+
   public ImageView background;
+
   public Pane container;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     background.fitWidthProperty().bind(container.widthProperty());
-    background.fitHeightProperty().bind(background.fitWidthProperty().divide(W).multiply(H));
+    background.fitHeightProperty()
+        .bind(background.fitWidthProperty().divide(WIDTH).multiply(HEIGHT));
 
     infoBoxText.prefWidthProperty().bind(container.widthProperty());
-    infoBoxText.prefHeightProperty().bind(infoBoxText.widthProperty().divide(W).multiply(H));
+    infoBoxText.prefHeightProperty()
+        .bind(infoBoxText.widthProperty().divide(WIDTH).multiply(HEIGHT));
 
     infoBoxText.fontProperty()
         .bind(Bindings.createObjectBinding(
             () -> Font.loadFont(
                 Objects.requireNonNull(getClass().getResource("/fonts/Pixel_NES.otf")).openStream(),
-                container.heightProperty().divide(H).multiply(7).doubleValue()),
+                container.heightProperty().divide(HEIGHT).multiply(7).doubleValue()),
             container.heightProperty()));
   }
 
   public void setText(String text) {
     infoBoxText.setText(text.toUpperCase());
   }
+
 }

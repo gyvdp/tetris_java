@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.client.view.controllers;
 
 import java.net.URL;
@@ -38,15 +37,22 @@ import javafx.scene.text.Font;
 
 public class ScoreController implements Initializable {
 
-  public static final int W = 64;
-  public static final int H = 72;
-  public static final int P = 8;
+  public static final int WIDTH = 64;
+
+  public static final int HEIGHT = 72;
+
+  public static final int PADDING = 8;
 
   public StackPane container;
+
   public ImageView background;
+
   public Label topTitle;
+
   public Label topValue;
+
   public Label scoreTitle;
+
   public Label scoreValue;
 
   public static String scoreToText(int score) {
@@ -59,11 +65,12 @@ public class ScoreController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    container.prefWidthProperty().bind(container.heightProperty().divide(H).multiply(W));
-    container.prefHeightProperty().bind(container.widthProperty().divide(W).multiply(H));
+    container.prefWidthProperty().bind(container.heightProperty().divide(HEIGHT).multiply(WIDTH));
+    container.prefHeightProperty().bind(container.widthProperty().divide(WIDTH).multiply(HEIGHT));
 
     background.fitWidthProperty().bind(container.widthProperty());
-    background.fitHeightProperty().bind(background.fitWidthProperty().divide(W).multiply(H));
+    background.fitHeightProperty()
+        .bind(background.fitWidthProperty().divide(WIDTH).multiply(HEIGHT));
 
     for (Label label : Arrays.asList(topTitle, topValue, scoreTitle, scoreValue)) {
       label.fontProperty()
@@ -71,14 +78,14 @@ public class ScoreController implements Initializable {
               () -> Font.loadFont(
                   Objects.requireNonNull(getClass().getResource("/fonts/Pixel_NES.otf"))
                       .openStream(),
-                  container.heightProperty().divide(H).multiply(7).doubleValue()),
+                  container.heightProperty().divide(HEIGHT).multiply(7).doubleValue()),
               container.heightProperty()));
     }
 
     topTitle.paddingProperty().bind(Bindings.createObjectBinding(
         () -> {
-          var padding = container.widthProperty().divide(W).multiply(P).doubleValue();
-          return new Insets(container.heightProperty().divide(H).multiply(16).doubleValue(),
+          var padding = container.widthProperty().divide(WIDTH).multiply(PADDING).doubleValue();
+          return new Insets(container.heightProperty().divide(HEIGHT).multiply(16).doubleValue(),
               padding, padding,
               padding);
         },
@@ -86,8 +93,8 @@ public class ScoreController implements Initializable {
 
     topValue.paddingProperty().bind(Bindings.createObjectBinding(
         () -> {
-          var padding = container.widthProperty().divide(W).multiply(P).doubleValue();
-          return new Insets(container.heightProperty().divide(H).multiply(24).doubleValue(),
+          var padding = container.widthProperty().divide(WIDTH).multiply(PADDING).doubleValue();
+          return new Insets(container.heightProperty().divide(HEIGHT).multiply(24).doubleValue(),
               padding, padding,
               padding);
         },
@@ -95,8 +102,8 @@ public class ScoreController implements Initializable {
 
     scoreTitle.paddingProperty().bind(Bindings.createObjectBinding(
         () -> {
-          var padding = container.widthProperty().divide(W).multiply(P).doubleValue();
-          return new Insets(container.heightProperty().divide(H).multiply(40).doubleValue(),
+          var padding = container.widthProperty().divide(WIDTH).multiply(PADDING).doubleValue();
+          return new Insets(container.heightProperty().divide(HEIGHT).multiply(40).doubleValue(),
               padding, padding,
               padding);
         },
@@ -104,8 +111,8 @@ public class ScoreController implements Initializable {
 
     scoreValue.paddingProperty().bind(Bindings.createObjectBinding(
         () -> {
-          var padding = container.widthProperty().divide(W).multiply(P).doubleValue();
-          return new Insets(container.heightProperty().divide(H).multiply(48).doubleValue(),
+          var padding = container.widthProperty().divide(WIDTH).multiply(PADDING).doubleValue();
+          return new Insets(container.heightProperty().divide(HEIGHT).multiply(48).doubleValue(),
               padding, padding,
               padding);
         },
@@ -119,4 +126,5 @@ public class ScoreController implements Initializable {
   public void setHighScore(int highScore) {
     topValue.setText(scoreToText(highScore));
   }
+
 }
