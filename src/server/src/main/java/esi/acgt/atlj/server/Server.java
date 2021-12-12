@@ -298,10 +298,17 @@ public class Server extends AbstractServer {
   @Override
   protected void clientDisconnected(CustomClientThread client) {
     super.clientDisconnected(client);
-    logger.log(Level.INFO,
-        String.format("%s has been disconnected from server", client.getUsername()));
     try {
-      waitingList.remove(client);
+      if (usernames.remove(client.getUsername())) {
+        logger.log(Level.INFO,
+            String.format("%s has been disconnected from server and removed from usernames",
+                client.getUsername()));
+      }
+      if (waitingList.remove(client)) {
+        logger.log(Level.INFO,
+            String.format("%s has been disconnected from server and removed from waiting list",
+                client.getUsername()));
+      }
     } catch (NullPointerException ignored) {
     }
     clientId--;
