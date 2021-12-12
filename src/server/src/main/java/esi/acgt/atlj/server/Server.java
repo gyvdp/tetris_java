@@ -171,6 +171,18 @@ public class Server extends AbstractServer {
    * {@inheritDoc}
    */
   @Override
+  protected synchronized void quitWaitingList(CustomClientThread client) {
+    super.quitWaitingList(client);
+    if (this.waitingList.remove(client)) {
+      logger.log(Level.INFO,
+          String.format("%s has been removed from the waiting list", client.getUsername()));
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   protected void clientConnected(CustomClientThread client) {
     super.clientConnected(client);
     logger.log(Level.INFO,
@@ -197,7 +209,7 @@ public class Server extends AbstractServer {
       } else {
         user.getUser().setId(interactDatabase.addUser(user.getUsername()));
         logger.log(Level.INFO,
-            String.format("User has been added to database %s", user.getUsername()));
+            String.format("%s has been added to database", user.getUsername()));
       }
     } catch (BusinessException e) {
       logger.log(Level.SEVERE,

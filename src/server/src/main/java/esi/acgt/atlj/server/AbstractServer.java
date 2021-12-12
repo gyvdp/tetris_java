@@ -116,6 +116,16 @@ public abstract class AbstractServer implements Runnable {
     }
   }
 
+
+  /**
+   * Quits the waiting list if the game has not started yet.
+   *
+   * @param client Client that has quit the waiting list.
+   */
+  protected synchronized void quitWaitingList(CustomClientThread client) {
+
+  }
+
   /**
    * Returns the port number.
    *

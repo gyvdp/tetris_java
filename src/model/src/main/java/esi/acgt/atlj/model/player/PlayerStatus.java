@@ -34,5 +34,6 @@ public enum PlayerStatus {
   TETRIMINO_LOCKED,
   LOCK_DOWN,
   LOCK_OUT,
-  STOPPED
+  STOPPED,
+  CANCEL
 }

@@ -310,7 +310,6 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
         }
       }
     }
-
   }
 
   @Override

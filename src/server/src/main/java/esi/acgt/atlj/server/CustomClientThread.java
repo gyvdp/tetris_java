@@ -28,9 +28,11 @@ import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.DtoException;
 import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.ServerRequest;
+import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.Request;
 import esi.acgt.atlj.message.messageTypes.Connection;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
+import esi.acgt.atlj.model.player.PlayerStatus;
 import esi.acgt.atlj.server.utils.MatchUpHandler;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -207,6 +209,11 @@ public class CustomClientThread extends Thread {
       if (((Request) message).getAction() == ServerRequest.MULTIPLAYER) {
         server.addPlayer(this);
       }
+    } else if (message instanceof PlayerState m) {
+      if (m.getPlayerStatus() == PlayerStatus.CANCEL) {
+        server.quitWaitingList(this);
+      }
+
     } else {
       return true;
     }

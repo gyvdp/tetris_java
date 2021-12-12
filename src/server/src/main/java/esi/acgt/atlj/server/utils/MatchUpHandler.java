@@ -153,7 +153,6 @@ public class MatchUpHandler extends Thread {
     return usernames;
   }
 
-
   /**
    * Lambda expression to handle message from client.
    */
