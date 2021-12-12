@@ -30,6 +30,7 @@ package esi.acgt.atlj.message;
 public enum MessageType {
   GAME,
   STATISTICS,
+  HIGH_SCORES,
   SERVER,
   NEW_GAME
 }

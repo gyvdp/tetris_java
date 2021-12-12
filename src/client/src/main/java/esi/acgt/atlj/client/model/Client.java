@@ -32,6 +32,7 @@ import esi.acgt.atlj.message.StatisticMessage;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.Connection;
 import esi.acgt.atlj.message.messageTypes.GameStatAction;
+import esi.acgt.atlj.message.messageTypes.HighScore;
 import esi.acgt.atlj.message.messageTypes.Hold;
 import esi.acgt.atlj.message.messageTypes.LockTetrimino;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
@@ -110,6 +111,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
         String.format("Received %s message type from server", message.getType().name()));
     switch (message.getType()) {
       case NEW_GAME -> ((SendStartGame) message).execute(game);
+      case HIGH_SCORES -> ((HighScore) message).execute(game);
       case GAME -> ((GameMessage) message).execute(game);
       case STATISTICS -> ((StatisticMessage) message).execute(updateStats);
     }
