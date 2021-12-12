@@ -36,7 +36,7 @@ public abstract class StatisticMessage extends AbstractMessage {
   /**
    * Displays the statistics in the view.
    *
-   * @param setStats
+   * @param setStats Applies given stats in th view
    */
   public abstract void execute(Consumer<HashMap<String, Integer>> setStats);
 }

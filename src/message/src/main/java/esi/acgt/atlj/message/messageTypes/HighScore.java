@@ -31,7 +31,7 @@ import java.util.HashMap;
 
 public class HighScore extends AbstractMessage {
 
-  HashMap<String, Integer> highScores;
+  final HashMap<String, Integer> highScores;
 
   /**
    * Send high score of both players inside a match up.

@@ -34,7 +34,7 @@ public class Hold extends GameMessage {
   /**
    * Mino that is being held
    */
-  private Mino hold;
+  private final Mino hold;
 
   /**
    * Constructor for hold

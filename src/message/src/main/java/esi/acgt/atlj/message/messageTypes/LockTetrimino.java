@@ -35,7 +35,7 @@ import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
  */
 public class LockTetrimino extends GameMessage {
 
-  TetriminoInterface tetrimino;
+  final TetriminoInterface tetrimino;
 
   /**
    * Locks a tetrimino in place.

@@ -33,7 +33,7 @@ import esi.acgt.atlj.model.Game;
  */
 public abstract class GameMessage extends AbstractMessage {
 
-  protected String userName;
+  protected final String userName;
 
   /**
    * Creates a game message.

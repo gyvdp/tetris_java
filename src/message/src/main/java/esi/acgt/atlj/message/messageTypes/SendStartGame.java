@@ -37,10 +37,10 @@ import esi.acgt.atlj.model.tetrimino.Tetrimino;
  */
 public class SendStartGame extends AbstractMessage {
 
-  String username;
-  String usernameOpp;
-  Mino actualMino;
-  Mino nextMino;
+  final String username;
+  final String usernameOpp;
+  final Mino actualMino;
+  final Mino nextMino;
 
   /**
    * Constructor for game start.
