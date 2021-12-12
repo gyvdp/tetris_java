@@ -1,8 +1,8 @@
-module atlj.server {
-  requires atlj.model;
-  requires atlj.message;
+module tetris.server {
+  requires tetris.model;
+  requires tetris.message;
+  requires tetris.database;
   requires java.desktop;
-  requires atlj.database;
   requires java.logging;
 
   exports esi.acgt.atlj.server;

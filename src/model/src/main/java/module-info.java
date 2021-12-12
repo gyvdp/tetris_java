@@ -1,4 +1,4 @@
-open module atlj.model {
+open module tetris.model {
   requires java.desktop;
 
   exports esi.acgt.atlj.model;

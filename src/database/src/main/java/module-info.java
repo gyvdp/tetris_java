@@ -1,7 +1,7 @@
-open module atlj.database {
+open module tetris.database {
+  requires tetris.model;
   requires java.sql;
   requires org.xerial.sqlitejdbc;
-  requires atlj.model;
 
   exports esi.acgt.atlj.database.db;
   exports esi.acgt.atlj.database.dto;

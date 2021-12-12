@@ -6,15 +6,20 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="atlj.model" />
-        <module name="atlj.message" />
-        <module name="atlj.server" />
-        <module name="atlj.client" />
-        <module name="atlj.database" />
+        <module name="tetris.model" />
+        <module name="tetris.message" />
+        <module name="tetris.client" />
+        <module name="tetris.server" />
+        <module name="tetris.database" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="esi-atlir5-atlj-project" target="16" />
+      <module name="tetris" target="16" />
+      <module name="tetris.model" target="16" />
+      <module name="tetris.message" target="16" />
+      <module name="tetris.client" target="16" />
+      <module name="tetris.server" target="16" />
+      <module name="tetris.database" target="16" />
     </bytecodeTargetLevel>
   </component>
 </project>

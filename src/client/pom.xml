@@ -30,12 +30,53 @@
 
   <parent>
     <groupId>esi.acgt</groupId>
-    <artifactId>atlj</artifactId>
-    <version>1.0</version>
+    <artifactId>tetris</artifactId>
+    <version>2.0</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>atlj.client</artifactId>
+  <artifactId>tetris.client</artifactId>
+  <version>2.0</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <mainClass>esi.acgt.atlj.client.TetrisClient</mainClass>
+    <javafx.version>16</javafx.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>esi.acgt</groupId>
+      <artifactId>tetris.model</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>esi.acgt</groupId>
+      <artifactId>tetris.message</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-base</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-graphics</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
+  </dependencies>
+
   <build>
     <resources>
       <resource>
@@ -89,46 +130,4 @@
       </plugin>
     </plugins>
   </build>
-  <packaging>jar</packaging>
-
-  <dependencies>
-    <dependency>
-      <groupId>esi.acgt</groupId>
-      <artifactId>atlj.model</artifactId>
-      <version>1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>esi.acgt</groupId>
-      <artifactId>atlj.message</artifactId>
-      <version>1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-base</artifactId>
-      <version>${javafx.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-graphics</artifactId>
-      <version>${javafx.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-controls</artifactId>
-      <version>${javafx.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-fxml</artifactId>
-      <version>${javafx.version}</version>
-    </dependency>
-  </dependencies>
-
-  <properties>
-    <mainClass>esi.acgt.atlj.client.TetrisClient</mainClass>
-    <javafx.version>16</javafx.version>
-  </properties>
-
-  <version>1.0</version>
-
 </project>

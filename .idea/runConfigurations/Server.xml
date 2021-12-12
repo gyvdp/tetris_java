@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Server" type="Application" factoryName="Application" folderName="Server">
     <option name="MAIN_CLASS_NAME" value="esi.acgt.atlj.server.App" />
-    <module name="atlj.server" />
+    <module name="tetris.server" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="esi.acgt.atlj.server.*" />

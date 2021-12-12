@@ -1,6 +1,6 @@
-module atlj.client {
-  requires atlj.model;
-  requires atlj.message;
+module tetris.client {
+  requires tetris.model;
+  requires tetris.message;
   requires javafx.base;
   requires javafx.graphics;
   requires javafx.controls;

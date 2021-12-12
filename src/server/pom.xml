@@ -30,37 +30,37 @@
 
   <parent>
     <groupId>esi.acgt</groupId>
-    <artifactId>atlj</artifactId>
-    <version>1.0</version>
+    <artifactId>tetris</artifactId>
+    <version>2.0</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>atlj.server</artifactId>
-  <dependencies>
-    <dependency>
-      <groupId>esi.acgt</groupId>
-      <artifactId>atlj.model</artifactId>
-      <version>1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>esi.acgt</groupId>
-      <artifactId>atlj.message</artifactId>
-      <version>1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>esi.acgt</groupId>
-      <artifactId>atlj.database</artifactId>
-      <version>1.0</version>
-    </dependency>
-
-  </dependencies>
-  <version>1.0</version>
+  <artifactId>tetris.server</artifactId>
+  <version>2.0</version>
   <packaging>jar</packaging>
 
   <properties>
     <mainClass>esi.acgt.atlj.server.App</mainClass>
   </properties>
 
+  <dependencies>
+    <dependency>
+      <groupId>esi.acgt</groupId>
+      <artifactId>tetris.model</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>esi.acgt</groupId>
+      <artifactId>tetris.message</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>esi.acgt</groupId>
+      <artifactId>tetris.database</artifactId>
+      <version>1.0</version>
+    </dependency>
+
+  </dependencies>
 
   <build>
     <plugins>

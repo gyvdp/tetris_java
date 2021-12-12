@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="ModelTests" type="JUnit" factoryName="JUnit">
-    <module name="atlj.model" />
+    <module name="tetris.model" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="esi.acgt.atlj.model.player.*" />

@@ -30,23 +30,22 @@
 
   <parent>
     <groupId>esi.acgt</groupId>
-    <artifactId>atlj</artifactId>
-    <version>1.0</version>
+    <artifactId>tetris</artifactId>
+    <version>2.0</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>atlj.message</artifactId>
-  <dependencies>
-    <dependency>
-      <artifactId>atlj.model</artifactId>
-      <groupId>esi.acgt</groupId>
-      <version>1.0</version>
-    </dependency>
-  </dependencies>
+  <artifactId>tetris.message</artifactId>
+  <version>2.0</version>
   <packaging>jar</packaging>
 
-  <version>1.0</version>
-
+  <dependencies>
+    <dependency>
+      <artifactId>tetris.model</artifactId>
+      <groupId>esi.acgt</groupId>
+      <version>2.0</version>
+    </dependency>
+  </dependencies>
 
   <build>
     <plugins>
