@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.model;
 
 import esi.acgt.atlj.model.player.PlayerInterface;
@@ -32,14 +31,13 @@ import java.util.List;
 
 public abstract class Game implements GameInterface {
 
-  protected List<PlayerInterface> players;
+  protected final List<PlayerInterface> players;
 
   protected Game() {
     this.players = new LinkedList<>();
   }
 
-  @Override
-  public String[] getUsernames() {
+  private String[] getUsernames() {
     var players = new String[this.players.size()];
     for (var i = 0; i < this.players.size(); ++i) {
       players[i] = this.players.get(i).getUsername();

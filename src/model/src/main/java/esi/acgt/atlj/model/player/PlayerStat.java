@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.model.player;
 
 import java.beans.PropertyChangeSupport;
@@ -37,7 +36,7 @@ public class PlayerStat implements PlayerStatInterface {
   protected int score;
 
   /**
-   * The highscore of the player
+   * The highest score of the player
    */
   protected int highScore;
 
@@ -49,12 +48,12 @@ public class PlayerStat implements PlayerStatInterface {
   /**
    * The count of actions of the player
    */
-  protected Map<Action, Integer> actions;
+  protected final Map<Action, Integer> actions;
 
   /**
    * The Property Change Support to notify when something changes
    */
-  protected transient PropertyChangeSupport pcs;
+  protected final transient PropertyChangeSupport pcs;
 
   /**
    * Send score to the server (lambda)
@@ -72,15 +71,6 @@ public class PlayerStat implements PlayerStatInterface {
     this.highScore = 0;
     this.burns = 0;
     this.actions = new HashMap<>();
-  }
-
-  /**
-   * Connect the lambda to notify the server of a score change
-   *
-   * @param setScoreServer lambda to contact the server
-   */
-  public void connectSendScore(Consumer<Integer> setScoreServer) {
-    this.setScoreServer = setScoreServer;
   }
 
   /**
@@ -200,4 +190,5 @@ public class PlayerStat implements PlayerStatInterface {
     increaseScore(action.getPoints() * multiplier);
     increaseBurns(action.getBurns());
   }
+
 }

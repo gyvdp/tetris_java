@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.model.player;
 
 import java.io.Serializable;
@@ -66,4 +65,5 @@ public interface PlayerStatInterface extends Serializable {
    * @return a map with the count of each action
    */
   Map<Action, Integer> getActionCount();
+  
 }

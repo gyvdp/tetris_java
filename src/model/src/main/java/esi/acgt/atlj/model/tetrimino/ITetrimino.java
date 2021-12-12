@@ -41,4 +41,5 @@ public class ITetrimino extends Tetrimino implements IShape {
   public Mino[][] rotatedShape(boolean clockwise) {
     return shapes.get(Orientation.next(orientation, clockwise));
   }
+
 }

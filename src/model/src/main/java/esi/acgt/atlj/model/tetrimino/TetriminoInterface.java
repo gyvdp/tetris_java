@@ -52,7 +52,7 @@ public interface TetriminoInterface {
   Mino[][] getMinos();
 
   /**
-   * Get the minos wich the matrix is made of
+   * Get the minos where the matrix is made of
    *
    * @return the mino contains in the matrix of minos
    */
@@ -75,4 +75,5 @@ public interface TetriminoInterface {
   boolean move(Direction direction, boolean[][] freeMask);
 
   Mino[][] rotatedShape(boolean clockwise);
+
 }

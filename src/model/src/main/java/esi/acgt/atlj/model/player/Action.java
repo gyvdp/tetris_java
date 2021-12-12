@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.model.player;
 
 import java.io.Serializable;
@@ -90,16 +89,6 @@ public enum Action implements Serializable {
    */
   Action(int points) {
     this(points, 0, false);
-  }
-
-  /**
-   * Action constructor
-   *
-   * @param points        number of points of the action
-   * @param multiplyLevel true if you need to multiply point by level
-   */
-  Action(int points, boolean multiplyLevel) {
-    this(points, 0, multiplyLevel);
   }
 
   /**

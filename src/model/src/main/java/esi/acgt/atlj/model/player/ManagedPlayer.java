@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.model.player;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -35,8 +34,10 @@ import java.util.Timer;
 public class ManagedPlayer extends AbstractPlayer {
 
   private final Timer timer;
+
   private TickHandler tickHandler;
-  private boolean hasAlreadyHolded;
+
+  private boolean hasAlreadyHeld;
 
   /**
    * Establishes a new managed game
@@ -45,7 +46,7 @@ public class ManagedPlayer extends AbstractPlayer {
    */
   public ManagedPlayer(String username) {
     super(username);
-    hasAlreadyHolded = false;
+    hasAlreadyHeld = false;
     this.status = PlayerStatus.NOT_STARTED;
     this.timer = new Timer(true);
     this.tickHandler = new TickHandler(this);
@@ -72,7 +73,7 @@ public class ManagedPlayer extends AbstractPlayer {
   /**
    * Moves a tetrimino in the direction.
    *
-   * @param direction Direction in wich to move
+   * @param direction Direction in where to move
    * @return True if tetrimino is able to move
    */
   public synchronized boolean move(Direction direction) {
@@ -100,7 +101,7 @@ public class ManagedPlayer extends AbstractPlayer {
    * Adds a tetrimino to the hold case
    */
   public synchronized void hold() {
-    if (!hasAlreadyHolded) {
+    if (!hasAlreadyHeld) {
       if (hold == null) {
         this.setHold(this.actualTetrimino.getType());
         this.setActualTetrimino(this.nextTetrimino);
@@ -109,7 +110,7 @@ public class ManagedPlayer extends AbstractPlayer {
         this.setHold(this.actualTetrimino.getType());
         this.setActualTetrimino(temp);
       }
-      hasAlreadyHolded = true;
+      hasAlreadyHeld = true;
       setStatus(PlayerStatus.TETRIMINO_FALLING);
     }
   }
@@ -144,7 +145,6 @@ public class ManagedPlayer extends AbstractPlayer {
     return rotated;
   }
 
-
   /**
    * Sets the status of the game
    *
@@ -172,7 +172,7 @@ public class ManagedPlayer extends AbstractPlayer {
   public synchronized void lock() {
     placeTetrimino(this.actualTetrimino);
     this.pcs.firePropertyChange("PLACE_TETRIMINO", null, this.actualTetrimino);
-    this.hasAlreadyHolded = false;
+    this.hasAlreadyHeld = false;
     setActualTetrimino(
         this.nextTetrimino != null ? this.nextTetrimino : Tetrimino.createTetrimino(Mino.L_MINO));
     setNextTetrimino(null);
@@ -197,4 +197,5 @@ public class ManagedPlayer extends AbstractPlayer {
 
     return false;
   }
+
 }

@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.model.player;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -41,7 +40,7 @@ public abstract class AbstractPlayer implements PlayerInterface {
   /**
    * The matrix of the board
    */
-  protected Mino[][] matrix;
+  protected final Mino[][] matrix;
 
   /**
    * The username of the player
@@ -51,7 +50,7 @@ public abstract class AbstractPlayer implements PlayerInterface {
   /**
    * The stats of the actual game
    */
-  protected PlayerStat stats;
+  protected final PlayerStat stats;
 
   /**
    * The actual falling tetrimino
@@ -71,7 +70,7 @@ public abstract class AbstractPlayer implements PlayerInterface {
   /**
    * The Property Change support
    */
-  protected PropertyChangeSupport pcs;
+  protected final PropertyChangeSupport pcs;
 
   /**
    * The AbstractGame constructor
@@ -119,7 +118,6 @@ public abstract class AbstractPlayer implements PlayerInterface {
 
     return mask;
   }
-
 
   /**
    * {@inheritDoc}
@@ -339,4 +337,5 @@ public abstract class AbstractPlayer implements PlayerInterface {
 
     return lines;
   }
+
 }

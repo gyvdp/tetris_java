@@ -68,7 +68,7 @@ class JTetriminoTest {
 
       @Test
       public void NorthToEast() {
-        Mino mino = Mino.J_MINO;
+//        Mino mino = Mino.J_MINO;
         JTetrimino tetrimino = new JTetrimino();
         boolean[][] area = {
             {true, true, true, true},
@@ -85,7 +85,7 @@ class JTetriminoTest {
 
       @Test
       public void EastToSouth() {
-        Mino mino = Mino.J_MINO;
+//        Mino mino = Mino.J_MINO;
         JTetrimino tetrimino = new JTetrimino();
         boolean[][] area = {
             {true, true, true, true},
@@ -103,7 +103,7 @@ class JTetriminoTest {
 
       @Test
       public void SouthToWest() {
-        Mino mino = Mino.J_MINO;
+//        Mino mino = Mino.J_MINO;
         JTetrimino tetrimino = new JTetrimino();
         boolean[][] area = {
             {true, true, true, true},
@@ -122,7 +122,7 @@ class JTetriminoTest {
 
       @Test
       public void WestToNorth() {
-        Mino mino = Mino.J_MINO;
+//        Mino mino = Mino.J_MINO;
         JTetrimino tetrimino = new JTetrimino();
         boolean[][] area = {
             {true, true, true, true},

@@ -29,6 +29,7 @@ public enum Direction {
   LEFT(-1, 0);
 
   private final int deltaX;
+
   private final int deltaY;
 
   Direction(int x, int y) {
@@ -43,4 +44,5 @@ public enum Direction {
   public int getDeltaY() {
     return deltaY;
   }
+
 }

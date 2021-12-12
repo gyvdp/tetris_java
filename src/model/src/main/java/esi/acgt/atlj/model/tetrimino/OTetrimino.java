@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.model.tetrimino;
 
 import esi.acgt.atlj.model.shape.OShape;
@@ -47,4 +46,5 @@ public class OTetrimino extends Tetrimino implements OShape {
   public Mino[][] rotatedShape(boolean clockwise) {
     return shapes.get(Orientation.next(orientation, clockwise));
   }
+
 }

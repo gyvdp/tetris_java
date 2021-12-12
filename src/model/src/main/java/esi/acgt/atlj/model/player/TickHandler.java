@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.model.player;
 
 import java.util.TimerTask;
@@ -73,4 +72,5 @@ public class TickHandler extends TimerTask {
       }
     }
   }
+
 }

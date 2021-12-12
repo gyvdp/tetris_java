@@ -35,22 +35,4 @@ public class UnmanagedPlayer extends AbstractPlayer {
     super("search");
   }
 
-
-  /**
-   * Sets the score of the player
-   *
-   * @param score Score to set
-   */
-  public synchronized void setScore(int score) {
-    this.stats.setScore(score);
-  }
-
-  /**
-   * Sets the number of line the players has destroyed.
-   *
-   * @param nbLine Number of line to set to.
-   */
-  public synchronized void setBurns(int nbLine) {
-    this.stats.setBurns(nbLine);
-  }
 }

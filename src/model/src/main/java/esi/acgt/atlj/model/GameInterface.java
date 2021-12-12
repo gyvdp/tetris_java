@@ -21,20 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.model;
 
 import esi.acgt.atlj.model.player.PlayerInterface;
 import java.beans.PropertyChangeListener;
 
 public interface GameInterface {
-
-  /**
-   * Get the usernames of the players
-   *
-   * @return array of usernames
-   */
-  String[] getUsernames();
 
   /**
    * Get the board of a particular Player Get the board of the managed board player
@@ -54,7 +46,7 @@ public interface GameInterface {
   /**
    * Links Games (ManagedGame and Unmanaged) with their owm Listener
    *
-   * @param listener all listerners
+   * @param listener all listeners
    */
   void addPropertyChangeListenerToBoards(PropertyChangeListener[] listener);
 

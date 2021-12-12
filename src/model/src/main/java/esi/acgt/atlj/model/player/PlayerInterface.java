@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.model.player;
 
 import esi.acgt.atlj.model.tetrimino.Mino;
@@ -53,7 +52,6 @@ public interface PlayerInterface {
    * @return Interface with all stats
    */
   PlayerStatInterface getStats();
-
 
   boolean[][] generateFreeMask(int height, int width, int xStart, int yStart, int xMargin,
       int yMargin);
@@ -89,14 +87,14 @@ public interface PlayerInterface {
   /**
    * Add a Listener
    *
-   * @param listener Listerner to add
+   * @param listener Listener to add
    */
   void addPropertyChangeListener(PropertyChangeListener listener);
 
   /**
    * Remove a Listener
    *
-   * @param listener Listerner to remove
+   * @param listener Listener to remove
    */
   void removePropertyChangeListener(PropertyChangeListener listener);
 

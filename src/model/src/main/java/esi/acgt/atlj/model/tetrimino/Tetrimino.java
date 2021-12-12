@@ -43,7 +43,9 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
    * minos matrix that composed
    */
   protected Mino[][] minos;
+
   protected Mino type;
+
   protected Orientation orientation;
 
   /**
@@ -125,6 +127,7 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
 
         if (!freeMask[y][x] && minos[i][j] != null) {
           movable = false;
+          break;
         }
       }
     }
@@ -136,7 +139,6 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
     }
     return false;
   }
-
 
   @Override
   public String toString() {
@@ -155,4 +157,5 @@ public abstract class Tetrimino implements TetriminoInterface, Serializable {
 
     return result.toString();
   }
+
 }
