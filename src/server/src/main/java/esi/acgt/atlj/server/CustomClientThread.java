@@ -213,7 +213,9 @@ public class CustomClientThread extends Thread {
       if (m.getPlayerStatus() == PlayerStatus.CANCEL) {
         server.quitWaitingList(this);
       }
-
+      if (m.getPlayerStatus() == PlayerStatus.STOPPED) {
+        return true;
+      }
     } else {
       return true;
     }
