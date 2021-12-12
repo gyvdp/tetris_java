@@ -186,10 +186,6 @@ public class CustomClientThread extends Thread {
     return this.user.getUsername();
   }
 
-  public int getUserId() {
-    return this.user.getId();
-  }
-
   /**
    * Hook method called each time a new message is received by this client. If this method return
    * true, then the method
