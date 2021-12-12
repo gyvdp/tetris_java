@@ -199,7 +199,7 @@ public class CustomClientThread extends Thread {
     if (message instanceof Connection) {
       try {
         user = new UserDto(((Connection) message).getUsername());
-        server.checkUser(user);
+        server.checkUser(this);
         server.getStatOfPlayer(new SendAllStatistics(), this);
       } catch (DtoException ignored) {
       }

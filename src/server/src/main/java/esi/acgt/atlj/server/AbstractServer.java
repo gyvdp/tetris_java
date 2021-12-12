@@ -186,7 +186,7 @@ public abstract class AbstractServer implements Runnable {
    *
    * @param user User to check or create.
    */
-  synchronized protected void checkUser(UserDto user) {
+  synchronized protected void checkUser(CustomClientThread user) {
   }
 
   /**

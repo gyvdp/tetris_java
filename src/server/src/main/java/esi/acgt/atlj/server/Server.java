@@ -71,6 +71,8 @@ public class Server extends AbstractServer {
    */
   private int clientId;
 
+  private BlockingQueue<String> usernames;
+
   private static final java.util.logging.Logger logger = Logger.getLogger(Server.class.getName());
 
 
@@ -82,6 +84,7 @@ public class Server extends AbstractServer {
   public Server(int port) throws IOException {
     super(port);
     waitingList = new LinkedBlockingQueue<>();
+    usernames = new LinkedBlockingQueue<>();
     clientId = 0;
     interactDatabase = new BusinessModel();
     this.listen();
@@ -178,15 +181,23 @@ public class Server extends AbstractServer {
    * {@inheritDoc}
    */
   @Override
-  protected synchronized void checkUser(UserDto user) {
+  protected synchronized void checkUser(CustomClientThread user) {
+    if (usernames.contains(user.getUsername())) {
+      try {
+        user.close();
+      } catch (IOException ignored) {
+      }
+    } else {
+      usernames.add(user.getUsername());
+    }
     try {
       UserDto persistentUser = interactDatabase.getUser(user.getUsername());
       if (persistentUser != null) {
-        user.set(persistentUser);
+        user.getUser().set(persistentUser);
       } else {
-        user.setId(interactDatabase.addUser(user.getUsername()));
+        user.getUser().setId(interactDatabase.addUser(user.getUsername()));
         logger.log(Level.INFO,
-            String.format("User has been added to database", user.getUsername()));
+            String.format("User has been added to database %s", user.getUsername()));
       }
     } catch (BusinessException e) {
       logger.log(Level.SEVERE,
