@@ -61,7 +61,7 @@ public class MatrixController implements Initializable {
     grid.prefHeightProperty().bind(grid.widthProperty().divide(L).multiply(H));
     grid.prefWidthProperty().bind(container.widthProperty());
 
-    background.fitHeightProperty().bind(grid.heightProperty());
+    background.fitHeightProperty().bind(background.fitWidthProperty().divide(L).multiply(H));
     background.fitWidthProperty().bind(grid.widthProperty());
 
     grid.paddingProperty().bind(Bindings.createObjectBinding(
