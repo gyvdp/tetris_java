@@ -152,7 +152,8 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
    */
   @Override
   protected void closeConnection() {
-    System.err.println("Connection to server has been suspended");
+    System.out.println("La connection au serveur à été suspendue");
+    System.exit(0);
   }
 
   /**
@@ -295,8 +296,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
 
   @Override
   public void keyBoardInput(KeyCode input) {
-    if (game instanceof MultiplayerGame) {
-      var multiplayerGame = (MultiplayerGame) game;
+    if (game instanceof MultiplayerGame multiplayerGame) {
       if (multiplayerGame.getStatus() != PlayerStatus.LOCK_OUT
           && multiplayerGame.getStatus() != PlayerStatus.NOT_STARTED) {
         switch (input) {
