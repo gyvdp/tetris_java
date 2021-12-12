@@ -29,7 +29,6 @@ import esi.acgt.atlj.client.model.ClientInterface;
 import esi.acgt.atlj.client.model.game.MultiplayerGame;
 import esi.acgt.atlj.client.view.View;
 import esi.acgt.atlj.client.view.ViewInterface;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -94,7 +93,7 @@ public class Controller extends Application {
   public void connexion(String host, int port, String username) {
     try {
       this.client = new Client(port, host, username);
-      this.startMenu(username, client.getStats());
+      this.startMenu(username);
     } catch (Exception e) {
       this.view.displayError(e);
       this.view.displayConnexion(host, String.valueOf(port), username);
@@ -119,14 +118,13 @@ public class Controller extends Application {
    *
    * @param username username of the player
    */
-  public void startMenu(String username, HashMap<String, Integer> stats) {
-    this.view.displayMenu(username, stats);
+  public void startMenu(String username) {
+    this.view.displayMenu(username, client.getStats());
   }
 
   public void leaveMatch() {
     ((MultiplayerGame) client.getActualGame()).getPlayer().stop();
-    startMenu(((MultiplayerGame) client.getActualGame()).getPlayer().getUsername(),
-        client.getStats());
+    startMenu(((MultiplayerGame) client.getActualGame()).getPlayer().getUsername());
   }
 
   /**

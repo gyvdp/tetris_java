@@ -26,6 +26,7 @@ package esi.acgt.atlj.message.messageTypes;
 
 import esi.acgt.atlj.message.StatisticMessage;
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 /**
  * Sends all statistics to user.
@@ -51,8 +52,8 @@ public class SendAllStatistics extends StatisticMessage {
     this.tetrimino_history = tetrimino_history;
   }
 
-  public void execute(HashMap<String, Integer> stats) {
-    stats.putAll(game_history);
-    stats.putAll(tetrimino_history);
+  public void execute(Consumer<HashMap<String, Integer>> setStats) {
+    game_history.putAll(tetrimino_history);
+    setStats.accept(game_history);
   }
 }

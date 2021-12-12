@@ -26,6 +26,7 @@ package esi.acgt.atlj.client.view.scenes;
 
 import esi.acgt.atlj.client.controller.Controller;
 import esi.acgt.atlj.client.view.controllers.GameMenuController;
+import javafx.beans.property.MapProperty;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
@@ -34,10 +35,11 @@ public class GameMenuScene extends Scene {
   GameMenuController controller;
 
   public GameMenuScene(Parent root, GameMenuController controller, Controller rootController,
-      String username) {
+      String username, MapProperty<String, Integer> stats) {
     super(root);
     this.controller = controller;
     this.controller.setRootController(rootController);
     this.controller.setUsername(username);
+    this.controller.bindStats(stats);
   }
 }

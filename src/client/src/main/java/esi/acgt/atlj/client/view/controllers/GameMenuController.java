@@ -26,8 +26,9 @@ package esi.acgt.atlj.client.view.controllers;
 
 import esi.acgt.atlj.client.controller.Controller;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.ResourceBundle;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.MapProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -37,29 +38,28 @@ public class GameMenuController implements Initializable {
   private String username;
   private Controller controller;
 
-
   @FXML
-  public Label connectedUsername;
+  public Label usernameValue;
   @FXML
-  public Label singleLabel;
+  public Label singleValue;
   @FXML
-  public Label doubleLabel;
+  public Label doubleValue;
   @FXML
-  public Label tripleLabel;
+  public Label tripleValue;
   @FXML
-  public Label tetrisLabel;
+  public Label tetrisValue;
   @FXML
-  public Label destroyedLine;
+  public Label burnsValue;
   @FXML
-  public Label hardDrop;
+  public Label levelValue;
   @FXML
-  public Label wins;
+  public Label wonValue;
   @FXML
-  public Label loses;
+  public Label lostValue;
   @FXML
-  public Label highestScore;
+  public Label highScoreValue;
   @FXML
-  public Label winningPercent;
+  public Label winningPercentValue;
 
   public void setRootController(Controller controller) {
     this.controller = controller;
@@ -67,24 +67,45 @@ public class GameMenuController implements Initializable {
 
   public void setUsername(String username) {
     this.username = username;
-    this.connectedUsername.setText(username);
+    this.usernameValue.setText(username);
   }
 
-  public void setStats(HashMap<String, Integer> stats) {
-    highestScore.setText(String.valueOf(stats.getOrDefault("SCORE", 0)));
-    var lost = stats.getOrDefault("LOST", 0);
-    var won = stats.getOrDefault("WON", 0);
-    loses.setText(String.valueOf(lost));
-    wins.setText(String.valueOf(won));
-    winningPercent.setText(String.format("%.2f%%", ((double) won) / (won + lost) * 100));
-    singleLabel.setText(String.valueOf(stats.getOrDefault("SINGLE", 0)));
-    doubleLabel.setText(String.valueOf(stats.getOrDefault("DOUBLE", 0)));
-    tripleLabel.setText(String.valueOf(stats.getOrDefault("TRIPLE", 0)));
-    tetrisLabel.setText(String.valueOf(stats.getOrDefault("TETRIS", 0)));
-    hardDrop.setText(String.valueOf(stats.getOrDefault("HARD_DROP", 0)));
-    destroyedLine.setText(String.valueOf(stats.getOrDefault("BURN", 0)));
+  public void bindStats(MapProperty<String, Integer> stats) {
+    highScoreValue.textProperty().bind(
+        Bindings.createStringBinding(() -> String.valueOf(stats.getOrDefault("SCORE", 0)), stats));
 
+    wonValue.textProperty().bind(
+        Bindings.createStringBinding(() -> String.valueOf(stats.getOrDefault("WON", 0)), stats));
 
+    lostValue.textProperty().bind(
+        Bindings.createStringBinding(() -> String.valueOf(stats.getOrDefault("LOST", 0)), stats));
+
+    winningPercentValue.textProperty().bind(Bindings.createStringBinding(() -> {
+      var won = stats.getOrDefault("WON", 0);
+      var lost = stats.getOrDefault("LOST", 0);
+      if (won + lost == 0) {
+        return "N/A";
+      }
+      return String.format("%.2f%%", (double) won / (won + lost) * 100);
+    }, stats));
+
+    singleValue.textProperty().bind(
+        Bindings.createStringBinding(() -> String.valueOf(stats.getOrDefault("SINGLE", 0)), stats));
+
+    doubleValue.textProperty().bind(
+        Bindings.createStringBinding(() -> String.valueOf(stats.getOrDefault("DOUBLE", 0)), stats));
+
+    tripleValue.textProperty().bind(
+        Bindings.createStringBinding(() -> String.valueOf(stats.getOrDefault("TRIPLE", 0)), stats));
+
+    tetrisValue.textProperty().bind(
+        Bindings.createStringBinding(() -> String.valueOf(stats.getOrDefault("TETRIS", 0)), stats));
+
+    burnsValue.textProperty().bind(
+        Bindings.createStringBinding(() -> String.valueOf(stats.getOrDefault("BURN", 0)), stats));
+
+    levelValue.textProperty().bind(
+        Bindings.createStringBinding(() -> String.valueOf(stats.getOrDefault("LEVEL", 0)), stats));
   }
 
   /**
@@ -104,6 +125,6 @@ public class GameMenuController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    this.connectedUsername.setText(this.connectedUsername.getText() + this.username);
+    this.usernameValue.setText(this.usernameValue.getText() + this.username);
   }
 }

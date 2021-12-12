@@ -27,12 +27,11 @@ package esi.acgt.atlj.client.model;
 import esi.acgt.atlj.message.ServerRequest;
 import esi.acgt.atlj.model.Game;
 import esi.acgt.atlj.model.player.Action;
-import esi.acgt.atlj.model.player.PlayerStatInterface;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.model.tetrimino.TetriminoInterface;
 import java.beans.PropertyChangeListener;
 import java.net.ConnectException;
-import java.util.HashMap;
+import javafx.beans.property.MapProperty;
 import javafx.scene.input.KeyCode;
 
 /**
@@ -45,7 +44,7 @@ public interface ClientInterface {
    */
   void connect() throws ConnectException;
 
-  HashMap<String, Integer> getStats();
+  MapProperty<String, Integer> getStats();
 
   /**
    * Request the next color of Tetrimino.

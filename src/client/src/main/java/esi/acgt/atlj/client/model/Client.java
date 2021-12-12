@@ -49,8 +49,13 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.HashMap;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.beans.property.MapProperty;
+import javafx.beans.property.SimpleMapProperty;
+import javafx.collections.FXCollections;
 import javafx.scene.input.KeyCode;
 
 
@@ -64,14 +69,18 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
 
   private static final Logger logger = Logger.getLogger(Client.class.getName());
 
-  private HashMap<String, Integer> stats;
+  private final MapProperty<String, Integer> stats = new SimpleMapProperty<>(
+      FXCollections.observableHashMap());
 
   private final String username;
 
   private Game game;
 
+  private final Consumer<HashMap<String, Integer>> updateStats = (hashMap)
+      -> Platform.runLater(() -> stats.putAll(hashMap));
+
   /**
-   * Constructor of a client.
+   * Constructor of a client. s
    *
    * @param port Port client must look for.
    * @param host Host client must connect to.
@@ -79,7 +88,6 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   public Client(int port, String host, String username) throws ConnectException {
     super(port, host);
     this.username = username;
-    this.stats = new HashMap<>();
     connect();
     sendNameToServer(username);
   }
@@ -88,7 +96,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
     return this.username;
   }
 
-  public HashMap<String, Integer> getStats() {
+  public MapProperty<String, Integer> getStats() {
     return this.stats;
   }
 
@@ -103,7 +111,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
     switch (message.getType()) {
       case NEW_GAME -> ((SendStartGame) message).execute(game);
       case GAME -> ((GameMessage) message).execute(game);
-      case STATISTICS -> ((StatisticMessage) message).execute(stats);
+      case STATISTICS -> ((StatisticMessage) message).execute(updateStats);
     }
   }
 
@@ -114,7 +122,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   public void closeConnectionToServer() {
     super.closeConnectionToServer();
   }
-  
+
 
   /**
    * {@inheritDoc}

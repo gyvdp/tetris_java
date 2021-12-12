@@ -24,8 +24,8 @@
 
 package esi.acgt.atlj.message;
 
-
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 public abstract class StatisticMessage extends AbstractMessage {
 
@@ -35,6 +35,8 @@ public abstract class StatisticMessage extends AbstractMessage {
 
   /**
    * Displays the statistics in the view.
+   *
+   * @param setStats
    */
-  public abstract void execute(HashMap<String, Integer> stats);
+  public abstract void execute(Consumer<HashMap<String, Integer>> setStats);
 }

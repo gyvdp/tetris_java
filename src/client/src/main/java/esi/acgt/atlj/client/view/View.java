@@ -25,13 +25,12 @@
 package esi.acgt.atlj.client.view;
 
 import esi.acgt.atlj.client.controller.Controller;
-import esi.acgt.atlj.client.view.controllers.GameMenuController;
 import esi.acgt.atlj.client.view.scenes.ConnectionScene;
 import esi.acgt.atlj.client.view.scenes.GameMenuScene;
 import esi.acgt.atlj.client.view.scenes.MultiplayerScene;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.util.HashMap;
+import javafx.beans.property.MapProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -132,12 +131,12 @@ public class View implements ViewInterface {
   }
 
   @Override
-  public void displayMenu(String username, HashMap<String, Integer> stats) {
+  public void displayMenu(String username, MapProperty<String, Integer> stats) {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GameMenu.fxml"));
     try {
       this.primaryStage.setScene(
-          new GameMenuScene(loader.load(), loader.getController(), this.controller, username));
-      ((GameMenuController) loader.getController()).setStats(stats);
+          new GameMenuScene(loader.load(), loader.getController(), this.controller, username,
+              stats));
     } catch (IOException e) {
       e.printStackTrace();
     }

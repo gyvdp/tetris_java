@@ -62,7 +62,7 @@
       GridPane.valignment="CENTER">
       <Image url="@../image/Tetris_background.png"/>
     </ImageView>
-    <Label fx:id="connectedUsername" text="Connecté en tant que " textFill="WHITE"
+    <Label fx:id="usernameValue" text="Connecté en tant que " textFill="WHITE"
       GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="2">
       <font>
         <Font name="System Bold" size="30.0"/>
@@ -70,12 +70,12 @@
     </Label>
     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0"
       GridPane.rowIndex="3">
-      <Label text="Ligne détruite : " textFill="WHITE">
+      <Label text="Burns : " textFill="WHITE">
         <font>
           <Font name="System Bold Italic" size="14.0"/>
         </font>
       </Label>
-      <Label fx:id="destroyedLine" textFill="WHITE">
+      <Label fx:id="burnsValue" textFill="WHITE">
         <font>
           <Font name="System Bold" size="17.0"/>
         </font>
@@ -86,12 +86,12 @@
     </HBox>
     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0"
       GridPane.rowIndex="4">
-      <Label text="Hard drop : " textFill="WHITE">
+      <Label text="Level : " textFill="WHITE">
         <font>
           <Font name="System Bold Italic" size="14.0"/>
         </font>
       </Label>
-      <Label fx:id="hardDrop" textFill="WHITE">
+      <Label fx:id="levelValue" textFill="WHITE">
         <font>
           <Font name="System Bold" size="17.0"/>
         </font>
@@ -102,12 +102,12 @@
     </HBox>
     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0"
       GridPane.columnIndex="1" GridPane.rowIndex="3">
-      <Label text="Wins : " textFill="WHITE">
+      <Label text="Won : " textFill="WHITE">
         <font>
           <Font name="System Bold Italic" size="14.0"/>
         </font>
       </Label>
-      <Label fx:id="wins" textFill="WHITE">
+      <Label fx:id="wonValue" textFill="WHITE">
         <font>
           <Font name="System Bold" size="17.0"/>
         </font>
@@ -115,12 +115,12 @@
     </HBox>
     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0"
       GridPane.columnIndex="1" GridPane.rowIndex="4">
-      <Label text="Loses : " textFill="WHITE">
+      <Label text="Lost : " textFill="WHITE">
         <font>
           <Font name="System Bold Italic" size="14.0"/>
         </font>
       </Label>
-      <Label fx:id="loses" textFill="WHITE">
+      <Label fx:id="lostValue" textFill="WHITE">
         <font>
           <Font name="System Bold" size="17.0"/>
         </font>
@@ -134,12 +134,12 @@
       <padding>
         <Insets left="30.0"/>
       </padding>
-      <Label text="Highest Score : " textFill="WHITE">
+      <Label text="High-score : " textFill="WHITE">
         <font>
           <Font name="System Bold Italic" size="14.0"/>
         </font>
       </Label>
-      <Label fx:id="highestScore" textFill="WHITE">
+      <Label fx:id="highScoreValue" textFill="WHITE">
         <font>
           <Font name="System Bold" size="17.0"/>
         </font>
@@ -153,12 +153,12 @@
       <padding>
         <Insets left="30.0"/>
       </padding>
-      <Label text="Winning Percent : " textFill="WHITE">
+      <Label text="Win-rate : " textFill="WHITE">
         <font>
           <Font name="System Bold Italic" size="14.0"/>
         </font>
       </Label>
-      <Label fx:id="winningPercent" textFill="WHITE">
+      <Label fx:id="winningPercentValue" textFill="WHITE">
         <font>
           <Font name="System Bold" size="17.0"/>
         </font>
@@ -194,7 +194,7 @@
             <Font name="System Bold Italic" size="14.0"/>
           </font>
         </Label>
-        <Label fx:id="singleLabel" textFill="WHITE">
+        <Label fx:id="singleValue" textFill="WHITE">
           <font>
             <Font name="System Bold" size="17.0"/>
           </font>
@@ -206,7 +206,7 @@
             <Font name="System Bold Italic" size="14.0"/>
           </font>
         </Label>
-        <Label fx:id="doubleLabel" textFill="WHITE">
+        <Label fx:id="doubleValue" textFill="WHITE">
           <font>
             <Font name="System Bold" size="17.0"/>
           </font>
@@ -218,7 +218,7 @@
             <Font name="System Bold Italic" size="14.0"/>
           </font>
         </Label>
-        <Label fx:id="tripleLabel" textFill="WHITE">
+        <Label fx:id="tripleValue" textFill="WHITE">
           <font>
             <Font name="System Bold" size="17.0"/>
           </font>
@@ -230,7 +230,7 @@
             <Font name="System Bold Italic" size="14.0"/>
           </font>
         </Label>
-        <Label fx:id="tetrisLabel" textFill="WHITE">
+        <Label fx:id="tetrisValue" textFill="WHITE">
           <font>
             <Font name="System Bold" size="17.0"/>
           </font>
