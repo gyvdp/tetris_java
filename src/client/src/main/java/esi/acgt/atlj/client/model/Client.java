@@ -123,6 +123,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   @Override
   public void closeConnectionToServer() {
     super.closeConnectionToServer();
+    logger.log(Level.INFO, "Closing connection to server");
   }
 
 
@@ -159,7 +160,8 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
    */
   @Override
   protected void connexionException(Exception e) {
-
+    logger.log(Level.SEVERE,
+        String.format("There has been an exception with message %s", e.getMessage()));
   }
 
   /**
