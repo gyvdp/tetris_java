@@ -69,7 +69,8 @@ public class View implements ViewInterface {
       event.consume();
       if (primaryStage.getScene() instanceof MultiplayerScene) {
         controller.leaveMatch();
-      } else if (primaryStage.getScene() instanceof GameMenuScene) {
+      } else if (primaryStage.getScene() instanceof GameMenuScene
+          || primaryStage.getScene() instanceof ConnectionScene) {
         controller.stop();
       }
     });

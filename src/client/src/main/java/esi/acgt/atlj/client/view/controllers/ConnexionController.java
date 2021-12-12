@@ -103,7 +103,7 @@ public class ConnexionController implements Initializable {
    * Action when you press on the button to leave the application
    */
   public void leavePressed() {
-    // todo : this.stage.close();
+    this.controller.stop();
   }
 
   /**
