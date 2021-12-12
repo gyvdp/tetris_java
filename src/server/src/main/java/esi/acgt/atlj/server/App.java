@@ -39,8 +39,8 @@ public class App {
     }
     try {
       Server s = new Server(port);
-    } catch (IOException e) {
-      System.err.println("Cannot start server");
+    } catch (IOException ignored) {
+
     }
   }
 }

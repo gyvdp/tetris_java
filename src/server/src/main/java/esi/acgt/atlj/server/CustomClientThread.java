@@ -31,6 +31,7 @@ import esi.acgt.atlj.message.ServerRequest;
 import esi.acgt.atlj.message.messageTypes.Request;
 import esi.acgt.atlj.message.messageTypes.Connection;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
+import esi.acgt.atlj.server.utils.MatchUpHandler;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -38,6 +39,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.function.BiConsumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Custom thread for each client of the server.
@@ -86,6 +89,10 @@ public class CustomClientThread extends Thread {
   private boolean readyToStop;
 
 
+  private static final java.util.logging.Logger logger = Logger.getLogger(
+      CustomClientThread.class.getName());
+
+
   /**
    * Constructs a new connection to a client.
    *
@@ -101,7 +108,8 @@ public class CustomClientThread extends Thread {
     try {
       clientSocket.setSoTimeout(0);
     } catch (SocketException e) {
-      System.err.println("cannot set timeout to client");
+      logger.log(Level.INFO,
+          ("Cannot set timeout"));
     }
     try {
       input = new ObjectInputStream(clientSocket.getInputStream());
@@ -197,8 +205,7 @@ public class CustomClientThread extends Thread {
         user = new UserDto(((Connection) message).getUsername());
         server.checkUser(user);
         server.getStatOfPlayer(new SendAllStatistics(), this);
-      } catch (DtoException e) {
-        System.err.println("Need valid username to start a game");
+      } catch (DtoException ignored) {
       }
     } else if (message instanceof Request) {
       if (((Request) message).getAction() == ServerRequest.MULTIPLAYER) {
@@ -228,7 +235,9 @@ public class CustomClientThread extends Thread {
         output.reset();
         output.writeObject(msg);
       } catch (IOException e) {
-        System.err.println("Error sending " + msg.toString() + " to client");
+        logger.log(Level.INFO,
+            String.format("Error sending %s to %s", ((AbstractMessage) msg).getType(),
+                getUsername()));
       } catch (NullPointerException ignored) {
       }
     }
@@ -278,9 +287,6 @@ public class CustomClientThread extends Thread {
     } catch (Exception exception) {
       if (!readyToStop) {
         try {
-          System.out.println(
-              "Client " + this.getClientNumber() + " has disconnected with"
-                  + this.getInetAddress());
           closeAll();
         } catch (Exception ignored) {
         }

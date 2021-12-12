@@ -37,8 +37,10 @@ import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
@@ -51,19 +53,9 @@ import java.util.stream.Collectors;
 public class Server extends AbstractServer {
 
   /**
-   * Hash map of all members in function of their clientId.
-   */
-  private final HashMap<Integer, CustomClientThread> members;
-
-  /**
    * All the clients that are currently waiting to play
    */
   private final BlockingQueue<CustomClientThread> waitingList;
-
-  /**
-   * All match-ups with their id.
-   */
-  private final HashMap<Integer, MatchUpHandler> matchUps;
 
   /**
    * Database interaction
@@ -92,8 +84,6 @@ public class Server extends AbstractServer {
     waitingList = new LinkedBlockingQueue<>();
     clientId = 0;
     interactDatabase = new BusinessModel();
-    members = new HashMap<>();
-    matchUps = new HashMap<>();
     this.listen();
   }
 
@@ -113,7 +103,9 @@ public class Server extends AbstractServer {
         }
       }
     } catch (SocketException e) {
-      System.err.println("Error with network interface, cannot get local ip address");
+      logger.log(Level.SEVERE,
+          ("Cannot get IP address"));
+
     }
     return null;
   }
@@ -131,21 +123,13 @@ public class Server extends AbstractServer {
   }
 
   /**
-   * Returns the next match-up id.
-   *
-   * @return Id for creation of next match-up.
-   */
-  private int getNextMatchupId() {
-    matchUpId++;
-    return matchUpId;
-  }
-
-  /**
    * {@inheritDoc}
    */
   @Override
   protected void serverStarted(int port) {
-    System.out.println("Server is running on " + getIP() + ":" + port + "...");
+    logger.log(Level.INFO,
+        String.format("Server is running on ip : %s and port : %s", getIP(), port));
+
   }
 
   /**
@@ -166,7 +150,8 @@ public class Server extends AbstractServer {
   @Override
   protected void serverStopped() {
     super.serverStopped();
-    System.out.println("Bye bye... Server is closing");
+    logger.log(Level.INFO,
+        ("Server is closed"));
     System.exit(0);
   }
 
@@ -187,7 +172,6 @@ public class Server extends AbstractServer {
     super.clientConnected(client);
     logger.log(Level.INFO,
         String.format("Client has been added with ip address %s", client.getInetAddress()));
-    members.put(getNextId(), client);
   }
 
   /**
@@ -203,10 +187,10 @@ public class Server extends AbstractServer {
         user.setId(interactDatabase.addUser(user.getUsername()));
         logger.log(Level.INFO,
             String.format("User has been added to database", user.getUsername()));
-
       }
     } catch (BusinessException e) {
-      System.err.println("error creating or adding user");
+      logger.log(Level.SEVERE,
+          String.format("Cannot create user %s", user.getUsername()));
     }
   }
 
@@ -218,7 +202,8 @@ public class Server extends AbstractServer {
           parseEntityTetrimino(interactDatabase.getTetriminoEntity(client.getUser())));
       client.sendMessage(m);
     } catch (BusinessException e) {
-      System.err.println("Cannot create message with all statistics");
+      logger.log(Level.SEVERE,
+          ("Cannot create a message with all statistics"));
     }
   }
 
@@ -257,18 +242,23 @@ public class Server extends AbstractServer {
   public synchronized void addPlayer(CustomClientThread client) {
     addClientToWaitingList(client);
     if (waitingList.size() % 2 == 0) {
-      MatchUpHandler matchUp = new MatchUpHandler(
-          waitingList.stream().limit(2).collect(Collectors.toList()), this.matchUpId,
-          interactDatabase, this);
-      matchUps.put(getNextMatchupId(), matchUp);
+      createMatchup();
       logger.log(Level.INFO,
           String.format("A new match-up has been created with id: %s", this.matchUpId));
-      try {
-        waitingList.take();
-        waitingList.take();
-      } catch (InterruptedException ignored) {
-      }
     }
+  }
+
+  private void createMatchup() {
+    List<CustomClientThread> clientsToAdd = new ArrayList<>();
+    try {
+      clientsToAdd.add(waitingList.take());
+      clientsToAdd.add(waitingList.take());
+    } catch (InterruptedException ignored) {
+    }
+    new MatchUpHandler(
+        clientsToAdd, this.matchUpId,
+        interactDatabase, this);
+
   }
 
   public synchronized void addClientToWaitingList(CustomClientThread client) {
@@ -285,14 +275,12 @@ public class Server extends AbstractServer {
   @Override
   protected void clientDisconnected(CustomClientThread client) {
     super.clientDisconnected(client);
+    logger.log(Level.INFO,
+        String.format("%s has been disconnected from server", client.getUsername()));
     try {
-      if (waitingList.remove(client)) {
-        System.out.println(
-            "Client " + client.getClientNumber() + " has been removed from the waiting list");
-      }
+      waitingList.remove(client);
     } catch (NullPointerException ignored) {
     }
-    members.remove(client.getClientNumber());
     clientId--;
   }
 

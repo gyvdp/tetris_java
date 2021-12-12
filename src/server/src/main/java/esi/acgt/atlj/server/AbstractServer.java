@@ -178,6 +178,7 @@ public abstract class AbstractServer implements Runnable {
    */
   synchronized protected void clientDisconnected(
       CustomClientThread client) {
+
   }
 
   /**

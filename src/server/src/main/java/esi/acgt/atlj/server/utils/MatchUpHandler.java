@@ -43,11 +43,14 @@ import esi.acgt.atlj.model.player.PlayerStatus;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.server.AbstractServer;
 import esi.acgt.atlj.server.CustomClientThread;
+import esi.acgt.atlj.server.Server;
 import esi.acgt.atlj.server.utils.game.MultiplayerGame;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -84,6 +87,10 @@ public class MatchUpHandler extends Thread {
    * Unique id of generated match-up.
    */
   int id;
+
+  private static final java.util.logging.Logger logger = Logger.getLogger(
+      MatchUpHandler.class.getName());
+
 
   /**
    * Constructor for match-up generator. Assigns its current id to both clients and launches the
@@ -201,7 +208,8 @@ public class MatchUpHandler extends Thread {
   private void checkEndOfMatchUp() {
     if (clients.size() == 0) {
       updateStandings();
-      System.out.println("Match-up " + (this.id + 1) + " has ended");
+      logger.log(Level.INFO,
+          String.format("The match up has been ended id : %s", ++this.id));
     }
   }
 
@@ -235,7 +243,9 @@ public class MatchUpHandler extends Thread {
       try {
         highScores.put(client.getUsername(), interactDatabase.getUserHighScore(client.getUser()));
       } catch (BusinessException e) {
-        System.err.println("Cannot get both player high score \n" + e);
+        logger.log(Level.SEVERE,
+            ("Cannot get high score of both users"));
+
       }
     }
     return highScores;
@@ -262,7 +272,8 @@ public class MatchUpHandler extends Thread {
           statistics.getBurns());
       interactDatabase.setTetriminoEntity(tetriminoDto);
     } catch (BusinessException e) {
-      System.out.println("Cannot set user in database.");
+      logger.log(Level.SEVERE,
+          ("Cannot set user in database"));
     }
   }
 
@@ -277,7 +288,8 @@ public class MatchUpHandler extends Thread {
       interactDatabase.setGameStatEntity(dtoLost);
       interactDatabase.setGameStatEntity(dtoWon);
     } catch (BusinessException e) {
-      System.err.println("Cannot send won and lost games to database \n" + e.getMessage());
+      logger.log(Level.SEVERE,
+          ("Cannot send won and lost games to database"));
     }
   }
 }
