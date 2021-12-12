@@ -27,8 +27,14 @@ package esi.acgt.atlj.message;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
+/**
+ * Message sent with the purpose of asking or sending statistics.
+ */
 public abstract class StatisticMessage extends AbstractMessage {
 
+  /**
+   * Constructor for statistics message.
+   */
   public StatisticMessage() {
     this.messageType = MessageType.STATISTICS;
   }

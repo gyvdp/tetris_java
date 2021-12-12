@@ -24,13 +24,21 @@
 
 package esi.acgt.atlj.message.messageTypes;
 
-import esi.acgt.atlj.message.AbstractMessage;
+import esi.acgt.atlj.message.ServerMessage;
 import esi.acgt.atlj.message.ServerRequest;
 
-public class Request extends AbstractMessage {
+/**
+ * Request something to the server.
+ */
+public class Request extends ServerMessage {
 
   private ServerRequest action;
 
+  /**
+   * Constructor for a request message.
+   *
+   * @param request Action to request.
+   */
   public Request(ServerRequest request) {
     super();
     this.action = request;
@@ -46,7 +54,7 @@ public class Request extends AbstractMessage {
   }
 
   /**
-   * Sets the action to request.
+   * Sets the action to request. Sets the action to send.
    *
    * @param e Action.
    */

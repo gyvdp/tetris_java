@@ -24,14 +24,10 @@
 
 package esi.acgt.atlj.message.messageTypes;
 
-import esi.acgt.atlj.message.AbstractMessage;
-import esi.acgt.atlj.message.GameMessage;
-import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.message.ServerMessage;
-import esi.acgt.atlj.model.Game;
 
 /**
- * Asks next tetrimino in bag
+ * Asks next tetrimino of bag
  */
 public class AskPiece extends ServerMessage {
 

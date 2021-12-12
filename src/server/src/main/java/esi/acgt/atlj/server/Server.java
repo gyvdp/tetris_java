@@ -64,9 +64,10 @@ public class Server extends AbstractServer {
   /**
    * current number of match-ups;
    */
-  private int matchUpId = 0;
+  private final int matchUpId = 0;
+
   /**
-   * current tally of client id.
+   * Logger
    */
   private int clientId;
 
@@ -150,6 +151,15 @@ public class Server extends AbstractServer {
    * {@inheritDoc}
    */
   @Override
+  protected void listeningException(Throwable exception) {
+    logger.log(Level.SEVERE,
+        String.format("An exception has been raised with message %s", exception.getMessage()));
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   protected void serverStopped() {
     super.serverStopped();
     logger.log(Level.INFO,
@@ -216,6 +226,10 @@ public class Server extends AbstractServer {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public synchronized void getStatOfPlayer(SendAllStatistics m, CustomClientThread client) {
     try {
       m.setGame_history(
@@ -245,6 +259,12 @@ public class Server extends AbstractServer {
   }
 
 
+  /**
+   * Parses a database object of Tetrimino to send to user via hashmap.
+   *
+   * @param entity Entity to parse.
+   * @return Hashmap that has been parsed.
+   */
   private HashMap<String, Integer> parseEntityTetrimino(TetriminoDto entity) {
     HashMap<String, Integer> statistics = new HashMap<>();
     statistics.put("SINGLE", entity.getSingle());
@@ -264,13 +284,16 @@ public class Server extends AbstractServer {
   public synchronized void addPlayer(CustomClientThread client) {
     addClientToWaitingList(client);
     if (waitingList.size() % 2 == 0) {
-      createMatchup();
+      createMatchUp();
       logger.log(Level.INFO,
           String.format("A new match-up has been created with id: %s", this.matchUpId));
     }
   }
 
-  private void createMatchup() {
+  /**
+   * Creates a new match up
+   */
+  private void createMatchUp() {
     List<CustomClientThread> clientsToAdd = new ArrayList<>();
     try {
       clientsToAdd.add(waitingList.take());
@@ -283,6 +306,10 @@ public class Server extends AbstractServer {
 
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public synchronized void addClientToWaitingList(CustomClientThread client) {
     if (!waitingList.contains(client)) {
       waitingList.add(client);

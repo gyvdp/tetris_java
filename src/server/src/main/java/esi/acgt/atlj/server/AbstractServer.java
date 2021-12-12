@@ -26,7 +26,6 @@ package esi.acgt.atlj.server;
 
 
 import esi.acgt.atlj.database.dto.UserDto;
-import esi.acgt.atlj.message.messageTypes.Request;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import java.io.IOException;
 import java.io.InterruptedIOException;
@@ -56,18 +55,7 @@ public abstract class AbstractServer implements Runnable {
   /**
    * The port number
    */
-  private int port;
-  /**
-   * The server timeout while for accepting connections. After timing out, the server will check to
-   * see if a command to stop the server has been issued; it not it will resume accepting
-   * connections. Set to half a second by default.
-   */
-  private int timeout = 500;
-  /**
-   * The maximum queue length; i.e. the maximum number of clients that can be waiting to connect.
-   * Set to 10 by default.
-   */
-  private int backlog = 10;
+  private final int port;
   /**
    * Indicates if the listening thread is ready to stop. Set to true by default.
    */
@@ -141,7 +129,7 @@ public abstract class AbstractServer implements Runnable {
    * @return true if the server is listening.
    */
   final public boolean isListening() {
-    return connectionListener != null && connectionListener.isAlive(); // modified in version 2.31
+    return connectionListener != null && connectionListener.isAlive();
   }
 
   /**
@@ -153,8 +141,10 @@ public abstract class AbstractServer implements Runnable {
   final public void listen() throws IOException {
     if (!isListening()) {
       if (serverSocket == null) {
+        int backlog = 10;
         serverSocket = new ServerSocket(getPort(), backlog);
       }
+      int timeout = 500;
       serverSocket.setSoTimeout(timeout);
       connectionListener = new Thread(this);
       connectionListener.start();
@@ -246,10 +236,21 @@ public abstract class AbstractServer implements Runnable {
   protected void serverClosed() {
   }
 
+  /**
+   * Gets all the statistics of a given player.
+   *
+   * @param m      Message to send all statistics inside.
+   * @param client Client to send message to.
+   */
   public synchronized void getStatOfPlayer(SendAllStatistics m, CustomClientThread client) {
 
   }
 
+  /**
+   * Adds a client to the waiting list.
+   *
+   * @param client Client to add to waiting list.
+   */
   public synchronized void addClientToWaitingList(CustomClientThread client) {
 
   }

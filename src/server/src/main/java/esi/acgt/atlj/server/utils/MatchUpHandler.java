@@ -34,16 +34,15 @@ import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.HighScore;
 import esi.acgt.atlj.message.messageTypes.NextMino;
 import esi.acgt.atlj.message.messageTypes.PlayerState;
+import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import esi.acgt.atlj.message.messageTypes.SendStartGame;
 import esi.acgt.atlj.model.Game;
-import esi.acgt.atlj.model.player.PlayerStatInterface;
-import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import esi.acgt.atlj.model.player.Action;
+import esi.acgt.atlj.model.player.PlayerStatInterface;
 import esi.acgt.atlj.model.player.PlayerStatus;
 import esi.acgt.atlj.model.tetrimino.Mino;
 import esi.acgt.atlj.server.AbstractServer;
 import esi.acgt.atlj.server.CustomClientThread;
-import esi.acgt.atlj.server.Server;
 import esi.acgt.atlj.server.utils.game.MultiplayerGame;
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +57,9 @@ import java.util.logging.Logger;
  */
 public class MatchUpHandler extends Thread {
 
+  /**
+   * Current game that will be played
+   */
   private final Game game;
 
   /**
@@ -80,7 +82,7 @@ public class MatchUpHandler extends Thread {
 
 
   /**
-   * Server match up belongs to.
+   * Server match-up belongs to.
    */
   AbstractServer server;
   /**
@@ -88,6 +90,9 @@ public class MatchUpHandler extends Thread {
    */
   int id;
 
+  /**
+   * Logger
+   */
   private static final java.util.logging.Logger logger = Logger.getLogger(
       MatchUpHandler.class.getName());
 

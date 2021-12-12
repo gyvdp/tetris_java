@@ -38,9 +38,8 @@ public class App {
       port = Integer.parseInt(args[0]);
     }
     try {
-      Server s = new Server(port);
+      new Server(port);
     } catch (IOException ignored) {
-
     }
   }
 }

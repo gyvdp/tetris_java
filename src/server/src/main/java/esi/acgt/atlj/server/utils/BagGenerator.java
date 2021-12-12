@@ -29,9 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Class that takes care of every pair of players in the server.
@@ -39,6 +37,9 @@ import java.util.Random;
 public class BagGenerator {
 
 
+  /**
+   * Hashmap with both username and there respective tetrimino queue.
+   */
   private final HashMap<String, List<Mino>> playerTetrimino;
 
   /**
