@@ -62,7 +62,11 @@ public class ManagedPlayer extends AbstractPlayer {
   }
 
   public synchronized void stop() {
-    setStatus(PlayerStatus.STOPPED);
+    if (status == PlayerStatus.NOT_STARTED) {
+      setStatus(PlayerStatus.CANCEL);
+    } else {
+      setStatus(PlayerStatus.STOPPED);
+    }
   }
 
   /**
