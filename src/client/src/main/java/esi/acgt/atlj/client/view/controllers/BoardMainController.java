@@ -57,8 +57,7 @@ public class BoardMainController implements Initializable {
 
   @FXML
   public InfoBoxController bottomBoxController;
-
-  //Todo Andrew regarde
+  
   private int lines;
 
   public static String linesToText(int lines) {

@@ -107,8 +107,6 @@ public class ConnexionController implements Initializable {
     this.controller.stop();
   }
 
-  //todo methode vide
-
   /**
    * Initiale of the Connexion.fxml
    */

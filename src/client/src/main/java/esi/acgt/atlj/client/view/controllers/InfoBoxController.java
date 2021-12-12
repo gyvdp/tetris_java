@@ -39,7 +39,6 @@ public class InfoBoxController implements Initializable {
 
   public final static int WIDTH = 93;
 
-  //todo never used
   public final static int PADDING = 8;
 
   public Label infoBoxText;

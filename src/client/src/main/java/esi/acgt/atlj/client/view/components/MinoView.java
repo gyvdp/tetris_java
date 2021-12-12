@@ -31,7 +31,6 @@ import javafx.scene.layout.Pane;
 
 public class MinoView extends Pane {
 
-  //Todo ces champs ne sont pas utilisé
   public static final int HEIGHT = 7;
 
   public static final int WEIGHT = 7;

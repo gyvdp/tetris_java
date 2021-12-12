@@ -56,7 +56,6 @@ public class ManagedPlayer extends AbstractPlayer {
    * Game starts making tetriminos fall
    */
   public synchronized void start() {
-    // todo : this.askNextMino.run();
     Mino[][] emptyBoard = new Mino[HEIGHT][WIDTH];
     this.pcs.firePropertyChange("board", emptyBoard, this.getMatrix());
     setStatus(PlayerStatus.TETRIMINO_FALLING);
