@@ -105,6 +105,11 @@ public class MultiplayerGame extends Game {
     return this.player.getStatus();
   }
 
+  /**
+   * Gets player of the game
+   *
+   * @return player
+   */
   public ManagedPlayer getPlayer() {
     return this.player;
   }

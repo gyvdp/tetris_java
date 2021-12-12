@@ -130,6 +130,9 @@ public class View implements ViewInterface {
         : null;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void displayMenu(String username, MapProperty<String, Integer> stats) {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GameMenu.fxml"));
@@ -142,6 +145,9 @@ public class View implements ViewInterface {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void quit() {
     this.primaryStage.setScene(null);

@@ -67,8 +67,17 @@ public interface ViewInterface {
    */
   PropertyChangeListener[] getBoardListeners();
 
+  /**
+   * Show the menu.
+   *
+   * @param username username of the client
+   * @param stats    stats of the client
+   */
   void displayMenu(String username, MapProperty<String, Integer> stats);
 
+  /**
+   * Send to the server that client quit.
+   */
   void quit();
 
 }

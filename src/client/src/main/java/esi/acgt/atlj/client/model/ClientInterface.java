@@ -74,6 +74,11 @@ public interface ClientInterface {
    */
   void closeConnectionToServer();
 
+  /**
+   * Send the name to the server
+   *
+   * @param name name that we send
+   */
   void sendNameToServer(String name);
 
   /**
@@ -90,10 +95,26 @@ public interface ClientInterface {
    */
   void sendStatAction(Action action);
 
+  /**
+   * Start the MultiPlayerGame.
+   *
+   * @param username  username of the player.
+   * @param listeners propertyChangeListener from the view.
+   */
   void startMultiplayerGame(String username, PropertyChangeListener[] listeners);
 
+  /**
+   * Gets the actuel Game.
+   *
+   * @return Game.
+   */
   Game getActualGame();
 
+  /**
+   * Gets all the inputs of the user.
+   *
+   * @param input input of the user from the keyboard.
+   */
   void keyBoardInput(KeyCode input);
 
 }

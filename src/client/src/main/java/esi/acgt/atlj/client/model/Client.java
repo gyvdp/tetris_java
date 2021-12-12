@@ -91,10 +91,20 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
     sendNameToServer(username);
   }
 
+  /**
+   * Get username of client
+   *
+   * @return string username
+   */
   public String getUsername() {
     return this.username;
   }
 
+  /**
+   * Gets the stats of the user
+   *
+   * @return Statistics of the user.
+   */
   public MapProperty<String, Integer> getStats() {
     return this.stats;
   }
@@ -215,6 +225,9 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void lockTetrimino(TetriminoInterface m) {
     try {
@@ -257,6 +270,9 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void startMultiplayerGame(String username, PropertyChangeListener[] listeners) {
     this.game = new MultiplayerGame(username);
@@ -268,7 +284,11 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
 
     sendAction(ServerRequest.MULTIPLAYER);
   }
-
+  /**
+   * Send the status to the server
+   *
+   * @param status status of the client
+   */
   public void sendStatusUpdate(PlayerStatus status) {
     try {
       sendToServer(new PlayerState(this.username, status));
@@ -279,11 +299,17 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Game getActualGame() {
     return game;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void keyBoardInput(KeyCode input) {
     if (game instanceof MultiplayerGame multiplayerGame) {
@@ -302,6 +328,9 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
     switch (evt.getPropertyName()) {

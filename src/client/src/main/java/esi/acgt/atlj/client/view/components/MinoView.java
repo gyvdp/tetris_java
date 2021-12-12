@@ -61,6 +61,11 @@ public class MinoView extends Pane {
     image.fitWidthProperty().bind(this.widthProperty());
   }
 
+  /**
+   * Set the image of the right mino.
+   *
+   * @param mino the right image of null if mino is null.
+   */
   public void set(Mino mino) {
     if (mino == null) {
       image.setImage(null);

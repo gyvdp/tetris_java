@@ -45,10 +45,20 @@ public class Controller extends Application {
 
   private ClientInterface client;
 
+  /**
+   * Main of the client application
+   *
+   * @param args args passed at launch
+   */
   public static void main(String[] args) {
     launch(args);
   }
 
+  /**
+   * Start the application
+   *
+   * @param stage stage of the application
+   */
   @Override
   public void start(Stage stage) {
     this.view = new View(stage);
