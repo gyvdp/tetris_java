@@ -24,8 +24,14 @@
 
 package esi.acgt.atlj.message;
 
+/**
+ * Message that is intended for server.
+ */
 public abstract class ServerMessage extends AbstractMessage {
 
+  /**
+   * Constructor for server message.
+   */
   public ServerMessage() {
     this.messageType = MessageType.SERVER;
   }

@@ -30,6 +30,9 @@ import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.model.Game;
 import java.util.HashMap;
 
+/**
+ * Sends high score of both users.
+ */
 public class HighScore extends AbstractMessage {
 
   HashMap<String, Integer> highScores;

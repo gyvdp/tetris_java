@@ -29,6 +29,9 @@ import esi.acgt.atlj.model.Game;
 import esi.acgt.atlj.model.player.AbstractPlayer;
 import esi.acgt.atlj.model.player.PlayerStatus;
 
+/**
+ * Sends a player state to the other player
+ */
 public class PlayerState extends GameMessage {
 
   private final PlayerStatus playerStatus;
@@ -43,6 +46,11 @@ public class PlayerState extends GameMessage {
     this.playerStatus = playerStatus;
   }
 
+  /**
+   * Gets the player status that has needs to send.
+   *
+   * @return Status of the player that has sent the message.
+   */
   public PlayerStatus getPlayerStatus() {
     return playerStatus;
   }

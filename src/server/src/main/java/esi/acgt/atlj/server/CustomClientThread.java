@@ -87,8 +87,10 @@ public class CustomClientThread extends Thread {
    * initiated.
    */
   private boolean readyToStop;
-
-
+  
+  /**
+   * Logger
+   */
   private static final java.util.logging.Logger logger = Logger.getLogger(
       CustomClientThread.class.getName());
 

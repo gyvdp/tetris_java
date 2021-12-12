@@ -42,15 +42,29 @@ public class SendAllStatistics extends StatisticMessage {
     super();
   }
 
+  /**
+   * Sets the whole table entry of a specific user.
+   *
+   * @param game_history Game entry to set.
+   */
   public void setGame_history(HashMap<String, Integer> game_history) {
     this.game_history = game_history;
   }
 
+  /**
+   * Sets the whole table entry of a specific user.
+   *
+   * @param tetrimino_history Tetrimino entry to set.
+   */
   public void setTetrimino_history(
       HashMap<String, Integer> tetrimino_history) {
     this.tetrimino_history = tetrimino_history;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public void execute(HashMap<String, Integer> stats) {
     stats.putAll(game_history);
     stats.putAll(tetrimino_history);

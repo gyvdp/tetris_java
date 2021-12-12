@@ -72,7 +72,6 @@ public class SendStartGame extends AbstractMessage {
     var player = (AbstractPlayer) game.getBoard(this.username);
     player.setActualTetrimino(Tetrimino.createTetrimino(actualMino));
     player.setNextTetrimino(nextMino);
-
     ((ManagedPlayer) player).start();
   }
 }

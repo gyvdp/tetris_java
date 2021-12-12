@@ -58,6 +58,9 @@ import java.util.logging.Logger;
  */
 public class MatchUpHandler extends Thread {
 
+  /**
+   * Current game that will be played
+   */
   private final Game game;
 
   /**
@@ -80,7 +83,7 @@ public class MatchUpHandler extends Thread {
 
 
   /**
-   * Server match up belongs to.
+   * Server match-up belongs to.
    */
   AbstractServer server;
   /**
@@ -88,6 +91,9 @@ public class MatchUpHandler extends Thread {
    */
   int id;
 
+  /**
+   * Logger
+   */
   private static final java.util.logging.Logger logger = Logger.getLogger(
       MatchUpHandler.class.getName());
 

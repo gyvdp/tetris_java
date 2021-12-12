@@ -31,7 +31,7 @@ import esi.acgt.atlj.message.ServerMessage;
 import esi.acgt.atlj.model.Game;
 
 /**
- * Asks next tetrimino in bag
+ * Asks next tetrimino of bag
  */
 public class AskPiece extends ServerMessage {
 

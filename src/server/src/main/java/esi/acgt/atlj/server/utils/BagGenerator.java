@@ -39,6 +39,9 @@ import java.util.Random;
 public class BagGenerator {
 
 
+  /**
+   * Hashmap with both username and there respective tetrimino queue.
+   */
   private final HashMap<String, List<Mino>> playerTetrimino;
 
   /**

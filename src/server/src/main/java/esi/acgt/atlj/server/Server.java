@@ -45,7 +45,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * Tetris server
@@ -65,12 +64,11 @@ public class Server extends AbstractServer {
   /**
    * current number of match-ups;
    */
-  private int matchUpId = 0;
-  /**
-   * current tally of client id.
-   */
-  private int clientId;
+  private final int matchUpId = 0;
 
+  /**
+   * Logger
+   */
   private static final java.util.logging.Logger logger = Logger.getLogger(Server.class.getName());
 
 
@@ -82,7 +80,6 @@ public class Server extends AbstractServer {
   public Server(int port) throws IOException {
     super(port);
     waitingList = new LinkedBlockingQueue<>();
-    clientId = 0;
     interactDatabase = new BusinessModel();
     this.listen();
   }
@@ -148,20 +145,20 @@ public class Server extends AbstractServer {
    * {@inheritDoc}
    */
   @Override
+  protected void listeningException(Throwable exception) {
+    logger.log(Level.SEVERE,
+        String.format("An exception has been raised with message %s", exception.getMessage()));
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   protected void serverStopped() {
     super.serverStopped();
     logger.log(Level.INFO,
         ("Server is closed"));
     System.exit(0);
-  }
-
-  /**
-   * Gets the next id.
-   *
-   * @return Next available id.
-   */
-  private int getNextId() {
-    return this.clientId++;
   }
 
   /**
@@ -186,7 +183,7 @@ public class Server extends AbstractServer {
       } else {
         user.setId(interactDatabase.addUser(user.getUsername()));
         logger.log(Level.INFO,
-            String.format("User has been added to database", user.getUsername()));
+            String.format("%s has been added to database", user.getUsername()));
       }
     } catch (BusinessException e) {
       logger.log(Level.SEVERE,
@@ -194,6 +191,10 @@ public class Server extends AbstractServer {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public synchronized void getStatOfPlayer(SendAllStatistics m, CustomClientThread client) {
     try {
       m.setGame_history(
@@ -223,6 +224,12 @@ public class Server extends AbstractServer {
   }
 
 
+  /**
+   * Parses a database object of Tetrimino to send to user via hashmap.
+   *
+   * @param entity Entity to parse.
+   * @return Hashmap that has been parsed.
+   */
   private HashMap<String, Integer> parseEntityTetrimino(TetriminoDto entity) {
     HashMap<String, Integer> statistics = new HashMap<>();
     statistics.put("SINGLE", entity.getSingle());
@@ -242,13 +249,16 @@ public class Server extends AbstractServer {
   public synchronized void addPlayer(CustomClientThread client) {
     addClientToWaitingList(client);
     if (waitingList.size() % 2 == 0) {
-      createMatchup();
+      createMatchUp();
       logger.log(Level.INFO,
           String.format("A new match-up has been created with id: %s", this.matchUpId));
     }
   }
 
-  private void createMatchup() {
+  /**
+   * Creates a new match up
+   */
+  private void createMatchUp() {
     List<CustomClientThread> clientsToAdd = new ArrayList<>();
     try {
       clientsToAdd.add(waitingList.take());
@@ -261,6 +271,10 @@ public class Server extends AbstractServer {
 
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public synchronized void addClientToWaitingList(CustomClientThread client) {
     if (!waitingList.contains(client)) {
       waitingList.add(client);
@@ -278,10 +292,12 @@ public class Server extends AbstractServer {
     logger.log(Level.INFO,
         String.format("%s has been disconnected from server", client.getUsername()));
     try {
-      waitingList.remove(client);
+      if (waitingList.remove(client)) {
+        logger.log(Level.WARNING,
+            ("Disconnected client needed to be removed from waiting list"));
+      }
     } catch (NullPointerException ignored) {
     }
-    clientId--;
   }
 
 

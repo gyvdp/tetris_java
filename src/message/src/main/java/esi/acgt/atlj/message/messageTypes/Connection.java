@@ -29,7 +29,7 @@ import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.message.ServerMessage;
 
 /**
- * Sends its name to the server
+ * Sends its name to the server to establish an entry in database
  */
 public class Connection extends ServerMessage {
 

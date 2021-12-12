@@ -24,6 +24,9 @@
 
 package esi.acgt.atlj.message;
 
+/**
+ * Different type of request you can ask the server.
+ */
 public enum ServerRequest {
   MULTIPLAYER, // Play versus another player in the waiting list.
   QUIT // Quits a match up
