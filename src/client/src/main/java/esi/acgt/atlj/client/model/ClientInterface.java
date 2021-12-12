@@ -45,12 +45,6 @@ public interface ClientInterface {
    */
   void connect() throws ConnectException;
 
-
-  /**
-   *
-   */
-  void askAllStatistics();
-
   HashMap<String, Integer> getStats();
 
   /**
@@ -85,11 +79,6 @@ public interface ClientInterface {
 
   void sendNameToServer(String name);
 
-  /**
-   * Notifies server of player loss
-   */
-  void notifyLoss();
-
 
   /**
    * Sends a tetrimino to the opposing player
@@ -105,28 +94,11 @@ public interface ClientInterface {
    */
   void sendStatAction(Action action);
 
-//  /**
-//   * Add a propertyChangeListener to the propertyChangerSupport that's used for the Menu's data
-//   *
-//   * @param propertyChangeListener new Listenner
-//   */
-//  void addPropertyChangeListenerToClient(PropertyChangeListener propertyChangeListener);
-
-//  /**
-//   * Use the 2 hashmap that is recieve from the server's database to display data on the menu.
-//   *
-//   * @param gameStats      data from the player game data
-//   * @param tetriminoStats data from player tetrimo data
-//   */
-//  void fireDataToMenu(HashMap<String, Integer> gameStats, HashMap<String, Integer> tetriminoStats);
-
   void startMultiplayerGame(String username, PropertyChangeListener[] listeners);
 
   void addPCSToBoard(PropertyChangeListener[] listeners);
 
   Game getActualGame();
 
-  ClientStatus getStatus();
-
-  public void keyBoardInput(KeyCode input);
+  void keyBoardInput(KeyCode input);
 }

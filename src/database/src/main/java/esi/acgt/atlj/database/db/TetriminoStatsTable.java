@@ -55,27 +55,13 @@ public class TetriminoStatsTable {
               + "hard_drop = hard_drop + ?,"
               + "total_burns = total_burns + ?"
               + "WHERE user_id = ?;");
-      if (entry.getSingle() != 0) {
-        addActions.setInt(1, entry.getSingle());
-      }
-      if (entry.getDoubles() != 0) {
-        addActions.setInt(2, entry.getDoubles());
-      }
-      if (entry.getTriple() != 0) {
-        addActions.setInt(3, entry.getTriple());
-      }
-      if (entry.getTetris() != 0) {
-        addActions.setInt(4, entry.getTetris());
-      }
-      if (entry.getSoftdrop() != 0) {
-        addActions.setInt(5, entry.getSoftdrop());
-      }
-      if (entry.getHarddrop() != 0) {
-        addActions.setInt(6, entry.getHarddrop());
-      }
-      if (entry.getBurns() != 0) {
-        addActions.setInt(6, entry.getBurns());
-      }
+      addActions.setInt(1, entry.getSingle() == 0 ? 0 : entry.getSingle());
+      addActions.setInt(2, entry.getDoubles() == 0 ? 0 : entry.getDoubles());
+      addActions.setInt(3, entry.getTriple() == 0 ? 0 : entry.getTriple());
+      addActions.setInt(4, entry.getTetris() == 0 ? 0 : entry.getTetris());
+      addActions.setInt(5, entry.getSoftdrop() == 0 ? 0 : entry.getSoftdrop());
+      addActions.setInt(6, entry.getHarddrop() == 0 ? 0 : entry.getHarddrop());
+      addActions.setInt(7, entry.getBurns() == 0 ? 0 : entry.getBurns());
       addActions.setInt(8, entry.getId());
       addActions.executeUpdate();
     } catch (Exception e) {

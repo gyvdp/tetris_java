@@ -41,6 +41,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -76,6 +78,9 @@ public class Server extends AbstractServer {
    * current tally of client id.
    */
   private int clientId;
+
+  private static final java.util.logging.Logger logger = Logger.getLogger(Server.class.getName());
+
 
   /**
    * Constructor for a server.
@@ -180,8 +185,8 @@ public class Server extends AbstractServer {
   @Override
   protected void clientConnected(CustomClientThread client) {
     super.clientConnected(client);
-    System.out.println("Client" + client.getClientNumber() + " has connected with ip address :"
-        + client.getInetAddress());
+    logger.log(Level.INFO,
+        String.format("Client has been added with ip address %s", client.getInetAddress()));
     members.put(getNextId(), client);
   }
 
@@ -196,6 +201,9 @@ public class Server extends AbstractServer {
         user.set(persistentUser);
       } else {
         user.setId(interactDatabase.addUser(user.getUsername()));
+        logger.log(Level.INFO,
+            String.format("User has been added to database", user.getUsername()));
+
       }
     } catch (BusinessException e) {
       System.err.println("error creating or adding user");
@@ -253,7 +261,8 @@ public class Server extends AbstractServer {
           waitingList.stream().limit(2).collect(Collectors.toList()), this.matchUpId,
           interactDatabase, this);
       matchUps.put(getNextMatchupId(), matchUp);
-      System.out.println("A new match-up has been created with id: " + this.matchUpId);
+      logger.log(Level.INFO,
+          String.format("A new match-up has been created with id: %s", this.matchUpId));
       try {
         waitingList.take();
         waitingList.take();
@@ -262,21 +271,11 @@ public class Server extends AbstractServer {
     }
   }
 
-
-  public void addClientToWaitingList(CustomClientThread client) {
+  public synchronized void addClientToWaitingList(CustomClientThread client) {
     if (!waitingList.contains(client)) {
       waitingList.add(client);
-      System.out.println(
-          "Client " + client.getClientNumber() + " is in the waiting list");
-    }
-  }
-
-  @Override
-  protected synchronized void playerQuit(CustomClientThread client) {
-    super.playerQuit(client);
-    if (waitingList.remove(client)) {
-      System.out.println("Client" + client.getClientNumber() +
-          " has quit the game, he is no longer is the waiting list");
+      logger.log(Level.INFO,
+          String.format("%s has been added to the waiting list", client.getUsername()));
     }
   }
 

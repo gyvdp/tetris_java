@@ -64,8 +64,6 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
 
   private static final Logger logger = Logger.getLogger(Client.class.getName());
 
-  private ClientStatus status;
-
   private HashMap<String, Integer> stats;
 
   private final String username;
@@ -80,7 +78,6 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
    */
   public Client(int port, String host, String username) throws ConnectException {
     super(port, host);
-    this.status = ClientStatus.CONNECTED;
     this.username = username;
     this.stats = new HashMap<>();
     connect();
@@ -117,19 +114,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   public void closeConnectionToServer() {
     super.closeConnectionToServer();
   }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void notifyLoss() {
-    try {
-      sendToServer(new Object()); //todo :)
-    } catch (IOException e) {
-      System.err.println("Sorry cannot send loss");
-    }
-  }
+  
 
   /**
    * {@inheritDoc}
@@ -173,17 +158,6 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   @Override
   public void connect() throws ConnectException {
     connectToServer();
-  }
-
-  @Override
-  public void askAllStatistics() {
-    try {
-      sendToServer(new Request(ServerRequest.GET_STATS));
-      logger.log(Level.INFO,
-          "Successfully requested stats to server");
-    } catch (IOException e) {
-      logger.log(Level.SEVERE, e.getMessage());
-    }
   }
 
   /**
@@ -305,11 +279,6 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
   @Override
   public Game getActualGame() {
     return game;
-  }
-
-  @Override
-  public ClientStatus getStatus() {
-    return this.status;
   }
 
   @Override

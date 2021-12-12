@@ -30,7 +30,6 @@ import esi.acgt.atlj.database.dto.TetriminoDto;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.message.AbstractMessage;
-import esi.acgt.atlj.message.ServerRequest;
 import esi.acgt.atlj.message.messageTypes.AskPiece;
 import esi.acgt.atlj.message.messageTypes.HighScore;
 import esi.acgt.atlj.message.messageTypes.NextMino;
@@ -38,7 +37,6 @@ import esi.acgt.atlj.message.messageTypes.PlayerState;
 import esi.acgt.atlj.message.messageTypes.SendStartGame;
 import esi.acgt.atlj.model.Game;
 import esi.acgt.atlj.model.player.PlayerStatInterface;
-import esi.acgt.atlj.message.messageTypes.Request;
 import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import esi.acgt.atlj.model.player.Action;
 import esi.acgt.atlj.model.player.PlayerStatus;
@@ -57,7 +55,7 @@ import java.util.function.BiConsumer;
  */
 public class MatchUpHandler extends Thread {
 
-  private Game game = null;
+  private final Game game;
 
   /**
    * Generator for new bags of tetriminos.
@@ -158,17 +156,11 @@ public class MatchUpHandler extends Thread {
       Mino mino = bagGenerator.takeMino(client.getUsername());
       client.sendMessage(new NextMino(mino, client.getUsername()));
       sendToAllOthers(client, new NextMino(mino, client.getUsername()));
-    } else if (m instanceof Request request) {
-      if (request.getAction() == ServerRequest.GET_STATS) {
-        server.getStatOfPlayer(new SendAllStatistics(), client);
-      }
     } else if (m instanceof PlayerState) {
-      if (((PlayerState) m).getPlayerStatus().equals(PlayerStatus.LOCK_OUT)) {
-        setGameStats(game.getBoard(client.getUsername()).getStats(), client.getUser());
-      } else if (((PlayerState) m).getPlayerStatus().equals(PlayerStatus.STOPPED)) {
+      if (((PlayerState) m).getPlayerStatus().equals(PlayerStatus.STOPPED)) {
         quit(client);
+        sendToAllOthers(client, m);
       }
-      sendToAllOthers(client, m);
     } else {
       sendToAllOthers(client, m);
     }
@@ -197,8 +189,9 @@ public class MatchUpHandler extends Thread {
    * @param client Client that has quit the match up.
    */
   public void quit(CustomClientThread client) {
-    this.clients.remove(client.getUsername());
-    server.addClientToWaitingList(client);
+    setGameStats(game.getBoard(client.getUsername()).getStats(), client.getUser());
+    clients.remove(client.getUsername());
+    server.getStatOfPlayer(new SendAllStatistics(), client);
     checkEndOfMatchUp();
   }
 

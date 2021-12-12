@@ -28,7 +28,7 @@ import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.GameMessage;
 import esi.acgt.atlj.message.MessageType;
 import esi.acgt.atlj.model.Game;
-import esi.acgt.atlj.model.player.ManagedPlayer;
+import esi.acgt.atlj.model.player.UnmanagedPlayer;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +46,10 @@ public class MultiplayerGame extends Game {
    */
   public MultiplayerGame(String usernameOne, String usernameTwo) {
     super();
-    ManagedPlayer playerOne = new ManagedPlayer(usernameOne);
-    ManagedPlayer playerTwo = new ManagedPlayer(usernameTwo);
+    UnmanagedPlayer playerOne = new UnmanagedPlayer();
+    UnmanagedPlayer playerTwo = new UnmanagedPlayer();
+    playerOne.setUsername(usernameOne);
+    playerTwo.setUsername(usernameTwo);
     players.add(playerOne);
     players.add(playerTwo);
   }

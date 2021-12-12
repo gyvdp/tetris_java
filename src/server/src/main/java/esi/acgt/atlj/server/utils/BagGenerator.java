@@ -62,16 +62,13 @@ public class BagGenerator {
     if (mino.size() < 2) {
       refillBags();
     }
-    Mino m = mino.remove(0);
-    System.out.println(m);
-    return m;
+    return mino.remove(0);
   }
 
   /**
    * Refills bag of both players.
    */
   private void refillBags() {
-    System.out.println("refill");
     var bag = regenBag();
     for (var entry : playerTetrimino.entrySet()) {
       entry.getValue().addAll(bag);
@@ -85,7 +82,6 @@ public class BagGenerator {
    * @return Array of shuffled minos.
    */
   public List<Mino> regenBag() {
-    System.out.println("regen");
     List<Mino> bag = new ArrayList<>(Arrays.asList(
         Mino.S_MINO, Mino.Z_MINO, Mino.O_MINO, Mino.J_MINO, Mino.T_MINO,
         Mino.I_MINO, Mino.L_MINO));

@@ -110,7 +110,7 @@ public abstract class AbstractServer implements Runnable {
       }
       try {
         connectionListener.join();
-      } catch (InterruptedException | NullPointerException ex) {
+      } catch (InterruptedException | NullPointerException ignored) {
       }
       serverClosed();
     }
@@ -239,10 +239,6 @@ public abstract class AbstractServer implements Runnable {
 
   }
 
-  protected synchronized void playerQuit(CustomClientThread client) {
-
-  }
-
   public synchronized void addClientToWaitingList(CustomClientThread client) {
 
   }
@@ -275,7 +271,7 @@ public abstract class AbstractServer implements Runnable {
 
             }
           }
-        } catch (InterruptedIOException exception) {
+        } catch (InterruptedIOException ignored) {
         }
       }
     } catch (IOException exception) {

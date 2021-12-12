@@ -30,6 +30,7 @@ import esi.acgt.atlj.message.AbstractMessage;
 import esi.acgt.atlj.message.ServerRequest;
 import esi.acgt.atlj.message.messageTypes.Request;
 import esi.acgt.atlj.message.messageTypes.Connection;
+import esi.acgt.atlj.message.messageTypes.SendAllStatistics;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -195,6 +196,7 @@ public class CustomClientThread extends Thread {
       try {
         user = new UserDto(((Connection) message).getUsername());
         server.checkUser(user);
+        server.getStatOfPlayer(new SendAllStatistics(), this);
       } catch (DtoException e) {
         System.err.println("Need valid username to start a game");
       }

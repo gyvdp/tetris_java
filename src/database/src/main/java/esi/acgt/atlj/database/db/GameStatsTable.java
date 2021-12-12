@@ -65,6 +65,28 @@ public class GameStatsTable {
   }
 
   /**
+   * Gets the highest level.
+   *
+   * @param id Id of the client.
+   * @return Int of the highest level.
+   * @throws DbException If query failed for getting high score from user has failed.
+   */
+  private static int getHighLevel(int id) throws DbException {
+    try {
+      java.sql.Connection connection = DataBaseManager.getConnection();
+      java.sql.PreparedStatement highLevel;
+      highLevel = connection.prepareStatement(
+          "SELECT highest_level FROM game_stats WHERE user_id = ? LIMIT 1");
+      highLevel.setInt(1, id);
+      ResultSet rs = highLevel.executeQuery();
+      return rs.getInt(1);
+    } catch (Exception e) {
+      throw new DbException(
+          tableName + ": Impossible to get high level from the user\n" + e.getMessage());
+    }
+  }
+
+  /**
    * Selects all columns of the table from the user.
    *
    * @param user User to select all columns.
@@ -136,18 +158,19 @@ public class GameStatsTable {
    * @throws DbException If query has failed.
    */
   public static void setHighestLevel(int id, int level) throws DbException {
-    //todo if (level > getLevel(user)){
-    try {
-      java.sql.Connection connection = DataBaseManager.getConnection();
-      java.sql.PreparedStatement updateNbWonGame;
-      updateNbWonGame = connection.prepareStatement(
-          "UPDATE game_stats SET highest_level = ? WHERE user_id = ?");
-      updateNbWonGame.setInt(1, level);
-      updateNbWonGame.setInt(2, id);
-      updateNbWonGame.executeUpdate();
-    } catch (Exception e) {
-      throw new DbException(
-          tableName + ": Impossible to add won game to the user\n" + e.getMessage());
+    if (level > getHighLevel(id)) {
+      try {
+        java.sql.Connection connection = DataBaseManager.getConnection();
+        java.sql.PreparedStatement updateNbWonGame;
+        updateNbWonGame = connection.prepareStatement(
+            "UPDATE game_stats SET highest_level = ? WHERE user_id = ?");
+        updateNbWonGame.setInt(1, level);
+        updateNbWonGame.setInt(2, id);
+        updateNbWonGame.executeUpdate();
+      } catch (Exception e) {
+        throw new DbException(
+            tableName + ": Impossible to add won game to the user\n" + e.getMessage());
+      }
     }
   }
 
@@ -155,6 +178,7 @@ public class GameStatsTable {
    * Increments the number of won games.
    *
    * @param id User to increment from.
+   * @throws DbException If query has failed for adding a won game.
    */
   public static void addWonGame(int id) throws DbException {
     try {
@@ -171,6 +195,12 @@ public class GameStatsTable {
   }
 
 
+  /**
+   * Increments the number of lost games.
+   *
+   * @param id User to increment from
+   * @throws DbException If query has failed for adding a lost game.
+   */
   public static void addLostGame(int id) throws DbException {
     try {
       java.sql.Connection connection = DataBaseManager.getConnection();

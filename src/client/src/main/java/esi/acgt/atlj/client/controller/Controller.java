@@ -120,7 +120,6 @@ public class Controller extends Application {
    * @param username username of the player
    */
   public void startMenu(String username, HashMap<String, Integer> stats) {
-    this.client.askAllStatistics();
     this.view.displayMenu(username, stats);
   }
 
