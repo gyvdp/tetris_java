@@ -1,42 +1,40 @@
 # Tetris
 
-Le port de connection par défaut au server est 6969. Il peut être modifier en fournissant en
-argument une valeur different en lançant le server.
+## Auteurs
 
-## I. Introduction
+- Andrew SASSOYE
+- Constantin GUNDUZ
+- Gregory VAN DER PLUIJM
+- Thomas LEUTSCHER
 
-Nous avons implémenté une version à deux joueurs du jeu tetris. Pour se faire nous nous somme basé
-sur un model simplifié du jeu de base, dans lequel nous avons ajouté un système de client/server. Le
-résultat est jeu ou 2 joueurs peuvent s'affronter dans une partie de Tetris.
+## Maven
 
-## II. Règles et choix d'implementations.
+### Compiler
 
-L'explication du jeu se trouve ici : https://fr.wikipedia.org/wiki/Tetris
+```
+$ mvn clean package
+```
 
-Nous nous sommes écarter des règles de bases sur plusieurs point pour limité l'étendue du
-dévelloppement.
+### Tests unitaires
 
-1. Pas de règle de malus à envoyer à l'adversaire.
+```
+$ mvn verify
+```
 
-## III. Contrainte
+### Executer le serveur
 
-### 1ère itération.
+```
+$ java -jar src/server/target/tetris.server-2.0.jar
+```
 
-Nous devions implémenter dans notre code, l'utilisation des threads ainsi qu'un système de
-client/server.
+### Executer le client
 
-#### Client/Server
+```
+$ java -jar src/client/target/tetris.client-2.0.jar
+```
 
-Pour le client/server, nous avons dévellopé une première application server qui centralise les
-échanges entre les 2 clients. Un client se connecte au server, préalablement démarrer et lorsque les
-2ème client se connecte, la partie peut démarrer
+Avec des parametres
 
-#### Thread
-
-Nous avons implémenté les threads à 2 endroits dans notre code.
-
-1. Les tétrominos chutes automatiquement toute les x secondes ce mécanisme est géré dans un thread a
-   part entière basé sur un timer.
-2. Les communications client/server sont géré dans un autre thread.
-
-## IV. Bugs connus
+```
+$ java -jar src/client/target/tetris.client-2.0.jar --host=127.0.0.1 --port=6969 --username=Pacliclown
+```
