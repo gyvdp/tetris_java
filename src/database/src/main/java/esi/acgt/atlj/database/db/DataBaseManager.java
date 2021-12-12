@@ -84,23 +84,13 @@ public class DataBaseManager {
     try {
       getConnection().setAutoCommit(false);
 
-      int level = 0;
-      switch (isolationLevel) {
-        case 0:
-          level = java.sql.Connection.TRANSACTION_READ_UNCOMMITTED;
-          break;
-        case 1:
-          level = java.sql.Connection.TRANSACTION_READ_COMMITTED;
-          break;
-        case 2:
-          level = java.sql.Connection.TRANSACTION_REPEATABLE_READ;
-          break;
-        case 3:
-          level = java.sql.Connection.TRANSACTION_SERIALIZABLE;
-          break;
-        default:
-          throw new DbException("Isolation level does not exist");
-      }
+      int level = switch (isolationLevel) {
+        case 0 -> Connection.TRANSACTION_READ_UNCOMMITTED;
+        case 1 -> Connection.TRANSACTION_READ_COMMITTED;
+        case 2 -> Connection.TRANSACTION_REPEATABLE_READ;
+        case 3 -> Connection.TRANSACTION_SERIALIZABLE;
+        default -> throw new DbException("Isolation level does not exist");
+      };
       getConnection().setTransactionIsolation(level);
     } catch (SQLException ex) {
       throw new DbException("Impossible to start a transaction : " + ex.getMessage());
@@ -112,7 +102,7 @@ public class DataBaseManager {
    *
    * @throws DbException If current transaction cannot be validated.
    */
-  public static void validateTransacation() throws DbException {
+  public static void validateTransaction() throws DbException {
     try {
       getConnection().commit();
       getConnection().setAutoCommit(true);

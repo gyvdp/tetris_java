@@ -21,34 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package esi.acgt.atlj.database.dto;
-
 
 public class TetriminoDto extends EntityDto<Integer> {
 
-  int single;
-  int doubles;
-  int triple;
-  int tetris;
-  int harddrop;
-  int softdrop;
-  int burns;
+  final int single;
+  final int doubles;
+  final int triple;
+  final int tetris;
+  final int hardDrop;
+  final int softDrop;
+  final int burns;
 
-  public TetriminoDto(int id, int single, int doubles, int triple, int tetris, int harddrop,
-      int softdrop, int burns) {
-    this(single, doubles, triple, tetris, harddrop, softdrop, burns);
+  public TetriminoDto(int id, int single, int doubles, int triple, int tetris, int hardDrop,
+      int softDrop, int burns) {
+    this(single, doubles, triple, tetris, hardDrop, softDrop, burns);
     this.id = id;
   }
 
-  public TetriminoDto(int single, int doubles, int triple, int tetris, int harddrop, int softdrop,
+  public TetriminoDto(int single, int doubles, int triple, int tetris, int hardDrop, int softDrop,
       int burns) {
     this.single = single;
     this.doubles = doubles;
     this.triple = triple;
     this.tetris = tetris;
-    this.harddrop = harddrop;
-    this.softdrop = softdrop;
+    this.hardDrop = hardDrop;
+    this.softDrop = softDrop;
     this.burns = burns;
   }
 
@@ -68,15 +66,16 @@ public class TetriminoDto extends EntityDto<Integer> {
     return tetris;
   }
 
-  public int getHarddrop() {
-    return harddrop;
+  public int getHardDrop() {
+    return hardDrop;
   }
 
   public int getBurns() {
     return this.burns;
   }
 
-  public int getSoftdrop() {
-    return softdrop;
+  public int getSoftDrop() {
+    return softDrop;
   }
+
 }

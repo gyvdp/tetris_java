@@ -57,8 +57,8 @@ public class UserTable {
       insert.setInt(1, findUsername(user.getUsername()).getId());
       insert.executeUpdate();
       return findUsername(user.getUsername()).getId();
-    } catch (Exception e) {
-      throw new DbException(tableName + ": Impossible to add a user\n" + e.getMessage());
+    } catch (Exception n) {
+      throw new DbException(tableName + ": Impossible to add a user\n" + n.getMessage());
     }
   }
 

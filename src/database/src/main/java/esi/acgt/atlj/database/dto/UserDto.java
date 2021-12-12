@@ -37,7 +37,7 @@ public class UserDto extends EntityDto<Integer> {
   /**
    * Constructor of persistent user.
    *
-   * @param id       Id of persistent user.
+   * @param id       ID of persistent user.
    * @param username Username of persistent user.
    * @throws DtoException If user is null.
    */

@@ -45,7 +45,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * Tetris server
@@ -252,8 +251,8 @@ public class Server extends AbstractServer {
     statistics.put("DOUBLE", entity.getDoubles());
     statistics.put("TRIPLE", entity.getTriple());
     statistics.put("TETRIS", entity.getTetris());
-    statistics.put("SOFT_DROP", entity.getSoftdrop());
-    statistics.put("HARD_DROP", entity.getHarddrop());
+    statistics.put("SOFT_DROP", entity.getSoftDrop());
+    statistics.put("HARD_DROP", entity.getHardDrop());
     statistics.put("BURN", entity.getBurns());
     return statistics;
   }

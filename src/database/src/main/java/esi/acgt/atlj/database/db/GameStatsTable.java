@@ -67,7 +67,7 @@ public class GameStatsTable {
   /**
    * Gets the highest level.
    *
-   * @param id Id of the client.
+   * @param id ID of the client.
    * @return Int of the highest level.
    * @throws DbException If query failed for getting high score from user has failed.
    */
@@ -129,7 +129,7 @@ public class GameStatsTable {
   /**
    * Sets the new high score of the user.
    *
-   * @param id           Id to set new high score to.
+   * @param id           ID to set new high score to.
    * @param newHighScore New high score to set.
    * @throws DbException If query for setting high score from user has failed.
    */
@@ -147,12 +147,12 @@ public class GameStatsTable {
             tableName + ": Impossible to set high score for the user\n" + e.getMessage());
       }
     } else {
-      System.err.println(id + " " + newHighScore + " was not a highscore");
+      System.err.println(id + " " + newHighScore + " was not a high score");
     }
   }
 
   /**
-   * @param id    Id to set level to.
+   * @param id    ID to set level to.
    * @param level Level to set.
    * @throws DbException If query has failed.
    */

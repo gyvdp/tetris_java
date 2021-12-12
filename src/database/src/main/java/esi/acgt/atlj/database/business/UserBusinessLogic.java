@@ -37,13 +37,12 @@ class UserBusinessLogic {
    * Adds a user into the database.
    *
    * @param user User to add into the database.
-   * @return Id of user in database.
+   * @return ID of user in database.
    * @throws DbException If failed to add user.
    */
   static int add(UserDto user) throws DbException {
     return UserTable.insert(user);
   }
-
 
   /**
    * Removes a user from the database
@@ -68,7 +67,7 @@ class UserBusinessLogic {
   /**
    * Finds a user by id in the database.
    *
-   * @param id Id to find user by.
+   * @param id ID to find user by.
    * @return User that match the id or null if error has occurred.
    */
   static UserDto findById(int id) {

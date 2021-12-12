@@ -50,7 +50,7 @@ public interface BusinessInterface {
    * Adds a user to the database.
    *
    * @param username Username of user to add.
-   * @return Id of added user.
+   * @return ID of added user.
    * @throws BusinessException If query to create user has failed.
    */
   int addUser(String username) throws BusinessException;

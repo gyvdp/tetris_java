@@ -27,12 +27,8 @@ package esi.acgt.atlj.database.db;
 import esi.acgt.atlj.database.dto.TetriminoDto;
 import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.DbException;
-import esi.acgt.atlj.model.player.Action;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TetriminoStatsTable {
 
@@ -59,8 +55,8 @@ public class TetriminoStatsTable {
       addActions.setInt(2, entry.getDoubles() == 0 ? 0 : entry.getDoubles());
       addActions.setInt(3, entry.getTriple() == 0 ? 0 : entry.getTriple());
       addActions.setInt(4, entry.getTetris() == 0 ? 0 : entry.getTetris());
-      addActions.setInt(5, entry.getSoftdrop() == 0 ? 0 : entry.getSoftdrop());
-      addActions.setInt(6, entry.getHarddrop() == 0 ? 0 : entry.getHarddrop());
+      addActions.setInt(5, entry.getSoftDrop() == 0 ? 0 : entry.getSoftDrop());
+      addActions.setInt(6, entry.getHardDrop() == 0 ? 0 : entry.getHardDrop());
       addActions.setInt(7, entry.getBurns() == 0 ? 0 : entry.getBurns());
       addActions.setInt(8, entry.getId());
       addActions.executeUpdate();

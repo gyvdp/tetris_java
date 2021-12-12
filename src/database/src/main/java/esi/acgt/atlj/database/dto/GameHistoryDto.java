@@ -29,15 +29,15 @@ package esi.acgt.atlj.database.dto;
  */
 public class GameHistoryDto extends EntityDto<Integer> {
 
-  int highestLevel;
-  int highScore;
-  int nbWon;
-  int nbLost;
+  final int highestLevel;
+  final int highScore;
+  final int nbWon;
+  final int nbLost;
 
   /**
    * Constructor of persistent entry.
    *
-   * @param id           Id of user
+   * @param id           ID of user
    * @param highestLevel Highest level user has ever reached.
    * @param highScore    Highest score user has ever reached.
    * @param nbLost       Number of games player has lost.

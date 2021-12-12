@@ -31,9 +31,6 @@ import esi.acgt.atlj.database.dto.UserDto;
 import esi.acgt.atlj.database.exceptions.BusinessException;
 import esi.acgt.atlj.database.exceptions.DbException;
 import esi.acgt.atlj.database.exceptions.DtoException;
-import esi.acgt.atlj.model.player.Action;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * All tools needed to interact with database.
@@ -49,7 +46,7 @@ public class BusinessModel implements BusinessInterface {
     try {
       DataBaseManager.startTransaction();
       UserDto user = UserBusinessLogic.findByUsername(username);
-      DataBaseManager.validateTransacation();
+      DataBaseManager.validateTransaction();
       return user;
     } catch (DbException e) {
       String error = e.getMessage();
@@ -71,7 +68,7 @@ public class BusinessModel implements BusinessInterface {
       DataBaseManager.startTransaction();
       UserDto user = new UserDto(username);
       int id = UserBusinessLogic.add(user);
-      DataBaseManager.validateTransacation();
+      DataBaseManager.validateTransaction();
       return id;
     } catch (DbException | DtoException e) {
       try {
@@ -93,7 +90,7 @@ public class BusinessModel implements BusinessInterface {
     try {
       DataBaseManager.startTransaction();
       dto = GameStatsBusinessLogic.getGameHistory(user);
-      DataBaseManager.validateTransacation();
+      DataBaseManager.validateTransaction();
     } catch (DbException e) {
       String msg = e.getMessage();
       try {
@@ -113,7 +110,7 @@ public class BusinessModel implements BusinessInterface {
     try {
       DataBaseManager.startTransaction();
       dto = TetriminoStatsBusinessLogic.getTetrimino(user);
-      DataBaseManager.validateTransacation();
+      DataBaseManager.validateTransaction();
     } catch (DbException e) {
       String msg = e.getMessage();
       try {
@@ -133,7 +130,7 @@ public class BusinessModel implements BusinessInterface {
     try {
       DataBaseManager.startTransaction();
       GameStatsBusinessLogic.setGameHistory(gameStatEntity);
-      DataBaseManager.validateTransacation();
+      DataBaseManager.validateTransaction();
     } catch (DbException e) {
       String msg = e.getMessage();
       try {
@@ -151,7 +148,7 @@ public class BusinessModel implements BusinessInterface {
     try {
       DataBaseManager.startTransaction();
       TetriminoStatsBusinessLogic.setTetrimino(tetriminoEntity);
-      DataBaseManager.validateTransacation();
+      DataBaseManager.validateTransaction();
     } catch (DbException e) {
       String msg = e.getMessage();
       try {
@@ -172,7 +169,7 @@ public class BusinessModel implements BusinessInterface {
     try {
       DataBaseManager.startTransaction();
       int highScore = GameStatsBusinessLogic.getHighScore(user);
-      DataBaseManager.validateTransacation();
+      DataBaseManager.validateTransaction();
       return highScore;
     } catch (DbException e) {
       String msg = e.getMessage();
