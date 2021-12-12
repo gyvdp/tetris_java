@@ -47,8 +47,8 @@ public class BagGenerator {
   public BagGenerator(String usernameOne, String usernameTwo) {
     List<Mino> firstBag = regenBag();
     this.playerTetrimino = new HashMap<>();
-    playerTetrimino.put(usernameOne, firstBag);
-    playerTetrimino.put(usernameTwo, firstBag);
+    playerTetrimino.put(usernameOne, new ArrayList<>(firstBag));
+    playerTetrimino.put(usernameTwo, new ArrayList<>(firstBag));
   }
 
   /**
@@ -72,6 +72,7 @@ public class BagGenerator {
     var bag = regenBag();
     for (var entry : playerTetrimino.entrySet()) {
       entry.getValue().addAll(bag);
+      System.out.println(entry.getKey() + " " + entry.getValue());
     }
   }
 

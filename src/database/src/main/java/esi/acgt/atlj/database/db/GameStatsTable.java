@@ -102,7 +102,6 @@ public class GameStatsTable {
         selectAll.setInt(1, user.getId());
         return parseSelectAll(selectAll.executeQuery(), user.getId());
       }
-
     } catch (Exception e) {
       throw new DbException(
           tableName + ": Impossible to get high score from the user\n" + e.getMessage());
