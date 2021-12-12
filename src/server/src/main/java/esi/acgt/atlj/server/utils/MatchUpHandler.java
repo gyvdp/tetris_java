@@ -199,7 +199,6 @@ public class MatchUpHandler extends Thread {
     clients.remove(client.getUsername());
     checkEndOfMatchUp();
     server.getStatOfPlayer(new SendAllStatistics(), client);
-
   }
 
   /**
