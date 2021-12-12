@@ -151,12 +151,9 @@ public class ManagedPlayer extends AbstractPlayer {
     this.tickHandler = new TickHandler(this);
     super.setStatus(status);
     switch (status) {
-      case TETRIMINO_FALLING -> {
-        timer.schedule(this.tickHandler, TickHandler.tickDelay(this.stats.getLevel()));
-      }
-      case LOCK_DOWN -> {
-        this.timer.schedule(this.tickHandler, 500);
-      }
+      case TETRIMINO_FALLING -> timer.schedule(this.tickHandler,
+          TickHandler.tickDelay(this.stats.getLevel()));
+      case LOCK_DOWN -> this.timer.schedule(this.tickHandler, 500);
       case TETRIMINO_HARD_DROPPING,
           ROTATING_CLOCKWISE,
           ROTATING_ANTI_CLOCKWISE,
@@ -172,7 +169,8 @@ public class ManagedPlayer extends AbstractPlayer {
     placeTetrimino(this.actualTetrimino);
     this.pcs.firePropertyChange("PLACE_TETRIMINO", null, this.actualTetrimino);
     this.hasAlreadyHolded = false;
-    setActualTetrimino(this.nextTetrimino);
+    setActualTetrimino(
+        this.nextTetrimino != null ? this.nextTetrimino : Tetrimino.createTetrimino(Mino.L_MINO));
     setNextTetrimino(null);
 
     if (outOfBound()) {
