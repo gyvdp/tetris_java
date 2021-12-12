@@ -22,8 +22,40 @@
  * SOFTWARE.
  */
 
--- Drop tables --
+-- Populate table --
 
-DROP TABLE user;
-DROP TABLE game_stats;
-DROP TABLE tetrimino_stats;
+-- First user --
+insert into game_stats (user_id, high_score, nb_won, nb_lost, highest_level)
+values (5, 100, 10, 5, 8);
+
+insert into tetrimino_stats (user_id, total_burns, single, doubles, triple, tetris, soft_drop,
+                             hard_drop)
+values (5, 3, 5, 6, 2, 6, 8, 4);
+
+insert into user (id, username)
+values (5, "Gregory");
+
+-- Second user --
+
+insert into game_stats (user_id, high_score, nb_won, nb_lost, highest_level)
+values (5, 64, 542, 243, 76);
+
+insert into tetrimino_stats (user_id, total_burns, single, doubles, triple, tetris, soft_drop,
+                             hard_drop)
+values (5, 8765, 5235, 567, 35, 6, 24, 4);
+
+insert into user (id, username)
+values (6, "Andrew");
+
+-- Third user --
+
+insert into game_stats (user_id, high_score, nb_won, nb_lost, highest_level)
+values (5, 64, 542, 243, 76);
+
+insert into tetrimino_stats (user_id, total_burns, single, doubles, triple, tetris, soft_drop,
+                             hard_drop)
+values (5, 85, 55, 567, 358, 63, 2, 84);
+
+insert into user (id, username)
+values (7, "Aro");
+

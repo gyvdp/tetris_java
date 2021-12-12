@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
---Créer les tables
+-- Create tables --
 
 create table sqlite_sequence
 (
@@ -40,7 +40,7 @@ CREATE TABLE user
 
 create table game_stats
 (
-    user_id       int not null
+    user_id       int           not null
         references user,
     high_score    int default 0 not null,
     nb_won        int default 0 not null,
@@ -54,7 +54,7 @@ create unique index game_stats_user_id_uindex
 
 CREATE TABLE tetrimino_stats
 (
-    user_id     int not null
+    user_id     int           not null
         references user,
     total_burns int default 0 not null,
     single      int default 0 not null,
