@@ -197,8 +197,9 @@ public class MatchUpHandler extends Thread {
   public void quit(CustomClientThread client) {
     setGameStats(game.getBoard(client.getUsername()).getStats(), client.getUser());
     clients.remove(client.getUsername());
-    server.getStatOfPlayer(new SendAllStatistics(), client);
     checkEndOfMatchUp();
+    server.getStatOfPlayer(new SendAllStatistics(), client);
+
   }
 
   /**
