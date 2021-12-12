@@ -73,7 +73,6 @@ public class BagGenerator {
     var bag = regenBag();
     for (var entry : playerTetrimino.entrySet()) {
       entry.getValue().addAll(bag);
-      System.out.println(entry.getKey() + " " + entry.getValue());
     }
   }
 
