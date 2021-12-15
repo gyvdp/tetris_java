@@ -77,6 +77,8 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
 
   private final Consumer<HashMap<String, Integer>> updateStats = (hashMap)
       -> Platform.runLater(() -> stats.putAll(hashMap));
+  //to add stats add bind
+
 
   /**
    * Constructor of a client. s
@@ -122,6 +124,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
       case HIGH_SCORES -> ((HighScore) message).execute(game);
       case GAME -> ((GameMessage) message).execute(game);
       case STATISTICS -> ((StatisticMessage) message).execute(updateStats);
+      //receive stats, give lambda
     }
   }
 
@@ -284,6 +287,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
 
     sendAction(ServerRequest.MULTIPLAYER);
   }
+
   /**
    * Send the status to the server
    *
@@ -344,6 +348,7 @@ public class Client extends AbstractClient implements ClientInterface, PropertyC
           requestNextMino();
         }
       }
+      //case fire
     }
   }
 

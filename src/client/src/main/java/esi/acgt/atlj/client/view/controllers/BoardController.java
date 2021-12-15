@@ -110,6 +110,7 @@ public class BoardController implements Initializable, PropertyChangeListener {
         case "username" -> setUsername(evt.getNewValue().toString());
         case "hold" -> setHoldTetrimino(((Mino) evt.getNewValue()));
         case "next" -> setNextTetrimino((Mino) evt.getNewValue());
+        //case "fire" -> //function in view(with value)
       }
     });
   }

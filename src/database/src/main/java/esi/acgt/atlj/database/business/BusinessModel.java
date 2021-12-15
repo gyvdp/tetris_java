@@ -80,6 +80,8 @@ public class BusinessModel implements BusinessInterface {
     }
   }
 
+  //implement stat
+
 
   /**
    * {@inheritDoc}

@@ -66,6 +66,7 @@ public class ManagedPlayer extends AbstractPlayer {
       setStatus(PlayerStatus.CANCEL);
     } else {
       setStatus(PlayerStatus.STOPPED);
+      //todo send stats of time
     }
   }
 
@@ -134,6 +135,7 @@ public class ManagedPlayer extends AbstractPlayer {
    * @param clockwise True if tetrimino should rotate clockwise.
    */
   public synchronized boolean rotate(boolean clockwise) {
+    //this.pcs.fire("name of fire", before, after);
     var oldBoard = getMatrix();
     boolean rotated = actualTetrimino.rotate(clockwise,
         this.generateFreeMask(4, 4, actualTetrimino.getX(),

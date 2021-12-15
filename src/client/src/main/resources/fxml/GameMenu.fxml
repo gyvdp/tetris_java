@@ -176,6 +176,7 @@
       <Button mnemonicParsing="false" onAction="#play" style="-fx-background-color: gray;"
         text="Jouer">
         <font>
+          <!-- add on action and method in game menu-->
           <Font name="System Bold Italic" size="15.0"/>
         </font>
       </Button>

@@ -119,7 +119,6 @@ public class Controller extends Application {
       client.closeConnectionToServer();
       client = null;
     }
-
   }
 
   /**

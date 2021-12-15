@@ -79,4 +79,6 @@ public interface BusinessInterface {
 
   void setTetriminoEntity(TetriminoDto tetriminoEntity) throws BusinessException;
 
+  //Add stats
+
 }

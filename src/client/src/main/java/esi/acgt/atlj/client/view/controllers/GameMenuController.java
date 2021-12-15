@@ -116,6 +116,8 @@ public class GameMenuController implements Initializable {
 
     levelValue.textProperty().bind(
         Bindings.createStringBinding(() -> String.valueOf(stats.getOrDefault("LEVEL", 0)), stats));
+
+    //Create new bind for stats and add new label game menu.fxm
   }
 
   /**
@@ -131,6 +133,8 @@ public class GameMenuController implements Initializable {
   public void play() {
     this.controller.startMultiplayerGame(this.username);
   }
+
+  //Add function.
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {

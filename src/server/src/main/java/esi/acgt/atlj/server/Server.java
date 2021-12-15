@@ -303,7 +303,6 @@ public class Server extends AbstractServer {
     new MatchUpHandler(
         clientsToAdd, this.matchUpId,
         interactDatabase, this);
-
   }
 
   /**
